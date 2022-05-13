@@ -1,7 +1,8 @@
-package com.caravan.caravan
+package com.caravan.caravan.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.caravan.caravan.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
