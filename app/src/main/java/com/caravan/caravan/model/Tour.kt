@@ -30,6 +30,5 @@ data class TourPhoto (
     val location: Location,
     val createdDate: LocalDateTime,
     val updatedDate: LocalDateTime? = null,
-    val url: String,
-
+    val url: String
 )

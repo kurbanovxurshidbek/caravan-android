@@ -16,5 +16,6 @@ data class Profile(
     val birthDate: LocalDate? = null,
     val createdDate: LocalDateTime,
     val updatedDate: LocalDateTime? = null,
-    val appLanguage: String
+    val appLanguage: String,
+    val devices: ArrayList<Device>
 )

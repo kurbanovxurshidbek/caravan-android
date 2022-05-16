@@ -3,7 +3,7 @@ package com.caravan.caravan.model
 data class GuideProfile(
     val id: Long,
     val profile: Profile,
-    val phoneNumber: String,
+    val phoneNumber: String? = null,
     val biography: String,
     val isHiring: Boolean = false,
     val rate: Double,
