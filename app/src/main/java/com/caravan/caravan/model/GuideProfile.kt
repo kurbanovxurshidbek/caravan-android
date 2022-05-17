@@ -11,7 +11,7 @@ data class GuideProfile(
     val languages: ArrayList<Language>,
     val travelLocations: ArrayList<Location>,
     val comments: ArrayList<Comment>,
-    val tours: ArrayList<Tour>,
+    val trips: ArrayList<Trip>,
     val socialNetworks: ArrayList<SocialNetwork>
 )
 

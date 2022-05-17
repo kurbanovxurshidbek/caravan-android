@@ -2,7 +2,7 @@ package com.caravan.caravan.model
 
 import java.time.LocalDateTime
 
-data class Tour (
+data class Trip (
     val id: Long,
     val photos: ArrayList<TourPhoto>,
     val facility: ArrayList<Facility>,
