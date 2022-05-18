@@ -4,6 +4,7 @@ import java.time.LocalDateTime
 
 data class Trip (
     val id: Long,
+    val name: String,
     val photos: ArrayList<TourPhoto>,
     val facility: ArrayList<Facility>,
     val places: ArrayList<Location>,
