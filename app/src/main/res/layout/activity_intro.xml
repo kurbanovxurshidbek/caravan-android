@@ -1,9 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activity.IntroActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:layout_marginBottom="40dp">
+        <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+            android:id="@+id/indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:dotsColor="#167351"
+            app:dotsStrokeWidth="1dp"
+            app:dotsStrokeColor="#151515"
+            app:dotsSize="16dp"
+            app:dotsSpacing="4dp"
+            android:layout_marginBottom="36dp"
+            android:layout_gravity="bottom|center"/>
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/get_started"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:visibility="visible"
+            android:elevation="0dp"
+            android:shadowColor="@color/white"
+            android:background="@drawable/background_btn_intro"
+            app:backgroundTint="@null"
+            android:layout_marginHorizontal="30dp"/>
+    </LinearLayout>
+
+</FrameLayout>

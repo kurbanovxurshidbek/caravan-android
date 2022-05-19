@@ -10,14 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Caravan">
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.activity.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".IntroActivity"
+            android:name=".ui.activity.IntroActivity"
             android:exported="false" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".ui.activity.MainActivity" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.activity.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
