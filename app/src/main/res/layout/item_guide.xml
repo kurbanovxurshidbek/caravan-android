@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivGuide"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/guide"
+            app:shapeAppearance="@drawable/corner_item"
+            app:shapeAppearanceOverlay="@drawable/corner_item" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvGuidesFullname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="Saidbek Abdullayev"
+                android:fontFamily="@font/circular_std_bold"
+                android:textColor="#181818"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvGuidesCities"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:lines="1"
+                android:fontFamily="@font/circular_std_bold"
+                android:text="Samarqand, Khiva, Kokand, Toshkent"
+                android:textColor="#167351"
+                android:textSize="12sp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/tvGuidePricesToDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:lines="1"
+                    android:fontFamily="@font/circular_std_bold"
+                    android:text="$100 / day"
+                    android:textSize="14dp" />
+
+
+                <TextView
+                    android:id="@+id/tvGuidesLanguages"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="5dp"
+                    android:lines="1"
+                    android:fontFamily="@font/circular_std_bold"
+                    android:text="English, Uzbek, Russian"
+                    android:textColor="#99000000"
+                    android:textSize="12sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="horizontal">
+
+                <RatingBar
+                    android:id="@+id/ratingBarGuide"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:max="5"
+                    android:progressBackgroundTint="#90000000"
+                    android:progressTint="@color/main"
+                    android:rating="3.5" />
+
+                <TextView
+                    android:id="@+id/tvGuidesCommentsCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(340)"
+                    android:fontFamily="@font/circular_std_bold"
+                    android:textColor="#99000000"
+                    android:textSize="12sp" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
