@@ -5,5 +5,6 @@ data class Comment(
     val rate: Int,
     val info: String,
     val from: Profile,
-    val isAnswered: Boolean = false
+    val isAnswered: Boolean = false,
+    val answer: String? = null
 )
