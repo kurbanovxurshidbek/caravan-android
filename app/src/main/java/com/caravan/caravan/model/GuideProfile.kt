@@ -17,7 +17,7 @@ data class GuideProfile(
 
 data class SocialNetwork (
     val id: Long,
-    val type: String,
+    val type: String, // Instagram, Facebook, WhatsApp, Telegram
     val link: String,
 )
 
