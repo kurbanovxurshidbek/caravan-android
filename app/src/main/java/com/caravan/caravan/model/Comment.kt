@@ -5,6 +5,8 @@ data class Comment(
     val rate: Int,
     val info: String,
     val from: Profile,
+    val isForTrip: Boolean = false,
+    val trip: Trip? = null,
     val isAnswered: Boolean = false,
     val answer: String? = null
 )
