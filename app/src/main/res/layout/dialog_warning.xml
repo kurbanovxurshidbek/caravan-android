@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:background="@drawable/rounded_dialog"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/circular_std_bold"
+        android:text="Sms code incorrect"
+        android:textColor="@color/main_color"
+        android:textSize="24sp"
+        android:layout_margin="10dp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/tvMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/circular_std_bold"
+        android:text="You entered wrong code. Please try again. We send code to +998 93 203 73 13.
+\nIf the code didn’t come. Please contact us."
+        android:textSize="16sp"
+        android:layout_margin="10dp"
+        android:textStyle="normal" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnOk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_btn_yes"
+        android:backgroundTintMode="src_over"
+        android:fontFamily="@font/circular_std_bold"
+        android:gravity="center"
+        android:text="@string/ok"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="30dp"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
+
+
+</LinearLayout>

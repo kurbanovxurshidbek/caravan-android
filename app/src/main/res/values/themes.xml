@@ -13,4 +13,9 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="circle_border">
+        <item name="cornerSize">4dp</item>
+    </style>
+
 </resources>

@@ -2,6 +2,9 @@
     <string name="app_name">Caravan</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_thanks">No, Thanks</string>
+    <string name="yes_sure">Yes, Sure</string>
+    <string name="ok">Ok</string>
     <string name="get_started">Get Started</string>
     <string name="str_continue">Continue</string>
     <string name="intro_text_1">Get Inspiration \nfor your next trip</string>
