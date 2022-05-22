@@ -1,4 +1,4 @@
-package com.caravan.caravan.fragment
+package com.caravan.caravan.ui.fragment.main
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

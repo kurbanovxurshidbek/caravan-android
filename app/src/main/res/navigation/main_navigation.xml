@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.caravan.caravan.fragment.HomeFragment"
+        android:name="com.caravan.caravan.ui.fragment.main.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.caravan.caravan.fragment.SearchFragment"
+        android:name="com.caravan.caravan.ui.fragment.main.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/messageFragment"
-        android:name="com.caravan.caravan.fragment.MessageFragment"
+        android:name="com.caravan.caravan.ui.fragment.main.MessageFragment"
         android:label="fragment_message"
         tools:layout="@layout/fragment_message" />
     <fragment
         android:id="@+id/accountFragment"
-        android:name="com.caravan.caravan.fragment.AccountFragment"
+        android:name="com.caravan.caravan.ui.fragment.main.AccountFragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" />
 
