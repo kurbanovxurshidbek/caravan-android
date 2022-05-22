@@ -1,11 +1,8 @@
-package com.caravan.caravan.ui.fragment.home
+package com.caravan.caravan.ui.fragment.main
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
 import com.caravan.caravan.R
-import com.caravan.caravan.repository.MainRepository
-import com.caravan.caravan.repository.factory.HomeViewModelFactory
 import com.caravan.caravan.ui.fragment.BaseFragment
 
 class HomeFragment : BaseFragment(R.layout.fragment_home) {

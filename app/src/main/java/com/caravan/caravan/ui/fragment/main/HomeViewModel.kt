@@ -1,4 +1,4 @@
-package com.caravan.caravan.ui.fragment.home
+package com.caravan.caravan.ui.fragment.main
 
 import androidx.lifecycle.ViewModel
 import com.caravan.caravan.repository.MainRepository

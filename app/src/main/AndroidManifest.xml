@@ -10,6 +10,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Caravan">
         <activity
+            android:name=".GuideOptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GuideDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TripDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TripActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FeedbackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LanguageActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.LoginActivity"
             android:exported="false" />
         <activity
