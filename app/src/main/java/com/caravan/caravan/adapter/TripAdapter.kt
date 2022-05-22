@@ -23,7 +23,7 @@ class TripAdapter(var items: ArrayList<Trip>) :
             itemTripsBinding.tvTripTitle.text = trip.description
             itemTripsBinding.ratingBarTrip.rating = trip.rate.toFloat()
             itemTripsBinding.tvTripCommentsCount.text =
-                "(${trip.comments.size})"
+                "(${trip.comments?.size})"
             itemTripsBinding.tvPrice.text = price(trip)
 
             itemView.setOnClickListener {
