@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:id="@+id/llTrips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvTripPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="12dp"
+            app:cardElevation="12dp">
+
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivTripPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="185dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/trip"
+                app:shapeAppearanceOverlay="@drawable/corner_item" />
+
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/tvTripTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Samarqand trips in 5 days "
+            android:textColor="#000000"
+            android:fontFamily="@font/circular_std_bold"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="0dp">
+
+
+            <LinearLayout
+                android:id="@+id/llRatingBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+
+                <RatingBar
+                    android:id="@+id/ratingBarTrip"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:max="5"
+                    android:progressBackgroundTint="#90000000"
+                    android:progressTint="@color/main"
+                    android:rating="3.5" />
+
+                <TextView
+                    android:id="@+id/tvTripCommentsCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(340)"
+                    android:fontFamily="@font/circular_std_bold"
+                    android:textColor="#99000000"
+                    android:textSize="12sp" />
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tvPricesAndTripTypes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|end"
+                android:lines="1"
+                android:fontFamily="@font/circular_std_bold"
+                android:text="$1300 / trip" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

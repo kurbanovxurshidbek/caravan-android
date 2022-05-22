@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/background_btn_intro.xml" value="0.1455" />
+        <entry key="app/src/main/res/drawable/corner_item.xml" value="0.1455" />
         <entry key="..\:/AndroidProjects/caravan-android/app/src/main/res/drawable-v24/background_btn_no.xml" value="0.12" />
         <entry key="..\:/AndroidProjects/caravan-android/app/src/main/res/drawable-v24/background_btn_yes.xml" value="0.2035" />
         <entry key="..\:/AndroidProjects/caravan-android/app/src/main/res/drawable-v24/background_no.xml" value="0.2035" />
@@ -19,7 +21,14 @@
         <entry key="..\:/AndroidProjects/caravan-android/app/src/main/res/layout/item_guide_home.xml" value="0.6" />
         <entry key="app/src/main/res/layout/activity_intro.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/corner_item.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/fragment_intro1.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/fragment_intro2.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/fragment_intro3.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/item_guide.xml" value="0.3154225667317709" />
+        <entry key="app/src/main/res/layout/item_trips.xml" value="0.27349446614583334" />
       </map>
     </option>
   </component>

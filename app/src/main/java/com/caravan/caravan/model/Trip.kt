@@ -4,6 +4,7 @@ import java.time.LocalDateTime
 
 data class Trip (
     val id: Long,
+    val name: String,
     val photos: ArrayList<TourPhoto>,
     val facility: ArrayList<Facility>,
     val places: ArrayList<Location>,
@@ -14,7 +15,7 @@ data class Trip (
     val guideProfile: GuideProfile,
     val phoneNumber: String,
     val rate: Double,
-    val comments: ArrayList<Comment>
+    val comments: ArrayList<Comment>? = null
 )
 
 data class Facility (

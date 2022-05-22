@@ -7,6 +7,4 @@ data class RegisterSend (
     val surname: String,
     val phoneNumber: String,
     val gender: String,
-    val appLanguage: String,
-    val device: Device
 )
