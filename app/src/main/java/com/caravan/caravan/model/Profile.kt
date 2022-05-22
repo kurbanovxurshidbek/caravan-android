@@ -1,5 +1,6 @@
 package com.caravan.caravan.model
 
+import java.io.Serializable
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -18,4 +19,4 @@ data class Profile(
     val updatedDate: LocalDateTime? = null,
     val appLanguage: String, // en, ru, uz
     val devices: ArrayList<Device>
-)
+):Serializable

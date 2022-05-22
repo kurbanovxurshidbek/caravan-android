@@ -13,4 +13,26 @@
     <string name="intro_desc_2">We live in a wonderful world that is full of beauty, charm and adventure.</string>
     <string name="intro_text_3"><![CDATA[Pack your bag &\ntravel with Caravan]]></string>
     <string name="intro_desc_3">A journey of a thousand miles begins with a single step</string>
+
+    <!--    for login-->
+    <string name="str_enter_phone">Enter your phone number.</string>
+    <string name="str_verify_phone">Verify your phone number.</string>
+    <string name="str_fill_number">Fill the field to continue</string>
+    <string name="str_get_code">Get Code</string>
+    <string name="str_agreement">I agree to the Terms &amp; Conditions</string>
+    <string name="str_confirm">Confirm</string>
+    <string name="str_resend_code">Resend Code</string>
+    <string name="str_fill_information">Fill your information</string>
+    <string name="str_enter_name">Enter your name</string>
+    <string name="str_choose_gender">Choose your gender</string>
+    <string name="str_gender_male">MALE</string>
+    <string name="str_gender_female">FEMALE</string>
+    <string name="str_save">Save</string>
+    <string name="str_lowwer_male">Male</string>
+    <string name="str_lowwer_female">Female</string>
+    <string name="str_enter_surname">Enter your surname</string>
+    <string name="str_enter_code">Please enter the code</string>
+    <string name="str_phone_number">Phone Number</string>
+    <string name="str_check_agreement">Please check Agreement</string>
+    <string name="str_fill_all_fields">Please fill all fields</string>
 </resources>

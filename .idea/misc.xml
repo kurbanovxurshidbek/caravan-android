@@ -3,12 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/button_rounded.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_btn_intro.xml" value="0.1455" />
         <entry key="app/src/main/res/drawable/corner_item.xml" value="0.1455" />
         <entry key="app/src/main/res/layout/activity_intro.xml" value="0.29739583333333336" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.14166666666666666" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.21510416666666668" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/alert_dialog.xml" value="0.21510416666666668" />
         <entry key="app/src/main/res/layout/corner_item.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/dialog_message.xml" value="0.21510416666666668" />
+        <entry key="app/src/main/res/layout/dialog_warning.xml" value="0.21510416666666668" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/fragment_intro1.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_intro2.xml" value="0.29739583333333336" />
