@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Samarqand trips in 5 days "
+            android:text="Samarkand trips in 5 days "
             android:textColor="#000000"
             android:fontFamily="@font/circular_std_bold"
             android:textSize="16sp" />
@@ -67,7 +67,7 @@
                     android:clickable="false"
                     android:max="5"
                     android:progressBackgroundTint="#90000000"
-                    android:progressTint="@color/main"
+                    android:progressTint="@color/main_color"
                     android:rating="3.5" />
 
                 <TextView
@@ -84,7 +84,7 @@
 
 
             <TextView
-                android:id="@+id/tvPricesAndTripTypes"
+                android:id="@+id/tvPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|end"
