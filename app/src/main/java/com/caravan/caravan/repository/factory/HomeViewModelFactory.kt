@@ -8,7 +8,7 @@ import java.lang.RuntimeException
 
 class HomeViewModelFactory(private val mainRepository: MainRepository): ViewModelProvider.Factory {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)){
             return HomeViewModel(mainRepository) as T
         }

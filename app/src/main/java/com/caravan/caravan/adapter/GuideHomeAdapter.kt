@@ -19,10 +19,10 @@ class GuideHomeAdapter(private val list: List<GuideProfile>)
     inner class ViewHolder(private val itemBinding: ItemGuideHomeBinding) : RecyclerView.ViewHolder(itemBinding.root){
 
         fun onBind(guide: GuideProfile){
-            Glide.with(itemBinding.ivProfilePhoto).load(guide.profile.profilePhoto).into(itemBinding.ivProfilePhoto)
+//            Glide.with(itemBinding.ivProfilePhoto).load(guide.profile.profilePhoto).into(itemBinding.ivProfilePhoto)
             itemBinding.tvName.text = guide.profile.name
             itemBinding.tvPrice.text = price(guide)
-            itemBinding.tvProvince.text = provinces(guide)
+//            itemBinding.tvProvince.text = provinces(guide)
 
             itemView.setOnClickListener {
                 //When item clicked
