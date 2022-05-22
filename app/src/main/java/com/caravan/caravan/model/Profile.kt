@@ -9,13 +9,13 @@ data class Profile(
     val surname: String,
     val phoneNumber: String,
     val email: String? = null,
-    val role: String = "TOURIST",
-    val status: String = "ACTIVE",
+    val role: String = "TOURIST", // GUIDE
+    val status: String = "ACTIVE", // BLOCK
     val profilePhoto: String? = null,
-    val gender: String,
+    val gender: String, // MALE, FEMALE
     val birthDate: LocalDate? = null,
     val createdDate: LocalDateTime,
     val updatedDate: LocalDateTime? = null,
-    val appLanguage: String,
+    val appLanguage: String, // en, ru, uz
     val devices: ArrayList<Device>
 )

@@ -12,14 +12,13 @@ data class GuideProfile(
     val travelLocations: ArrayList<Location>,
     val comments: ArrayList<Comment>,
     val trips: ArrayList<Trip>,
-    val socialNetworks: ArrayList<SocialNetwork>
 )
 
-data class SocialNetwork (
-    val id: Long,
-    val type: String,
-    val link: String,
-)
+//data class SocialNetwork (
+//    val id: Long,
+//    val type: String, // Instagram, Facebook, WhatsApp, Telegram
+//    val link: String,
+//)
 
 data class Language (
     val id: Long,
