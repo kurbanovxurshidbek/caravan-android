@@ -1,5 +1,7 @@
 package com.caravan.caravan.model
 
+import java.io.Serializable
+
 data class GuideProfile(
     val id: Long,
     val profile: Profile,
@@ -12,7 +14,7 @@ data class GuideProfile(
     val travelLocations: ArrayList<Location>,
     val comments: ArrayList<Comment>,
     val trips: ArrayList<Trip>,
-)
+) : Serializable
 
 //data class SocialNetwork (
 //    val id: Long,
@@ -20,7 +22,7 @@ data class GuideProfile(
 //    val link: String,
 //)
 
-data class Language (
+data class Language(
     val id: Long,
     val language: String,
     val level: String

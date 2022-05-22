@@ -3,34 +3,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
     tools:context=".ui.fragment.intro.IntroFragment2">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:textColor="#151515"
-        android:textSize="24sp"
-        android:fontFamily="@font/montserrat_extra_bold"
-        android:layout_marginHorizontal="30dp"
-        android:gravity="center"
-        android:text="@string/intro_text_2" />
-    <ImageView
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_extra_bold"
+            android:gravity="center"
+            android:text="@string/intro_text_2"
+            android:textColor="#151515"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/img_intro_2"
-        android:layout_marginTop="80dp"/>
-    <TextView
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:src="@drawable/img_intro_2" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/intro_desc_2"
-        android:textSize="16sp"
-        android:textColor="#40151515"
-        android:gravity="center"
-        android:fontFamily="@font/montserrat_regular"
-        android:layout_marginHorizontal="65dp"
-        android:layout_marginTop="80dp"/>
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="center"
+            android:text="@string/intro_desc_2"
+            android:textColor="#73151515"
+            android:textSize="16sp" />
+
+    </LinearLayout>
 
 </LinearLayout>

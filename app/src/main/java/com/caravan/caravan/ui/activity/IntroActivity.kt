@@ -3,7 +3,6 @@ package com.caravan.caravan.ui.activity
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
@@ -39,9 +38,11 @@ class IntroActivity : BaseActivity() {
         binding.btnStart.setOnClickListener {
             if (binding.viewPager.currentItem == fragments.size - 1) {
                 SharedPref(this).saveBoolean("introDone", true)
-                callMainActivity()
+                if (SharedPref(this).getBoolean("loginDone"))
+                    callMainActivity()
+                else callLoginActivity()
             } else {
-                binding.viewPager.setCurrentItem(binding.viewPager.currentItem + 1,true)
+                binding.viewPager.setCurrentItem(binding.viewPager.currentItem + 1, true)
             }
 
         }
@@ -51,12 +52,17 @@ class IntroActivity : BaseActivity() {
             override fun onPageScrollStateChanged(state: Int) {
             }
 
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
 
             }
+
             //jj
             override fun onPageSelected(position: Int) {
-                if(position == fragments.size-1){
+                if (position == fragments.size - 1) {
                     binding.btnStart.text = getString(R.string.get_started)
                 } else {
                     binding.btnStart.text = getString(R.string.str_continue)
