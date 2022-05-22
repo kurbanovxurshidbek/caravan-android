@@ -52,4 +52,7 @@ dependencies {
     //indicator
     implementation 'com.tbuonomo:dotsindicator:4.2'
 
+    //for OTP
+    implementation 'io.github.chaosleung:pinview:1.4.4'
+
 }
