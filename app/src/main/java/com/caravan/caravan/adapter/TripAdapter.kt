@@ -20,7 +20,7 @@ class TripAdapter(var items: ArrayList<Trip>) :
         RecyclerView.ViewHolder(itemTripsBinding.root) {
         fun onBind(trip: Trip) {
 //            Glide.with(itemTripsBinding.ivTripPhoto).load(trip.photos[0]).into(itemTripsBinding.ivTripPhoto)
-            itemTripsBinding.tvTripTitle.text = trip.name
+            itemTripsBinding.tvTripTitle.text = trip.description
             itemTripsBinding.ratingBarTrip.rating = trip.rate.toFloat()
             itemTripsBinding.tvTripCommentsCount.text =
                 "(${trip.comments?.size})"

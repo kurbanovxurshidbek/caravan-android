@@ -1,14 +1,15 @@
 package com.caravan.caravan.ui.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import com.caravan.caravan.R
 import com.caravan.caravan.manager.SharedPref
+import java.util.*
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : BaseActivity() {
@@ -24,6 +25,7 @@ class SplashActivity : BaseActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
+        saveDeviceLanguage()
         countDownTimer()
 
     }
@@ -37,11 +39,20 @@ class SplashActivity : BaseActivity() {
         }.start()
     }
 
-    private fun checkSaved(){
-        if (SharedPref(this).getBoolean("introDone")){
-            callMainActivity()
-        }else{
+    private fun checkSaved() {
+        if (SharedPref(this).getBoolean("introDone")) {
+            if (SharedPref(this).getBoolean("loginDone")) callMainActivity()
+            else {
+                callLoginActivity()
+            }
+        } else {
             callIntroActivity()
         }
+    }
+
+
+    private fun saveDeviceLanguage() {
+        val appLanguage: String = Locale.getDefault().getLanguage()
+        SharedPref(this).saveString("appLanguage", appLanguage)
     }
 }

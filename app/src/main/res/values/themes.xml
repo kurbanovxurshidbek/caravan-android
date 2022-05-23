@@ -11,11 +11,20 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">true</item>
         <!-- Customize your theme here. -->
+    </style>
+//for bottomNavigation
+    <style name="BottomNavigation.ActiveItemTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="circle_border">
         <item name="cornerSize">4dp</item>
+    </style>
+
+    <style name="intro_image">
+        <item name="cornerSize">16dp</item>
     </style>
 
     <style name="DialogAnimation">

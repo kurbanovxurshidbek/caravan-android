@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Caravan">
         <activity
+            android:name=".ui.activity.RegisterActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".ui.activity.LoginActivity"
             android:exported="false" />
         <activity
