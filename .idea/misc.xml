@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/User/caravan-android2/app/src/main/res/drawable/ic_delete.xml" value="0.1495" />
+        <entry key="..\:/Users/User/caravan-android2/app/src/main/res/layout/item_guide.xml" value="0.2046875" />
+        <entry key="..\:/Users/User/caravan-android2/app/src/main/res/layout/item_guide_home.xml" value="0.2046875" />
+        <entry key="..\:/Users/User/caravan-android2/app/src/main/res/layout/item_trip_guide.xml" value="0.25" />
+        <entry key="..\:/Users/User/caravan-android2/app/src/main/res/layout/item_trips.xml" value="0.2046875" />
         <entry key="app/src/main/res/drawable-v24/button_rounded.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_btn_intro.xml" value="0.1455" />
         <entry key="app/src/main/res/drawable/corner_item.xml" value="0.1455" />
