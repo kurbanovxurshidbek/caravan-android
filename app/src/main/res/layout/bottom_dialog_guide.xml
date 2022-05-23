@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="20dp"
+    android:background="@drawable/background_dialog_trip">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filter your Search"
+        android:textColor="#167351"
+        android:fontFamily="@font/circular_std_bold"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginTop="40dp" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Minimum Price"
+        android:layout_marginTop="40dp"
+        android:textColorHint="#99000000"
+        android:fontFamily="@font/circular_std_bold"
+        android:textStyle="normal"
+        android:drawableEnd="@drawable/ic_dollar"
+        android:paddingStart="5dp"
+        android:paddingEnd="10dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Maximum Price"
+        android:layout_marginTop="25dp"
+        android:textColorHint="#99000000"
+        android:fontFamily="@font/circular_std_bold"
+        android:textStyle="normal"
+        android:drawableEnd="@drawable/ic_dollar"
+        android:paddingStart="5dp"
+        android:paddingEnd="10dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Minimum Rating"
+        android:layout_marginTop="25dp"
+        android:textColorHint="#99000000"
+        android:fontFamily="@font/circular_std_bold"
+        android:textStyle="normal"
+        android:drawableEnd="@drawable/ic_star"
+        android:paddingStart="5dp"
+        android:paddingEnd="10dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Maximum Rating"
+        android:layout_marginTop="25dp"
+        android:textColorHint="#99000000"
+        android:fontFamily="@font/circular_std_bold"
+        android:textStyle="normal"
+        android:drawableEnd="@drawable/ic_star"
+        android:paddingStart="5dp"
+        android:paddingEnd="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/str_gender"
+                android:paddingStart="5dp"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/circular_std_bold"
+                android:textStyle="normal"
+                android:textColor="#99000000"
+                android:textSize="18sp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingEnd="3dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/str_male"
+                    android:textColor="#ABABAB"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/circular_std_bold"
+                    android:textStyle="normal"/>
+                <CheckBox
+                    android:id="@+id/checkboxMale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/main_color"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/str_female"
+                    android:textColor="#ABABAB"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/circular_std_bold"
+                    android:textStyle="normal"/>
+                <CheckBox
+                    android:id="@+id/checkboxFemale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/main_color"/>
+            </LinearLayout>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#87000000"/>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="30dp"
+        android:background="@drawable/background_btn_intro"
+        app:backgroundTint="@null"
+        android:elevation="5dp"
+        android:stateListAnimator="@null"
+        android:text="Apply Filter"
+        android:fontFamily="@font/circular_std_bold"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:translationZ="2dp" />
+</LinearLayout>

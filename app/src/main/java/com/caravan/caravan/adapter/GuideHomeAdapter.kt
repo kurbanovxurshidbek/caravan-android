@@ -1,13 +1,13 @@
 package com.caravan.caravan.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.compose.ui.graphics.Color
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
@@ -52,7 +52,7 @@ class GuideHomeAdapter(private val list: List<GuideProfile>)
                 val endIndex = province.province.length
                 colorMyText(text, 0, endIndex, R.color.main_color2)
             }else{
-                colorMyText(province.province, 0, province.province.length, android.graphics.Color.parseColor("#50167351"))
+                colorMyText(province.province, 0, province.province.length, R.color.main_color2)
             }
         }
 
