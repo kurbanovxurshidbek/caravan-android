@@ -28,7 +28,7 @@ class GuideAdapter(var items: ArrayList<GuideProfile>) :
             itemGuideBinding.tvGuidesLanguages.text = getLanguages(guideProfile)
             itemGuideBinding.ratingBarGuide.rating = guideProfile.rate.toFloat()
             itemGuideBinding.tvGuidesCommentsCount.text =
-                "(${guideProfile.comments.size.toString()})"
+                "(${guideProfile.comments?.size.toString()})"
 
             itemView.setOnClickListener {
                     // When Item Clicked
