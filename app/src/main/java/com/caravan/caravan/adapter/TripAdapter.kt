@@ -15,13 +15,12 @@ import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemTripsBinding
 import com.caravan.caravan.model.Trip
 
-class TripAdapter(val context: Fragment, var items: ArrayList<Trip>) :
-    RecyclerView.Adapter<TripAdapter.ViewHolder>() {
+class TripAdapter(val context: Fragment, var items: ArrayList<Trip>) : RecyclerView.Adapter<TripAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val itemTripsBinding: ItemTripsBinding) :
         RecyclerView.ViewHolder(itemTripsBinding.root) {
         fun onBind(trip: Trip) {
-            Glide.with(itemTripsBinding.ivTripPhoto).load(trip.photos[0].url).into(itemTripsBinding.ivTripPhoto)
+            Glide.with(context).load(trip.photos[0].url).into(itemTripsBinding.ivTripPhoto)
             itemTripsBinding.tvTripTitle.text = trip.description
             itemTripsBinding.ratingBarTrip.rating = trip.rate.toFloat()
             itemTripsBinding.tvTripCommentsCount.text =

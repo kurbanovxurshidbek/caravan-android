@@ -39,4 +39,9 @@
     <string name="str_check_agreement">Please check Agreement</string>
     <string name="str_fill_all_fields">Please fill all fields</string>
     <string name="str_url_agreement">https://t.me/Bogibek_Matyaqubov</string>
+    <string name="str_gender">Gender</string>
+    <string name="str_male">Male</string>
+    <string name="str_female">Female</string>
+    <string name="str_guide">Guide</string>
+    <string name="str_trip">Trip</string>
 </resources>
