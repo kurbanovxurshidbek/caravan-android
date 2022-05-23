@@ -4,17 +4,17 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_marginStart="8dp">
+    android:layout_marginEnd="8dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="106dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/image_under_shadow">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_profilePhoto"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
             android:layout_gravity="center|top"
             android:elevation="5dp"
             android:scaleType="centerCrop"
@@ -37,7 +37,11 @@
             android:layout_weight="1"
             android:fontFamily="@font/circular_std_bold"
             android:singleLine="true"
-            android:text="Saidbek"
+            android:text="Ogabek"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold" />
