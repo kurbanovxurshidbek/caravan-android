@@ -7,6 +7,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.compose.ui.graphics.Color
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
@@ -37,7 +38,7 @@ class GuideHomeAdapter(private val list: List<GuideProfile>)
 
             val outPutColoredText: Spannable = SpannableString("$text/${guide.price.option}")
             outPutColoredText.setSpan(RelativeSizeSpan(1.2f),0, endIndex, 0)
-            outPutColoredText.setSpan(ForegroundColorSpan(R.color.main_color), 0, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            outPutColoredText.setSpan(ForegroundColorSpan(android.graphics.Color.parseColor("#167351")), 0, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
             return outPutColoredText
         }
@@ -51,7 +52,7 @@ class GuideHomeAdapter(private val list: List<GuideProfile>)
                 val endIndex = province.province.length
                 colorMyText(text, 0, endIndex, R.color.main_color2)
             }else{
-                colorMyText(province.province, 0, province.province.length, R.color.main_color2)
+                colorMyText(province.province, 0, province.province.length, android.graphics.Color.parseColor("#50167351"))
             }
         }
 

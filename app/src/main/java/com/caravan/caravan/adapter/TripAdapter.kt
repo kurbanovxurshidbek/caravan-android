@@ -1,6 +1,7 @@
 package com.caravan.caravan.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -42,7 +43,7 @@ class TripAdapter(var items: ArrayList<Trip>) :
         val outPutColoredText: Spannable = SpannableString("$text/${trip.price.option}")
         outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
         outPutColoredText.setSpan(
-            ForegroundColorSpan(R.color.main_color),
+            ForegroundColorSpan(Color.parseColor("#167351")),
             0,
             endIndex,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
