@@ -1,34 +1,35 @@
 package com.caravan.caravan.adapter
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemGuideBinding
 import com.caravan.caravan.model.GuideProfile
+import com.caravan.caravan.ui.fragment.main.SearchFragment
 
-class GuideAdapter(var items: ArrayList<GuideProfile>) :
+class GuideAdapter(private val context: Fragment, var items: ArrayList<GuideProfile>) :
     RecyclerView.Adapter<GuideAdapter.ViewHolder>() {
 
-    inner class ViewHolder(private val itemGuideBinding: ItemGuideBinding) :
-        RecyclerView.ViewHolder(itemGuideBinding.root) {
+    inner class ViewHolder(private val itemGuideBinding: ItemGuideBinding) : RecyclerView.ViewHolder(itemGuideBinding.root) {
+
         fun onBind(guideProfile: GuideProfile) {
-            Glide.with(itemGuideBinding.ivGuide).load(guideProfile.profile.profilePhoto)
-                .into(itemGuideBinding.ivGuide)
-            itemGuideBinding.tvGuidesFullname.text =
-                guideProfile.profile.name + " " + guideProfile.profile.surname
+
+            Glide.with(itemGuideBinding.ivGuide).load(guideProfile.profile.profilePhoto).into(itemGuideBinding.ivGuide)
+            itemGuideBinding.tvGuidesFullname.text = guideProfile.profile.name + " " + guideProfile.profile.surname
             itemGuideBinding.tvGuidesCities.text = provinces(guideProfile)
             itemGuideBinding.tvGuidePrice.text = price(guideProfile)
             itemGuideBinding.tvGuidesLanguages.text = getLanguages(guideProfile)
             itemGuideBinding.ratingBarGuide.rating = guideProfile.rate.toFloat()
-            itemGuideBinding.tvGuidesCommentsCount.text =
-                "(${guideProfile.comments.size.toString()})"
+            itemGuideBinding.tvGuidesCommentsCount.text = "(${guideProfile.comments.size.toString()})"
 
             itemView.setOnClickListener {
                     // When Item Clicked
