@@ -22,6 +22,7 @@ class GuideHomeAdapter(private val list: List<GuideProfile>)
         fun onBind(guide: GuideProfile){
 //            Glide.with(itemBinding.ivProfilePhoto).load(guide.profile.profilePhoto).into(itemBinding.ivProfilePhoto)
             itemBinding.tvName.text = guide.profile.name
+            itemBinding.tvName.isSelected = true
             itemBinding.tvPrice.text = price(guide)
 //            itemBinding.tvProvince.text = provinces(guide)
 
@@ -37,8 +38,7 @@ class GuideHomeAdapter(private val list: List<GuideProfile>)
 
             val outPutColoredText: Spannable = SpannableString("$text/${guide.price.option}")
             outPutColoredText.setSpan(RelativeSizeSpan(1.2f),0, endIndex, 0)
-//            outPutColoredText.setSpan(ForegroundColorSpan(-16011936), 0, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            outPutColoredText.setSpan(ForegroundColorSpan(Color.parseColor("#167351")), 0, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            outPutColoredText.setSpan(ForegroundColorSpan(android.graphics.Color.parseColor("#167351")), 0, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
             return outPutColoredText
         }
