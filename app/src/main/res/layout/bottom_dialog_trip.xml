@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="20dp"
+    android:background="@drawable/background_dialog_trip">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filter your Search"
+        android:textColor="#167351"
+        android:fontFamily="@font/circular_std_bold"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginTop="40dp" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Minimum Price"
+        android:layout_marginTop="40dp"
+        android:textColorHint="#60000000"
+        android:fontFamily="@font/circular_std_bold"
+        android:textStyle="bold"
+        android:drawableEnd="@drawable/ic_dollar"
+        android:paddingStart="5dp"
+        android:paddingEnd="10dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Maximum Price"
+        android:layout_marginTop="25dp"
+        android:textColorHint="#60000000"
+        android:fontFamily="@font/circular_std_bold"
+        android:textStyle="bold"
+        android:drawableEnd="@drawable/ic_dollar"
+        android:paddingStart="5dp"
+        android:paddingEnd="10dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Minimum People"
+        android:layout_marginTop="25dp"
+        android:textColorHint="#60000000"
+        android:fontFamily="@font/circular_std_bold"
+        android:textStyle="bold"
+        android:drawableEnd="@drawable/ic_users"
+        android:paddingStart="5dp"
+        android:paddingEnd="10dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Maximum People"
+        android:layout_marginTop="25dp"
+        android:textColorHint="#60000000"
+        android:fontFamily="@font/circular_std_bold"
+        android:textStyle="bold"
+        android:drawableEnd="@drawable/ic_users"
+        android:paddingStart="5dp"
+        android:paddingEnd="10dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Day"
+        android:layout_marginTop="25dp"
+        android:textColorHint="#60000000"
+        android:fontFamily="@font/circular_std_bold"
+        android:textStyle="bold"
+        android:drawableEnd="@drawable/ic_day"
+        android:paddingStart="5dp"
+        android:paddingEnd="10dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Minimum Rating"
+        android:layout_marginTop="25dp"
+        android:textColorHint="#60000000"
+        android:fontFamily="@font/circular_std_bold"
+        android:textStyle="bold"
+        android:drawableEnd="@drawable/ic_star"
+        android:paddingStart="5dp"
+        android:paddingEnd="10dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Maximum Rating"
+        android:layout_marginTop="25dp"
+        android:textColorHint="#60000000"
+        android:fontFamily="@font/circular_std_bold"
+        android:textStyle="bold"
+        android:drawableEnd="@drawable/ic_star"
+        android:paddingStart="5dp"
+        android:paddingEnd="10dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="30dp"
+        android:background="@drawable/background_btn_intro"
+        android:elevation="5dp"
+        android:stateListAnimator="@null"
+        app:backgroundTint="@null"
+        android:text="Apply Filter"
+        android:fontFamily="@font/circular_std_bold"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:translationZ="2dp" />
+</LinearLayout>

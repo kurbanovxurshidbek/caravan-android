@@ -1,6 +1,7 @@
 package com.caravan.caravan.adapter
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -13,13 +14,13 @@ import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemGuideBinding
 import com.caravan.caravan.model.GuideProfile
 
-class GuideAdapter(var items: ArrayList<GuideProfile>) :
+class GuideAdapter(private val context: Context, var items: ArrayList<GuideProfile>) :
     RecyclerView.Adapter<GuideAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val itemGuideBinding: ItemGuideBinding) :
         RecyclerView.ViewHolder(itemGuideBinding.root) {
         fun onBind(guideProfile: GuideProfile) {
-            Glide.with(itemGuideBinding.ivGuide).load(guideProfile.profile.profilePhoto)
+            Glide.with(context).load(guideProfile.profile.profilePhoto)
                 .into(itemGuideBinding.ivGuide)
             itemGuideBinding.tvGuidesFullname.text =
                 guideProfile.profile.name + " " + guideProfile.profile.surname

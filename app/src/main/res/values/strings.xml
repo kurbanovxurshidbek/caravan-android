@@ -13,4 +13,10 @@
     <string name="intro_desc_2">We live in a wonderful world that is full of beauty, charm and adventure.</string>
     <string name="intro_text_3"><![CDATA[Pack your bag &\ntravel with Caravan]]></string>
     <string name="intro_desc_3">A journey of a thousand miles begins with a single step</string>
+    <string name="str_gender">Gender</string>
+    <string name="str_male">Male</string>
+    <string name="str_female">Female</string>
+    <string name="str_search_edt">Search some Places…</string>
+    <string name="str_guide">Guide</string>
+    <string name="str_trip">Trip</string>
 </resources>
