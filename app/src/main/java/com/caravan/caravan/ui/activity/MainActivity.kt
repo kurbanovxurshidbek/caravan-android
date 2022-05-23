@@ -1,17 +1,27 @@
 package com.caravan.caravan.ui.activity
 
-import android.os.Build
 import android.os.Bundle
-import android.view.WindowInsetsController
-import androidx.annotation.RequiresApi
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.caravan.caravan.R
-import com.caravan.caravan.utils.Dialog
+import com.caravan.caravan.databinding.ActivityMainBinding
+import com.caravan.caravan.utils.Extensions.toast
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : BaseActivity() {
-    @RequiresApi(Build.VERSION_CODES.R)
+    lateinit var mainBinding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        mainBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mainBinding.root)
+
+        //Initialize the bottom navigation view
+        //create bottom navigation view object
+        val bottomNavigationView = mainBinding.bottomNavigationView
+        val navController = findNavController(R.id.nav_fragment)
+        bottomNavigationView.setupWithNavController(navController)
+
 
     }
 }

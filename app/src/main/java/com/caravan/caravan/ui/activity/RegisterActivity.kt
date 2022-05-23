@@ -37,8 +37,8 @@ class RegisterActivity : AppCompatActivity() {
         if (getEditTextData()) {
             // send request here
             //delete follow object
-            val respond = RegisterRespond(false, "null", "null", null)
-            if (isRestricted) {
+            val respond = RegisterRespond(true, "null", "null", null)
+            if (respond.isRegistered) {
                 callMainActivity(respond.profile)
             } else{
                 Dialog.showDialogWarning(this,respond.status!!,respond.message!!,object :OkInterface{
