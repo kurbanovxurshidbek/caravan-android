@@ -131,7 +131,7 @@ class LoginActivity : BaseActivity() {
         hideKeyboard()
         val login = LoginSend(
             binding.etPhone.text.toString(),
-            null,
+            0,
             null,
             SharedPref(this).getString("appLanguage") ?: "en"
         )
