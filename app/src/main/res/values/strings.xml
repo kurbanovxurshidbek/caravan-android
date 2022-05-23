@@ -38,4 +38,5 @@
     <string name="str_phone_number">Phone Number</string>
     <string name="str_check_agreement">Please check Agreement</string>
     <string name="str_fill_all_fields">Please fill all fields</string>
+    <string name="str_url_agreement">https://t.me/Bogibek_Matyaqubov</string>
 </resources>

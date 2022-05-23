@@ -105,27 +105,6 @@
         android:textAllCaps="false"
         apps:backgroundTint="@null" />
 
-    <LinearLayout
-        android:id="@+id/llAgreement"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="invisible">
 
-        <CheckBox
-            android:id="@+id/checkbox"
-            android:buttonTint="@color/main_color"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false" />
-
-        <TextView
-            android:id="@+id/tvAgreement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/str_agreement"
-            android:textColorLink="@color/main_color" />
-    </LinearLayout>
 
 </LinearLayout>
