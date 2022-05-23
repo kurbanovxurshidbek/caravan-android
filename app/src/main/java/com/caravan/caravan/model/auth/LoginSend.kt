@@ -5,7 +5,7 @@ import com.caravan.caravan.model.Language
 
 data class LoginSend(
     val phoneNumber: String,
-    val smsCode: Int? = null,
+    val smsCode: Int = 0,
     val device: Device? = null,
     val appLanguage: String = "en" // en, ru, uz
 )

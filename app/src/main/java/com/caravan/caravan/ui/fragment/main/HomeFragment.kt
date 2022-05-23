@@ -138,7 +138,7 @@ class HomeFragment : Fragment() {
                     i * 100L + 1,
                     Profile(
                         i * 100L,
-                        "James",
+                        "Asasin df  asj  sd a skj ask s dj as;j aik cakk caai; casj",
                         "Sobirov",
                         "",
                         null,
