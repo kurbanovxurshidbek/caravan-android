@@ -93,14 +93,14 @@ class LoginActivity : BaseActivity() {
             null,
             "You entered wrong code. Please try again. We send code to +998 93 203 73 13.\n" +
                     "If the code didn’t come. Please contact us.",
-            2
+            false
         )
-        if (response.status == null) {
+        if (response.title == null) {
             if (isExist) {
                 callMainActivity(response.profile, response.isGuide, response.guideProfile)
             } else callRegistrationActivity()
         } else{
-            Dialog.showDialogWarning(this,response.status!!,response.message!!,object :OkInterface{
+            Dialog.showDialogWarning(this,response.title!!,response.message!!,object :OkInterface{
                 override fun onClick() {
 
                 }
@@ -140,7 +140,7 @@ class LoginActivity : BaseActivity() {
         hideKeyboard()
         val login = LoginSend(
             binding.etPhone.text.toString(),
-            null,
+            0,
             null,
             SharedPref(this).getString("appLanguage") ?: "en"
         )

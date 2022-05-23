@@ -41,7 +41,7 @@ class RegisterActivity : AppCompatActivity() {
             if (respond.isRegistered) {
                 callMainActivity(respond.profile)
             } else{
-                Dialog.showDialogWarning(this,respond.status!!,respond.message!!,object :OkInterface{
+                Dialog.showDialogWarning(this,respond.title!!,respond.message!!,object :OkInterface{
                     override fun onClick() {
 
                     }
