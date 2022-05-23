@@ -2,6 +2,7 @@ package com.caravan.caravan.ui.activity
 
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -9,7 +10,6 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ActivityRegisterBinding
@@ -78,7 +78,9 @@ class RegisterActivity : AppCompatActivity() {
         val surname = binding.etSurname.text.toString()
         if (name.length > 1 && surname.length > 1 && gender != null) {
             request = RegisterSend(name, surname, phoneNumber, gender!!)
-            return true
+            if (binding.checkbox.isChecked)
+                return true
+            else toast(getString(R.string.str_check_agreement))
         } else {
             toast(getString(R.string.str_fill_all_fields))
         }
@@ -106,7 +108,9 @@ class RegisterActivity : AppCompatActivity() {
         val ss = SpannableString(resources.getString(R.string.str_agreement))
         val clickableSpan: ClickableSpan = object : ClickableSpan() {
             override fun onClick(textView: View) {
-                //do some
+                val uri = Uri.parse(getString(R.string.str_url_agreement))
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
             }
 
             override fun updateDrawState(ds: TextPaint) {
