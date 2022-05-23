@@ -7,10 +7,12 @@
     tools:context=".ui.fragment.main.HomeFragment">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/homeNestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/homeContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -61,7 +63,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:padding="9dp"
-                    android:src="@drawable/ic_burger" />
+                    android:src="@drawable/ic_add" />
             </LinearLayout>
 
             <RelativeLayout
