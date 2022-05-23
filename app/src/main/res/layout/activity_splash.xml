@@ -9,25 +9,25 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:adjustViewBounds="true"
-        android:src="@drawable/photo_2022"/>
+        android:src="@drawable/splash_test_6"/>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="150dp"
-        android:src="@drawable/img_logo" />
+<!--    <ImageView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="start"-->
+<!--        android:layout_marginStart="50dp"-->
+<!--        android:layout_marginTop="150dp"-->
+<!--        android:src="@drawable/img_logo" />-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:text="Discover Uzbekistan with us!"
-        android:layout_marginTop="280dp"
-        android:textSize="17sp"
-        android:textStyle="italic"
-        android:layout_marginStart="20dp"/>
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="start"-->
+<!--        android:text="Discover Uzbekistan with us!"-->
+<!--        android:layout_marginTop="280dp"-->
+<!--        android:textSize="17sp"-->
+<!--        android:textStyle="italic"-->
+<!--        android:layout_marginStart="20dp"/>-->
 </FrameLayout>

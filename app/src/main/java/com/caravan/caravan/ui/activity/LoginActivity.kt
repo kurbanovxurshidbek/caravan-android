@@ -3,19 +3,12 @@ package com.caravan.caravan.ui.activity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.TextPaint
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.widget.addTextChangedListener
 import com.caravan.caravan.R
@@ -92,20 +85,23 @@ class LoginActivity : BaseActivity() {
         var response = LoginRespond(
             null,
             "You entered wrong code. Please try again. We send code to +998 93 203 73 13.\n" +
-                    "If the code didn’t come. Please contact us.",
-            false
+                    "If the code didn’t come. Please contact us."
         )
         if (response.title == null) {
             if (isExist) {
                 callMainActivity(response.profile, response.isGuide, response.guideProfile)
             } else callRegistrationActivity()
-        } else{
-            Dialog.showDialogWarning(this,response.title!!,response.message!!,object :OkInterface{
-                override fun onClick() {
+        } else {
+            Dialog.showDialogWarning(
+                this,
+                response.title!!,
+                response.message!!,
+                object : OkInterface {
+                    override fun onClick() {
 
-                }
+                    }
 
-            })
+                })
         }
 
     }
@@ -121,22 +117,17 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun callRegistrationActivity() {
-        if (binding.checkbox.isChecked) {
-            val intent = Intent(this, RegisterActivity::class.java)
-            intent.putExtra("phoneNumber", binding.etPhone.text.toString())
-            startActivity(intent)
-            finish()
-        } else {
-            toast(getString(R.string.str_check_agreement))
-        }
 
+        val intent = Intent(this, RegisterActivity::class.java)
+        intent.putExtra("phoneNumber", binding.etPhone.text.toString())
+        startActivity(intent)
+        finish()
     }
 
     private fun getOtpCode() {
         binding.btnGetCode.text = getString(R.string.str_confirm)
         binding.llOtp.visibility = View.VISIBLE
         setTimer()
-        setAgreement()
         hideKeyboard()
         val login = LoginSend(
             binding.etPhone.text.toString(),
@@ -147,34 +138,6 @@ class LoginActivity : BaseActivity() {
         //send request here
     }
 
-    private fun setAgreement() {
-        binding.llAgreement.visibility = View.VISIBLE
-        val ss = SpannableString(resources.getString(R.string.str_agreement))
-        val clickableSpan: ClickableSpan = object : ClickableSpan() {
-            override fun onClick(textView: View) {
-                //do some
-                Toast.makeText(this@LoginActivity, "Bosildi", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun updateDrawState(ds: TextPaint) {
-                super.updateDrawState(ds)
-                ds.isUnderlineText = false
-            }
-        }
-        ss.setSpan(
-            clickableSpan,
-            15,
-            resources.getString(R.string.str_agreement).length,
-            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-
-        binding.tvAgreement.apply {
-            text = ss
-            movementMethod = LinkMovementMethod.getInstance()
-            highlightColor = Color.TRANSPARENT
-
-        }
-    }
 
     private fun hideKeyboard() {
         try {
@@ -208,7 +171,6 @@ class LoginActivity : BaseActivity() {
             binding.llOtp.visibility = View.INVISIBLE
             binding.etOTP.setText("")
             binding.btnGetCode.text = getString(R.string.str_get_code)
-            binding.llAgreement.visibility = View.INVISIBLE
         } else {
             super.onBackPressed()
         }
