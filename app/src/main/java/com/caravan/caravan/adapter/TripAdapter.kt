@@ -1,25 +1,27 @@
 package com.caravan.caravan.adapter
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemTripsBinding
 import com.caravan.caravan.model.Trip
 
-class TripAdapter(var items: ArrayList<Trip>) :
+class TripAdapter(val context: Fragment, var items: ArrayList<Trip>) :
     RecyclerView.Adapter<TripAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val itemTripsBinding: ItemTripsBinding) :
         RecyclerView.ViewHolder(itemTripsBinding.root) {
         fun onBind(trip: Trip) {
-//            Glide.with(itemTripsBinding.ivTripPhoto).load(trip.photos[0]).into(itemTripsBinding.ivTripPhoto)
+            Glide.with(itemTripsBinding.ivTripPhoto).load(trip.photos[0].url).into(itemTripsBinding.ivTripPhoto)
             itemTripsBinding.tvTripTitle.text = trip.description
             itemTripsBinding.ratingBarTrip.rating = trip.rate.toFloat()
             itemTripsBinding.tvTripCommentsCount.text =

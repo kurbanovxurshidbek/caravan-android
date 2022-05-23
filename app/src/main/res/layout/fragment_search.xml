@@ -6,35 +6,55 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".ui.fragment.SearchFragment">
+    tools:context=".ui.fragment.main.SearchFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal">
-        <EditText
-            android:id="@+id/edtSearch"
+
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingVertical="10dp"
-            android:paddingHorizontal="15dp"
-            android:layout_marginStart="15dp"
-            android:hint="@string/str_search_edt"
-            android:textColor="#CC000000"
-            android:drawableEnd="@drawable/ic_search"
-            android:fontFamily="@font/circular_std_bold"
-            android:background="@drawable/background_edt_search"
-            android:textColorHint="#99000000" />
+            android:layout_marginStart="22dp"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/et_background"
+                android:hint="Search some places..."
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:textCursorDrawable="@drawable/cursor"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="14dp"
+                android:src="@drawable/loupe" />
+
+        </RelativeLayout>
+
         <ImageView
             android:id="@+id/ivFilter"
-            android:paddingHorizontal="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_burger"
-            android:layout_gravity="center_vertical" />
-
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="13dp"
+            android:layout_marginEnd="13dp"
+            android:background="@drawable/ripple"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="9dp"
+            android:src="@drawable/ic_burger" />
     </LinearLayout>
 
     <LinearLayout

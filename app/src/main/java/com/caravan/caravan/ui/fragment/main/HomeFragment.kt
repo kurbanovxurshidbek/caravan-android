@@ -71,58 +71,74 @@ class HomeFragment : Fragment() {
         homeBinding.homeGuideRecyclerView.adapter = GuideHomeAdapter(homeGuideList())
 
 
-        homeBinding.homeTripRecyclerView.adapter = TripAdapter(homeTripList())
+        homeBinding.homeTripRecyclerView.adapter = TripAdapter(this, homeTripList())
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun homeTripList(): ArrayList<Trip> {
         val list = ArrayList<Trip>()
 
+        val guide = GuideProfile(
+            100001,
+            Profile(
+                1001,
+                "Ogabek",
+                "Matyakubov",
+                "+998997492581",
+                "ogabekdev@gmail.com",
+                "GUIDE",
+                "ACTIVE",
+                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg",
+                "MALE",
+                null,
+                LocalDateTime.now(),
+                null,
+                "en",
+                arrayListOf()
+            ),
+            "+998932037313",
+            "Ogabek Matyakubov",
+            true,
+            4.5,
+            Price(150.0, "USD", "day"),
+            ArrayList<Language>().apply {
+                add(Language(1, "English", "Advanced"))
+                add(Language(2, "Uzbek", "Native"))
+            },
+            ArrayList<Location>().apply {
+                add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
+                add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
+                add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
+            },
+            arrayListOf(),
+            arrayListOf()
+        )
+
         for (i in 0..10) {
             list.add(
-                Trip(
-                    i * 100L,
-                    "Jizzakh",
-                    arrayListOf(),
-                    arrayListOf(),
-                    arrayListOf(),
-                    "Very wonderful places I have discovered there...",
-                    Price(235.0, "USD", "day"),
-                    5,
-                    10,
-                    GuideProfile(
-                        i * 100L + 1,
-                        Profile(
-                            i * 100L,
-                            "James",
-                            "Sobirov",
-                            "",
-                            null,
-                            "GUIDE",
-                            "ACTIVE",
-                            null,
-                            "Male",
-                            null,
-                            LocalDateTime.of(2022, 12, 25, 0, 0, 0),
-                            null,
-                            "English",
-                            arrayListOf(
-                                Device("", "", 'A')
-                            )
-                        ),
-                        "",
-                        "",
-                        false,
-                        3.5,
-                        Price(235.0, "USD", "day"),
-                        arrayListOf(),
-                        arrayListOf(),
-                        arrayListOf(),
-                        arrayListOf()
-                    ),
-                    "+998932006746",
-                    3.5,
-                    arrayListOf()
+                Trip(1, "Khiva in 3 days",
+                    ArrayList<TourPhoto>().apply {
+                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), LocalDateTime.now(), null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), LocalDateTime.now(), null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), LocalDateTime.now(), null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                    },
+                    ArrayList<Facility>().apply {
+                        add(Facility(1, "Moshina", "Moshina bilan taminliman"))
+                        add(Facility(1, "Moshina", "Moshina bilan taminliman"))
+                        add(Facility(1, "Moshina", "Moshina bilan taminliman"))
+                    },
+                    ArrayList<Location>().apply {
+                        add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
+                        add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
+                        add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
+                    },
+                    "Khiva in 3 days",
+                    Price(1200.0, "USD", "trip"),
+                    5, 10,
+                    guide,
+                    "+998997492581",
+                    4.5,
+                    null
                 )
             )
         }
