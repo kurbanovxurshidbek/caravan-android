@@ -44,4 +44,6 @@
     <string name="str_female">Female</string>
     <string name="str_guide">Guide</string>
     <string name="str_trip">Trip</string>
+
+    <string name="str_my_feedbacks">My Feedbacks</string>
 </resources>
