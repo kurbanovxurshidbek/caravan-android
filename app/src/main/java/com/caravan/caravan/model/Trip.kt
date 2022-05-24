@@ -1,7 +1,7 @@
 package com.caravan.caravan.model
 
 data class Trip(
-    val id: Long,
+    val id: String,
     val name: String,
     val photos: ArrayList<TourPhoto>,
     val facility: ArrayList<Facility>,
@@ -13,6 +13,7 @@ data class Trip(
     val guideProfile: GuideProfile,
     val phoneNumber: String,
     val rate: Double,
+    val attendancesProfileId: ArrayList<String>,
     val comments: ArrayList<Comment>? = null
 )
 
