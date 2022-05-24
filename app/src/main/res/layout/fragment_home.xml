@@ -76,6 +76,7 @@
                     android:layout_height="230dp"
                     android:layout_marginTop="8dp" />
 
+
                 <com.zhpan.indicator.IndicatorView
                     android:id="@+id/indicator_view"
                     android:layout_width="wrap_content"
@@ -120,7 +121,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_marginHorizontal="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/circular_std_bold"
@@ -130,7 +130,6 @@
                     android:textSize="24sp" />
 
                 <TextView
-                    android:layout_marginHorizontal="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"

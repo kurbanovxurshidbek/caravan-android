@@ -87,7 +87,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-reactivestreams-ktx:2.5.0-rc01")
 
     // optional - Test helpers for LiveData
-    testImplementation("androidx.arch.core:core-testing:2.1.0")
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
 
     //sliderVIewIndicator
     implementation 'com.github.zhpanvip:viewpagerindicator:1.2.1'
