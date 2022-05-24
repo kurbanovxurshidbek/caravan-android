@@ -27,16 +27,16 @@ class CommentsAdapter(var items: ArrayList<Comment>) :
             commentBinding.tvCommentsUserLocaldate.text = comment.reviewTime.toString()
             commentBinding.ratingBarCommentUser.rating = comment.rate.toFloat()
             commentBinding.tvCommentsUserRate.text =   "(${comment.rate.toString().toInt()})"
-            commentBinding.tvCommentsQuestion.text=  comment.info
+            commentBinding.tvCommentsQuestion.text=  comment.reviewContent
 
             // Guide`s answer here
-            if (comment.isAnswered){
+            if (comment.answerContent != null){
                 Glide.with(commentBinding.ivCommentsGuideProfile).load(comment.guide?.profile?.profilePhoto)
                     .into(commentBinding.ivCommentsGuideProfile)
                 commentBinding.tvCommentsGuideFullname.text =comment.guide?.profile?.name+ " "+ comment.guide?.profile?.surname
                 commentBinding.tvCommentsGuideLocaldate.text = comment.answerTime.toString()
                 commentBinding.tvCommentsIsGuide.text= colorMyText("Guide",0,4,R.color.main_color)
-                commentBinding.tvCommentsGuideAnswer.text = comment.answer
+                commentBinding.tvCommentsGuideAnswer.text = comment.answerContent
             }
 
         }

@@ -18,13 +18,13 @@ data class Trip(
 )
 
 data class Facility(
-    val id: Long,
+    val id: String? = null,
     val title: String,
     val description: String
 )
 
 data class TourPhoto(
-    val id: Long,
+    val id: String? = null,
     val size: Long,
     val extension: String,
     val location: Location,
