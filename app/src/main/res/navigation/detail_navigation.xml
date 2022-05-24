@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detail_navigation"
+    app:startDestination="@id/guideDetailsFragment">
+
+    <fragment
+        android:id="@+id/guideDetailsFragment"
+        android:name="com.caravan.caravan.ui.fragment.details.GuideDetailsFragment"
+        android:label="fragment_guide_details"
+        tools:layout="@layout/fragment_guide_details" />
+    <fragment
+        android:id="@+id/tripDetailsFragment"
+        android:name="com.caravan.caravan.ui.fragment.details.TripDetailsFragment"
+        android:label="fragment_trip_details"
+        tools:layout="@layout/fragment_trip_details" />
+</navigation>

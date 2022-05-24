@@ -120,6 +120,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:layout_marginHorizontal="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/circular_std_bold"
@@ -129,6 +130,7 @@
                     android:textSize="24sp" />
 
                 <TextView
+                    android:layout_marginHorizontal="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
