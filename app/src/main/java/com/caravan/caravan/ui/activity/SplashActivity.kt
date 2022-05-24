@@ -52,7 +52,7 @@ class SplashActivity : BaseActivity() {
 
 
     private fun saveDeviceLanguage() {
-        val appLanguage: String = Locale.getDefault().getLanguage()
+        val appLanguage: String = Locale.getDefault().language
         SharedPref(this).saveString("appLanguage", appLanguage)
     }
 }
