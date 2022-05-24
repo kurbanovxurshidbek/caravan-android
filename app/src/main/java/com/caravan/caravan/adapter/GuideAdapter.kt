@@ -16,19 +16,17 @@ import com.caravan.caravan.model.GuideProfile
 class GuideAdapter(var items: ArrayList<GuideProfile>) :
     RecyclerView.Adapter<GuideAdapter.ViewHolder>() {
 
-    inner class ViewHolder(private val itemGuideBinding: ItemGuideBinding) :
-        RecyclerView.ViewHolder(itemGuideBinding.root) {
+    inner class ViewHolder(private val itemGuideBinding: ItemGuideBinding) : RecyclerView.ViewHolder(itemGuideBinding.root) {
+
         fun onBind(guideProfile: GuideProfile) {
-            Glide.with(itemGuideBinding.ivGuide).load(guideProfile.profile.profilePhoto)
-                .into(itemGuideBinding.ivGuide)
-            itemGuideBinding.tvGuidesFullname.text =
-                guideProfile.profile.name + " " + guideProfile.profile.surname
+
+            Glide.with(itemGuideBinding.ivGuide).load(guideProfile.profile.profilePhoto).into(itemGuideBinding.ivGuide)
+            itemGuideBinding.tvGuidesFullname.text = guideProfile.profile.name + " " + guideProfile.profile.surname
             itemGuideBinding.tvGuidesCities.text = provinces(guideProfile)
             itemGuideBinding.tvGuidePrice.text = price(guideProfile)
             itemGuideBinding.tvGuidesLanguages.text = getLanguages(guideProfile)
             itemGuideBinding.ratingBarGuide.rating = guideProfile.rate.toFloat()
-            itemGuideBinding.tvGuidesCommentsCount.text =
-                "(${guideProfile.comments.size.toString()})"
+            itemGuideBinding.tvGuidesCommentsCount.text = "(${guideProfile.comments?.size.toString()})"
 
             itemView.setOnClickListener {
                     // When Item Clicked

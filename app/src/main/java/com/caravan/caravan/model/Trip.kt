@@ -1,8 +1,6 @@
 package com.caravan.caravan.model
 
-import java.time.LocalDateTime
-
-data class Trip (
+data class Trip(
     val id: Long,
     val name: String,
     val photos: ArrayList<TourPhoto>,
@@ -18,18 +16,18 @@ data class Trip (
     val comments: ArrayList<Comment>? = null
 )
 
-data class Facility (
+data class Facility(
     val id: Long,
     val title: String,
     val description: String
 )
 
-data class TourPhoto (
+data class TourPhoto(
     val id: Long,
     val size: Long,
     val extension: String,
     val location: Location,
-    val createdDate: LocalDateTime,
-    val updatedDate: LocalDateTime? = null,
+    val createdDate: String,
+    val updatedDate: String? = null,
     val url: String
 )

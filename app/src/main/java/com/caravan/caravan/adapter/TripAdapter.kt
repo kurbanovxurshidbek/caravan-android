@@ -1,29 +1,30 @@
 package com.caravan.caravan.adapter
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemTripsBinding
 import com.caravan.caravan.model.Trip
 
-class TripAdapter(var items: ArrayList<Trip>) :
-    RecyclerView.Adapter<TripAdapter.ViewHolder>() {
+class TripAdapter(val context: Fragment, var items: ArrayList<Trip>) : RecyclerView.Adapter<TripAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val itemTripsBinding: ItemTripsBinding) :
         RecyclerView.ViewHolder(itemTripsBinding.root) {
         fun onBind(trip: Trip) {
-//            Glide.with(itemTripsBinding.ivTripPhoto).load(trip.photos[0]).into(itemTripsBinding.ivTripPhoto)
+            Glide.with(context).load(trip.photos[0].url).into(itemTripsBinding.ivTripPhoto)
             itemTripsBinding.tvTripTitle.text = trip.description
             itemTripsBinding.ratingBarTrip.rating = trip.rate.toFloat()
-            itemTripsBinding.tvTripCommentsCount.text =
-                "(${trip.comments?.size.toString()})"
+            itemTripsBinding.tvTripCommentsCount.text = "(${if (trip.comments.isNullOrEmpty()) "0" else trip.comments.size})"
             itemTripsBinding.tvPrice.text = price(trip)
 
             itemView.setOnClickListener {
@@ -42,7 +43,7 @@ class TripAdapter(var items: ArrayList<Trip>) :
         val outPutColoredText: Spannable = SpannableString("$text/${trip.price.option}")
         outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
         outPutColoredText.setSpan(
-            ForegroundColorSpan(R.color.main_color),
+            ForegroundColorSpan(Color.parseColor("#167351")),
             0,
             endIndex,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE

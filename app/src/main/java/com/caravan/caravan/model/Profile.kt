@@ -1,8 +1,6 @@
 package com.caravan.caravan.model
 
 import java.io.Serializable
-import java.time.LocalDate
-import java.time.LocalDateTime
 
 data class Profile(
     val id: Long,
@@ -14,9 +12,11 @@ data class Profile(
     val status: String = "ACTIVE", // BLOCK
     val profilePhoto: String? = null,
     val gender: String, // MALE, FEMALE
-    val birthDate: LocalDate? = null,
-    val createdDate: LocalDateTime,
-    val updatedDate: LocalDateTime? = null,
+    val birthDate: String? = null,
+    val createdDate: String,
+    val updatedDate: String? = null,
     val appLanguage: String, // en, ru, uz
-    val devices: ArrayList<Device>
-):Serializable
+    val devices: ArrayList<Device>,
+    val trips: ArrayList<Trip>? = null,
+    val guides: ArrayList<GuideProfile>? = null
+) : Serializable
