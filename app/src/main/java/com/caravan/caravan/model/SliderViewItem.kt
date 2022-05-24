@@ -1,5 +1,3 @@
 package com.caravan.caravan.model
 
-data class SliderViewItem(val imgSlider: Int) {
-
-}
+data class SliderViewItem(val imgSlider: Int)
