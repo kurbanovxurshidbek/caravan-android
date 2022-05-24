@@ -18,5 +18,7 @@ data class Profile(
     val createdDate: LocalDateTime,
     val updatedDate: LocalDateTime? = null,
     val appLanguage: String, // en, ru, uz
-    val devices: ArrayList<Device>
+    val devices: ArrayList<Device>,
+    val trips: ArrayList<Trip>? = null,
+    val guides: ArrayList<GuideProfile>? = null
 ):Serializable

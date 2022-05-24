@@ -123,7 +123,7 @@ class SearchFragment : Fragment() {
     }
 
     fun refreshAdapterGuide(list: ArrayList<GuideProfile>) {
-        guideAdapter = GuideAdapter(this, list)
+        guideAdapter = GuideAdapter(list)
         binding.recyclerView.adapter = guideAdapter
     }
 
