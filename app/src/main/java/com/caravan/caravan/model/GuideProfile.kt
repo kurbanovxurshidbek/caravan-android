@@ -12,15 +12,9 @@ data class GuideProfile(
     val price: Price,
     val languages: ArrayList<Language>,
     val travelLocations: ArrayList<Location>,
-    val comments: ArrayList<Comment>,
-    val trips: ArrayList<Trip>,
+    val comments: ArrayList<Comment>?,
+    val trips: ArrayList<Trip>?,
 ) : Serializable
-
-//data class SocialNetwork (
-//    val id: Long,
-//    val type: String, // Instagram, Facebook, WhatsApp, Telegram
-//    val link: String,
-//)
 
 data class Language(
     val id: Long,

@@ -1,11 +1,15 @@
 package com.caravan.caravan.ui.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.provider.Settings
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.caravan.caravan.manager.SharedPref
-import com.caravan.caravan.model.Device
+import com.caravan.caravan.model.*
+import java.time.LocalDateTime
 
 open class BaseActivity : AppCompatActivity() {
 
