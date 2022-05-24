@@ -3,10 +3,8 @@ package com.caravan.caravan.ui.fragment.main
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.view.*
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.caravan.caravan.R
@@ -26,7 +24,11 @@ class SearchFragment : Fragment() {
     lateinit var guideAdapter: GuideAdapter
     lateinit var tripAdapter: TripAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         initViews()
         return binding.root
@@ -214,11 +216,42 @@ class SearchFragment : Fragment() {
 
         for (i in 0..20) {
             items.add(
-                Trip(1, "Khiva in 3 days",
+                Trip(
+                    1, "Khiva in 3 days",
                     ArrayList<TourPhoto>().apply {
-                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
-                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
-                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(
+                            TourPhoto(
+                                1,
+                                1,
+                                "jpg",
+                                Location(1, "Khorezm", "Khiva", "Ichan Qala"),
+                                "12.02.2022",
+                                null,
+                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                            )
+                        )
+                        add(
+                            TourPhoto(
+                                1,
+                                1,
+                                "jpg",
+                                Location(1, "Khorezm", "Khiva", "Ichan Qala"),
+                                "12.02.2022",
+                                null,
+                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                            )
+                        )
+                        add(
+                            TourPhoto(
+                                1,
+                                1,
+                                "jpg",
+                                Location(1, "Khorezm", "Khiva", "Ichan Qala"),
+                                "12.02.2022",
+                                null,
+                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                            )
+                        )
                     },
                     ArrayList<Facility>().apply {
                         add(Facility(1, "Moshina", "Moshina bilan taminliman"))
