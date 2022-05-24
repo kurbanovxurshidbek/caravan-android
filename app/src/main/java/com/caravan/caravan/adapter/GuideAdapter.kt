@@ -64,7 +64,7 @@ class GuideAdapter(var items: ArrayList<GuideProfile>) :
         private fun provinces(guide: GuideProfile): Spannable {
             var text = ""
             for (province in guide.travelLocations) {
-                text += "$province "
+                text += "${province.district} "
             }
             return colorMyText(text, 0, text.length, R.color.main_color)
         }
