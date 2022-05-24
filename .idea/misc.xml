@@ -7,23 +7,35 @@
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/drawable/image_under_shadow.xml" value="0.2" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/drawable/ripple.xml" value="0.117" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/drawable/ursor.xml" value="0.117" />
-        <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/activity_details.xml" value="0.33" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/activity_main.xml" value="0.18" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/activity_splash.xml" value="0.25" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/fragment_account.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/fragment_blank.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/fragment_intro1.xml" value="0.3619791666666667" />
-        <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/fragment_language.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/fragment_message.xml" value="0.18489583333333334" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/item_guide.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/item_guide_home.xml" value="0.9" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/item_slider.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/item_trips.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/menu/bottom_nav.xml" value="0.3619791666666667" />
+        <entry key="app/src/main/res/drawable/background_btn_intro.xml" value="0.1455" />
+        <entry key="app/src/main/res/drawable/corner_item.xml" value="0.1455" />
         <entry key="app/src/main/res/layout/activity_intro.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/activity_language.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.28229166666666666" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/corner_item.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.21510416666666668" />
+        <entry key="app/src/main/res/layout/fragment_feedback_respond.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/fragment_intro1.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/fragment_intro2.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/fragment_intro3.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/item_guide.xml" value="0.3154225667317709" />
+        <entry key="app/src/main/res/layout/item_guide_home.xml" value="0.4473836263020834" />
+        <entry key="app/src/main/res/layout/item_trips.xml" value="0.27349446614583334" />
       </map>
     </option>
   </component>

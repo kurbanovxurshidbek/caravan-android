@@ -9,7 +9,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -24,7 +23,6 @@ import com.caravan.caravan.databinding.FragmentHomeBinding
 import com.caravan.caravan.model.*
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
-import java.time.LocalDateTime
 
 
 class HomeFragment : Fragment() {
@@ -32,7 +30,7 @@ class HomeFragment : Fragment() {
     private lateinit var handler: Handler
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,7 +41,7 @@ class HomeFragment : Fragment() {
         return homeBinding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun initViews() {
         handler = Handler(Looper.myLooper()!!)
 
@@ -94,7 +92,6 @@ class HomeFragment : Fragment() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun homeTripList(): ArrayList<Trip> {
         val list = ArrayList<Trip>()
 
@@ -111,7 +108,7 @@ class HomeFragment : Fragment() {
                 "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg",
                 "MALE",
                 null,
-                LocalDateTime.now(),
+                "12.10.2022",
                 null,
                 "en",
                 arrayListOf()
@@ -138,9 +135,9 @@ class HomeFragment : Fragment() {
             list.add(
                 Trip(1, "Khiva in 3 days",
                     ArrayList<TourPhoto>().apply {
-                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), LocalDateTime.now(), null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
-                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), LocalDateTime.now(), null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
-                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), LocalDateTime.now(), null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
                     },
                     ArrayList<Facility>().apply {
                         add(Facility(1, "Moshina", "Moshina bilan taminliman"))
@@ -165,7 +162,6 @@ class HomeFragment : Fragment() {
         return list
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun homeGuideList(): List<GuideProfile> {
         val list = ArrayList<GuideProfile>()
         for (i in 0..10) {
@@ -183,7 +179,7 @@ class HomeFragment : Fragment() {
                         null,
                         "Male",
                         null,
-                        LocalDateTime.of(2022, 12, 25, 0, 0, 0),
+                        "12.02.2022",
                         null,
                         "English",
                         arrayListOf(
