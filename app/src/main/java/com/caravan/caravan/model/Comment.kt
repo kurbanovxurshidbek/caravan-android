@@ -9,6 +9,7 @@ data class Comment(
     val isForTrip: Boolean = false,
     val trip: Trip? = null,
     val isAnswered: Boolean = false,
+    val guide: GuideProfile?,
     val answerTime: String,
     val answer: String? = null
 )
