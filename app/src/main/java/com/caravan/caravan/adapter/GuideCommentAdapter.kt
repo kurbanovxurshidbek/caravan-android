@@ -9,8 +9,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
+import com.caravan.caravan.databinding.FragmentFeedbackListBinding
+import com.caravan.caravan.databinding.FragmentFeedbackRespondBinding
 import com.caravan.caravan.databinding.ItemGuideCommentBinding
 import com.caravan.caravan.model.Comment
+import com.caravan.caravan.ui.activity.GuideOptionActivity
+import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.ui.fragment.guideOption.FeedbackListFragment
+import com.caravan.caravan.ui.fragment.guideOption.FeedbackRespondFragment
 
 class GuideCommentAdapter(var items: ArrayList<Comment>) :
     RecyclerView.Adapter<GuideCommentAdapter.ViewHolder>() {
@@ -29,6 +35,10 @@ class GuideCommentAdapter(var items: ArrayList<Comment>) :
             } else {
                 guideCommentBinding.tvIsAnswered.text =
                     colorMyText("Not answered", 0, 11, "#167351")
+            }
+
+            guideCommentBinding.llComment.setOnClickListener {
+                // OnClick
             }
 
         }
