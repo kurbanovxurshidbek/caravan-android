@@ -62,4 +62,6 @@
     <string name="str_guides_trips">Guide\'s Trips</string>
 
     <string name="str_send">Send</string>
+    <string name="guide_s_trips">Guide\'s Trips</string>
+    <string name="hire_guide">Hire Guide</string>
 </resources>

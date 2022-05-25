@@ -1,12 +1,11 @@
 package com.caravan.caravan.ui.fragment.details
 
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
+import androidx.navigation.Navigation
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.CommentsAdapter
@@ -30,7 +29,6 @@ class TripDetailsFragment : BaseFragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,7 +39,6 @@ class TripDetailsFragment : BaseFragment() {
         return fragmentTripDetailsBinding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun initViews() {
         setViewPager()
         setTravelLocations()
@@ -49,9 +46,14 @@ class TripDetailsFragment : BaseFragment() {
         setCommentsRv()
 
 
+        fragmentTripDetailsBinding.guideProfile.setOnClickListener {
+            Navigation.findNavController(fragmentTripDetailsBinding.root)
+                .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment);
+        }
+
+
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun setViewPager() {
         fragmentTripDetailsBinding.apply {
             viewPager2.apply {

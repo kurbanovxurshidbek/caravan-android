@@ -14,7 +14,11 @@
         android:id="@+id/tripDetailsFragment"
         android:name="com.caravan.caravan.ui.fragment.details.TripDetailsFragment"
         android:label="fragment_trip_details"
-        tools:layout="@layout/fragment_trip_details" />
+        tools:layout="@layout/fragment_trip_details" >
+        <action
+            android:id="@+id/action_tripDetailsFragment_to_guideDetailsFragment"
+            app:destination="@id/guideDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/guideTrips"
         android:name="com.caravan.caravan.ui.fragment.details.GuideTrips"
