@@ -1,6 +1,7 @@
 package com.caravan.caravan.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -64,18 +65,18 @@ class GuideAdapter(var items: ArrayList<GuideProfile>) :
             for (province in guide.travelLocations) {
                 text += "${province.district} "
             }
-            return colorMyText(text, 0, text.length, R.color.main_color)
+            return colorMyText(text, 0, text.length, "#167351")
         }
 
         private fun colorMyText(
             inputText: String,
             startIndex: Int,
             endIndex: Int,
-            textColor: Int
+            textColor: String
         ): Spannable {
             val outPutColoredText: Spannable = SpannableString(inputText)
             outPutColoredText.setSpan(
-                ForegroundColorSpan(textColor),
+               Color.parseColor(textColor),
                 startIndex,
                 endIndex,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
