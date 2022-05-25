@@ -1,24 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="6dp"
     tools:context=".ui.fragment.guideOption.FeedbackRespondFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8sp"
         android:fontFamily="@font/circular_std_bold"
-        android:textSize="32sp"
+        android:text="@string/str_my_feedbacks"
         android:textColor="#000000"
-        android:text="@string/str_my_feedbacks"/>
+        android:textSize="32sp" />
 
 
-    <Button
-        android:id="@+id/btnOk"
+    <include
+        android:id="@+id/llItemTrips"
+        layout="@layout/item_trips"
+        android:visibility="gone" />
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Send"/>
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="8dp"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivGuide"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/guide"
+            app:shapeAppearance="@drawable/corner_item"
+            app:shapeAppearanceOverlay="@drawable/corner_item" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/circular_std_bold"
+                android:text="Saidbek Abdullayev"
+                android:textColor="#181818"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="horizontal">
+
+                <RatingBar
+                    android:id="@+id/rate"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:max="5"
+                    android:progressBackgroundTint="#90000000"
+                    android:progressTint="@color/main_color"
+                    android:rating="5" />
+
+                <TextView
+                    android:id="@+id/tvRateCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/circular_std_bold"
+                    android:text="5"
+                    android:textColor="#99000000"
+                    android:textSize="12sp" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/circular_std_bold"
+                android:text="Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi."
+                android:textColor="#99000000"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/llWriteResponse"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/etResponse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4sp"
+                android:backgroundTint="#DE000000"
+                android:fontFamily="@font/circular_std_bold"
+                android:hint="Write Response"
+                android:textColor="#99000000"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/background_btn_yes"
+            android:text="@string/str_send"
+            android:textAllCaps="false"
+            app:backgroundTint="@null" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+
+        <TextView
+            android:id="@+id/tvAnswer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:text="Answer : Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi." />
+
+        <LinearLayout
+            android:id="@+id/llEditAnswer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8sp"
+                android:src="@drawable/ic_edit" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_weight="1"
+                android:fontFamily="@font/circular_std_bold"
+                android:text="Edit your Answer"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llDeleteAnswer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8sp"
+                android:src="@drawable/ic_delete" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_weight="1"
+                android:fontFamily="@font/circular_std_bold"
+                android:text="Delete your Answer"
+                android:textColor="#80FF0000"
+
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>

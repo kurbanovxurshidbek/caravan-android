@@ -24,7 +24,7 @@
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivTripPhoto"
                 android:layout_width="match_parent"
-                android:layout_height="185dp"
+                android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/trip"
                 app:shapeAppearanceOverlay="@drawable/corner_item" />
