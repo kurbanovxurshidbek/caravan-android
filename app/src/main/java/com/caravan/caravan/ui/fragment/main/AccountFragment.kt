@@ -18,7 +18,7 @@ import com.caravan.caravan.utils.Extensions.toast
  * Use the [AccountFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AccountFragment : BaseFragment(R.layout.fragment_account) {
+class AccountFragment : Fragment(R.layout.fragment_account) {
 
     private val binding by viewBinding { FragmentAccountBinding.bind(it) }
     private lateinit var base: BaseActivity

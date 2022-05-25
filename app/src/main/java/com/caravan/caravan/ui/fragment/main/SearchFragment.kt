@@ -14,8 +14,9 @@ import com.caravan.caravan.databinding.BottomDialogGuideBinding
 import com.caravan.caravan.databinding.BottomDialogTripBinding
 import com.caravan.caravan.databinding.FragmentSearchBinding
 import com.caravan.caravan.model.*
+import com.caravan.caravan.ui.fragment.BaseFragment
 
-class SearchFragment : Fragment() {
+class SearchFragment : BaseFragment() {
     lateinit var binding: FragmentSearchBinding
     private var isGuide: Boolean = true
     lateinit var dialogGuideBinding: BottomDialogGuideBinding

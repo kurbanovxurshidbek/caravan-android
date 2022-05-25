@@ -69,12 +69,12 @@ class TripDetailsFragment : BaseFragment() {
 
     /*TripDetailsFragment viewPager items, It should be Trip items and they should come from server
     */
-    @RequiresApi(Build.VERSION_CODES.O)
+
     private fun myTrip(): Trip {
         val guide = GuideProfile(
-            100001,
+            "100001",
             Profile(
-                1001,
+                "1001",
                 "Ogabek",
                 "Matyakubov",
                 "+998997492581",
@@ -84,7 +84,7 @@ class TripDetailsFragment : BaseFragment() {
                 "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84",
                 "MALE",
                 null,
-                LocalDateTime.now(),
+                "12.02.1222",
                 null,
                 "en",
                 arrayListOf()
@@ -95,64 +95,65 @@ class TripDetailsFragment : BaseFragment() {
             4.5,
             Price(150.0, "USD", "day"),
             ArrayList<Language>().apply {
-                add(Language(1, "English", "Advanced"))
-                add(Language(2, "Uzbek", "Native"))
+                add(Language("1", "English", "Advanced"))
+                add(Language("2", "Uzbek", "Native"))
             },
             ArrayList<Location>().apply {
-                add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
+                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
             },
+            arrayListOf(),
             arrayListOf(),
             arrayListOf()
         )
 
         val trip = Trip(
-            1, "Khiva in 3 days",
+            "1", "Khiva in 3 days",
             ArrayList<TourPhoto>().apply {
                 add(
                     TourPhoto(
-                        1,
+                        "1",
                         1,
                         "jpg",
-                        Location(1, "Khorezm", "Khiva", "Ichan Qala"),
-                        LocalDateTime.now(),
+                        Location("1", "Khorezm", "Khiva", "Ichan Qala"),
+                        "12.02.2022",
                         null,
                         "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
                     )
                 )
                 add(
                     TourPhoto(
-                        1,
+                        "1",
                         1,
                         "jpg",
-                        Location(1, "Khorezm", "Khiva", "Ichan Qala"),
-                        LocalDateTime.now(),
+                        Location("1", "Khorezm", "Khiva", "Ichan Qala"),
+                        "12.02.2022",
                         null,
                         "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
                     )
                 )
                 add(
                     TourPhoto(
-                        1,
+                        "1",
                         1,
                         "jpg",
-                        Location(1, "Khorezm", "Khiva", "Ichan Qala"),
-                        LocalDateTime.now(),
+                        Location("1", "Khorezm", "Khiva", "Ichan Qala"),
+                        "12.02.2022",
                         null,
                         "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
                     )
                 )
             },
             ArrayList<Facility>().apply {
-                add(Facility(1, "Moshina", "Moshina bilan taminliman"))
-                add(Facility(1, "Moshina", "Moshina bilan taminliman"))
-                add(Facility(1, "Moshina", "Moshina bilan taminliman"))
+                add(Facility("1", "Moshina", "Moshina bilan taminliman"))
+                add(Facility("1", "Moshina", "Moshina bilan taminliman"))
+                add(Facility("1", "Moshina", "Moshina bilan taminliman"))
             },
             ArrayList<Location>().apply {
-                add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
+                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
             },
             "Khiva in 3 days",
             Price(1200.0, "USD", "trip"),
@@ -160,20 +161,19 @@ class TripDetailsFragment : BaseFragment() {
             guide,
             "+998997492581",
             4.5,
+            arrayListOf(),
             null
         )
 
         return trip
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun setTravelLocations() {
         fragmentTripDetailsBinding.apply {
             travelLocationsRV.adapter = TravelLocationsAdapter(myTrip().places)
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun setFacilities(){
         fragmentTripDetailsBinding.apply {
             facilitiesRV.adapter = FacilitiesAdapter(myTrip().facility)

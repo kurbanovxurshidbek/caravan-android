@@ -23,7 +23,7 @@ import java.util.*
  * Use the [EditProfileFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class EditProfileFragment : BaseFragment(R.layout.fragment_edit_profile) {
+class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     private val binding by viewBinding { FragmentEditProfileBinding.bind(it) }
     private var gender: String? = null
     private var pickedPhoto: Uri? = null
