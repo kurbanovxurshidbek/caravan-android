@@ -286,8 +286,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginTop="16dp"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -301,10 +300,10 @@
                             android:src="@drawable/chat_bubble2" />
 
                         <TextView
-                            android:background="?attr/selectableItemBackground"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:background="?attr/selectableItemBackground"
                             android:fontFamily="@font/circular_std_bold"
                             android:text="@string/chat_with_guide"
                             android:textColor="@color/black"
@@ -369,8 +368,16 @@
                     android:textColor="@color/main_color"
                     android:textSize="20sp" />
 
-
-
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fragmentTripCommentsRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="200dp"
+                    android:orientation="vertical"
+                    tools:itemCount="10"
+                    tools:listitem="@layout/item_comment"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
             </LinearLayout>
