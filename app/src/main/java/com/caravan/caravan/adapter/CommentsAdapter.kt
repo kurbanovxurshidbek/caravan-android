@@ -35,7 +35,6 @@ class CommentsAdapter(var items: ArrayList<Comment>) :
                     .into(commentBinding.ivCommentsGuideProfile)
                 commentBinding.tvCommentsGuideFullname.text =comment.guide?.profile?.name+ " "+ comment.guide?.profile?.surname
                 commentBinding.tvCommentsGuideLocaldate.text = comment.answerTime.toString()
-                commentBinding.tvCommentsIsGuide.text= colorMyText("Guide",0,4,R.color.main_color)
                 commentBinding.tvCommentsGuideAnswer.text = comment.answerContent
             }
 
