@@ -168,6 +168,9 @@
                     android:textSize="20sp" />
 
                 <LinearLayout
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/square_ripple"
                     android:id="@+id/guideProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -283,13 +286,16 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="12dp"
-                    android:layout_marginTop="16dp"
+                    android:background="@drawable/square_ripple"
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_marginTop="16dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp">
@@ -304,7 +310,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:background="?attr/selectableItemBackground"
                             android:fontFamily="@font/circular_std_bold"
                             android:text="@string/chat_with_guide"
                             android:textColor="@color/black"
@@ -313,6 +318,7 @@
 
 
                     <LinearLayout
+                        android:layout_marginHorizontal="12dp"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="#0D121212" />
@@ -321,14 +327,16 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="12dp"
-                    android:layout_marginTop="16dp"
-                    android:background="?attr/selectableItemBackground"
+                    android:background="@drawable/square_ripple"
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_marginTop="16dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp">
@@ -351,6 +359,7 @@
 
 
                     <LinearLayout
+                        android:layout_marginHorizontal="12dp"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="#0D121212" />

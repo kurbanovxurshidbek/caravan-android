@@ -1,11 +1,14 @@
 package com.caravan.caravan.ui.fragment.details
 
+import android.content.Context
 import android.graphics.Color
+import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.view.inputmethod.InputMethodManager
 import androidx.navigation.Navigation
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
@@ -43,7 +46,28 @@ class GuideDetailsFragment : BaseFragment() {
         setFacilities()
         setCommentsRv()
 
+        guideDetailsBinding.apply {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                guideFragmentNestedSV.setOnScrollChangeListener { v, _, _, _, _ ->
+                    if (etLeaveComment.isFocused) {
+                        val outRect = Rect()
+                        etLeaveComment.getGlobalVisibleRect(outRect)
+                        etLeaveComment.clearFocus()
+                        val imm: InputMethodManager =
+                            v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        imm.hideSoftInputFromWindow(v.windowToken, 0)
+                    }
+                }
+            }
+        }
+
+        guideDetailsBinding.guideTrips.setOnClickListener {
+            Navigation.findNavController(guideDetailsBinding.root)
+                .navigate(R.id.action_guideDetailsFragment_to_guideTrips)
+        }
+
     }
+
 
     private fun setViewPager() {
         guideDetailsBinding.apply {
