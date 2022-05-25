@@ -4,8 +4,10 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.FragmentEditProfileBinding
@@ -24,11 +26,27 @@ import java.util.*
  * Use the [EditProfileFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
+class EditProfileFragment : BaseFragment() {
     private val binding by viewBinding { FragmentEditProfileBinding.bind(it) }
     private var gender: String? = null
     private var pickedPhoto: Uri? = null
     private var allPhotos = ArrayList<Uri>()
+    private lateinit var profileId: String
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            profileId = it.getString("profileId", "defaultValue")
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_edit_profile, container, false)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,12 +72,16 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     private fun saveProfileData() {
         //edit request
 
-        Dialog.showDialogMessage(requireContext(),getString(R.string.str_saved),getString(R.string.str_save_message),object :OkInterface{
-            override fun onClick() {
-                //something
-            }
+        Dialog.showDialogMessage(
+            requireContext(),
+            getString(R.string.str_saved),
+            getString(R.string.str_save_message),
+            object : OkInterface {
+                override fun onClick() {
+                    //something
+                }
 
-        })
+            })
     }
 
     private fun setBirthday() {

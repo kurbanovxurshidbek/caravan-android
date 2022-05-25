@@ -9,7 +9,11 @@
         android:id="@+id/editProfileFragment"
         android:name="com.caravan.caravan.ui.fragment.edit.EditProfileFragment"
         android:label="fragment_edit_profile"
-        tools:layout="@layout/fragment_edit_profile" />
+        tools:layout="@layout/fragment_edit_profile" >
+        <action
+            android:id="@+id/action_editProfileFragment_to_languageFragment"
+            app:destination="@id/languageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/languageFragment"
         android:name="com.caravan.caravan.ui.fragment.edit.LanguageFragment"
