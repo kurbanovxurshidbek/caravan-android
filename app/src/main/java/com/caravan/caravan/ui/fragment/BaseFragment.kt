@@ -9,16 +9,10 @@ import androidx.fragment.app.Fragment
 import com.caravan.caravan.model.Trip
 import com.caravan.caravan.ui.activity.DetailsActivity
 import com.caravan.caravan.ui.activity.EditActivity
+import com.caravan.caravan.ui.activity.GuideOptionActivity
+import com.caravan.caravan.ui.fragment.guideOption.FeedbackRespondFragment
 
-abstract class BaseFragment(): Fragment() {
-
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        return inflater.inflate(layoutRes, container, false)
-//    }
+abstract class BaseFragment: Fragment() {
 
     open fun goToDetailsActivity(trip: Trip){
         val intent = Intent(requireContext(), DetailsActivity::class.java)
@@ -33,4 +27,5 @@ abstract class BaseFragment(): Fragment() {
 
         startActivity(intent)
     }
+
 }
