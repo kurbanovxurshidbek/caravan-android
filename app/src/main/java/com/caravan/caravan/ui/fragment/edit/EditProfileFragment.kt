@@ -1,60 +1,121 @@
 package com.caravan.caravan.ui.fragment.edit
 
+import android.app.Activity
+import android.app.DatePickerDialog
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import com.caravan.caravan.R
+import com.caravan.caravan.databinding.FragmentEditProfileBinding
+import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Dialog
+import com.caravan.caravan.utils.viewBinding
+import com.sangcomz.fishbun.FishBun
+import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
+import java.text.SimpleDateFormat
+import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
  * Use the [EditProfileFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class EditProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
+    private val binding by viewBinding { FragmentEditProfileBinding.bind(it) }
+    private var gender: String? = null
+    private var pickedPhoto: Uri? = null
+    private var allPhotos = ArrayList<Uri>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews()
+    }
+
+    private fun initViews() {
+        manageGender()
+        binding.ivGuide.setOnClickListener {
+            pickPhoto()
+        }
+
+        binding.llCalendar.setOnClickListener {
+            setBirthday()
+        }
+
+        binding.btnSave.setOnClickListener {
+            saveProfileData()
+        }
+
+    }
+
+    private fun saveProfileData() {
+        //edit request
+
+//        Dialog.showDialogMessage(requireContext(),"Saved",)
+    }
+
+    private fun setBirthday() {
+        val datePicker = Calendar.getInstance()
+        val date = DatePickerDialog.OnDateSetListener { picker, year, month, day ->
+            datePicker[Calendar.YEAR] = year
+            datePicker[Calendar.MONTH] = month
+            datePicker[Calendar.DAY_OF_MONTH] = day
+            val dateFormat = "dd.MM.yyyy"
+            val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
+            binding.tvBirthday.text = simpleDateFormat.format(datePicker.time)
+        }
+        DatePickerDialog(
+            requireContext(), date,
+            datePicker[Calendar.YEAR],
+            datePicker[Calendar.MONTH],
+            datePicker[Calendar.DAY_OF_MONTH]
+        ).show()
+    }
+
+    private fun manageGender() {
+        binding.checkboxMale.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                binding.checkboxFemale.isChecked = false
+                gender = getString(R.string.str_gender_male)
+            }
+        }
+        binding.checkboxFemale.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                binding.checkboxMale.isChecked = false
+                gender = getString(R.string.str_gender_female)
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_profile, container, false)
+    /**
+     * pick photo using FishBun library
+     */
+    private fun pickPhoto() {
+
+        FishBun.with(this)
+            .setImageAdapter(GlideAdapter())
+            .setMaxCount(1)
+            .setMinCount(1)
+            .setSelectedImages(allPhotos)
+            .startAlbumWithActivityResultCallback(photoLauncher)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EditProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            EditProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private val photoLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                allPhotos =
+                    it.data?.getParcelableArrayListExtra(FishBun.INTENT_PATH) ?: arrayListOf()
+                pickedPhoto = allPhotos[0]
+                uploadUserPhoto()
             }
+        }
+
+    private fun uploadUserPhoto() {
+        if (pickedPhoto == null) return
+        //save photo to storage
+        binding.ivGuide.setImageURI(pickedPhoto)
     }
+
 }

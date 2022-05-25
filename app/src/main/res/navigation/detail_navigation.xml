@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/detail_navigation"
-    app:startDestination="@id/guideDetailsFragment">
+    app:startDestination="@id/tripDetailsFragment">
 
     <fragment
         android:id="@+id/guideDetailsFragment"
@@ -15,4 +15,9 @@
         android:name="com.caravan.caravan.ui.fragment.details.TripDetailsFragment"
         android:label="fragment_trip_details"
         tools:layout="@layout/fragment_trip_details" />
+    <fragment
+        android:id="@+id/guideTrips"
+        android:name="com.caravan.caravan.ui.fragment.details.GuideTrips"
+        android:label="fragment_guide_trips"
+        tools:layout="@layout/fragment_guide_trips" />
 </navigation>

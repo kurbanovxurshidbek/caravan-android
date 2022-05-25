@@ -1,7 +1,6 @@
 package com.caravan.caravan.model.auth
 
 import com.caravan.caravan.model.Device
-import com.caravan.caravan.model.Language
 
 data class LoginSend(
     val phoneNumber: String,

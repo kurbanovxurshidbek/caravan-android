@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/iv_slider"
         android:layout_width="match_parent"
-        android:layout_height="230dp"
+        android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/slider" />
