@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AndroidProjects/caravan-android/app/src/main/res/drawable/ic_delete.xml" value="0.1895" />
+        <entry key="..\:/AndroidProjects/caravan-android/app/src/main/res/layout/fragment_feedback_list.xml" value="0.25" />
         <entry key="..\:/AndroidProjects/caravan-android/app/src/main/res/layout/fragment_feedback_respond.xml" value="0.264" />
         <entry key="..\:/AndroidProjects/caravan-android/app/src/main/res/layout/item_guide.xml" value="0.25" />
         <entry key="..\:/AndroidProjects/caravan-android/app/src/main/res/layout/item_guide_comment.xml" value="0.25" />
