@@ -1,5 +1,6 @@
 package com.caravan.caravan.adapter
 
+import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -20,14 +21,14 @@ class GuideCommentAdapter(var items: ArrayList<Comment>) :
                 .into(guideCommentBinding.ivCommentProfile)
             guideCommentBinding.tvCommentFullname.text =
                 comment.from.name + " " + comment.from.surname
-            guideCommentBinding.tvCommentForGuide.text = comment.info
+            guideCommentBinding.tvCommentForGuide.text = comment.reviewContent
             guideCommentBinding.ratingBarComment.rating = comment.rate.toFloat()
             guideCommentBinding.tvRatingCount.text = comment.rate.toString()
-            if (comment.isAnswered) {
-                guideCommentBinding.tvIsAnswered.text = colorMyText("Aswered", 0, 6, 99000000)
+            if (comment.answerContent != null) {
+                guideCommentBinding.tvIsAnswered.text = colorMyText("Aswered", 0, 6, "#99000000")
             } else {
                 guideCommentBinding.tvIsAnswered.text =
-                    colorMyText("Not answered", 0, 11, R.color.main_color)
+                    colorMyText("Not answered", 0, 11, "#167351")
             }
 
         }
@@ -56,11 +57,11 @@ class GuideCommentAdapter(var items: ArrayList<Comment>) :
         inputText: String,
         startIndex: Int,
         endIndex: Int,
-        textColor: Int
+        textColor: String
     ): Spannable {
         val outPutColoredText: Spannable = SpannableString(inputText)
         outPutColoredText.setSpan(
-            ForegroundColorSpan(textColor),
+            Color.parseColor(textColor),
             startIndex,
             endIndex,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
