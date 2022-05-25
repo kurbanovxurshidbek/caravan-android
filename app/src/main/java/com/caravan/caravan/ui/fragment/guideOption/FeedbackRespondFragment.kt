@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.FragmentFeedbackRespondBinding
@@ -39,7 +40,6 @@ class FeedbackRespondFragment : BaseFragment() {
     private lateinit var comment: Comment
 
     private fun initViews() {
-
         arguments?.let {
             comment = it.getSerializable("comment") as Comment
         }

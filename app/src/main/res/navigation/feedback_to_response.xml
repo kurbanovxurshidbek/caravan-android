@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/feedback_to_response"
+    app:startDestination="@id/feedbackListFragment2">
+
+    <fragment
+        android:id="@+id/feedbackListFragment2"
+        android:name="com.caravan.caravan.ui.fragment.guideOption.FeedbackListFragment"
+        android:label="fragment_feedback_list"
+        tools:layout="@layout/fragment_feedback_list" >
+        <action
+            android:id="@+id/action_feedbackListFragment2_to_feedbackRespondFragment2"
+            app:destination="@id/feedbackRespondFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/feedbackRespondFragment2"
+        android:name="com.caravan.caravan.ui.fragment.guideOption.FeedbackRespondFragment"
+        android:label="fragment_feedback_respond"
+        tools:layout="@layout/fragment_feedback_respond" >
+        <argument
+            android:name="comment"
+            app:argType="com.caravan.caravan.model.Comment" />
+    </fragment>
+</navigation>
