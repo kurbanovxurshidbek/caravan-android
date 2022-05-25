@@ -18,6 +18,8 @@
     <string name="have_been_searched_by_many_people_so_far">Have been searched by many people so far</string>
 
     <!--    for login-->
+    <string name="str_enter_email">Enter your email.</string>
+    <string name="str_choose_birthday">Choose your birthday.</string>
     <string name="str_enter_phone">Enter your phone number.</string>
     <string name="str_verify_phone">Verify your phone number.</string>
     <string name="str_fill_number">Fill the field to continue</string>
@@ -44,7 +46,11 @@
     <string name="str_female">Female</string>
     <string name="str_guide">Guide</string>
     <string name="str_trip">Trip</string>
-
+    <string name="str_delete_account">Delete Account</string>
     <string name="str_my_feedbacks">My Feedbacks</string>
+    <string name="str_logout_message">Are you sure to Log out?</string>
+    <string name="str_delete_message">Are you sure to Delete your Account?</string>
+    <string name="tap_to_change_profile_photo">Tap to change profile photo</string>
+
     <string name="str_send">Send</string>
 </resources>

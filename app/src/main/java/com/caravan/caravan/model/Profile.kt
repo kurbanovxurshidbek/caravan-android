@@ -3,7 +3,7 @@ package com.caravan.caravan.model
 import java.io.Serializable
 
 data class Profile(
-    val id: Long,
+    val id: String,
     val name: String,
     val surname: String,
     val phoneNumber: String,
@@ -16,7 +16,5 @@ data class Profile(
     val createdDate: String,
     val updatedDate: String? = null,
     val appLanguage: String, // en, ru, uz
-    val devices: ArrayList<Device>,
-    val trips: ArrayList<Trip>? = null,
-    val guides: ArrayList<GuideProfile>? = null
+    val devices: ArrayList<Device>
 ) : Serializable

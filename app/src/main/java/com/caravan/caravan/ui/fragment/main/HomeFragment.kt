@@ -96,9 +96,9 @@ class HomeFragment : Fragment() {
         val list = ArrayList<Trip>()
 
         val guide = GuideProfile(
-            100001,
+            "100001",
             Profile(
-                1001,
+                "1001",
                 "Ogabek",
                 "Matyakubov",
                 "+998997492581",
@@ -119,35 +119,36 @@ class HomeFragment : Fragment() {
             4.5,
             Price(150.0, "USD", "day"),
             ArrayList<Language>().apply {
-                add(Language(1, "English", "Advanced"))
-                add(Language(2, "Uzbek", "Native"))
+                add(Language("1", "English", "Advanced"))
+                add(Language("2", "Uzbek", "Native"))
             },
             ArrayList<Location>().apply {
-                add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
+                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
             },
+            arrayListOf(),
             arrayListOf(),
             arrayListOf()
         )
 
         for (i in 0..10) {
             list.add(
-                Trip(1, "Khiva in 3 days",
+                Trip("1", "Khiva in 3 days",
                     ArrayList<TourPhoto>().apply {
-                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
-                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
-                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(TourPhoto("1", 1, "jpg", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(TourPhoto("1", 1, "jpg", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(TourPhoto("1", 1, "jpg", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
                     },
                     ArrayList<Facility>().apply {
-                        add(Facility(1, "Moshina", "Moshina bilan taminliman"))
-                        add(Facility(1, "Moshina", "Moshina bilan taminliman"))
-                        add(Facility(1, "Moshina", "Moshina bilan taminliman"))
+                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
+                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
+                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
                     },
                     ArrayList<Location>().apply {
-                        add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
-                        add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
-                        add(Location(1, "Khorezm", "Khiva", "Ichan Qala"))
+                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
                     },
                     "Khiva in 3 days",
                     Price(1200.0, "USD", "trip"),
@@ -155,6 +156,7 @@ class HomeFragment : Fragment() {
                     guide,
                     "+998997492581",
                     4.5,
+                    arrayListOf(),
                     null
                 )
             )
@@ -167,9 +169,9 @@ class HomeFragment : Fragment() {
         for (i in 0..10) {
             list.add(
                 GuideProfile(
-                    i * 100L + 1,
+                    "i * 100L + 1",
                     Profile(
-                        i * 100L,
+                        "i * 100L",
                         "Asasin df  asj  sd a skj ask s dj as;j aik cakk caai; casj",
                         "Sobirov",
                         "",
@@ -191,6 +193,7 @@ class HomeFragment : Fragment() {
                     false,
                     3.5,
                     Price(235.0, "USD", "day"),
+                    arrayListOf(),
                     arrayListOf(),
                     arrayListOf(),
                     arrayListOf(),
