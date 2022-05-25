@@ -61,6 +61,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -97,6 +98,7 @@
 
 
         <LinearLayout
+            android:layout_marginTop="8dp"
             android:id="@+id/llCommentsAnswer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

@@ -1,5 +1,7 @@
 package com.caravan.caravan.model
 
+import java.io.Serializable
+
 data class Comment(
     val id: String,
     val rate: Int,
@@ -11,4 +13,4 @@ data class Comment(
     val guide: GuideProfile?,
     val answerTime: String? = null,
     val answerContent: String? = null
-)
+): Serializable
