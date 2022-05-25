@@ -32,7 +32,11 @@
         <entry key="app/src/main/res/layout/dialog_message.xml" value="0.21510416666666668" />
         <entry key="app/src/main/res/layout/fragment_account.xml" value="0.14722222222222223" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.14722222222222223" />
+        <entry key="app/src/main/res/layout/fragment_feedback_respond.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/fragment_guide_trips.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/item_comment.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/item_guide.xml" value="0.29739583333333336" />
       </map>
     </option>
   </component>
