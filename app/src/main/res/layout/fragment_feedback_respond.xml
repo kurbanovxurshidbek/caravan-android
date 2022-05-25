@@ -30,11 +30,11 @@
         android:layout_marginHorizontal="8dp"
         android:layout_marginVertical="8dp"
         android:gravity="center_horizontal"
-        android:visibility="gone"
+        android:visibility="visible"
         android:orientation="horizontal">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/ivGuide"
+            android:id="@+id/ivTourist"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleType="centerCrop"
@@ -101,7 +101,7 @@
 
 
     <LinearLayout
-        android:id="@+id/llWriteResponse"
+        android:id="@+id/llWriteResponsePage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -113,7 +113,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <EditText
+                <EditText
                 android:id="@+id/etResponse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -141,7 +141,7 @@
 
 
     <LinearLayout
-        android:id="@+id/answer"
+        android:id="@+id/llAnswerPage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -159,6 +159,7 @@
             android:id="@+id/llEditAnswer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
             android:layout_marginTop="30dp">
 
 
@@ -184,7 +185,8 @@
             android:id="@+id/llDeleteAnswer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp">
+            android:paddingVertical="10dp"
+            android:layout_marginTop="10dp">
 
 
             <ImageView

@@ -22,7 +22,7 @@ class TripAdapter(val context: Fragment, var items: ArrayList<Trip>) : RecyclerV
         RecyclerView.ViewHolder(itemTripsBinding.root) {
         fun onBind(trip: Trip) {
             Glide.with(context).load(trip.photos[0].url).into(itemTripsBinding.ivTripPhoto)
-            itemTripsBinding.tvTripTitle.text = trip.description
+            itemTripsBinding.tvTripTitle.text = trip.name
             itemTripsBinding.ratingBarTrip.rating = trip.rate.toFloat()
             itemTripsBinding.tvTripCommentsCount.text = "(${if (trip.comments.isNullOrEmpty()) "0" else trip.comments.size})"
             itemTripsBinding.tvPrice.text = price(trip)
