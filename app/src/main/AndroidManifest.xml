@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.caravan.caravan">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,19 +11,30 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Caravan">
+
         <activity
             android:name=".ui.activity.RegisterActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.activity.DetailsActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.DetailsPage"/>
+
         <activity
             android:name=".ui.activity.LoginActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.activity.IntroActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.activity.MainActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
+
         <activity
             android:name=".ui.activity.SplashActivity"
             android:exported="true"
@@ -33,6 +44,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 
