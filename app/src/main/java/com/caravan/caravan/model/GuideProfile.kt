@@ -3,7 +3,7 @@ package com.caravan.caravan.model
 import java.io.Serializable
 
 data class GuideProfile(
-    val id: Long,
+    val id: String,
     val profile: Profile,
     val phoneNumber: String? = null,
     val biography: String,
@@ -12,18 +12,13 @@ data class GuideProfile(
     val price: Price,
     val languages: ArrayList<Language>,
     val travelLocations: ArrayList<Location>,
-    val comments: ArrayList<Comment>,
-    val trips: ArrayList<Trip>,
+    val comments: ArrayList<Comment>?,
+    val attendancesProfileId: ArrayList<String>,
+    val trips: ArrayList<Trip>?
 ) : Serializable
 
-//data class SocialNetwork (
-//    val id: Long,
-//    val type: String, // Instagram, Facebook, WhatsApp, Telegram
-//    val link: String,
-//)
-
 data class Language(
-    val id: Long,
+    val id: String? = null,
     val language: String,
     val level: String
 )

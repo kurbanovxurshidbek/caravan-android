@@ -2,12 +2,12 @@ package com.caravan.caravan.model.search
 
 import com.caravan.caravan.model.Price
 
-data class SearchTripSend (
+data class SearchTripSend(
     val key: String,
     val filterTrip: FilterTrip
 )
 
-data class FilterTrip (
+data class FilterTrip(
     val minPrice: Price,
     val maxPrice: Price,
     val minRating: Int = 1,

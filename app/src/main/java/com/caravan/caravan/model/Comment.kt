@@ -1,15 +1,14 @@
 package com.caravan.caravan.model
 
-import java.time.LocalDateTime
-
 data class Comment(
-    val id: Long,
+    val id: String,
     val rate: Int,
-    val time: LocalDateTime,
-    val info: String,
+    val reviewTime: String,
+    val reviewContent: String,
     val from: Profile,
-    val isForTrip: Boolean = false,
+    val commentType: String = "TRIP", // GUIDE
     val trip: Trip? = null,
-    val isAnswered: Boolean = false,
-    val answer: String? = null
+    val guide: GuideProfile?,
+    val answerTime: String? = null,
+    val answerContent: String? = null
 )

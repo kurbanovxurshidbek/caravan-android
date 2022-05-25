@@ -14,13 +14,19 @@
         <item name="android:windowLightStatusBar" tools:targetApi="M">true</item>
         <!-- Customize your theme here. -->
     </style>
-//for bottomNavigation
+    //for bottomNavigation
+
     <style name="BottomNavigation.ActiveItemTextAppearance" parent="TextAppearance.AppCompat">
         <item name="android:textStyle">normal</item>
     </style>
 
     <style name="circle_border">
         <item name="cornerSize">4dp</item>
+    </style>
+
+
+    <style name="circle">
+        <item name="cornerSize">50%</item>
     </style>
 
     <style name="intro_image">

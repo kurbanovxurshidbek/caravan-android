@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_dialog"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="20dp"
+    >
 
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:fontFamily="@font/circular_std_bold"
@@ -18,7 +19,7 @@
             android:textStyle="normal" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal">
@@ -26,7 +27,8 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnNo"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:background="@drawable/background_btn_no"
             android:fontFamily="@font/circular_std_bold"
@@ -39,7 +41,8 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnYes"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_margin="10dp"
             android:layout_height="wrap_content"
             android:background="@drawable/background_btn_yes"
