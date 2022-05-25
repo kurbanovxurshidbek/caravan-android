@@ -11,6 +11,7 @@ import com.caravan.caravan.R
 import com.caravan.caravan.databinding.FragmentEditProfileBinding
 import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.utils.Dialog
+import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.viewBinding
 import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
@@ -53,7 +54,12 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     private fun saveProfileData() {
         //edit request
 
-//        Dialog.showDialogMessage(requireContext(),"Saved",)
+        Dialog.showDialogMessage(requireContext(),getString(R.string.str_saved),getString(R.string.str_save_message),object :OkInterface{
+            override fun onClick() {
+                //something
+            }
+
+        })
     }
 
     private fun setBirthday() {

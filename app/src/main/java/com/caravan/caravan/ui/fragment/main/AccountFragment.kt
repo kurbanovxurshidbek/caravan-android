@@ -23,6 +23,8 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
     private val binding by viewBinding { FragmentAccountBinding.bind(it) }
     private lateinit var base: BaseActivity
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         base = requireActivity() as BaseActivity
@@ -32,7 +34,7 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
     private fun initViews() {
         binding.apply {
             llEditProfile.setOnClickListener {
-                toast("Edit Clicked")
+
             }
             llLanguage.setOnClickListener {
                 toast("Language clicked")
