@@ -44,4 +44,12 @@
     <string name="str_female">Female</string>
     <string name="str_guide">Guide</string>
     <string name="str_trip">Trip</string>
+    <string name="trial_text">Bukhara is a very beautiful city in Uzbekistan. You must like there if you came. I give you that opportunity to discover Bukhara. In this trip you can customise the trip days where to visit. Add more like opportunites. Take me and discover Bukhara</string>
+    <string name="travel_locations">Travel Locations</string>
+    <string name="facilities">Facilities</string>
+    <string name="guide_s_profile_and_contact_details">Guide\'s Profile &amp; Contact Details</string>
+    <string name="apply_trip">Apply Trip</string>
+    <string name="chat_with_guide">Chat with Guide</string>
+    <string name="call_to_guide">Call to Guide</string>
+    <string name="reviews">Reviews</string>
 </resources>

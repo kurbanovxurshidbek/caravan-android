@@ -88,6 +88,7 @@
                 android:orientation="horizontal">
 
                 <RatingBar
+                    android:layout_gravity="center_vertical"
                     android:id="@+id/ratingBarGuide"
                     style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
@@ -99,6 +100,7 @@
                     android:rating="3.5" />
 
                 <TextView
+                    android:layout_gravity="center_vertical"
                     android:id="@+id/tvGuidesCommentsCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

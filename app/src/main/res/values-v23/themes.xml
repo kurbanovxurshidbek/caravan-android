@@ -26,4 +26,14 @@
         <item name="cornerSize">4dp</item>
     </style>
 
+    <style name="Theme.DetailsPage" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">#00000000</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="displayOptions">showHome|useLogo</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
 </resources>

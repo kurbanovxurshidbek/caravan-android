@@ -9,12 +9,10 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.GuideHomeAdapter
@@ -22,12 +20,13 @@ import com.caravan.caravan.adapter.SliderViewAdapter
 import com.caravan.caravan.adapter.TripAdapter
 import com.caravan.caravan.databinding.FragmentHomeBinding
 import com.caravan.caravan.model.*
+import com.caravan.caravan.ui.fragment.BaseFragment
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
 import java.time.LocalDateTime
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
     private lateinit var homeBinding: FragmentHomeBinding
     private lateinit var handler: Handler
 
@@ -37,8 +36,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        homeBinding =
-            FragmentHomeBinding.bind(inflater.inflate(R.layout.fragment_home, container, false))
+        homeBinding = FragmentHomeBinding.inflate(layoutInflater)
         initViews()
         return homeBinding.root
     }
@@ -74,7 +72,7 @@ class HomeFragment : Fragment() {
 
         homeBinding.homeGuideRecyclerView.adapter = GuideHomeAdapter(homeGuideList())
 
-        homeBinding.homeTripRecyclerView.adapter = TripAdapter(this,homeTripList())
+        homeBinding.homeTripRecyclerView.adapter = TripAdapter(this, homeTripList())
 
 
         //This code is to unfocus the searchbar when nestedScrollView is scrolled
@@ -136,11 +134,42 @@ class HomeFragment : Fragment() {
 
         for (i in 0..10) {
             list.add(
-                Trip(1, "Khiva in 3 days",
+                Trip(
+                    1, "Khiva in 3 days",
                     ArrayList<TourPhoto>().apply {
-                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), LocalDateTime.now(), null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
-                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), LocalDateTime.now(), null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
-                        add(TourPhoto(1, 1, "jpg", Location(1, "Khorezm", "Khiva", "Ichan Qala"), LocalDateTime.now(), null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(
+                            TourPhoto(
+                                1,
+                                1,
+                                "jpg",
+                                Location(1, "Khorezm", "Khiva", "Ichan Qala"),
+                                LocalDateTime.now(),
+                                null,
+                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                            )
+                        )
+                        add(
+                            TourPhoto(
+                                1,
+                                1,
+                                "jpg",
+                                Location(1, "Khorezm", "Khiva", "Ichan Qala"),
+                                LocalDateTime.now(),
+                                null,
+                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                            )
+                        )
+                        add(
+                            TourPhoto(
+                                1,
+                                1,
+                                "jpg",
+                                Location(1, "Khorezm", "Khiva", "Ichan Qala"),
+                                LocalDateTime.now(),
+                                null,
+                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                            )
+                        )
                     },
                     ArrayList<Facility>().apply {
                         add(Facility(1, "Moshina", "Moshina bilan taminliman"))

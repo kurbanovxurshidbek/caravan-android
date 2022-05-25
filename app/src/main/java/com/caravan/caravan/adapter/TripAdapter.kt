@@ -1,36 +1,36 @@
 package com.caravan.caravan.adapter
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemTripsBinding
 import com.caravan.caravan.model.Trip
+import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.ui.fragment.main.HomeFragment
 
-class TripAdapter(val context: Fragment, var items: ArrayList<Trip>) : RecyclerView.Adapter<TripAdapter.ViewHolder>() {
+class TripAdapter(val context: Fragment, var items: ArrayList<Trip>) :
+    RecyclerView.Adapter<TripAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val itemTripsBinding: ItemTripsBinding) :
         RecyclerView.ViewHolder(itemTripsBinding.root) {
-        fun onBind(trip: Trip) {
+        fun bind(trip: Trip) {
             Glide.with(context).load(trip.photos[0].url).into(itemTripsBinding.ivTripPhoto)
             itemTripsBinding.tvTripTitle.text = trip.description
             itemTripsBinding.ratingBarTrip.rating = trip.rate.toFloat()
-            itemTripsBinding.tvTripCommentsCount.text =
-                "(${trip.comments?.size})"
+            itemTripsBinding.tvTripCommentsCount.text = trip.comments?.size.toString()
             itemTripsBinding.tvPrice.text = price(trip)
-
             itemView.setOnClickListener {
-                // When Item Clicked
+                (context as BaseFragment).goToDetailsActivity(trip)
             }
-
         }
 
     }
@@ -66,7 +66,6 @@ class TripAdapter(val context: Fragment, var items: ArrayList<Trip>) : RecyclerV
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: TripAdapter.ViewHolder, position: Int) {
-        holder.onBind(items[position])
-
+        holder.bind(items[position])
     }
 }
