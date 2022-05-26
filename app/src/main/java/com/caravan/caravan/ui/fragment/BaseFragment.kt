@@ -24,7 +24,6 @@ abstract class BaseFragment: Fragment() {
         val intent = Intent(requireContext(), EditActivity::class.java)
         intent.putExtra("profileId", profileId)
         intent.putExtra("isEdit", isEdit)
-
         startActivity(intent)
     }
 
