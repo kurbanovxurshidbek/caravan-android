@@ -1,9 +1,14 @@
 package com.caravan.caravan.ui.fragment.details
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +47,7 @@ class GuideDetailsFragment : BaseFragment() {
         setFacilities()
         setCommentsRv()
         setLeaveCommentsPart()
+        guideDetailsBinding.tvTripPrice.text = setPrice(myTrip())
 
         guideDetailsBinding.apply {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -65,6 +71,22 @@ class GuideDetailsFragment : BaseFragment() {
 
     }
 
+    private fun setPrice(trip: Trip): Spannable {
+        val text = "$${trip.price.price.toInt()}"
+        val endIndex = text.length
+
+        val outPutColoredText: Spannable = SpannableString("$text/${trip.price.option}")
+        outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
+        outPutColoredText.setSpan(
+            ForegroundColorSpan(Color.parseColor("#167351")),
+            0,
+            endIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        return outPutColoredText
+    }
+
     private fun setLeaveCommentsPart() {
         //code for Guide
     }
@@ -72,6 +94,7 @@ class GuideDetailsFragment : BaseFragment() {
     private fun setProfilePhoto() {
         Glide.with(guideDetailsBinding.root)
             .load("https://i.insider.com/5d35bf63454a3947b349c915?width=1136&format=jpeg")
+            .placeholder(R.drawable.guide)
             .into(guideDetailsBinding.guideProfilePhoto)
     }
 
