@@ -5,56 +5,107 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import com.caravan.caravan.R
+import com.caravan.caravan.adapter.TripAdapter
+import com.caravan.caravan.databinding.FragmentTripListBinding
+import com.caravan.caravan.model.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [TripListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class TripListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding : FragmentTripListBinding
+    lateinit var tripAdapter: TripAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_trip_list, container, false)
+       binding = FragmentTripListBinding.inflate(inflater,container,false)
+        initViews()
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TripListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            TripListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun initViews() {
+        binding.recyclerViewMyTrips.layoutManager = GridLayoutManager(activity,1)
+
     }
+
+    fun refreshAdapterTrip(list: ArrayList<Trip>) {
+        tripAdapter = TripAdapter(this, list)
+        binding.recyclerViewMyTrips.adapter = tripAdapter
+    }
+
+    fun loadTripsList():ArrayList<Trip>{
+
+        val guide = GuideProfile(
+            "100001",
+            Profile(
+                "1001",
+                "Ogabek",
+                "Matyakubov",
+                "+998997492581",
+                "ogabekdev@gmail.com",
+                "GUIDE",
+                "ACTIVE",
+                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg",
+                "MALE",
+                null,
+                "12.10.2022",
+                null,
+                "en",
+                arrayListOf()
+            ),
+            "+998932037313",
+            "Ogabek Matyakubov",
+            true,
+            4.5,
+            Price(150.0, "USD", "day"),
+            ArrayList<Language>().apply {
+                add(Language("1", "English", "Advanced"))
+                add(Language("2", "Uzbek", "Native"))
+            },
+            ArrayList<Location>().apply {
+                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+            },
+            arrayListOf(),
+            arrayListOf(),
+            arrayListOf()
+        )
+
+        val list = ArrayList<Trip>()
+        for (i in 0..10) {
+            list.add(
+                Trip("1", "Khiva in 3 days",
+                    ArrayList<TourPhoto>().apply {
+                        add(TourPhoto("1", 1, "jpg", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(TourPhoto("1", 1, "jpg", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(TourPhoto("1", 1, "jpg", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                    },
+                    ArrayList<Facility>().apply {
+                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
+                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
+                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
+                    },
+                    ArrayList<Location>().apply {
+                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                    },
+                    "Khiva in 3 days",
+                    Price(1200.0, "USD", "trip"),
+                    5, 10,
+                    guide,
+                    "+998997492581",
+                    4.5,
+                    arrayListOf(),
+                    null
+                )
+            )
+        }
+        return list
+    }
+
 }
