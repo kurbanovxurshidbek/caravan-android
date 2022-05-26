@@ -5,22 +5,23 @@ import android.graphics.Color
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.navigation.Navigation
-import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.CommentsAdapter
 import com.caravan.caravan.adapter.FacilitiesAdapter
 import com.caravan.caravan.adapter.TravelLocationsAdapter
-import com.caravan.caravan.adapter.TripPhotosAdapter
 import com.caravan.caravan.databinding.FragmentGuideDetailsBinding
 import com.caravan.caravan.model.*
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.zhpan.indicator.enums.IndicatorSlideMode
-import com.zhpan.indicator.enums.IndicatorStyle
 
 class GuideDetailsFragment : BaseFragment() {
     private lateinit var guideDetailsBinding: FragmentGuideDetailsBinding
@@ -41,10 +42,12 @@ class GuideDetailsFragment : BaseFragment() {
     }
 
     private fun initViews() {
-        setViewPager()
+        setProfilePhoto()
         setTravelLocations()
         setFacilities()
         setCommentsRv()
+        setLeaveCommentsPart()
+        guideDetailsBinding.tvTripPrice.text = setPrice(myTrip())
 
         guideDetailsBinding.apply {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -68,23 +71,31 @@ class GuideDetailsFragment : BaseFragment() {
 
     }
 
+    private fun setPrice(trip: Trip): Spannable {
+        val text = "$${trip.price.price.toInt()}"
+        val endIndex = text.length
 
-    private fun setViewPager() {
-        guideDetailsBinding.apply {
-            viewPager2.apply {
-                adapter = TripPhotosAdapter(
-                    this@GuideDetailsFragment,
-                    myTrip().photos
-                ) //TripDetailsFragment viewPager items, It should be Trip items and they should come from server
-                setIndicator()
-                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                    override fun onPageSelected(position: Int) {
-                        super.onPageSelected(position)
-                        //any code you want to perform when viewPager pageChanges
-                    }
-                })
-            }
-        }
+        val outPutColoredText: Spannable = SpannableString("$text/${trip.price.option}")
+        outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
+        outPutColoredText.setSpan(
+            ForegroundColorSpan(Color.parseColor("#167351")),
+            0,
+            endIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        return outPutColoredText
+    }
+
+    private fun setLeaveCommentsPart() {
+        //code for Guide
+    }
+
+    private fun setProfilePhoto() {
+        Glide.with(guideDetailsBinding.root)
+            .load("https://i.insider.com/5d35bf63454a3947b349c915?width=1136&format=jpeg")
+            .placeholder(R.drawable.guide)
+            .into(guideDetailsBinding.guideProfilePhoto)
     }
 
     private fun setCommentsRv() {
@@ -107,16 +118,6 @@ class GuideDetailsFragment : BaseFragment() {
         }
     }
 
-    private fun setIndicator() {
-        guideDetailsBinding.indicatorView.apply {
-            setSliderColor(Color.parseColor("#b8d1d2"), Color.parseColor("#167351"))
-            setSliderWidth(resources.getDimension(R.dimen.dp_20))
-            setSliderHeight(resources.getDimension(R.dimen.dp_6))
-            setSlideMode(IndicatorSlideMode.SMOOTH)
-            setIndicatorStyle(IndicatorStyle.ROUND_RECT)
-            setupWithViewPager(guideDetailsBinding.viewPager2)
-        }
-    }
 
     private fun myTrip(): Trip {
         val guide = GuideProfile(

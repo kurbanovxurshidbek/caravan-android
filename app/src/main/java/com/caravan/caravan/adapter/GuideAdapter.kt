@@ -51,7 +51,7 @@ class GuideAdapter(var items: ArrayList<GuideProfile>) :
             val outPutColoredText: Spannable = SpannableString("$text/${guide.price.option}")
             outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
             outPutColoredText.setSpan(
-                ForegroundColorSpan(R.color.main_color),
+                ForegroundColorSpan(Color.parseColor("#167351")),
                 0,
                 endIndex,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE

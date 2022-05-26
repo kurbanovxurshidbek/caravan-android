@@ -2,6 +2,10 @@ package com.caravan.caravan.ui.fragment.details
 
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +48,9 @@ class TripDetailsFragment : BaseFragment() {
         setTravelLocations()
         setFacilities()
         setCommentsRv()
+        setLeaveCommentsPart()
+        fragmentTripDetailsBinding.tvTripPrice.text = setPrice(myTrip())
+        fragmentTripDetailsBinding.tvGuidePrice.text = setPrice(myTrip())
 
 
         fragmentTripDetailsBinding.guideProfile.setOnClickListener {
@@ -52,6 +59,38 @@ class TripDetailsFragment : BaseFragment() {
         }
 
 
+    }
+
+    private fun setPrice(trip: Trip): Spannable {
+        val text = "$${trip.price.price.toInt()}"
+        val endIndex = text.length
+
+        val outPutColoredText: Spannable = SpannableString("$text/${trip.price.option}")
+        outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
+        outPutColoredText.setSpan(
+            ForegroundColorSpan(Color.parseColor("#167351")),
+            0,
+            endIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        return outPutColoredText
+    }
+
+    private fun setLeaveCommentsPart() {
+        if (myTrip().attendancesProfileId.contains("userId")) {   // UserId qo'yiladi
+            fragmentTripDetailsBinding.leaveCommentPart.visibility = View.VISIBLE
+
+            if (!myTrip().comments.isNullOrEmpty()) {
+                for (comment in myTrip().comments!!) {
+                    if (comment.from.id == "userId") {  //UserId qo'yiladi
+                        fragmentTripDetailsBinding.leaveCommentPart.visibility = View.GONE
+                        break
+                    }
+                }
+            }
+
+        }
     }
 
     private fun setViewPager() {

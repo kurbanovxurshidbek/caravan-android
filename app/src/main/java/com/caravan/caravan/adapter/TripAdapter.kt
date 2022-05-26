@@ -1,7 +1,6 @@
 package com.caravan.caravan.adapter
 
-import android.annotation.SuppressLint
-import android.content.Context
+
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
@@ -9,15 +8,12 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemTripsBinding
 import com.caravan.caravan.model.Trip
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.ui.fragment.main.HomeFragment
 
 class TripAdapter(val context: Fragment, var items: ArrayList<Trip>) :
     RecyclerView.Adapter<TripAdapter.ViewHolder>() {
@@ -38,7 +34,6 @@ class TripAdapter(val context: Fragment, var items: ArrayList<Trip>) :
 
     }
 
-    @SuppressLint("ResourceAsColor")
     private fun price(trip: Trip): Spannable {
         val text = "$${trip.price.price.toInt()}"
         val endIndex = text.length
@@ -46,7 +41,7 @@ class TripAdapter(val context: Fragment, var items: ArrayList<Trip>) :
         val outPutColoredText: Spannable = SpannableString("$text/${trip.price.option}")
         outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
         outPutColoredText.setSpan(
-            Color.parseColor("#167351"),
+            ForegroundColorSpan(Color.parseColor("#167351")),
             0,
             endIndex,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
