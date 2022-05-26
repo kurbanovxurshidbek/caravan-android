@@ -168,11 +168,15 @@
                     android:textSize="20sp" />
 
                 <LinearLayout
+                    android:id="@+id/guideProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginHorizontal="12dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    android:background="@drawable/square_ripple"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -284,14 +288,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="16dp"
-                    android:orientation="vertical"
-                    >
+                    android:background="@drawable/square_ripple"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp">
 
                         <ImageView
@@ -301,7 +307,6 @@
                             android:src="@drawable/chat_bubble2" />
 
                         <TextView
-                            android:background="?attr/selectableItemBackground"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
@@ -315,6 +320,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:layout_marginHorizontal="12dp"
                         android:background="#0D121212" />
 
 
@@ -323,14 +329,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="16dp"
-                    android:background="?attr/selectableItemBackground"
+                    android:background="@drawable/square_ripple"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp">
 
                         <ImageView
@@ -353,6 +361,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:layout_marginHorizontal="12dp"
                         android:background="#0D121212" />
 
 
@@ -369,8 +378,50 @@
                     android:textColor="@color/main_color"
                     android:textSize="20sp" />
 
+                <LinearLayout
+                    android:id="@+id/leaveCommentPart"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="16dp">
 
+                    <EditText
+                        android:id="@+id/etLeaveComment"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/main_color"
+                        android:fontFamily="@font/circular_std_bold"
+                        android:hint="@string/write_respond"
+                        android:inputType="textMultiLine"
+                        android:maxLines="5"
+                        android:textColor="@color/black"
+                        android:textCursorDrawable="@drawable/cursor" />
 
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/ripple"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:src="@drawable/ic_send_drawable" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fragmentTripCommentsRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="100dp"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="10"
+                    tools:listitem="@layout/item_comment" />
 
 
             </LinearLayout>

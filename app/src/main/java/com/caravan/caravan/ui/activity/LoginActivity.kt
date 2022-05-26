@@ -109,9 +109,8 @@ class LoginActivity : BaseActivity() {
     private fun callMainActivity(profile: Profile?, isGuide: Boolean, guideProfile: GuideProfile?) {
         val intent = Intent(this, MainActivity::class.java)
         SharedPref(this).saveBoolean("loginDone", true)
-        intent.putExtra("profile", profile)
-        intent.putExtra("isGuide", isGuide)
-        intent.putExtra("guideProfile", guideProfile)
+        SharedPref(this).saveString("profileId", profile!!.id)
+        if (isGuide) SharedPref(this).saveString("guideId", guideProfile!!.id)
         startActivity(intent)
         finish()
     }
@@ -150,7 +149,7 @@ class LoginActivity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setTimer() {
-        val count: CountDownTimer = object : CountDownTimer(120000, 1000) {
+        val count: CountDownTimer = object : CountDownTimer(60000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val minut = (millisUntilFinished / 1000) / 60
                 val seconds = (millisUntilFinished / 1000) % 60

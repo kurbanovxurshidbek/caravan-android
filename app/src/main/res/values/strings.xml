@@ -60,6 +60,11 @@
     <string name="str_delete_message">Are you sure to Delete your Account?</string>
     <string name="tap_to_change_profile_photo">Tap to change profile photo</string>
     <string name="str_guides_trips">Guide\'s Trips</string>
+    <string name="str_save_message">Your information has been saved to your account. You can change it anytime.</string>
+    <string name="str_saved">Saved</string>
 
     <string name="str_send">Send</string>
+    <string name="guide_s_trips">Guide\'s Trips</string>
+    <string name="hire_guide">Hire Guide</string>
+    <string name="write_respond">Write Respond</string>
 </resources>
