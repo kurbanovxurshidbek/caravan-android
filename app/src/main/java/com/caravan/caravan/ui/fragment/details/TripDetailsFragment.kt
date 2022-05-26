@@ -44,6 +44,7 @@ class TripDetailsFragment : BaseFragment() {
         setTravelLocations()
         setFacilities()
         setCommentsRv()
+        setLeaveCommentsPart()
 
 
         fragmentTripDetailsBinding.guideProfile.setOnClickListener {
@@ -52,6 +53,22 @@ class TripDetailsFragment : BaseFragment() {
         }
 
 
+    }
+
+    private fun setLeaveCommentsPart() {
+        if (myTrip().attendancesProfileId.contains("userId")) {   // UserId qo'yiladi
+            fragmentTripDetailsBinding.leaveCommentPart.visibility = View.VISIBLE
+
+            if (!myTrip().comments.isNullOrEmpty()) {
+                for (comment in myTrip().comments!!) {
+                    if (comment.from.id == "userId") {  //UserId qo'yiladi
+                        fragmentTripDetailsBinding.leaveCommentPart.visibility = View.GONE
+                        break
+                    }
+                }
+            }
+
+        }
     }
 
     private fun setViewPager() {
