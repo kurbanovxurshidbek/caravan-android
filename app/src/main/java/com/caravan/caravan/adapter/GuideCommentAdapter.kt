@@ -1,5 +1,6 @@
 package com.caravan.caravan.adapter
 
+import android.content.Context
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
@@ -18,7 +19,7 @@ import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.ui.fragment.guideOption.FeedbackListFragment
 import com.caravan.caravan.ui.fragment.guideOption.FeedbackRespondFragment
 
-class GuideCommentAdapter(var items: ArrayList<Comment>) :
+class GuideCommentAdapter(var context: FeedbackListFragment, var items: ArrayList<Comment>) :
     RecyclerView.Adapter<GuideCommentAdapter.ViewHolder>() {
     inner class ViewHolder(private val guideCommentBinding: ItemGuideCommentBinding) :
         RecyclerView.ViewHolder(guideCommentBinding.root) {
@@ -38,7 +39,7 @@ class GuideCommentAdapter(var items: ArrayList<Comment>) :
             }
 
             guideCommentBinding.llComment.setOnClickListener {
-                // OnClick
+                context.navigateToFeedbackResponse(comment)
             }
 
         }

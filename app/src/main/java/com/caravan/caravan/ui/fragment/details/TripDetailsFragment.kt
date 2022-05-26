@@ -1,14 +1,14 @@
 package com.caravan.caravan.ui.fragment.details
 
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
+import androidx.navigation.Navigation
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
+import com.caravan.caravan.adapter.CommentsAdapter
 import com.caravan.caravan.adapter.FacilitiesAdapter
 import com.caravan.caravan.adapter.TravelLocationsAdapter
 import com.caravan.caravan.adapter.TripPhotosAdapter
@@ -17,7 +17,6 @@ import com.caravan.caravan.model.*
 import com.caravan.caravan.ui.fragment.BaseFragment
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
-import java.time.LocalDateTime
 
 class TripDetailsFragment : BaseFragment() {
     private lateinit var fragmentTripDetailsBinding: FragmentTripDetailsBinding
@@ -30,7 +29,6 @@ class TripDetailsFragment : BaseFragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,14 +39,21 @@ class TripDetailsFragment : BaseFragment() {
         return fragmentTripDetailsBinding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun initViews() {
         setViewPager()
         setTravelLocations()
         setFacilities()
+        setCommentsRv()
+
+
+        fragmentTripDetailsBinding.guideProfile.setOnClickListener {
+            Navigation.findNavController(fragmentTripDetailsBinding.root)
+                .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment);
+        }
+
+
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun setViewPager() {
         fragmentTripDetailsBinding.apply {
             viewPager2.apply {
@@ -64,6 +69,14 @@ class TripDetailsFragment : BaseFragment() {
                     }
                 })
             }
+        }
+    }
+
+    private fun setCommentsRv() {
+        fragmentTripDetailsBinding.fragmentTripCommentsRV.adapter = myTrip().comments?.let {
+            CommentsAdapter(
+                it
+            )
         }
     }
 
@@ -162,7 +175,36 @@ class TripDetailsFragment : BaseFragment() {
             "+998997492581",
             4.5,
             arrayListOf(),
-            null
+            arrayListOf(
+                Comment(
+                    "123",
+                    4,
+                    "21.06.2001",
+                    "Hey Man, that was really cool!",
+                    Profile(
+                        "1001",
+                        "Ogabek",
+                        "Matyakubov",
+                        "+998997492581",
+                        "ogabekdev@gmail.com",
+                        "GUIDE",
+                        "ACTIVE",
+                        "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg",
+                        "MALE",
+                        null,
+                        "12.10.2022",
+                        null,
+                        "en",
+                        arrayListOf()
+                    ),
+                    "TRIP",
+                    null,
+                    guide,
+                    "21.06.01",
+                    "Wassabi guys"
+
+                )
+            )
         )
 
         return trip
@@ -174,7 +216,7 @@ class TripDetailsFragment : BaseFragment() {
         }
     }
 
-    private fun setFacilities(){
+    private fun setFacilities() {
         fragmentTripDetailsBinding.apply {
             facilitiesRV.adapter = FacilitiesAdapter(myTrip().facility)
         }
