@@ -67,8 +67,8 @@ class RegisterActivity : AppCompatActivity() {
     private fun callMainActivity(profile: Profile?) {
         val intent = Intent(this, MainActivity::class.java)
         SharedPref(this).saveBoolean("loginDone", true)
-        intent.putExtra("isGuide", false)
-        intent.putExtra("profile", profile)
+        if (profile != null)
+            SharedPref(this).saveString("profileId", profile.id)
         startActivity(intent)
         finish()
     }

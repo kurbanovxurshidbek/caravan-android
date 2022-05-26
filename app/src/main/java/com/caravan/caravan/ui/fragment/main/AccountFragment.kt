@@ -1,8 +1,11 @@
 package com.caravan.caravan.ui.fragment.main
 
 
+import android.Manifest
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.FragmentAccountBinding
@@ -18,10 +21,18 @@ import com.caravan.caravan.utils.Extensions.toast
  * Use the [AccountFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AccountFragment : Fragment(R.layout.fragment_account) {
+class AccountFragment : BaseFragment() {
 
     private val binding by viewBinding { FragmentAccountBinding.bind(it) }
     private lateinit var base: BaseActivity
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_account, container, false)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,10 +43,11 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
     private fun initViews() {
         binding.apply {
             llEditProfile.setOnClickListener {
-                toast("Edit Clicked")
+                goToEditActivity(SharedPref(requireContext()).getString("profileId")?:"null",true)
+
             }
             llLanguage.setOnClickListener {
-                toast("Language clicked")
+                goToEditActivity(SharedPref(requireContext()).getString("profileId")?:"null",false)
             }
             llGuideOption.setOnClickListener {
                 toast("guide option clicked")

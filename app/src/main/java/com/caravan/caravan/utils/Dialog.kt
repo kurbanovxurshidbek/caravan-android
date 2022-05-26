@@ -38,7 +38,6 @@ object Dialog {
     fun showDialogMessage(
         context: Context,
         title: String,
-        photo: String,
         description: String,
         ok: OkInterface
     ) {
@@ -47,7 +46,6 @@ object Dialog {
         dialog.setContentView(msgDialogBinding.root)
 
         msgDialogBinding.tvTitle.text = title
-        Glide.with(context).load(photo).into(msgDialogBinding.imageView)
         msgDialogBinding.tvMessage.text = description
         msgDialogBinding.btnOk.setOnClickListener {
             ok.onClick()
