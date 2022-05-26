@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/llLanguage"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/ivFlag"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_flag" />
+
+    <TextView
+        android:id="@+id/tvLanguage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/circular_std_bold"
+        android:textColor="@color/black"
+        android:text="@string/str_uzbek"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/ivDone"
+        android:visibility="visible"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_done" />
+</LinearLayout>

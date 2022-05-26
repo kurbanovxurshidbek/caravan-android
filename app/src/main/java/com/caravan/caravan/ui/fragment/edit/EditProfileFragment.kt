@@ -1,7 +1,9 @@
 package com.caravan.caravan.ui.fragment.edit
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.graphics.Color
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.FragmentEditProfileBinding
 import com.caravan.caravan.ui.fragment.BaseFragment
@@ -79,6 +82,7 @@ class EditProfileFragment : BaseFragment() {
             object : OkInterface {
                 override fun onClick() {
                     //something
+                    requireActivity().finish()
                 }
 
             })
@@ -86,20 +90,28 @@ class EditProfileFragment : BaseFragment() {
 
     private fun setBirthday() {
         val datePicker = Calendar.getInstance()
-        val date = DatePickerDialog.OnDateSetListener { picker, year, month, day ->
-            datePicker[Calendar.YEAR] = year
-            datePicker[Calendar.MONTH] = month
-            datePicker[Calendar.DAY_OF_MONTH] = day
-            val dateFormat = "dd.MM.yyyy"
-            val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
-            binding.tvBirthday.text = simpleDateFormat.format(datePicker.time)
-        }
-        DatePickerDialog(
-            requireContext(), date,
-            datePicker[Calendar.YEAR],
-            datePicker[Calendar.MONTH],
-            datePicker[Calendar.DAY_OF_MONTH]
-        ).show()
+        val year = datePicker[Calendar.YEAR]
+        val month = datePicker[Calendar.MONTH]
+        val day = datePicker[Calendar.DAY_OF_MONTH]
+        val date =
+            DatePickerDialog.OnDateSetListener { picker, pickedYear, pickedMonth, pickedDay ->
+                datePicker[Calendar.YEAR] = pickedYear
+                datePicker[Calendar.MONTH] = pickedMonth
+                datePicker[Calendar.DAY_OF_MONTH] = pickedDay
+                val dateFormat = "dd.MM.yyyy"
+                val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
+                binding.tvBirthday.text = simpleDateFormat.format(datePicker.time)
+            }
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+            date,
+            year, month, day
+        )
+        datePickerDialog.window?.setBackgroundDrawable(ColorDrawable(0))
+        datePickerDialog.show()
+
     }
 
     private fun manageGender() {
@@ -126,6 +138,7 @@ class EditProfileFragment : BaseFragment() {
             .setImageAdapter(GlideAdapter())
             .setMaxCount(1)
             .setMinCount(1)
+            .setActionBarColor(R.color.main_color)
             .setSelectedImages(allPhotos)
             .startAlbumWithActivityResultCallback(photoLauncher)
     }
