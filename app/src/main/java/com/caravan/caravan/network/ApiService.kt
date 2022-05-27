@@ -6,20 +6,20 @@ import com.caravan.caravan.model.auth.RegisterRespond
 import com.caravan.caravan.model.auth.RegisterSend
 import com.caravan.caravan.model.home.HomeRespond
 import com.caravan.caravan.model.more.TitleMessage
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
+import retrofit2.http.*
 
 interface ApiService {
 
-    @POST("/login")
+    @Headers("Content-Type: application/json")
+    @POST("/api/v1/login")
     suspend fun sendSmsCode(@Body loginSend: LoginSend): TitleMessage
 
-    @PUT("/check")
+    @Headers("Content-Type: application/json")
+    @PUT("/api/v1/check")
     suspend fun checkSmsCode(@Body loginSend: LoginSend): LoginRespond
 
-    @PUT("/registration")
+    @Headers("Content-Type: application/json")
+    @PUT("/api/v1/registration")
     suspend fun registerUser(@Body registerSend: RegisterSend): RegisterRespond
 
 
