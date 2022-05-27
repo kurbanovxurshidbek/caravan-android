@@ -16,6 +16,7 @@ object Dialog {
         val dialog = Dialog(context)
         val alertDialogBinding = AlertDialogBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(alertDialogBinding.root)
+        dialog.setCancelable(false)
 
         alertDialogBinding.tvTitle.text = title
         alertDialogBinding.btnYes.setOnClickListener {
@@ -44,6 +45,7 @@ object Dialog {
         val dialog = Dialog(context)
         val msgDialogBinding = DialogMessageBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(msgDialogBinding.root)
+        dialog.setCancelable(false)
 
         msgDialogBinding.tvTitle.text = title
         msgDialogBinding.tvMessage.text = description
@@ -64,6 +66,7 @@ object Dialog {
         val dialog = Dialog(context)
         val warningBinding = DialogWarningBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(warningBinding.root)
+        dialog.setCancelable(false)
 
         warningBinding.tvTitle.text = title
         warningBinding.tvMessage.text = description

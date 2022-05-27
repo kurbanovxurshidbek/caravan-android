@@ -9,6 +9,7 @@ data class Profile(
     val phoneNumber: String,
     val email: String? = null,
     val role: String = "TOURIST", // GUIDE
+    val guideId: String? = null,
     val status: String = "ACTIVE", // BLOCK
     val profilePhoto: String? = null,
     val gender: String, // MALE, FEMALE

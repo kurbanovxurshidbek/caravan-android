@@ -1,11 +1,17 @@
 package com.caravan.caravan.ui.fragment.guideOption
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.caravan.caravan.R
+import com.caravan.caravan.databinding.FragmentTuristGuideOptionBinding
+import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.viewBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -14,22 +20,11 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TuristGuideOptionFragment.newInstance] factory method to
+ * Use the [TuristGuideOptionFragment] factory method to
  * create an instance of this fragment.
  */
-class TuristGuideOptionFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+class TuristGuideOptionFragment : BaseFragment() {
+    private val binding by viewBinding { FragmentTuristGuideOptionBinding.bind(it) }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,23 +33,23 @@ class TuristGuideOptionFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_turist_guide_option, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TuristGuideOptionFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            TuristGuideOptionFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews()
     }
+
+    private fun initViews() {
+        binding.apply {
+            llRegisterGuide.setOnClickListener {
+                findNavController().navigate(R.id.action_turistGuideOptionFragment_to_upgradeGuide1Fragment)
+            }
+            llGetInfo.setOnClickListener {
+                val uri = Uri.parse(getString(R.string.str_url_get_info))
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+            }
+        }
+    }
+
+
 }

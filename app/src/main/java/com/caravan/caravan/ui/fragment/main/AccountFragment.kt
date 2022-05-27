@@ -43,14 +43,14 @@ class AccountFragment : BaseFragment() {
     private fun initViews() {
         binding.apply {
             llEditProfile.setOnClickListener {
-                goToEditActivity(SharedPref(requireContext()).getString("profileId")?:"null",true)
+                goToEditActivity(true)
 
             }
             llLanguage.setOnClickListener {
-                goToEditActivity(SharedPref(requireContext()).getString("profileId")?:"null",false)
+                goToEditActivity(false)
             }
             llGuideOption.setOnClickListener {
-                toast("guide option clicked")
+                goToGuideOptionActivity(isGuide())
             }
             llLogOut.setOnClickListener {
                 Dialog.showAlertDialog(
@@ -90,5 +90,9 @@ class AccountFragment : BaseFragment() {
 
         }
 
+    }
+
+    private fun isGuide(): Boolean {
+        return true
     }
 }

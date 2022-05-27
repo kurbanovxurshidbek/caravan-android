@@ -106,4 +106,12 @@ dependencies {
     //ImageViewer
     implementation 'com.github.stfalcon-studio:StfalconImageViewer:v1.0.1'
 
+    // Coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
+
+    // Lifecycle ViewModel LiveData
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.1"
+
 }

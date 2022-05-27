@@ -1,60 +1,96 @@
 package com.caravan.caravan.ui.fragment.guideOption
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.caravan.caravan.R
+import com.caravan.caravan.databinding.FragmentGuideGuideOptionBinding
+import com.caravan.caravan.manager.SharedPref
+import com.caravan.caravan.ui.activity.BaseActivity
+import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Dialog
+import com.caravan.caravan.utils.OkWithCancelInterface
+import com.caravan.caravan.utils.viewBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [GuideGuideOptionFragment.newInstance] factory method to
+ * Use the [GuideGuideOptionFragment] factory method to
  * create an instance of this fragment.
  */
-class GuideGuideOptionFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+class GuideGuideOptionFragment : BaseFragment() {
+    lateinit var base: BaseActivity
+    private val binding by viewBinding { FragmentGuideGuideOptionBinding.bind(it) }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        base = requireActivity() as BaseActivity
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_guide_guide_option, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment GuideGuideOptionFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            GuideGuideOptionFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews()
+    }
+
+    private fun initViews() {
+        binding.apply {
+            llEditGuideProfile.setOnClickListener {
+                findNavController().navigate(R.id.action_guideGuideOptionFragment_to_editGuideAccountFragment)
+            }
+            sbIsHiring.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    Dialog.showAlertDialog(
+                        requireContext(),
+                        getString(R.string.str_isHiring),
+                        object : OkWithCancelInterface {
+                            override fun onOkClick() {
+                                //sendResponse
+                            }
+
+                            override fun onCancelClick() {
+                                //
+                                sbIsHiring.isChecked = false
+                            }
+
+
+                        })
+                } else {
+                    //sendResponse
+
                 }
             }
+            llMyTrips.setOnClickListener {
+                findNavController().navigate(R.id.action_guideGuideOptionFragment_to_tripListFragment)
+            }
+            llMyFeedback.setOnClickListener {
+                findNavController().navigate(R.id.action_guideGuideOptionFragment_to_feedbackListFragment)
+            }
+            llDeleteGuideAccount.setOnClickListener {
+                Dialog.showAlertDialog(
+                    requireContext(),
+                    getString(R.string.str_delete_message),
+                    object : OkWithCancelInterface {
+                        override fun onOkClick() {
+                            // send request here
+                            SharedPref(requireContext()).saveBoolean("loginDone", false)
+                            base.callLoginActivity()
+                        }
+
+                        override fun onCancelClick() {
+
+                        }
+
+                    })
+            }
+
+        }
     }
+
+
 }

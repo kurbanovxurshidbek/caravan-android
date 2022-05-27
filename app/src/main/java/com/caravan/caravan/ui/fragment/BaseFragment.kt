@@ -20,10 +20,15 @@ abstract class BaseFragment: Fragment() {
         startActivity(intent)
     }
 
-    open fun goToEditActivity(profileId: String,isEdit:Boolean){
+    open fun goToEditActivity(isEdit: Boolean){
         val intent = Intent(requireContext(), EditActivity::class.java)
-        intent.putExtra("profileId", profileId)
-        intent.putExtra("isEdit", isEdit)
+        intent.putExtra("isEdit",isEdit)
+        startActivity(intent)
+    }
+
+    open fun goToGuideOptionActivity(isGuide: Boolean){
+        val intent = Intent(requireContext(), GuideOptionActivity::class.java)
+        intent.putExtra("isGuide",isGuide)
         startActivity(intent)
     }
 
