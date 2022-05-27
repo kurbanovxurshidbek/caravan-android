@@ -75,4 +75,6 @@
     <string name="str_register_as_a_guide">Register as a Guide</string>
     <string name="str_my_trips"><![CDATA[My Trips>]]></string>
     <string name="str_get_more_information_about_guide">Get more information about Guide</string>
+    <string name="str_no_connection">No Connection</string>
+    <string name="str_try_again">No Connection with our server. Please try again.</string>
 </resources>

@@ -47,6 +47,7 @@ class TripListFragment : Fragment() {
                 "+998997492581",
                 "ogabekdev@gmail.com",
                 "GUIDE",
+                null,
                 "ACTIVE",
                 "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg",
                 "MALE",

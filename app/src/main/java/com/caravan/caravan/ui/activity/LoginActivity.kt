@@ -3,14 +3,14 @@ package com.caravan.caravan.ui.activity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ActivityLoginBinding
 import com.caravan.caravan.manager.SharedPref
@@ -18,21 +18,114 @@ import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Profile
 import com.caravan.caravan.model.auth.LoginRespond
 import com.caravan.caravan.model.auth.LoginSend
+import com.caravan.caravan.model.more.TitleMessage
+import com.caravan.caravan.network.ApiService
+import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.utils.Dialog
 import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
+import com.caravan.caravan.utils.UiStateObject
+import com.caravan.caravan.viewmodel.auth.LoginRepository
+import com.caravan.caravan.viewmodel.auth.LoginViewModel
+import com.caravan.caravan.viewmodel.auth.LoginViewModelFactory
 
 class LoginActivity : BaseActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private var isExist = false
-    var status: String? = null
 
-    @RequiresApi(Build.VERSION_CODES.R)
+    private lateinit var viewModel: LoginViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setUpViewModel()
+        setUpObserves()
+
         initViews()
+    }
+
+    private fun setUpObserves() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.sendSMS.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading(this@LoginActivity)
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        sentOTP(it.data)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        showNoConnectionDialog()
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.checkSMS.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading(this@LoginActivity)
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        onCheck(it.data)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        showNoConnectionDialog()
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
+    }
+
+    private fun onCheck(data: LoginRespond) {
+        if (data.title == null) {
+            if (data.isExist) {
+                callMainActivity(data.profile, data.isGuide, data.guideProfile)
+            } else callRegistrationActivity()
+        } else {
+            Dialog.showDialogWarning(
+                this,
+                data.title,
+                data.message!!,
+                object : OkInterface {
+                    override fun onClick() {
+
+                    }
+                })
+        }
+    }
+
+    private fun sentOTP(data: TitleMessage) {
+        if (data.status) {
+            binding.tvTitle.text = getString(R.string.str_verify_phone)
+            binding.etPhone.isCursorVisible = false
+            binding.btnGetCode.text = getString(R.string.str_confirm)
+            binding.llOtp.visibility = View.VISIBLE
+            setTimer()
+            hideKeyboard()
+        } else {
+            Dialog.showDialogWarning(this, data.title!!, data.message!!, object : OkInterface {
+                override fun onClick() {
+
+                }
+            })
+        }
+    }
+
+    private fun setUpViewModel() {
+        viewModel = ViewModelProvider(
+            this,
+            LoginViewModelFactory(LoginRepository(RetrofitHttp.createService(ApiService::class.java)))
+        )[LoginViewModel::class.java]
     }
 
     private fun initViews() {
@@ -45,8 +138,6 @@ class LoginActivity : BaseActivity() {
             }
             val number = binding.etPhone.text.toString()
             if (checkMatches(number) && binding.btnGetCode.text == getString(R.string.str_get_code)) {
-                binding.tvTitle.text = getString(R.string.str_verify_phone)
-                binding.etPhone.isCursorVisible = false
                 getOtpCode()
             }
 
@@ -70,10 +161,6 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    private fun checkMatches(number: String): Boolean {
-        return number.matches(Regex("[+]998[0-9]{9}")) || number.matches(Regex("[+]7[0-9]{10}"))
-    }
-
     private fun checkOtp() {
         val login = LoginSend(
             binding.etPhone.text.toString(),
@@ -81,29 +168,28 @@ class LoginActivity : BaseActivity() {
             getDeviceInfo(this),
             SharedPref(this).getString("appLanguage") ?: "en"
         )
-        //send request here and delete follow object
-        var response = LoginRespond(
+
+        viewModel.checkSMS(login)
+
+    }
+
+    private fun getOtpCode() {
+        val login = LoginSend(
+            binding.etPhone.text.toString(),
+            0,
             null,
-            "You entered wrong code. Please try again. We send code to +998 93 203 73 13.\n" +
-                    "If the code didn’t come. Please contact us."
+            SharedPref(this).getString("appLanguage") ?: "en"
         )
-        if (response.title == null) {
-            if (isExist) {
-                callMainActivity(response.profile, response.isGuide, response.guideProfile)
-            } else callRegistrationActivity()
-        } else {
-            Dialog.showDialogWarning(
-                this,
-                response.title!!,
-                response.message!!,
-                object : OkInterface {
-                    override fun onClick() {
 
-                    }
+        viewModel.sendSMS(login)
 
-                })
-        }
+    }
 
+    private fun callRegistrationActivity() {
+        val intent = Intent(this, RegisterActivity::class.java)
+        intent.putExtra("phoneNumber", binding.etPhone.text.toString())
+        startActivity(intent)
+        finish()
     }
 
     private fun callMainActivity(profile: Profile?, isGuide: Boolean, guideProfile: GuideProfile?) {
@@ -115,29 +201,6 @@ class LoginActivity : BaseActivity() {
         finish()
     }
 
-    private fun callRegistrationActivity() {
-
-        val intent = Intent(this, RegisterActivity::class.java)
-        intent.putExtra("phoneNumber", binding.etPhone.text.toString())
-        startActivity(intent)
-        finish()
-    }
-
-    private fun getOtpCode() {
-        binding.btnGetCode.text = getString(R.string.str_confirm)
-        binding.llOtp.visibility = View.VISIBLE
-        setTimer()
-        hideKeyboard()
-        val login = LoginSend(
-            binding.etPhone.text.toString(),
-            0,
-            null,
-            SharedPref(this).getString("appLanguage") ?: "en"
-        )
-        //send request here
-    }
-
-
     private fun hideKeyboard() {
         try {
             val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -145,6 +208,10 @@ class LoginActivity : BaseActivity() {
         } catch (e: Exception) {
 
         }
+    }
+
+    private fun checkMatches(number: String): Boolean {
+        return number.matches(Regex("[+]998[0-9]{9}")) || number.matches(Regex("[+]7[0-9]{10}"))
     }
 
     @SuppressLint("SetTextI18n")
