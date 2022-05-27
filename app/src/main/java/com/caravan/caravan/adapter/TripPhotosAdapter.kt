@@ -9,6 +9,7 @@ import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemSliderBinding
 import com.caravan.caravan.model.TourPhoto
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.ui.fragment.details.TripDetailsFragment
 
 class TripPhotosAdapter(val context: BaseFragment, private val items: ArrayList<TourPhoto>) :
     RecyclerView.Adapter<TripPhotosAdapter.ImageViewHolder>() {
@@ -22,7 +23,9 @@ class TripPhotosAdapter(val context: BaseFragment, private val items: ArrayList<
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         holder.apply {
-            Glide.with(context).load(items[position].url).placeholder(R.drawable.slide2).into(imageView)
+            Glide.with(context).load(items[position].url).placeholder(R.drawable.slide2)
+                .into(imageView)
+
         }
     }
 
@@ -30,8 +33,15 @@ class TripPhotosAdapter(val context: BaseFragment, private val items: ArrayList<
         return items.size
     }
 
-    class ImageViewHolder(sliderBinding: ItemSliderBinding) :
+    inner class ImageViewHolder(sliderBinding: ItemSliderBinding) :
         RecyclerView.ViewHolder(sliderBinding.root) {
         val imageView: ImageView = sliderBinding.ivSlider
+
+        init {
+            itemView.setOnClickListener {
+                (context as TripDetailsFragment).setImageViewer(adapterPosition)
+            }
+        }
+
     }
 }
