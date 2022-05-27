@@ -9,22 +9,30 @@ import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.Navigation
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.CommentsAdapter
 import com.caravan.caravan.adapter.FacilitiesAdapter
 import com.caravan.caravan.adapter.TravelLocationsAdapter
 import com.caravan.caravan.adapter.TripPhotosAdapter
 import com.caravan.caravan.databinding.FragmentTripDetailsBinding
+import com.caravan.caravan.databinding.OverlayViewBinding
 import com.caravan.caravan.model.*
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.stfalcon.imageviewer.StfalconImageViewer
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
 
 class TripDetailsFragment : BaseFragment() {
     private lateinit var fragmentTripDetailsBinding: FragmentTripDetailsBinding
     private var tripId: String = "null"
+    private lateinit var overlayViewBinding: OverlayViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +46,10 @@ class TripDetailsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         fragmentTripDetailsBinding = FragmentTripDetailsBinding.inflate(layoutInflater)
-
+        overlayViewBinding = OverlayViewBinding.bind(
+            LayoutInflater.from(requireContext())
+                .inflate(R.layout.overlay_view, RelativeLayout(requireContext()), false)
+        )
         initViews()
         return fragmentTripDetailsBinding.root
     }
@@ -52,14 +63,50 @@ class TripDetailsFragment : BaseFragment() {
         fragmentTripDetailsBinding.tvTripPrice.text = setPrice(myTrip())
         fragmentTripDetailsBinding.tvGuidePrice.text = setPrice(myTrip())
 
-
         fragmentTripDetailsBinding.guideProfile.setOnClickListener {
             Navigation.findNavController(fragmentTripDetailsBinding.root)
                 .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment);
         }
 
-
     }
+
+    fun setImageViewer(position: Int) {
+        val windowInsetsController =
+            ViewCompat.getWindowInsetsController(requireActivity().window.decorView)
+        val mView = LayoutInflater.from(requireContext())
+            .inflate(R.layout.overlay_view, LinearLayout(requireContext()), false)
+
+        overlayViewBinding.name.text =
+            myTrip().photos[position].location.province + ", " + myTrip().photos[position].location.district
+        overlayViewBinding.tvDescription.text =
+            myTrip().photos[position].location.desc
+
+        StfalconImageViewer.Builder(
+            requireContext(),
+            myTrip().photos
+        ) { view, image ->
+//            // Hide the system bars.
+            windowInsetsController?.hide(WindowInsetsCompat.Type.systemBars())
+
+            Glide.with(requireContext()).load(image.url).into(view)
+        }.withHiddenStatusBar(false)
+            .withDismissListener {
+//                // Show the system bars.
+                windowInsetsController!!.show(WindowInsetsCompat.Type.systemBars())
+                overlayViewBinding = OverlayViewBinding.bind(mView)
+            }
+            .withStartPosition(position)
+            .withOverlayView(
+                overlayViewBinding.root
+            ).withImageChangeListener {
+                overlayViewBinding.name.text =
+                    myTrip().photos[it].location.province + ", " + myTrip().photos[it].location.district
+                overlayViewBinding.tvDescription.text =
+                    myTrip().photos[it].location.desc
+            }
+            .show()
+    }
+
 
     private fun setPrice(trip: Trip): Spannable {
         val text = "$${trip.price.price.toInt()}"
@@ -104,7 +151,7 @@ class TripDetailsFragment : BaseFragment() {
                 registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
-                        //any code you want to perform when viewPager pageChanges
+
                     }
                 })
             }
@@ -152,8 +199,8 @@ class TripDetailsFragment : BaseFragment() {
             },
             ArrayList<Location>().apply {
                 add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                add(Location("1", "Tashkent", "Yakkasaroy", "Boshliq"))
+                add(Location("1", "America", "Washington DC", "Beach"))
             },
             arrayListOf(),
             arrayListOf(),
@@ -179,7 +226,7 @@ class TripDetailsFragment : BaseFragment() {
                         "1",
                         1,
                         "jpg",
-                        Location("1", "Khorezm", "Khiva", "Ichan Qala"),
+                        Location("1", "Tashkent", "Yakkasaroy", "Boshliq"),
                         "12.02.2022",
                         null,
                         "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
@@ -190,7 +237,7 @@ class TripDetailsFragment : BaseFragment() {
                         "1",
                         1,
                         "jpg",
-                        Location("1", "Khorezm", "Khiva", "Ichan Qala"),
+                        Location("1", "Amudaryo", "Mang'it", "Durunki"),
                         "12.02.2022",
                         null,
                         "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"

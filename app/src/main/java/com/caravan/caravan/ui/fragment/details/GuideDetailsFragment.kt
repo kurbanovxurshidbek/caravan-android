@@ -13,6 +13,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.RelativeLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
@@ -22,6 +25,7 @@ import com.caravan.caravan.adapter.TravelLocationsAdapter
 import com.caravan.caravan.databinding.FragmentGuideDetailsBinding
 import com.caravan.caravan.model.*
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.stfalcon.imageviewer.StfalconImageViewer
 
 class GuideDetailsFragment : BaseFragment() {
     private lateinit var guideDetailsBinding: FragmentGuideDetailsBinding
@@ -67,6 +71,33 @@ class GuideDetailsFragment : BaseFragment() {
         guideDetailsBinding.guideTrips.setOnClickListener {
             Navigation.findNavController(guideDetailsBinding.root)
                 .navigate(R.id.action_guideDetailsFragment_to_guideTrips)
+        }
+
+        guideDetailsBinding.guideProfilePhoto.setOnClickListener {
+            val myView = View.inflate(
+                requireContext(),
+                R.layout.overlay_view,
+                RelativeLayout(requireContext())
+            )
+
+            val windowInsetsController =
+                ViewCompat.getWindowInsetsController(requireActivity().window.decorView)
+
+            StfalconImageViewer.Builder<String?>(
+                requireContext(),
+                arrayOf(myTrip().guideProfile.profile.profilePhoto)
+            ) { view, _ ->
+                // Hide the system bars.
+                windowInsetsController?.hide(WindowInsetsCompat.Type.systemBars())
+                Glide.with(guideDetailsBinding.root).load("https://i.insider.com/5d35bf63454a3947b349c915?width=1136&format=jpeg").into(view)
+            }.withHiddenStatusBar(false)
+                .withDismissListener {
+                    // Show the system bars.
+                    windowInsetsController!!.show(WindowInsetsCompat.Type.systemBars())
+                }
+                .withOverlayView(myView)
+                .show()
+
         }
 
     }

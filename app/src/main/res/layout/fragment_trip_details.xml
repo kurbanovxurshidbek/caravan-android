@@ -44,6 +44,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_margin="10dp" />
 
+
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -380,11 +381,11 @@
 
                 <LinearLayout
                     android:id="@+id/leaveCommentPart"
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="16dp">
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone">
 
                     <EditText
                         android:id="@+id/etLeaveComment"
