@@ -70,6 +70,12 @@
         <action
             android:id="@+id/action_turistGuideOptionFragment_to_upgradeGuide1Fragment"
             app:destination="@id/upgradeGuide1Fragment" />
+        <action
+            android:id="@+id/action_turistGuideOptionFragment_to_guideGuideOptionFragment"
+            app:destination="@id/guideGuideOptionFragment"
+            app:popUpTo="@id/turistGuideOptionFragment"
+            app:popUpToInclusive="true"
+            />
     </fragment>
     <fragment
         android:id="@+id/upgradeGuide1Fragment"

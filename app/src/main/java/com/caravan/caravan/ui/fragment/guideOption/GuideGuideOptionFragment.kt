@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.FragmentGuideGuideOptionBinding
 import com.caravan.caravan.manager.SharedPref
@@ -17,7 +18,7 @@ import com.caravan.caravan.utils.viewBinding
 
 /**
  * A simple [Fragment] subclass.
- * Use the [GuideGuideOptionFragment.newInstance] factory method to
+ * Use the [GuideGuideOptionFragment] factory method to
  * create an instance of this fragment.
  */
 class GuideGuideOptionFragment : BaseFragment() {
@@ -39,6 +40,9 @@ class GuideGuideOptionFragment : BaseFragment() {
 
     private fun initViews() {
         binding.apply {
+            llEditGuideProfile.setOnClickListener {
+                findNavController().navigate(R.id.action_guideGuideOptionFragment_to_editGuideAccountFragment)
+            }
             sbIsHiring.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     Dialog.showAlertDialog(
@@ -61,6 +65,12 @@ class GuideGuideOptionFragment : BaseFragment() {
 
                 }
             }
+            llMyTrips.setOnClickListener {
+                findNavController().navigate(R.id.action_guideGuideOptionFragment_to_tripListFragment)
+            }
+            llMyFeedback.setOnClickListener {
+                findNavController().navigate(R.id.action_guideGuideOptionFragment_to_feedbackListFragment)
+            }
             llDeleteGuideAccount.setOnClickListener {
                 Dialog.showAlertDialog(
                     requireContext(),
@@ -78,6 +88,7 @@ class GuideGuideOptionFragment : BaseFragment() {
 
                     })
             }
+
         }
     }
 

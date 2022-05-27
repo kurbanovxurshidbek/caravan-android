@@ -1,11 +1,12 @@
 package com.caravan.caravan.ui.fragment.guideOption
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.FragmentTuristGuideOptionBinding
@@ -19,7 +20,7 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TuristGuideOptionFragment.newInstance] factory method to
+ * Use the [TuristGuideOptionFragment] factory method to
  * create an instance of this fragment.
  */
 class TuristGuideOptionFragment : BaseFragment() {
@@ -41,6 +42,11 @@ class TuristGuideOptionFragment : BaseFragment() {
         binding.apply {
             llRegisterGuide.setOnClickListener {
                 findNavController().navigate(R.id.action_turistGuideOptionFragment_to_upgradeGuide1Fragment)
+            }
+            llGetInfo.setOnClickListener {
+                val uri = Uri.parse(getString(R.string.str_url_get_info))
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
             }
         }
     }
