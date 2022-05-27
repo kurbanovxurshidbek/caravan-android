@@ -1,9 +1,7 @@
 package com.caravan.caravan.network
 
-import com.caravan.caravan.network.service.AuthService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 object RetrofitHttp {
 
@@ -29,6 +27,8 @@ object RetrofitHttp {
             .build()
     }
 
-    val authService: AuthService = getRetrofit().create(AuthService::class.java)
+    fun <T> createService(service: Class<T>): T {
+        return getRetrofit().create(service)
+    }
 
 }
