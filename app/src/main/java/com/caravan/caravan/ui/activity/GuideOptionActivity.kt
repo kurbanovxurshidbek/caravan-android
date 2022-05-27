@@ -11,9 +11,8 @@ class GuideOptionActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_guide_option)
         navController = findNavController(R.id.nav_fragment)
-        var isGuide = intent.getBooleanExtra("isGuide", false)
-        if (!isGuide) navController.navigate(R.id.turistGuideOptionFragment)
-        else navController.navigate(R.id.guideGuideOptionFragment)
+        val isGuide = intent.getBooleanExtra("isGuide", false)
+        if (isGuide) navController.navigate(R.id.action_turistGuideOptionFragment_to_guideGuideOptionFragment)
     }
 
 }
