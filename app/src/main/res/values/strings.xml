@@ -4,7 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_thanks">No, Thanks</string>
     <string name="yes_sure">Yes, Sure</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="get_started">Get Started</string>
     <string name="str_continue">Continue</string>
     <string name="intro_text_1">Get Inspiration \nfor your next trip</string>
@@ -41,6 +41,7 @@
     <string name="str_check_agreement">Please check Agreement</string>
     <string name="str_fill_all_fields">Please fill all fields</string>
     <string name="str_url_agreement">https://t.me/Bogibek_Matyaqubov</string>
+    <string name="str_url_get_info">https://t.me/Bogibek_Matyaqubov</string>
     <string name="str_gender">Gender</string>
     <string name="str_male">Male</string>
     <string name="str_female">Female</string>
@@ -77,4 +78,7 @@
     <string name="str_get_more_information_about_guide">Get more information about Guide</string>
     <string name="str_no_connection">No Connection</string>
     <string name="str_try_again">No Connection with our server. Please try again.</string>
+    <string name="str_guide_option">Guide Option</string>
+    <string name="str_is_hiring">Is Hiring</string>
+    <string name="str_delete_guide_mode">Delete Guide Mode</string>
 </resources>
