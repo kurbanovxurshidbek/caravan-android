@@ -1,7 +1,6 @@
 package com.caravan.caravan.ui.fragment.main
 
 
-import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +12,6 @@ import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.ui.activity.BaseActivity
 import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.utils.*
-import com.caravan.caravan.utils.Extensions.toast
-
 
 /**
  * A simple [Fragment] subclass.
@@ -93,6 +90,6 @@ class AccountFragment : BaseFragment() {
     }
 
     private fun isGuide(): Boolean {
-        return true
+        return false
     }
 }

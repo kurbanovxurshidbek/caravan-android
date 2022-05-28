@@ -68,4 +68,7 @@
         <item name="android:windowExitAnimation">@anim/slide_out_down</item>
     </style>
 
+    <style name="corners">
+        <item name="cornerSize">10%</item></style>
+
 </resources>

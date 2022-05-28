@@ -81,4 +81,61 @@
     <string name="str_guide_option">Guide Option</string>
     <string name="str_is_hiring">Is Hiring</string>
     <string name="str_delete_guide_mode">Delete Guide Mode</string>
+    <string name="str_fill_your_information">Fill your information</string>
+    <string name="str_fill_the_field_to_continue">Fill the field to continue</string>
+    <string name="str_fullname">Fullname</string>
+    <string name="str_second_phone_number">Second phone number</string>
+    <string name="str_enter_your_email">Enter your email</string>
+    <string name="str_enter_your_birth_date_dd_mm_yyyy">Enter your birth date (dd.mm.yyyy)</string>
+    <string name="str_next">Next</string>
+    <string name="str_fill_your_guide">Fill your Guide</string>
+    <string name="str_travel_locations">Travel locations</string>
+    <string name="str_location">Location</string>
+    <string name="str_short_information">Short information</string>
+    <string name="str_add_more">Add more</string>
+    <string name="str_price">Price</string>
+    <string name="str_amount">Amount</string>
+    <string name="str_language">Language</string>
+    <string name="str_describe_yourself">Describe yourself</string>
+    <string name="str_write_more_information_about_yourself">Write more information about yourself</string>
+    <string name="str_done">Done</string>
+    <string name="str_fill_your_trip">Fill your Trip</string>
+    <string name="str_name">Name</string>
+    <string name="str_trip_s_name">Trip\'s name</string>
+    <string name="str_locations">Locations</string>
+    <string name="str_people">People</string>
+    <string name="str_min">Min</string>
+    <string name="str_max">Max</string>
+    <string name="str_upload_photos_min_2_max_5">Upload photos (Min: 2, Max: 5)</string>
+    <string name="str_facility">Facility</string>
+    <string name="str_title">Title</string>
+    <string name="str_description">Description</string>
+    <string name="str_add_image">Add Image</string>
+    <string name="str_upload_photo">Upload Photo</string>
+    <string name="str_fill_the_location_of_that_picture">Fill the location of that picture</string>
+    <string name="str_upload">Upload</string>
+
+    <string-array name="location">
+        <item>Tashkent</item>
+        <item>Samarkand</item>
+        <item>Khorezm</item>
+        <item>Bukhara</item>
+        <item>Namangan</item>
+        <item>Fergana</item>
+        <item>Andijan</item>
+        <item>Sirdarya</item>
+        <item>Kashkadardya</item>
+        <item>Surkhandarya</item>
+        <item>Navoi</item>
+        <item>Jizzakh</item>
+        <item>Nukus</item>
+    </string-array>
+    <string-array name="level">
+        <item>Beginner</item>
+        <item>Elementary</item>
+        <item>Intermediete</item>
+        <item>Advanced</item>
+        <item>Native</item>
+    </string-array>
+
 </resources>

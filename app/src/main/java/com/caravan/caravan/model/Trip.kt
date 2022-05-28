@@ -22,6 +22,10 @@ data class Facility(
     val title: String,
     val description: String
 )
+data class CreateTrip(
+    val photo:String,
+    val location:Location
+)
 
 data class TourPhoto(
     val id: String? = null,
