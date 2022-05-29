@@ -14,7 +14,7 @@ data class Trip(
     val phoneNumber: String,
     val rate: Double,
     val attendancesProfileId: ArrayList<String>,
-    val comments: ArrayList<Comment>? = null
+    val reviews: ArrayList<Comment>? = null
 )
 
 data class Facility(

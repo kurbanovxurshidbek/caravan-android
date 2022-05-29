@@ -18,7 +18,7 @@ import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Profile
 import com.caravan.caravan.model.auth.LoginRespond
 import com.caravan.caravan.model.auth.LoginSend
-import com.caravan.caravan.model.more.TitleMessage
+import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.utils.Dialog
@@ -104,7 +104,7 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    private fun sentOTP(data: TitleMessage) {
+    private fun sentOTP(data: ActionMessage) {
         if (data.status) {
             binding.tvTitle.text = getString(R.string.str_verify_phone)
             binding.etPhone.isCursorVisible = false

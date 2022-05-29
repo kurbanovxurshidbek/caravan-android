@@ -128,8 +128,8 @@ class TripDetailsFragment : BaseFragment() {
         if (myTrip().attendancesProfileId.contains("userId")) {   // UserId qo'yiladi
             fragmentTripDetailsBinding.leaveCommentPart.visibility = View.VISIBLE
 
-            if (!myTrip().comments.isNullOrEmpty()) {
-                for (comment in myTrip().comments!!) {
+            if (!myTrip().reviews.isNullOrEmpty()) {
+                for (comment in myTrip().reviews!!) {
                     if (comment.from.id == "userId") {  //UserId qo'yiladi
                         fragmentTripDetailsBinding.leaveCommentPart.visibility = View.GONE
                         break
@@ -159,7 +159,7 @@ class TripDetailsFragment : BaseFragment() {
     }
 
     private fun setCommentsRv() {
-        fragmentTripDetailsBinding.fragmentTripCommentsRV.adapter = myTrip().comments?.let {
+        fragmentTripDetailsBinding.fragmentTripCommentsRV.adapter = myTrip().reviews?.let {
             CommentsAdapter(
                 it
             )

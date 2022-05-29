@@ -130,7 +130,7 @@ class GuideDetailsFragment : BaseFragment() {
     }
 
     private fun setCommentsRv() {
-        guideDetailsBinding.fragmentTripCommentsRV.adapter = myTrip().comments?.let {
+        guideDetailsBinding.fragmentTripCommentsRV.adapter = myTrip().reviews?.let {
             CommentsAdapter(
                 it
             )

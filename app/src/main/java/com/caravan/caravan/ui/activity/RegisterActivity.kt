@@ -56,7 +56,7 @@ class RegisterActivity : BaseActivity() {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        checkOTP(it.data)
+                        register(it.data)
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
@@ -68,7 +68,7 @@ class RegisterActivity : BaseActivity() {
         }
     }
 
-    private fun checkOTP(data: RegisterRespond) {
+    private fun register(data: RegisterRespond) {
         if (data.isRegistered) {
             callMainActivity(data.profile)
         } else {

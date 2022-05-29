@@ -24,8 +24,8 @@ class TripAdapter(val context: Fragment, var items: ArrayList<Trip>) :
             Glide.with(context).load(trip.photos[0].url).into(itemTripsBinding.ivTripPhoto)
             itemTripsBinding.tvTripTitle.text = trip.name
             itemTripsBinding.ratingBarTrip.rating = trip.rate.toFloat()
-            itemTripsBinding.tvTripCommentsCount.text = trip.comments?.size.toString()
-            itemTripsBinding.tvTripCommentsCount.text = "(${if (trip.comments.isNullOrEmpty()) "0" else trip.comments.size})"
+            itemTripsBinding.tvTripCommentsCount.text = trip.reviews?.size.toString()
+            itemTripsBinding.tvTripCommentsCount.text = "(${if (trip.reviews.isNullOrEmpty()) "0" else trip.reviews.size})"
             itemTripsBinding.tvPrice.text = price(trip)
             itemView.setOnClickListener {
                 (context as BaseFragment).goToDetailsActivity(trip)

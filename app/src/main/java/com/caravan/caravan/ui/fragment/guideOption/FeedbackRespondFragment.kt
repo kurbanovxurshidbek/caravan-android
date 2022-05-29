@@ -2,25 +2,18 @@ package com.caravan.caravan.ui.fragment.guideOption
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.caravan.caravan.R
 import com.caravan.caravan.databinding.FragmentFeedbackRespondBinding
-import com.caravan.caravan.databinding.ItemGuideHomeBinding
 import com.caravan.caravan.model.*
 import com.caravan.caravan.ui.fragment.BaseFragment
-import java.time.LocalDateTime
 
 class FeedbackRespondFragment : BaseFragment() {
 
@@ -55,7 +48,7 @@ class FeedbackRespondFragment : BaseFragment() {
             Glide.with(requireActivity()).load(comment.trip.photos[0].url).into(binding.llItemTrips.ivTripPhoto)
             binding.llItemTrips.tvTripTitle.text = comment.trip.name
             binding.llItemTrips.ratingBarTrip.rating = comment.trip.rate.toFloat()
-            binding.llItemTrips.tvTripCommentsCount.text = "(${if (comment.trip.comments.isNullOrEmpty()) "0" else comment.trip.comments.size})"
+            binding.llItemTrips.tvTripCommentsCount.text = "(${if (comment.trip.reviews.isNullOrEmpty()) "0" else comment.trip.reviews.size})"
             binding.llItemTrips.tvPrice.text = price(comment.trip)
         }else{
             binding.llItemTrips.root.visibility =  View.GONE

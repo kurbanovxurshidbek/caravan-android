@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemGuideBinding
 import com.caravan.caravan.model.GuideProfile
 
@@ -27,7 +26,7 @@ class GuideAdapter(var items: ArrayList<GuideProfile>) :
             itemGuideBinding.tvGuidePrice.text = price(guideProfile)
             itemGuideBinding.tvGuidesLanguages.text = getLanguages(guideProfile)
             itemGuideBinding.ratingBarGuide.rating = guideProfile.rate.toFloat()
-            itemGuideBinding.tvGuidesCommentsCount.text = "(${guideProfile.comments?.size.toString()})"
+            itemGuideBinding.tvGuidesCommentsCount.text = "(${guideProfile.reviews?.size.toString()})"
 
             itemView.setOnClickListener {
                     // When Item Clicked
