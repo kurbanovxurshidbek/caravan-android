@@ -1,60 +1,79 @@
 package com.caravan.caravan.ui.fragment.guideOption
 
+import android.app.DatePickerDialog
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.caravan.caravan.R
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import com.caravan.caravan.databinding.FragmentUpgradeGuide1Binding
+import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.viewBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
  * Use the [UpgradeGuide1Fragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class UpgradeGuide1Fragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class UpgradeGuide1Fragment : BaseFragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private val binding by viewBinding { FragmentUpgradeGuide1Binding.bind(it) }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_upgrade_guide1, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UpgradeGuide1Fragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UpgradeGuide1Fragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews()
     }
+
+    private fun initViews() {
+        binding.llCalendar.setOnClickListener {
+            setBirthday()
+        }
+
+        binding.btnNext.setOnClickListener {
+            openNextFragment()
+        }
+    }
+
+    fun setBirthday() {
+        val datePicker = Calendar.getInstance()
+        val year = datePicker[Calendar.YEAR]
+        val month = datePicker[Calendar.MONTH]
+        val day = datePicker[Calendar.DAY_OF_MONTH]
+        val date =
+            DatePickerDialog.OnDateSetListener { picker, pickedYear, pickedMonth, pickedDay ->
+                datePicker[Calendar.YEAR] = pickedYear
+                datePicker[Calendar.MONTH] = pickedMonth
+                datePicker[Calendar.DAY_OF_MONTH] = pickedDay
+                val dateFormat = "dd.MM.yyyy"
+                val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
+                binding.tvBirthday.text = simpleDateFormat.format(datePicker.time)
+            }
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+            date,
+            year, month, day
+        )
+        datePickerDialog.window?.setBackgroundDrawable(ColorDrawable(0))
+        datePickerDialog.show()
+    }
+
+    fun openNextFragment() {
+        findNavController().navigate(R.id.action_upgradeGuide1Fragment_to_upgradeGuide2Fragment)
+    }
+
 }
