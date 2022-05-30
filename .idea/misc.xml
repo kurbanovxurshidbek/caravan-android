@@ -14,20 +14,24 @@
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/drawable/background_add_page.xml" value="0.1465" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/drawable/background_btn_intro.xml" value="0.1465" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/drawable/background_spinner.xml" value="0.1465" />
+        <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/drawable/cursor.xml" value="0.1525" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/drawable/ic_arrow_down.xml" value="0.1465" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/drawable/ic_clear.xml" value="0.1465" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/drawable/ic_plus_square.xml" value="0.1465" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/activity_guide_option.xml" value="0.25416666666666665" />
+        <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/activity_intro.xml" value="0.25416666666666665" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_create_trip1.xml" value="0.25416666666666665" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_create_trip2.xml" value="0.25416666666666665" />
+        <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_edit_guide_account.xml" value="0.25416666666666665" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_edit_profile.xml" value="0.25416666666666665" />
+        <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_guide_details.xml" value="0.25416666666666665" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_upgrade_guide1.xml" value="0.25416666666666665" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_upgrade_guide2.xml" value="0.25416666666666665" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_upload_image.xml" value="0.25416666666666665" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/item_create_trip.xml" value="0.25416666666666665" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/item_facilities.xml" value="0.25416666666666665" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/item_trip_facility.xml" value="0.25416666666666665" />
-        <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/item_upgrade_guide_language.xml" value="0.1" />
+        <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/item_upgrade_guide_language.xml" value="0.264" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/item_upgrade_guide_location.xml" value="0.25416666666666665" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/photo_adder_item.xml" value="0.25416666666666665" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/upgrade_item_guide_language.xml" value="0.25416666666666665" />

@@ -1,23 +1,25 @@
 package com.caravan.caravan.ui.fragment.guideOption
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.UpgradeGuideLanguageAdapter
 import com.caravan.caravan.adapter.UpgradeGuideLocationAdapter
-import com.caravan.caravan.databinding.FragmentUpgradeGuide1Binding
 import com.caravan.caravan.databinding.FragmentUpgradeGuide2Binding
 import com.caravan.caravan.model.Language
 import com.caravan.caravan.model.Location
@@ -25,6 +27,7 @@ import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.utils.SwipeToDeleteCallback
 import com.caravan.caravan.utils.UpgradeGuideObject
 import com.caravan.caravan.utils.viewBinding
+
 
 /**
  * A simple [Fragment] subclass.
@@ -86,9 +89,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             if(desc != ""){
                 val location = Location("1",province,district,desc)
 
-                UpgradeGuideObject.myLocationList.add(0,location)
+                UpgradeGuideObject.myLocationList.add(location)
                 refreshAdapterLocation(UpgradeGuideObject.myLocationList)
-
                 binding.etLocationDesc.text.clear()
             }else{
                 Toast.makeText(requireContext(), "Please, fill the field first", Toast.LENGTH_SHORT).show()
@@ -110,7 +112,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         binding.tvAddLanguage.setOnClickListener {
             if (language != "") {
                 val language = Language("1",language,level)
-                UpgradeGuideObject.myLanguageList.add(0,language)
+                UpgradeGuideObject.myLanguageList.add(language)
                 refreshAdapterLanguage(UpgradeGuideObject.myLanguageList)
                 binding.etLanguage.text.clear()
             }else{
@@ -127,7 +129,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val pos = viewHolder.adapterPosition
                 UpgradeGuideObject.myLocationList.removeAt(pos)
-                adapterLanguage.notifyDataSetChanged()
+                refreshAdapterLocation(UpgradeGuideObject.myLocationList)
             }
         }
 
@@ -140,7 +142,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val pos = viewHolder.adapterPosition
                 UpgradeGuideObject.myLanguageList.removeAt(pos)
-                adapterLanguage.notifyDataSetChanged()
+                adapterLanguage.notifyItemRemoved(pos)
             }
         }
 
@@ -201,7 +203,6 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         }
         override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
-
     val itemSelectedProvince = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
             province = locationProvince!![p2]

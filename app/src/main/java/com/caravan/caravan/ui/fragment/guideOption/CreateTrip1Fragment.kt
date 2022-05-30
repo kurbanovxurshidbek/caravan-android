@@ -116,7 +116,6 @@ class CreateTrip1Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
                 UpgradeGuideObject.myLocationList.add(0, location)
                 refreshAdapter(UpgradeGuideObject.myLocationList)
-                adapter.notifyDataSetChanged()
 
                 binding.etLocationDesc.text.clear()
             }
