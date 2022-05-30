@@ -99,7 +99,6 @@ class CreateTrip2Fragment : Fragment(), AdapterView.OnItemSelectedListener {
 
                 UpgradeGuideObject.myFacilityList.add(0,facility)
                 refreshAdapter(UpgradeGuideObject.myFacilityList)
-                adapter.notifyDataSetChanged()
 
                 binding.etTitle.text.clear()
                 binding.etDesciption.text.clear()

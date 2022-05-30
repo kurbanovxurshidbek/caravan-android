@@ -60,7 +60,6 @@ class IntroActivity : BaseActivity() {
 
             }
 
-            //jj
             override fun onPageSelected(position: Int) {
                 if (position == fragments.size - 1) {
                     binding.btnStart.text = getString(R.string.get_started)

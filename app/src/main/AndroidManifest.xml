@@ -33,6 +33,7 @@
 
         <activity
             android:name=".ui.activity.GuideOptionActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
 
         <activity
@@ -41,6 +42,7 @@
 
         <activity
             android:name=".ui.activity.EditActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
 
         <activity

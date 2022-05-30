@@ -35,7 +35,7 @@
             android:id="@+id/btnStart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/get_started"
+            android:text="@string/str_continue"
             android:textColor="@color/white"
             android:textAllCaps="false"
             android:visibility="visible"

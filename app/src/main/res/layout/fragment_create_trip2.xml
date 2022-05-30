@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical"
     android:padding="20dp"
@@ -58,84 +58,6 @@
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/str_facility"
-                        android:fontFamily="@font/circular_std_bold"
-                        android:textStyle="normal"
-                        android:paddingEnd="20dp"
-                        android:textColor="#167351"
-                        android:textSize="18sp"/>
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <EditText
-                                android:id="@+id/etTitle"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:hint="@string/str_title"
-                                android:textColorHint="#99000000"
-                                android:fontFamily="@font/circular_std_bold"
-                                android:textStyle="normal"
-                                android:textColor="#99000000"
-                                android:textSize="18sp"/>
-                        </LinearLayout>
-                    </LinearLayout>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <EditText
-                            android:id="@+id/etDesciption"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:hint="@string/str_description"
-                            android:textColorHint="#99000000"
-                            android:fontFamily="@font/circular_std_bold"
-                            android:textStyle="normal"
-                            android:textColor="#99000000"
-                            android:textSize="18sp"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tvAddFacility"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/circular_std_bold"
-                android:gravity="center"
-                android:text="@string/str_add_more"
-                android:textColor="#167351"
-                android:textSize="18sp"
-                android:textStyle="normal" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -143,6 +65,99 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/circular_std_bold"
+                            android:paddingEnd="20dp"
+                            android:text="@string/str_facility"
+                            android:textColor="#167351"
+                            android:textSize="18sp"
+                            android:textStyle="normal" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    android:id="@+id/etTitle"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:fontFamily="@font/circular_std_bold"
+                                    android:hint="@string/str_title"
+                                    android:textColor="#99000000"
+                                    android:textColorHint="#99000000"
+                                    android:textSize="18sp"
+                                    android:textStyle="normal" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/etDesciption"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/circular_std_bold"
+                                android:hint="@string/str_description"
+                                android:textColor="#99000000"
+                                android:textColorHint="#99000000"
+                                android:textSize="18sp"
+                                android:textStyle="normal" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvAddFacility"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/circular_std_bold"
+                    android:gravity="center"
+                    android:text="@string/str_add_more"
+                    android:textColor="#167351"
+                    android:textSize="18sp"
+                    android:textStyle="normal" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -188,29 +203,31 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:gravity="center_vertical"
                             android:layout_marginTop="2dp"
-                            android:orientation="vertical"
-                            >
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
                             <Spinner
                                 android:id="@+id/spinnerCurrency"
                                 android:layout_width="60dp"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/background_spinner"
                                 android:paddingEnd="15dp" />
+
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:layout_marginTop="2dp"
                                 android:background="#87000000" />
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical"
+                            android:layout_marginStart="20dp"
                             android:layout_marginTop="2dp"
-                            android:layout_marginStart="20dp">
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
 
                             <Spinner
                                 android:id="@+id/spinnerDay"
@@ -244,9 +261,9 @@
         android:background="@drawable/background_btn_intro"
         android:fontFamily="@font/circular_std_bold"
         android:text="@string/str_done"
-        app:backgroundTint="@null"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:translationZ="2dp" />
+        android:translationZ="2dp"
+        app:backgroundTint="@null" />
 
 </LinearLayout>
