@@ -110,6 +110,7 @@
                                     android:layout_weight="1"
                                     android:fontFamily="@font/circular_std_bold"
                                     android:hint="@string/str_title"
+                                    android:backgroundTint="@color/main_color"
                                     android:textColor="#99000000"
                                     android:textColorHint="#99000000"
                                     android:textSize="18sp"
@@ -137,6 +138,7 @@
                                 android:layout_weight="1"
                                 android:fontFamily="@font/circular_std_bold"
                                 android:hint="@string/str_description"
+                                android:backgroundTint="@color/main_color"
                                 android:textColor="#99000000"
                                 android:textColorHint="#99000000"
                                 android:textSize="18sp"
@@ -195,6 +197,7 @@
                             android:fontFamily="@font/circular_std_bold"
                             android:hint="@string/str_amount"
                             android:inputType="number"
+                            android:backgroundTint="@color/main_color"
                             android:textColor="#99000000"
                             android:textColorHint="#99000000"
                             android:textSize="18sp"
@@ -218,7 +221,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:layout_marginTop="2dp"
-                                android:background="#87000000" />
+                                android:background="@color/main_color" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -240,7 +243,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:layout_marginTop="2dp"
-                                android:background="#87000000" />
+                                android:background="@color/main_color" />
                         </LinearLayout>
 
                     </LinearLayout>
