@@ -2,15 +2,20 @@ package com.caravan.caravan.utils
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.AlertDialogBinding
+import com.caravan.caravan.databinding.DialogLoadingBinding
 import com.caravan.caravan.databinding.DialogMessageBinding
 import com.caravan.caravan.databinding.DialogWarningBinding
 
 object Dialog {
+
+    private var loadingDialog: Dialog? = null
 
     fun showAlertDialog(context: Context, title: String, handler: OkWithCancelInterface) {
         val dialog = Dialog(context)
@@ -82,6 +87,27 @@ object Dialog {
         )
         dialog.show()
     }
+
+    fun showLoading(context: Context) {
+        if (loadingDialog == null)
+            loadingDialog = Dialog(context)
+        val loadingBinding = DialogLoadingBinding.inflate(LayoutInflater.from(context))
+        loadingDialog?.setContentView(loadingBinding.root)
+        loadingDialog?.setCancelable(false)
+
+        loadingDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        loadingDialog?.window?.setLayout(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        loadingDialog?.show()
+
+    }
+
+    fun dismissLoading() {
+        loadingDialog?.dismiss()
+    }
+
 }
 
 interface OkWithCancelInterface {

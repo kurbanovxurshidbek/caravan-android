@@ -14,6 +14,8 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.GuideHomeAdapter
@@ -21,7 +23,19 @@ import com.caravan.caravan.adapter.SliderViewAdapter
 import com.caravan.caravan.adapter.TripAdapter
 import com.caravan.caravan.databinding.FragmentHomeBinding
 import com.caravan.caravan.model.*
+import com.caravan.caravan.model.home.HomeRespond
+import com.caravan.caravan.network.ApiService
+import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Dialog
+import com.caravan.caravan.utils.OkInterface
+import com.caravan.caravan.utils.UiStateObject
+import com.caravan.caravan.viewmodel.auth.RegisterRepository
+import com.caravan.caravan.viewmodel.auth.RegisterViewModel
+import com.caravan.caravan.viewmodel.auth.RegisterViewModelFactory
+import com.caravan.caravan.viewmodel.main.home.HomeRepository
+import com.caravan.caravan.viewmodel.main.home.HomeViewModel
+import com.caravan.caravan.viewmodel.main.home.HomeViewModelFactory
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
 
@@ -30,6 +44,7 @@ class HomeFragment : BaseFragment() {
     private lateinit var homeBinding: FragmentHomeBinding
     private lateinit var handler: Handler
 
+    private lateinit var viewModel: HomeViewModel
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
@@ -38,12 +53,67 @@ class HomeFragment : BaseFragment() {
     ): View {
         homeBinding =
             FragmentHomeBinding.bind(inflater.inflate(R.layout.fragment_home, container, false))
+
+        setUpViewModel()
+        setUpObserves()
+
         initViews()
+
+
         return homeBinding.root
+    }
+
+    private fun setUpObserves() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.home.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        home(it.data)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        Dialog.showDialogWarning(requireContext(), getString(R.string.str_no_connection), getString(
+                            R.string.str_try_again), object: OkInterface {
+                            override fun onClick() {
+                                viewModel.home()
+                            }
+                        })
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+    private fun home(data: HomeRespond) {
+        if (data.status) {
+            homeBinding.homeGuideRecyclerView.adapter = GuideHomeAdapter(data.topGuides)
+            homeBinding.homeTripRecyclerView.adapter = TripAdapter(this,data.topTrips)
+        } else {
+            Dialog.showDialogWarning(requireContext(), data.title!!, data.message!!, object: OkInterface{
+                override fun onClick() {
+                    requireActivity().finish()
+                }
+            })
+        }
+    }
+
+    private fun setUpViewModel() {
+        viewModel = ViewModelProvider(
+            this,
+            HomeViewModelFactory(HomeRepository(RetrofitHttp.createService(ApiService::class.java)))
+        )[HomeViewModel::class.java]
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun initViews() {
+
+        viewModel.home()
+
         handler = Handler(Looper.myLooper()!!)
 
         homeBinding.viewPager2.apply {
@@ -75,7 +145,6 @@ class HomeFragment : BaseFragment() {
 
         homeBinding.homeTripRecyclerView.adapter = TripAdapter(this,homeTripList())
 
-
         //This code is to unfocus the searchbar when nestedScrollView is scrolled
         homeBinding.apply {
             homeNestedScrollView.setOnScrollChangeListener { v, _, _, _, _ ->
@@ -89,6 +158,7 @@ class HomeFragment : BaseFragment() {
                 }
             }
         }
+
 
 
     }
@@ -166,7 +236,7 @@ class HomeFragment : BaseFragment() {
         return list
     }
 
-    private fun homeGuideList(): List<GuideProfile> {
+    private fun homeGuideList(): ArrayList<GuideProfile> {
         val list = ArrayList<GuideProfile>()
         for (i in 0..10) {
             list.add(

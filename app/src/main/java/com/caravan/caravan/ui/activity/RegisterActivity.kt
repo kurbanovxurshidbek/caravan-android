@@ -52,7 +52,7 @@ class RegisterActivity : BaseActivity() {
             viewModel.register.collect {
                 when (it) {
                     is UiStateObject.LOADING -> {
-                        showLoading(this@RegisterActivity)
+                        showLoading()
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()

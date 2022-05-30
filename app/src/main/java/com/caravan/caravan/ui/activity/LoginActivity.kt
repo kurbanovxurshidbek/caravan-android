@@ -50,7 +50,7 @@ class LoginActivity : BaseActivity() {
             viewModel.sendSMS.collect {
                 when (it) {
                     is UiStateObject.LOADING -> {
-                        showLoading(this@LoginActivity)
+                        showLoading()
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
@@ -69,7 +69,7 @@ class LoginActivity : BaseActivity() {
             viewModel.checkSMS.collect {
                 when (it) {
                     is UiStateObject.LOADING -> {
-                        showLoading(this@LoginActivity)
+                        showLoading()
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()

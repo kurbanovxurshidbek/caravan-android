@@ -14,7 +14,7 @@ import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemGuideHomeBinding
 import com.caravan.caravan.model.GuideProfile
 
-class GuideHomeAdapter(private val list: List<GuideProfile>)
+class GuideHomeAdapter(private val list: ArrayList<GuideProfile>)
     : RecyclerView.Adapter<GuideHomeAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val itemBinding: ItemGuideHomeBinding) : RecyclerView.ViewHolder(itemBinding.root){

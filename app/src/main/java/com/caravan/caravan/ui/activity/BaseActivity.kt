@@ -47,12 +47,12 @@ open class BaseActivity : AppCompatActivity() {
         })
     }
 
-    open fun showLoading(activity: Activity) {
-
+    open fun showLoading() {
+        Dialog.showLoading(this)
     }
 
     open fun dismissLoading() {
-
+        Dialog.dismissLoading()
     }
 
 }
