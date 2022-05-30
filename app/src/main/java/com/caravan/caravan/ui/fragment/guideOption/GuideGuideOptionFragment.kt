@@ -44,7 +44,7 @@ class GuideGuideOptionFragment : BaseFragment() {
                 findNavController().navigate(R.id.action_guideGuideOptionFragment_to_editGuideAccountFragment)
             }
             sbIsHiring.setOnCheckedChangeListener { buttonView, isChecked ->
-                if (isChecked) {
+                if (isChecked && buttonView.isPressed) {
                     Dialog.showAlertDialog(
                         requireContext(),
                         getString(R.string.str_isHiring),
