@@ -2,16 +2,14 @@ package com.caravan.caravan.utils
 
 import android.app.Dialog
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.AlertDialogBinding
 import com.caravan.caravan.databinding.DialogLoadingBinding
 import com.caravan.caravan.databinding.DialogMessageBinding
 import com.caravan.caravan.databinding.DialogWarningBinding
+import com.caravan.caravan.utils.Extensions.setTransparentWindow
 
 object Dialog {
 
@@ -95,7 +93,7 @@ object Dialog {
         loadingDialog?.setContentView(loadingBinding.root)
         loadingDialog?.setCancelable(false)
 
-        loadingDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        loadingDialog?.setTransparentWindow()
         loadingDialog?.window?.setLayout(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
