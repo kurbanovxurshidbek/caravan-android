@@ -15,7 +15,7 @@ object RetrofitHttp {
 
     const val IS_TESTER = true
 
-    private const val SERVER_DEVELOPMENT = "http://167.172.66.39:8080"
+    private const val SERVER_DEVELOPMENT = "http://137.184.80.70:8080"
     private const val SERVER_PRODUCTION = ""
 
     private fun server(): String {

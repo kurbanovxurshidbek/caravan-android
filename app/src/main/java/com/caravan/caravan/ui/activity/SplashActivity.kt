@@ -3,7 +3,6 @@ package com.caravan.caravan.ui.activity
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.view.WindowManager
 import com.caravan.caravan.R
 import com.caravan.caravan.manager.SharedPref
 import java.util.*
@@ -13,7 +12,6 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-
         initViews()
     }
 
