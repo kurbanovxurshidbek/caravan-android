@@ -87,23 +87,26 @@ object Dialog {
     }
 
     fun showLoading(context: Context) {
-        if (loadingDialog == null)
+        if (loadingDialog == null) {
             loadingDialog = Dialog(context)
-        val loadingBinding = DialogLoadingBinding.inflate(LayoutInflater.from(context))
-        loadingDialog?.setContentView(loadingBinding.root)
-        loadingDialog?.setCancelable(false)
+            val loadingBinding = DialogLoadingBinding.inflate(LayoutInflater.from(context))
+            loadingDialog?.setContentView(loadingBinding.root)
+            loadingDialog?.setCancelable(false)
 
-        loadingDialog?.setTransparentWindow()
-        loadingDialog?.window?.setLayout(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        loadingDialog?.show()
+            loadingDialog?.setTransparentWindow()
+            loadingDialog?.window?.setLayout(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            loadingDialog?.show()
+        }
+
 
     }
 
     fun dismissLoading() {
         loadingDialog?.dismiss()
+        loadingDialog = null
     }
 
 }

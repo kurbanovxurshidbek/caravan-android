@@ -1,22 +1,20 @@
 package com.caravan.caravan.ui.fragment.edit
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.ui.graphics.Color
+import androidx.fragment.app.Fragment
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.FragmentEditProfileBinding
 import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.utils.Dialog
-import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.viewBinding
 import com.sangcomz.fishbun.FishBun
@@ -75,7 +73,7 @@ class EditProfileFragment : BaseFragment() {
 
     private fun saveProfileData() {
         //edit request
-
+        Log.d("@@@@", "saveProfileData: ${binding.tvBirthday.text}")
         Dialog.showDialogMessage(
             requireContext(),
             getString(R.string.str_saved),
