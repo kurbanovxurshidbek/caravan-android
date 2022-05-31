@@ -64,7 +64,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setUpObserves() {
-        lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.home.collect {
                 when (it) {
                     is UiStateObject.LOADING -> {
@@ -208,9 +208,9 @@ class HomeFragment : BaseFragment() {
             list.add(
                 Trip("1", "Khiva in 3 days",
                     ArrayList<TourPhoto>().apply {
-                        add(TourPhoto("1", 1, "jpg", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
-                        add(TourPhoto("1", 1, "jpg", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
-                        add(TourPhoto("1", 1, "jpg", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(TourPhoto("1", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(TourPhoto("1", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(TourPhoto("1", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
                     },
                     ArrayList<Facility>().apply {
                         add(Facility("1", "Moshina", "Moshina bilan taminliman"))
