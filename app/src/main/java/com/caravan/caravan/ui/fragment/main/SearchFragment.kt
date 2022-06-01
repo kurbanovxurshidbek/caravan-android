@@ -227,33 +227,21 @@ class SearchFragment : BaseFragment() {
                         add(
                             TourPhoto(
                                 "1",
-                                1,
-                                "jpg",
                                 Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "12.02.2022",
-                                null,
                                 "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
                             )
                         )
                         add(
                             TourPhoto(
                                 "1",
-                                1,
-                                "jpg",
                                 Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "12.02.2022",
-                                null,
                                 "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
                             )
                         )
                         add(
                             TourPhoto(
                                 "1",
-                                1,
-                                "jpg",
                                 Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "12.02.2022",
-                                null,
                                 "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
                             )
                         )
