@@ -18,7 +18,7 @@ class TripGuideAdapter(var items: ArrayList<Trip>) :
             itemTripGuideBinding.tvTripTitle.text = trip.description
             itemTripGuideBinding.ratingBarTrip.rating = trip.rate.toFloat()
             itemTripGuideBinding.tvTripCommentsCount.text =
-                "(${trip.comments?.size})"
+                "(${trip.reviews?.size})"
             itemTripGuideBinding.ivDeleteTrip.setImageResource(R.drawable.ic_delete)
             itemView.setOnClickListener {
                 // When Item Clicked

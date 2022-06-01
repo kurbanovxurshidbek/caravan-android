@@ -6,5 +6,5 @@ data class RegisterRespond(
     val isRegistered: Boolean = true,
     val title: String? = null,
     val message: String? = null,
-    val profile: Profile?
+    val profile: Profile? = null
 )

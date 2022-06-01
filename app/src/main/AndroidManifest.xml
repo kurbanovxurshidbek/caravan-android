@@ -11,6 +11,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
@@ -33,6 +34,7 @@
 
         <activity
             android:name=".ui.activity.GuideOptionActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
 
         <activity
@@ -41,6 +43,7 @@
 
         <activity
             android:name=".ui.activity.EditActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
 
         <activity

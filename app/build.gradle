@@ -43,7 +43,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.6.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
@@ -79,21 +79,6 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-common-java8:2.5.0-rc01"
 
-    // alternately - if using Java8, use the following instead of lifecycle-compiler
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.5.0-rc01")
-
-    // optional - helpers for implementing LifecycleOwner in a Service
-    implementation("androidx.lifecycle:lifecycle-service:2.5.0-rc01")
-
-    // optional - ProcessLifecycleOwner provides a lifecycle for the whole application process
-    implementation("androidx.lifecycle:lifecycle-process:2.5.0-rc01")
-
-    // optional - ReactiveStreams support for LiveData
-    implementation("androidx.lifecycle:lifecycle-reactivestreams-ktx:2.5.0-rc01")
-
-    // optional - Test helpers for LiveData
-    testImplementation 'androidx.arch.core:core-testing:2.1.0'
-
     //sliderVIewIndicator
     implementation 'com.github.zhpanvip:viewpagerindicator:1.2.1'
 
@@ -115,5 +100,7 @@ dependencies {
     // Lifecycle ViewModel LiveData
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.1"
+
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
 
 }

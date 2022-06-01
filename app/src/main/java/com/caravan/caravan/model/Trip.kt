@@ -14,7 +14,7 @@ data class Trip(
     val phoneNumber: String,
     val rate: Double,
     val attendancesProfileId: ArrayList<String>,
-    val comments: ArrayList<Comment>? = null
+    val reviews: ArrayList<Comment>? = null
 )
 
 data class Facility(
@@ -29,10 +29,6 @@ data class CreateTrip(
 
 data class TourPhoto(
     val id: String? = null,
-    val size: Long,
-    val extension: String,
     val location: Location,
-    val createdDate: String,
-    val updatedDate: String? = null,
     val url: String
 )

@@ -3,7 +3,7 @@ package com.caravan.caravan.utils
 import android.app.Activity
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
+import android.app.Dialog
 import androidx.fragment.app.Fragment
 
 object Extensions {
@@ -18,7 +18,8 @@ object Extensions {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-
-
+    fun Dialog.setTransparentWindow() {
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
 
 }

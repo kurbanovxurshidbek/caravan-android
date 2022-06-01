@@ -1,6 +1,9 @@
 package com.caravan.caravan.ui.fragment.main
 
+import android.content.Context
 import android.graphics.Color
+import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,6 +11,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.GuideHomeAdapter
@@ -15,7 +23,19 @@ import com.caravan.caravan.adapter.SliderViewAdapter
 import com.caravan.caravan.adapter.TripAdapter
 import com.caravan.caravan.databinding.FragmentHomeBinding
 import com.caravan.caravan.model.*
+import com.caravan.caravan.model.home.HomeRespond
+import com.caravan.caravan.network.ApiService
+import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Dialog
+import com.caravan.caravan.utils.OkInterface
+import com.caravan.caravan.utils.UiStateObject
+import com.caravan.caravan.viewmodel.auth.RegisterRepository
+import com.caravan.caravan.viewmodel.auth.RegisterViewModel
+import com.caravan.caravan.viewmodel.auth.RegisterViewModelFactory
+import com.caravan.caravan.viewmodel.main.home.HomeRepository
+import com.caravan.caravan.viewmodel.main.home.HomeViewModel
+import com.caravan.caravan.viewmodel.main.home.HomeViewModelFactory
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
 
@@ -70,6 +90,7 @@ class HomeFragment : BaseFragment() {
             }
         }
 
+
     }
 
     private fun homeTripList(): ArrayList<Trip> {
@@ -118,39 +139,9 @@ class HomeFragment : BaseFragment() {
                 Trip(
                     "1", "Khiva in 3 days",
                     ArrayList<TourPhoto>().apply {
-                        add(
-                            TourPhoto(
-                                "1",
-                                1,
-                                "jpg",
-                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "12.02.2022",
-                                null,
-                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
-                            )
-                        )
-                        add(
-                            TourPhoto(
-                                "1",
-                                1,
-                                "jpg",
-                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "12.02.2022",
-                                null,
-                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
-                            )
-                        )
-                        add(
-                            TourPhoto(
-                                "1",
-                                1,
-                                "jpg",
-                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "12.02.2022",
-                                null,
-                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
-                            )
-                        )
+                        add(TourPhoto("1", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(TourPhoto("1", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(TourPhoto("1", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
                     },
                     ArrayList<Facility>().apply {
                         add(Facility("1", "Moshina", "Moshina bilan taminliman"))

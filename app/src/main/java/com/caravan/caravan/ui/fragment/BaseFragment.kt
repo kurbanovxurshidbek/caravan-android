@@ -15,8 +15,12 @@ import com.caravan.caravan.ui.activity.GuideOptionActivity
 import com.caravan.caravan.ui.activity.MainActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+import com.caravan.caravan.ui.fragment.guideOption.FeedbackRespondFragment
+import com.caravan.caravan.utils.Dialog
+import com.caravan.caravan.utils.OkInterface
 
 abstract class BaseFragment : Fragment() {
+open class BaseFragment: Fragment() {
 
     open fun goToDetailsActivity(trip: Trip) {
         val intent = Intent(requireContext(), DetailsActivity::class.java)
@@ -63,5 +67,13 @@ abstract class BaseFragment : Fragment() {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
+
+    fun showLoading() {
+        Dialog.showLoading(requireContext())
+    }
+
+    fun dismissLoading() {
+        Dialog.dismissLoading()
+    }
 
 }

@@ -24,7 +24,7 @@ import com.caravan.caravan.utils.Dialog
 import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
-import com.caravan.caravan.viewmodel.auth.RegisterRepository
+import com.caravan.caravan.viewmodel.auth.LoginRepository
 import com.caravan.caravan.viewmodel.auth.RegisterViewModel
 import com.caravan.caravan.viewmodel.auth.RegisterViewModelFactory
 
@@ -43,7 +43,6 @@ class RegisterActivity : BaseActivity() {
 
         setUpViewModel()
         setUpObserves()
-
         initViews()
     }
 
@@ -52,11 +51,11 @@ class RegisterActivity : BaseActivity() {
             viewModel.register.collect {
                 when (it) {
                     is UiStateObject.LOADING -> {
-                        showLoading(this@RegisterActivity)
+                        showLoading()
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        checkOTP(it.data)
+                        register(it.data)
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
@@ -68,8 +67,11 @@ class RegisterActivity : BaseActivity() {
         }
     }
 
-    private fun checkOTP(data: RegisterRespond) {
+    private fun register(data: RegisterRespond) {
         if (data.isRegistered) {
+            if (data.profile != null) {
+                SharedPref(this).saveString("profileId", data.profile.id)
+            }
             callMainActivity(data.profile)
         } else {
             Dialog.showDialogWarning(
@@ -88,7 +90,7 @@ class RegisterActivity : BaseActivity() {
     private fun setUpViewModel() {
         viewModel = ViewModelProvider(
             this,
-            RegisterViewModelFactory(RegisterRepository(RetrofitHttp.createService(ApiService::class.java)))
+            RegisterViewModelFactory(LoginRepository(RetrofitHttp.createService(ApiService::class.java)))
         )[RegisterViewModel::class.java]
     }
 
@@ -106,7 +108,6 @@ class RegisterActivity : BaseActivity() {
 
             val name = binding.etFirstName.text.toString()
             val surname = binding.etSurname.text.toString()
-
             val registerSend = RegisterSend(name, surname, phoneNumber, gender!!)
             viewModel.register(registerSend)
 
