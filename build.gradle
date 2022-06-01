@@ -2,14 +2,11 @@
 
 buildscript {
     repositories {
-        // Check that you have the following line (if not, add it):
-        google()  // Google's Maven repository
-
+        google()
     }
     dependencies {
-
         classpath 'com.google.gms:google-services:4.3.10'
-
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.4.2")
     }
 }
 

@@ -32,6 +32,6 @@ interface ApiService {
     @POST("/api/v1/guide")
     suspend fun upgradeToGuide(@Body upgradeSend: UpgradeSend): Response<GuideProfile>
 
-    suspend fun getHomeData(): HomeRespond
+    suspend fun getHomeData(): Response<HomeRespond>
 
 }

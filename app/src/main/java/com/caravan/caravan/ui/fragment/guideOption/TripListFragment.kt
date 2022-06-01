@@ -84,34 +84,22 @@ class TripListFragment : Fragment() {
                         add(
                             TourPhoto(
                                 "1",
-                                1,
-                                "jpg",
                                 Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "12.02.2022",
-                                null,
-                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                                "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
                             )
                         )
                         add(
                             TourPhoto(
                                 "1",
-                                1,
-                                "jpg",
                                 Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "12.02.2022",
-                                null,
-                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                                "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
                             )
                         )
                         add(
                             TourPhoto(
                                 "1",
-                                1,
-                                "jpg",
                                 Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "12.02.2022",
-                                null,
-                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                                "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
                             )
                         )
                     },
