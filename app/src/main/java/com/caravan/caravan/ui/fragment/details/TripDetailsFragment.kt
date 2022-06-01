@@ -11,8 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.Navigation
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -46,15 +44,16 @@ class TripDetailsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         fragmentTripDetailsBinding = FragmentTripDetailsBinding.inflate(layoutInflater)
-        overlayViewBinding = OverlayViewBinding.bind(
-            LayoutInflater.from(requireContext())
-                .inflate(R.layout.overlay_view, RelativeLayout(requireContext()), false)
-        )
         initViews()
         return fragmentTripDetailsBinding.root
     }
 
     private fun initViews() {
+        overlayViewBinding = OverlayViewBinding.bind(
+            LayoutInflater.from(requireContext())
+                .inflate(R.layout.overlay_view, RelativeLayout(requireContext()), false)
+        )
+
         setViewPager()
         setTravelLocations()
         setFacilities()
@@ -64,15 +63,14 @@ class TripDetailsFragment : BaseFragment() {
         fragmentTripDetailsBinding.tvGuidePrice.text = setPrice(myTrip())
 
         fragmentTripDetailsBinding.guideProfile.setOnClickListener {
-            Navigation.findNavController(fragmentTripDetailsBinding.root)
+            Navigation.findNavController(requireActivity(), R.id.details_nav_fragment)
                 .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment);
         }
 
     }
 
     fun setImageViewer(position: Int) {
-        val windowInsetsController =
-            ViewCompat.getWindowInsetsController(requireActivity().window.decorView)
+
         val mView = LayoutInflater.from(requireContext())
             .inflate(R.layout.overlay_view, LinearLayout(requireContext()), false)
 
@@ -85,14 +83,11 @@ class TripDetailsFragment : BaseFragment() {
             requireContext(),
             myTrip().photos
         ) { view, image ->
-//            // Hide the system bars.
-            windowInsetsController?.hide(WindowInsetsCompat.Type.systemBars())
+
 
             Glide.with(requireContext()).load(image.url).into(view)
         }.withHiddenStatusBar(false)
             .withDismissListener {
-//                // Show the system bars.
-                windowInsetsController!!.show(WindowInsetsCompat.Type.systemBars())
                 overlayViewBinding = OverlayViewBinding.bind(mView)
             }
             .withStartPosition(position)

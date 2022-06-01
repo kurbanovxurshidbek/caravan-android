@@ -3,9 +3,9 @@ package com.caravan.caravan.ui.fragment.main
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.GuideAdapter
@@ -15,29 +15,54 @@ import com.caravan.caravan.databinding.BottomDialogTripBinding
 import com.caravan.caravan.databinding.FragmentSearchBinding
 import com.caravan.caravan.model.*
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Extensions.toast
+
 
 class SearchFragment : BaseFragment() {
     lateinit var binding: FragmentSearchBinding
     private var isGuide: Boolean = true
-    lateinit var dialogGuideBinding: BottomDialogGuideBinding
+    private lateinit var dialogGuideBinding: BottomDialogGuideBinding
     lateinit var dialogTripBinding: BottomDialogTripBinding
     var gender: String = ""
     lateinit var guideAdapter: GuideAdapter
     lateinit var tripAdapter: TripAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         initViews()
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        openKeyboard(binding.etSearch)
+    }
+
     fun initViews() {
+        openKeyboard(binding.etSearch)
 
         binding.recyclerView.layoutManager = GridLayoutManager(activity, 1)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            binding.apply {
+                recyclerView.setOnScrollChangeListener { p0, p1, p2, p3, p4 ->
+                    if (etSearch.isFocused) {
+                        closeKeyboard(etSearch)
+                    }
+                }
+            }
+        }
 
         selectRole()
 
@@ -53,7 +78,8 @@ class SearchFragment : BaseFragment() {
 
     }
 
-    fun selectRole() {
+
+    private fun selectRole() {
         binding.tvGuide.setOnClickListener {
             binding.tvGuide.setBackgroundResource(R.drawable.backgroung_text_search_selected)
             binding.tvTrip.setBackgroundResource(R.drawable.backgroung_text_search)
@@ -68,7 +94,7 @@ class SearchFragment : BaseFragment() {
         }
     }
 
-    fun showBottomGuideDialog() {
+    private fun showBottomGuideDialog() {
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialogGuideBinding = BottomDialogGuideBinding.inflate(layoutInflater)
@@ -87,7 +113,7 @@ class SearchFragment : BaseFragment() {
 
     }
 
-    fun showBottomTripDialog() {
+    private fun showBottomTripDialog() {
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialogTripBinding = BottomDialogTripBinding.inflate(layoutInflater)
@@ -120,17 +146,17 @@ class SearchFragment : BaseFragment() {
         }
     }
 
-    fun refreshAdapterGuide(list: ArrayList<GuideProfile>) {
-        guideAdapter = GuideAdapter(list)
+    private fun refreshAdapterGuide(list: ArrayList<GuideProfile>) {
+        guideAdapter = GuideAdapter(this, list)
         binding.recyclerView.adapter = guideAdapter
     }
 
-    fun refreshAdapterTrip(list: ArrayList<Trip>) {
+    private fun refreshAdapterTrip(list: ArrayList<Trip>) {
         tripAdapter = TripAdapter(this, list)
         binding.recyclerView.adapter = tripAdapter
     }
 
-    fun loadItemGuides(): ArrayList<GuideProfile> {
+    private fun loadItemGuides(): ArrayList<GuideProfile> {
         val items = ArrayList<GuideProfile>()
 
         for (i in 0..20) {
@@ -178,7 +204,7 @@ class SearchFragment : BaseFragment() {
         return items
     }
 
-    fun loadItemTrips(): ArrayList<Trip> {
+    private fun loadItemTrips(): ArrayList<Trip> {
         val items = ArrayList<Trip>()
         val guide = GuideProfile(
             "100001",

@@ -13,8 +13,10 @@ import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemGuideHomeBinding
 import com.caravan.caravan.model.GuideProfile
+import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.ui.fragment.main.HomeFragment
 
-class GuideHomeAdapter(private val list: List<GuideProfile>)
+class GuideHomeAdapter(private val context: BaseFragment, private val list: List<GuideProfile>)
     : RecyclerView.Adapter<GuideHomeAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val itemBinding: ItemGuideHomeBinding) : RecyclerView.ViewHolder(itemBinding.root){
@@ -27,7 +29,9 @@ class GuideHomeAdapter(private val list: List<GuideProfile>)
 //            itemBinding.tvProvince.text = provinces(guide)
 
             itemView.setOnClickListener {
-                //When item clicked
+                if(context is HomeFragment){
+                    context.goToDetailsActivity(list[adapterPosition])
+                }
             }
         }
 

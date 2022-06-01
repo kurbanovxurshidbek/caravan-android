@@ -132,6 +132,8 @@ class LoginActivity : BaseActivity() {
         binding.etPhone.requestFocus()
         binding.etOTP.setAnimationEnable(true)
         binding.btnGetCode.setOnClickListener {
+            callMainActivity(null, true, null) ///...................................... should be deleted!
+
             if (binding.btnGetCode.text == getString(R.string.str_confirm)) {
                 if (binding.etOTP.text.toString().length == 4) checkOtp()
                 else toast(getString(R.string.str_enter_code))
@@ -194,9 +196,9 @@ class LoginActivity : BaseActivity() {
 
     private fun callMainActivity(profile: Profile?, isGuide: Boolean, guideProfile: GuideProfile?) {
         val intent = Intent(this, MainActivity::class.java)
-        SharedPref(this).saveBoolean("loginDone", true)
-        SharedPref(this).saveString("profileId", profile!!.id)
-        if (isGuide) SharedPref(this).saveString("guideId", guideProfile!!.id)
+//        SharedPref(this).saveBoolean("loginDone", true)
+//        SharedPref(this).saveString("profileId", profile!!.id)
+//        if (isGuide) SharedPref(this).saveString("guideId", guideProfile!!.id)   \\\\\\\\Should be UnCommented||||||||
         startActivity(intent)
         finish()
     }
