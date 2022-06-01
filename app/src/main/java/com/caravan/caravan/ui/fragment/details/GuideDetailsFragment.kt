@@ -14,9 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.CommentsAdapter
@@ -27,12 +29,19 @@ import com.caravan.caravan.model.*
 import com.caravan.caravan.ui.fragment.BaseFragment
 import com.stfalcon.imageviewer.StfalconImageViewer
 
+
 class GuideDetailsFragment : BaseFragment() {
     private lateinit var guideDetailsBinding: FragmentGuideDetailsBinding
-    private var tripId: String = "null"
+    private var guideId: String = "null"
+    private var fromAnotherActivity = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            guideId = it.getString("guideId").toString()
+            fromAnotherActivity = it.getBoolean("fromAnotherActivity")
+        }
 
     }
 
@@ -44,6 +53,8 @@ class GuideDetailsFragment : BaseFragment() {
         initViews()
         return guideDetailsBinding.root
     }
+
+
 
     private fun initViews() {
         setProfilePhoto()
@@ -69,7 +80,7 @@ class GuideDetailsFragment : BaseFragment() {
         }
 
         guideDetailsBinding.guideTrips.setOnClickListener {
-            Navigation.findNavController(guideDetailsBinding.root)
+            Navigation.findNavController(requireActivity(), R.id.details_nav_fragment)
                 .navigate(R.id.action_guideDetailsFragment_to_guideTrips)
         }
 
@@ -80,20 +91,18 @@ class GuideDetailsFragment : BaseFragment() {
                 RelativeLayout(requireContext())
             )
 
-            val windowInsetsController =
-                ViewCompat.getWindowInsetsController(requireActivity().window.decorView)
 
             StfalconImageViewer.Builder<String?>(
                 requireContext(),
                 arrayOf(myTrip().guideProfile.profile.profilePhoto)
             ) { view, _ ->
-                // Hide the system bars.
-                windowInsetsController?.hide(WindowInsetsCompat.Type.systemBars())
-                Glide.with(guideDetailsBinding.root).load("https://i.insider.com/5d35bf63454a3947b349c915?width=1136&format=jpeg").into(view)
+
+                Glide.with(guideDetailsBinding.root)
+                    .load("https://i.insider.com/5d35bf63454a3947b349c915?width=1136&format=jpeg")
+                    .into(view)
             }.withHiddenStatusBar(false)
                 .withDismissListener {
-                    // Show the system bars.
-                    windowInsetsController!!.show(WindowInsetsCompat.Type.systemBars())
+
                 }
                 .withOverlayView(myView)
                 .show()
@@ -195,33 +204,21 @@ class GuideDetailsFragment : BaseFragment() {
                 add(
                     TourPhoto(
                         "1",
-                        1,
-                        "jpg",
                         Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                        "12.02.2022",
-                        null,
                         "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
                     )
                 )
                 add(
                     TourPhoto(
                         "1",
-                        1,
-                        "jpg",
                         Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                        "12.02.2022",
-                        null,
                         "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
                     )
                 )
                 add(
                     TourPhoto(
                         "1",
-                        1,
-                        "jpg",
                         Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                        "12.02.2022",
-                        null,
                         "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
                     )
                 )

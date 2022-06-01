@@ -14,7 +14,7 @@ class GuideTrips : BaseFragment() {
 
     private lateinit var tripsBinding: FragmentGuideTripsBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         tripsBinding = FragmentGuideTripsBinding.bind(inflater.inflate(R.layout.fragment_guide_trips, container, false))
 
         initViews()

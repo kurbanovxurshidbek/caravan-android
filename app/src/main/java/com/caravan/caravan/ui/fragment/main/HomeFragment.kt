@@ -1,9 +1,6 @@
 package com.caravan.caravan.ui.fragment.main
 
-import android.content.Context
 import android.graphics.Color
-import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,11 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import androidx.annotation.RequiresApi
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.GuideHomeAdapter
@@ -23,19 +15,7 @@ import com.caravan.caravan.adapter.SliderViewAdapter
 import com.caravan.caravan.adapter.TripAdapter
 import com.caravan.caravan.databinding.FragmentHomeBinding
 import com.caravan.caravan.model.*
-import com.caravan.caravan.model.home.HomeRespond
-import com.caravan.caravan.network.ApiService
-import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.Dialog
-import com.caravan.caravan.utils.OkInterface
-import com.caravan.caravan.utils.UiStateObject
-import com.caravan.caravan.viewmodel.auth.RegisterRepository
-import com.caravan.caravan.viewmodel.auth.RegisterViewModel
-import com.caravan.caravan.viewmodel.auth.RegisterViewModelFactory
-import com.caravan.caravan.viewmodel.main.home.HomeRepository
-import com.caravan.caravan.viewmodel.main.home.HomeViewModel
-import com.caravan.caravan.viewmodel.main.home.HomeViewModelFactory
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
 
@@ -44,76 +24,17 @@ class HomeFragment : BaseFragment() {
     private lateinit var homeBinding: FragmentHomeBinding
     private lateinit var handler: Handler
 
-    private lateinit var viewModel: HomeViewModel
-
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         homeBinding =
             FragmentHomeBinding.bind(inflater.inflate(R.layout.fragment_home, container, false))
-
-        setUpViewModel()
-        setUpObserves()
-
         initViews()
-
-
         return homeBinding.root
     }
 
-    private fun setUpObserves() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.home.collect {
-                when (it) {
-                    is UiStateObject.LOADING -> {
-                        showLoading()
-                    }
-                    is UiStateObject.SUCCESS -> {
-                        dismissLoading()
-                        home(it.data)
-                    }
-                    is UiStateObject.ERROR -> {
-                        dismissLoading()
-                        Dialog.showDialogWarning(requireContext(), getString(R.string.str_no_connection), getString(
-                            R.string.str_try_again), object: OkInterface {
-                            override fun onClick() {
-                                viewModel.home()
-                            }
-                        })
-                    }
-                    else -> Unit
-                }
-            }
-        }
-    }
-
-    private fun home(data: HomeRespond) {
-        if (data.status) {
-            homeBinding.homeGuideRecyclerView.adapter = GuideHomeAdapter(data.topGuides)
-            homeBinding.homeTripRecyclerView.adapter = TripAdapter(this,data.topTrips)
-        } else {
-            Dialog.showDialogWarning(requireContext(), data.title!!, data.message!!, object: OkInterface{
-                override fun onClick() {
-                    requireActivity().finish()
-                }
-            })
-        }
-    }
-
-    private fun setUpViewModel() {
-        viewModel = ViewModelProvider(
-            this,
-            HomeViewModelFactory(HomeRepository(RetrofitHttp.createService(ApiService::class.java)))
-        )[HomeViewModel::class.java]
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun initViews() {
-
-        viewModel.home()
-
         handler = Handler(Looper.myLooper()!!)
 
         homeBinding.viewPager2.apply {
@@ -122,7 +43,6 @@ class HomeFragment : BaseFragment() {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    Log.d("TAG", "onPageSelected: $position")
 
                     try {
                         handler.removeCallbacks(runnable)
@@ -133,32 +53,22 @@ class HomeFragment : BaseFragment() {
                             }, 2500)
                         }
                     } catch (exception: Exception) {
-                        Log.d("TAG", "onPageSelected: $exception")
-                    }
 
+                    }
 
                 }
             })
         }
 
-        homeBinding.homeGuideRecyclerView.adapter = GuideHomeAdapter(homeGuideList())
+        homeBinding.homeGuideRecyclerView.adapter = GuideHomeAdapter(this, homeGuideList())
 
-        homeBinding.homeTripRecyclerView.adapter = TripAdapter(this,homeTripList())
+        homeBinding.homeTripRecyclerView.adapter = TripAdapter(this, homeTripList())
 
-        //This code is to unfocus the searchbar when nestedScrollView is scrolled
         homeBinding.apply {
-            homeNestedScrollView.setOnScrollChangeListener { v, _, _, _, _ ->
-                if (etSearch.isFocused) {
-                    val outRect = Rect()
-                    etSearch.getGlobalVisibleRect(outRect)
-                    etSearch.clearFocus()
-                    val imm: InputMethodManager =
-                        v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(v.windowToken, 0)
-                }
+            etSearch.setOnClickListener {
+                navigateToSearchFragment()
             }
         }
-
 
 
     }
@@ -206,11 +116,30 @@ class HomeFragment : BaseFragment() {
 
         for (i in 0..10) {
             list.add(
-                Trip("1", "Khiva in 3 days",
+                Trip(
+                    "1", "Khiva in 3 days",
                     ArrayList<TourPhoto>().apply {
-                        add(TourPhoto("1", 1, "jpg", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
-                        add(TourPhoto("1", 1, "jpg", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
-                        add(TourPhoto("1", 1, "jpg", Location("1", "Khorezm", "Khiva", "Ichan Qala"), "12.02.2022", null, "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"))
+                        add(
+                            TourPhoto(
+                                "1",
+                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
+                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                            )
+                        )
+                        add(
+                            TourPhoto(
+                                "1",
+                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
+                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                            )
+                        )
+                        add(
+                            TourPhoto(
+                                "1",
+                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
+                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                            )
+                        )
                     },
                     ArrayList<Facility>().apply {
                         add(Facility("1", "Moshina", "Moshina bilan taminliman"))
@@ -236,7 +165,7 @@ class HomeFragment : BaseFragment() {
         return list
     }
 
-    private fun homeGuideList(): ArrayList<GuideProfile> {
+    private fun homeGuideList(): List<GuideProfile> {
         val list = ArrayList<GuideProfile>()
         for (i in 0..10) {
             list.add(
