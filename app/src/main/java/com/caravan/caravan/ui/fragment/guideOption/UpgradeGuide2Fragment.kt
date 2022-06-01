@@ -1,19 +1,19 @@
 package com.caravan.caravan.ui.fragment.guideOption
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -21,12 +21,21 @@ import com.caravan.caravan.R
 import com.caravan.caravan.adapter.UpgradeGuideLanguageAdapter
 import com.caravan.caravan.adapter.UpgradeGuideLocationAdapter
 import com.caravan.caravan.databinding.FragmentUpgradeGuide2Binding
+import com.caravan.caravan.manager.SharedPref
+import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Language
 import com.caravan.caravan.model.Location
+import com.caravan.caravan.model.Price
+import com.caravan.caravan.model.upgrade.UpgradeSend
+import com.caravan.caravan.network.ApiService
+import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.SwipeToDeleteCallback
-import com.caravan.caravan.utils.UpgradeGuideObject
-import com.caravan.caravan.utils.viewBinding
+import com.caravan.caravan.utils.*
+import com.caravan.caravan.utils.Extensions.toast
+import com.caravan.caravan.viewmodel.guideOption.upgrade.second.UpgradeGuide2Repository
+import com.caravan.caravan.viewmodel.guideOption.upgrade.second.UpgradeGuide2ViewModel
+import com.caravan.caravan.viewmodel.guideOption.upgrade.second.UpgradeGuide2ViewModelFactory
+import kotlinx.coroutines.flow.collect
 
 
 /**
@@ -36,16 +45,24 @@ import com.caravan.caravan.utils.viewBinding
  */
 class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     private val binding by viewBinding { FragmentUpgradeGuide2Binding.bind(it) }
+    lateinit var viewModel: UpgradeGuide2ViewModel
     lateinit var adapterlocation: UpgradeGuideLocationAdapter
     lateinit var adapterLanguage: UpgradeGuideLanguageAdapter
-    var languages: Array<String>? = null
-    var level:String = ""
-    var language:String = ""
+    var levels: Array<String>? = null
+    var levelSelected: String = ""
+    var languageSelected: String = ""
     var locationProvince: Array<String>? = null
     var locationDistrict: Array<String>? = null
+    var currencies: Array<String>? = null
+    var options: Array<String>? = null
     lateinit var province: String
     lateinit var district: String
     var desc: String = ""
+    var currency:String = ""
+    var option:String = ""
+    lateinit var profileId:String
+
+    val args:UpgradeGuide2FragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,12 +73,65 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
+
+        setUpViewModel()
+        setUpObservers()
+
+        profileId = SharedPref(requireContext()).getString("profileId")!!
+
+        initViews(profileId!!)
     }
 
-    private fun initViews() {
-        binding.recyclerViewLocation.setLayoutManager(GridLayoutManager(activity,1))
-        binding.recyclerViewLanguage.setLayoutManager(GridLayoutManager(activity,1))
+    private fun setUpViewModel() {
+        viewModel = ViewModelProvider(
+            this,
+            UpgradeGuide2ViewModelFactory(
+                UpgradeGuide2Repository(
+                    RetrofitHttp.createService(
+                        ApiService::class.java
+                    )
+                )
+            )
+        )[UpgradeGuide2ViewModel::class.java]
+    }
+
+    private fun setUpObservers(){
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated{
+            viewModel.upgrade.collect{
+                when(it){
+                    is UiStateObject.LOADING ->{
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS ->{
+                        dismissLoading()
+                        completeAction()
+                    }
+                    is UiStateObject.ERROR ->{
+                        dismissLoading()
+                        Dialog.showDialogWarning(
+                            requireContext(),
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+
+                            })
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+
+    private fun initViews(profileId: String) {
+
+        binding.apply {
+
+        recyclerViewLocation.setLayoutManager(GridLayoutManager(activity, 1))
+        recyclerViewLanguage.setLayoutManager(GridLayoutManager(activity, 1))
 
         setSpinner()
 
@@ -73,10 +143,34 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
         swipeToDeleteLocation()
         swipeToDeleteLanguage()
+
+
+
+
+        }
     }
 
+    fun completeAction(){
+        val secondNumber = args.secondNumber
 
-    private fun addLocationItems(){
+        binding.apply {
+            btnDone.setOnClickListener {
+                val user = UpgradeSend(
+                    profileId,
+                    secondNumber,
+                    etBiography.text.toString(),
+                    Price(etAmount.text.toString().toDouble(),currency,option),
+                    UpgradeGuideObject.myLanguageList,
+                    UpgradeGuideObject.myLocationList)
+
+                viewModel.upgradeToGuide(user)
+
+                toast("Completed")
+            }
+        }
+    }
+
+    private fun addLocationItems() {
         binding.etLocationDesc.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -86,44 +180,46 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         })
 
         binding.tvAddLocation.setOnClickListener {
-            if(desc != ""){
-                val location = Location("1",province,district,desc)
+            if (desc != "") {
+                val location = Location("1", province, district, desc)
 
                 UpgradeGuideObject.myLocationList.add(location)
                 refreshAdapterLocation(UpgradeGuideObject.myLocationList)
                 binding.etLocationDesc.text.clear()
-            }else{
-                Toast.makeText(requireContext(), "Please, fill the field first", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Please, fill the field first", Toast.LENGTH_SHORT)
+                    .show()
             }
 
         }
     }
 
-    private fun addLanguageItems(){
+    private fun addLanguageItems() {
         binding.etLanguage.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
-                language = binding.etLanguage.text.toString()
+                languageSelected = binding.etLanguage.text.toString()
             }
 
         })
 
         binding.tvAddLanguage.setOnClickListener {
-            if (language != "") {
-                val language = Language("1",language,level)
+            if (languageSelected != "") {
+                val language = Language("1", languageSelected, levelSelected)
                 UpgradeGuideObject.myLanguageList.add(language)
                 refreshAdapterLanguage(UpgradeGuideObject.myLanguageList)
                 binding.etLanguage.text.clear()
-            }else{
-                Toast.makeText(requireContext(), "Please, fill the field first", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Please, fill the field first", Toast.LENGTH_SHORT)
+                    .show()
             }
 
         }
     }
 
 
-    private fun swipeToDeleteLocation(){
+    private fun swipeToDeleteLocation() {
         val swipeToDeleteCallback = object : SwipeToDeleteCallback() {
             @SuppressLint("NotifyDataSetChanged")
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -136,7 +232,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
         itemTouchHelper.attachToRecyclerView(binding.recyclerViewLocation)
     }
-    private fun swipeToDeleteLanguage(){
+
+    private fun swipeToDeleteLanguage() {
         val swipeToDeleteCallback = object : SwipeToDeleteCallback() {
             @SuppressLint("NotifyDataSetChanged")
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -150,29 +247,31 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         itemTouchHelper.attachToRecyclerView(binding.recyclerViewLanguage)
     }
 
-    private fun setSpinner(){
-        val currencies = arrayOf<String?>("USD", "UZS", "EUR", "RUB")
+    private fun setSpinner() {
+        currencies = resources.getStringArray(R.array.currencies)
         binding.spinnerCurrency.onItemSelectedListener = this
 
-        val adapter: ArrayAdapter<*> = ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, currencies)
+        val adapter: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, currencies!!)
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         binding.spinnerCurrency.adapter = adapter
 
-        val days = arrayOf<String?>("Day","Hour","Month")
-        binding.spinnerDay.onItemSelectedListener = this
+        options = resources.getStringArray(R.array.options)
+        binding.spinnerDay.onItemSelectedListener = itemSelectedOption
 
-        val adapter1: ArrayAdapter<*> = ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, days)
+        val adapter1: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, options!!)
 
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         binding.spinnerDay.adapter = adapter1
 
-        languages = resources.getStringArray(R.array.level)
+        levels = resources.getStringArray(R.array.level)
         binding.spinnerLevel.onItemSelectedListener = itemSelectedLangaugeLevel
 
-        val adapter2: ArrayAdapter<*> = ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, languages!!)
+        val adapter2: ArrayAdapter<*> = ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, levels!!)
 
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -181,7 +280,11 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         locationProvince = resources.getStringArray(R.array.location)
         binding.spinnerLocationFrom.onItemSelectedListener = itemSelectedProvince
 
-        val adapter3: ArrayAdapter<*> = ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, locationProvince!!)
+        val adapter3: ArrayAdapter<*> = ArrayAdapter<Any?>(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            locationProvince!!
+        )
 
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -190,7 +293,11 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         locationDistrict = resources.getStringArray(R.array.location)
         binding.spinnerLocationTo.onItemSelectedListener = itemSelectedDistrict
 
-        val adapter4: ArrayAdapter<*> = ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, locationDistrict!!)
+        val adapter4: ArrayAdapter<*> = ArrayAdapter<Any?>(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            locationDistrict!!
+        )
 
         adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -199,44 +306,53 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
     val itemSelectedLangaugeLevel = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-            level = languages!![p2]
+            levelSelected = levels!![p2]
         }
+
         override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
     val itemSelectedProvince = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
             province = locationProvince!![p2]
         }
+
         override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
     val itemSelectedDistrict = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
             district = locationDistrict!![p2]
         }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {}
+    }
+    val itemSelectedOption = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            option = options!![p2]
+        }
+
         override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
 
 
     @SuppressLint("NotifyDataSetChanged")
-    fun refreshAdapterLocation(items:ArrayList<Location>){
-        adapterlocation = UpgradeGuideLocationAdapter(requireContext(),items)
+    fun refreshAdapterLocation(items: ArrayList<Location>) {
+        adapterlocation = UpgradeGuideLocationAdapter(requireContext(), items)
         binding.recyclerViewLocation.adapter = adapterlocation
         adapterlocation.notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun refreshAdapterLanguage(items:ArrayList<Language>){
-        adapterLanguage = UpgradeGuideLanguageAdapter(requireContext(),items)
+    fun refreshAdapterLanguage(items: ArrayList<Language>) {
+        adapterLanguage = UpgradeGuideLanguageAdapter(requireContext(), items)
         binding.recyclerViewLanguage.adapter = adapterLanguage
         adapterLanguage.notifyDataSetChanged()
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-
+        currency = currencies!![p2]
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
-
     }
 
 

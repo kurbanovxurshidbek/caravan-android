@@ -344,6 +344,7 @@
                 android:textStyle="normal" />
 
             <EditText
+                android:id="@+id/etBiography"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="20dp"
@@ -358,7 +359,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <Button
-        android:id="@+id/btnNext"
+        android:id="@+id/btnDone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"

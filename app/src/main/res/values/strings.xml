@@ -114,6 +114,8 @@
     <string name="str_upload_photo">Upload Photo</string>
     <string name="str_fill_the_location_of_that_picture">Fill the location of that picture</string>
     <string name="str_upload">Upload</string>
+    <string name="error">Error</string>
+    <string name="went_wrong">Something went wrong. Please try again</string>
 
     <string-array name="location">
         <item>Tashkent</item>
@@ -137,5 +139,19 @@
         <item>Advanced</item>
         <item>Native</item>
     </string-array>
+
+    <string-array name="currencies">
+        <item>USD</item>
+        <item>UZS</item>
+        <item>EUR</item>
+    </string-array>
+
+    <string-array name="options">
+        <item>Day</item>
+        <item>Hour</item>
+        <item>Trip</item>
+    </string-array>
+
+
 
 </resources>

@@ -27,11 +27,11 @@ interface ApiService {
     suspend fun getProfile(@Path("profileId") profileId: String): Response<Profile>
 
     @PUT("/api/v1/profile/{profileId}")
-    suspend fun updateProfile(@Path("profileId") profileId: String, @Body profile: Profile): Response<Profile>
+    suspend fun updateProfile(@Path("profileId") profileId: String, @Body profile: Profile): Profile
 
     @POST("/api/v1/guide")
-    suspend fun upgradeToGuide(@Body upgradeSend: UpgradeSend): Response<GuideProfile>
+    suspend fun upgradeToGuide(@Body upgradeSend: UpgradeSend): GuideProfile
 
-    suspend fun getHomeData(): Response<HomeRespond>
+    suspend fun getHomeData(): HomeRespond
 
 }
