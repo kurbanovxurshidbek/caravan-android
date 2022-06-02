@@ -12,8 +12,7 @@
         tools:layout="@layout/fragment_guide_details">
         <action
             android:id="@+id/action_guideDetailsFragment_to_guideTrips"
-            app:destination="@id/guideTrips"
-            />
+            app:destination="@id/guideTrips" />
     </fragment>
 
     <fragment
