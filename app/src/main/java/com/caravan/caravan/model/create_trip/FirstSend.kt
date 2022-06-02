@@ -8,5 +8,5 @@ data class FirstSend(
     val travelLocations: ArrayList<Location>,
     val minPeople: Int,
     val maxPeople: Int,
-    val desc: String
+    val description: String
 )

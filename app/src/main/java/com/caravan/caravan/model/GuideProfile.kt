@@ -19,6 +19,6 @@ data class GuideProfile(
 
 data class Language(
     val id: String? = null,
-    val language: String,
+    val name: String,
     val level: String
 )

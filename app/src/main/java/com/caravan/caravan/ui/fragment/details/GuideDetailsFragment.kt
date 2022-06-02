@@ -14,11 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
-import androidx.activity.OnBackPressedCallback
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.CommentsAdapter
@@ -94,7 +90,7 @@ class GuideDetailsFragment : BaseFragment() {
 
             StfalconImageViewer.Builder<String?>(
                 requireContext(),
-                arrayOf(myTrip().guideProfile.profile.profilePhoto)
+                arrayOf(myTrip().guideProfile.profile.photo)
             ) { view, _ ->
 
                 Glide.with(guideDetailsBinding.root)
@@ -112,10 +108,10 @@ class GuideDetailsFragment : BaseFragment() {
     }
 
     private fun setPrice(trip: Trip): Spannable {
-        val text = "$${trip.price.price.toInt()}"
+        val text = "$${trip.price.cost.toInt()}"
         val endIndex = text.length
 
-        val outPutColoredText: Spannable = SpannableString("$text/${trip.price.option}")
+        val outPutColoredText: Spannable = SpannableString("$text/${trip.price.type}")
         outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
         outPutColoredText.setSpan(
             ForegroundColorSpan(Color.parseColor("#167351")),

@@ -35,7 +35,7 @@ class UpgradeGuideLocationAdapter(var context: Context, var items: ArrayList<Loc
             binding.apply {
                 tvLocationProvince.text = item.province
                 tvLocationDistrict.text = item.district
-                tvDesc.text = item.desc
+                tvDesc.text = item.description
             }
         }
     }
