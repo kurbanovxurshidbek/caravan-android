@@ -11,7 +11,7 @@ data class Profile(
     val role: String = "TOURIST", // GUIDE
     val guideId: String? = null,
     val status: String = "ACTIVE", // BLOCK
-    val profilePhoto: String? = null,
+    val photo: String? = null,
     val gender: String, // MALE, FEMALE
     val birthDate: String? = null,
     val createdDate: String,

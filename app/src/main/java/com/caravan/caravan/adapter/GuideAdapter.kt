@@ -1,6 +1,5 @@
 package com.caravan.caravan.adapter
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
@@ -22,7 +21,7 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<GuideProfile>
 
         fun onBind(guideProfile: GuideProfile) {
 
-            Glide.with(itemGuideBinding.ivGuide).load(guideProfile.profile.profilePhoto)
+            Glide.with(itemGuideBinding.ivGuide).load(guideProfile.profile.photo)
                 .into(itemGuideBinding.ivGuide)
             itemGuideBinding.tvGuidesFullname.text =
                 guideProfile.profile.name + " " + guideProfile.profile.surname
@@ -49,10 +48,10 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<GuideProfile>
         }
 
         private fun price(guide: GuideProfile): Spannable {
-            val text = "$${guide.price.price.toInt()}"
+            val text = "$${guide.price.cost.toInt()}"
             val endIndex = text.length
 
-            val outPutColoredText: Spannable = SpannableString("$text/${guide.price.option}")
+            val outPutColoredText: Spannable = SpannableString("$text/${guide.price.type}")
             outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
             outPutColoredText.setSpan(
                 ForegroundColorSpan(Color.parseColor("#167351")),

@@ -55,7 +55,7 @@ class FeedbackRespondFragment : BaseFragment() {
         }
 
         //Tourist
-        Glide.with(requireActivity()).load(comment.from.profilePhoto).into(binding.ivTourist)
+        Glide.with(requireActivity()).load(comment.from.photo).into(binding.ivTourist)
         binding.tvName.text = comment.from.name
         binding.rate.rating = comment.rate.toFloat()
         binding.tvRateCount.text = comment.rate.toString()
@@ -100,10 +100,10 @@ class FeedbackRespondFragment : BaseFragment() {
 
     @SuppressLint("ResourceAsColor")
     private fun price(trip: Trip): Spannable {
-        val text = "$${trip.price.price.toInt()}"
+        val text = "$${trip.price.cost.toInt()}"
         val endIndex = text.length
 
-        val outPutColoredText: Spannable = SpannableString("$text/${trip.price.option}")
+        val outPutColoredText: Spannable = SpannableString("$text/${trip.price.type}")
         outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
         outPutColoredText.setSpan(
             ForegroundColorSpan(Color.parseColor("#167351")),

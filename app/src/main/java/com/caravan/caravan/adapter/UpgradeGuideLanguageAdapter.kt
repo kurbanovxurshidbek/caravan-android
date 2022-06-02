@@ -26,7 +26,7 @@ class UpgradeGuideLanguageAdapter (var context: Context, var items:ArrayList<Lan
             val item = items[adapterPosition]
 
             binding.apply {
-                tvLanguage.text = item.language
+                tvLanguage.text = item.name
                 tvLevel.text = item.level
             }
         }

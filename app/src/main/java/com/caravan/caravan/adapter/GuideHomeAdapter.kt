@@ -9,7 +9,6 @@ import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemGuideHomeBinding
 import com.caravan.caravan.model.GuideProfile
@@ -37,10 +36,10 @@ class GuideHomeAdapter(private val context: BaseFragment, private val list: List
 
         @SuppressLint("ResourceAsColor")
         private fun price(guide: GuideProfile) : Spannable {
-            val text = "$${guide.price.price.toInt()}"
+            val text = "$${guide.price.cost.toInt()}"
             val endIndex = text.length
 
-            val outPutColoredText: Spannable = SpannableString("$text/${guide.price.option}")
+            val outPutColoredText: Spannable = SpannableString("$text/${guide.price.type}")
             outPutColoredText.setSpan(RelativeSizeSpan(1.2f),0, endIndex, 0)
             outPutColoredText.setSpan(ForegroundColorSpan(Color.parseColor("#167351")), 0, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 

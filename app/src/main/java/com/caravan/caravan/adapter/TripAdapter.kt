@@ -35,10 +35,10 @@ class TripAdapter(val context: Fragment, var items: ArrayList<Trip>) :
     }
 
     private fun price(trip: Trip): Spannable {
-        val text = "$${trip.price.price.toInt()}"
+        val text = "$${trip.price.cost.toInt()}"
         val endIndex = text.length
 
-        val outPutColoredText: Spannable = SpannableString("$text/${trip.price.option}")
+        val outPutColoredText: Spannable = SpannableString("$text/${trip.price.type}")
         outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
         outPutColoredText.setSpan(
             ForegroundColorSpan(Color.parseColor("#167351")),

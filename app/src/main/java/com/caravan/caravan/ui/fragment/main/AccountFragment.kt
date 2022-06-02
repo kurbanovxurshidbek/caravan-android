@@ -102,7 +102,7 @@ class AccountFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun setData() {
         binding.apply {
-            Glide.with(ivGuide).load(profile.profilePhoto).into(ivGuide)
+            Glide.with(ivGuide).load(profile.photo).into(ivGuide)
             tvGuidesFullName.text = "${profile.name} ${profile.surname}"
             tvGuidePhone.text = profile.phoneNumber
         }

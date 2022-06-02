@@ -57,7 +57,7 @@ class CreateTripAdapter(var fragment: CreateTrip2Fragment, var items:ArrayList<C
                 Glide.with(fragment).load(trip.photo).into(ivTrip)
                 tvProvince.text = trip.location.province
                 tvDistrict.text = trip.location.district
-                tvDesc.text = trip.location.desc
+                tvDesc.text = trip.location.description
 
                 ivClear.setOnClickListener {
                     fragment.removeItem(adapterPosition)

@@ -66,6 +66,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="false"
                     android:max="5"
+                    android:secondaryProgressTint="@color/main_color"
                     android:progressBackgroundTint="#90000000"
                     android:progressTint="@color/main_color"
                     android:rating="3.5" />

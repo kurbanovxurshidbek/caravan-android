@@ -77,7 +77,7 @@ class TripDetailsFragment : BaseFragment() {
         overlayViewBinding.name.text =
             myTrip().photos[position].location.province + ", " + myTrip().photos[position].location.district
         overlayViewBinding.tvDescription.text =
-            myTrip().photos[position].location.desc
+            myTrip().photos[position].location.description
 
         StfalconImageViewer.Builder(
             requireContext(),
@@ -97,17 +97,17 @@ class TripDetailsFragment : BaseFragment() {
                 overlayViewBinding.name.text =
                     myTrip().photos[it].location.province + ", " + myTrip().photos[it].location.district
                 overlayViewBinding.tvDescription.text =
-                    myTrip().photos[it].location.desc
+                    myTrip().photos[it].location.description
             }
             .show()
     }
 
 
     private fun setPrice(trip: Trip): Spannable {
-        val text = "$${trip.price.price.toInt()}"
+        val text = "$${trip.price.cost.toInt()}"
         val endIndex = text.length
 
-        val outPutColoredText: Spannable = SpannableString("$text/${trip.price.option}")
+        val outPutColoredText: Spannable = SpannableString("$text/${trip.price.type}")
         outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
         outPutColoredText.setSpan(
             ForegroundColorSpan(Color.parseColor("#167351")),
