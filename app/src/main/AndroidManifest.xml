@@ -30,7 +30,8 @@
 
         <activity
             android:name=".ui.activity.LoginActivity"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true" />
 
         <activity
             android:name=".ui.activity.GuideOptionActivity"
