@@ -8,6 +8,7 @@ data class LoginRespond(
     val message: String? = null, // The code you entered is incorrect. Please try again
     val isExist: Boolean = false,
     val isGuide: Boolean = false,
+    val guideId: String? = null,
     val profile: Profile? = null,
     val guideProfile: GuideProfile? = null
 )

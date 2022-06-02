@@ -14,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ActivityLoginBinding
 import com.caravan.caravan.manager.SharedPref
-import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Profile
 import com.caravan.caravan.model.auth.LoginRespond
 import com.caravan.caravan.model.auth.LoginSend
@@ -89,7 +88,7 @@ class LoginActivity : BaseActivity() {
     private fun onCheck(data: LoginRespond) {
         if (data.title == null) {
             if (data.isExist) {
-                callMainActivity(data.profile, data.isGuide, data.guideProfile)
+                callMainActivity(data.profile, data.isGuide, data.guideId)
             } else callRegistrationActivity()
         } else {
             Dialog.showDialogWarning(
@@ -132,6 +131,7 @@ class LoginActivity : BaseActivity() {
         binding.etPhone.requestFocus()
         binding.etOTP.setAnimationEnable(true)
         binding.btnGetCode.setOnClickListener {
+//            callMainActivity(null, true, null) ///...................................... should be deleted!
 
             if (binding.btnGetCode.text == getString(R.string.str_confirm)) {
                 if (binding.etOTP.text.toString().length == 4) checkOtp()
@@ -193,11 +193,13 @@ class LoginActivity : BaseActivity() {
         finish()
     }
 
-    private fun callMainActivity(profile: Profile?, isGuide: Boolean, guideProfile: GuideProfile?) {
+    private fun callMainActivity(profile: Profile?, isGuide: Boolean, guideId: String?) {
         val intent = Intent(this, MainActivity::class.java)
         SharedPref(this).saveBoolean("loginDone", true)
         SharedPref(this).saveString("profileId", profile!!.id)
-        if (isGuide) SharedPref(this).saveString("guideId", guideProfile!!.id)
+        if (isGuide) {
+            SharedPref(this).saveString("guideId", guideId!!)
+        }
         startActivity(intent)
         finish()
     }

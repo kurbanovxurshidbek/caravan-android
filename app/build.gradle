@@ -5,6 +5,8 @@ plugins {
 
 }
 
+apply plugin: 'com.google.gms.google-services'
+
 android {
     compileSdk 32
 
@@ -102,5 +104,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.1"
 
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:30.1.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-messaging'
 
 }

@@ -9,7 +9,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class RegisterViewModel(private val repository: LoginRepository): ViewModel() {
+class RegisterViewModel(private val repository: RegisterRepository): ViewModel() {
 
     private val _register = MutableStateFlow<UiStateObject<RegisterRespond>>(UiStateObject.EMPTY)
     val register = _register
