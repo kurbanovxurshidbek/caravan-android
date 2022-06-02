@@ -188,7 +188,7 @@ class TripDetailsFragment : BaseFragment() {
             "Ogabek Matyakubov",
             true,
             4.5,
-            Price(150.0, "USD", "day"),
+            Price(150, "USD", "day"),
             ArrayList<Language>().apply {
                 add(Language("1", "English", "Advanced"))
                 add(Language("2", "Uzbek", "Native"))
@@ -239,7 +239,7 @@ class TripDetailsFragment : BaseFragment() {
                 add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
             },
             "Khiva in 3 days",
-            Price(1200.0, "USD", "trip"),
+            Price(1200, "USD", "trip"),
             5, 10,
             guide,
             "+998997492581",

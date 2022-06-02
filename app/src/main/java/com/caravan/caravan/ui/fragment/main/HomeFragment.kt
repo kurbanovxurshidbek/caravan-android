@@ -99,7 +99,7 @@ class HomeFragment : BaseFragment() {
             "Ogabek Matyakubov",
             true,
             4.5,
-            Price(150.0, "USD", "day"),
+            Price(150, "USD", "day"),
             ArrayList<Language>().apply {
                 add(Language("1", "English", "Advanced"))
                 add(Language("2", "Uzbek", "Native"))
@@ -152,7 +152,7 @@ class HomeFragment : BaseFragment() {
                         add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
                     },
                     "Khiva in 3 days",
-                    Price(1200.0, "USD", "trip"),
+                    Price(1200, "USD", "trip"),
                     5, 10,
                     guide,
                     "+998997492581",
@@ -194,7 +194,7 @@ class HomeFragment : BaseFragment() {
                     "",
                     false,
                     3.5,
-                    Price(235.0, "USD", "day"),
+                    Price(235, "USD", "day"),
                     arrayListOf(),
                     arrayListOf(),
                     arrayListOf(),

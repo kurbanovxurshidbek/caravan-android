@@ -15,7 +15,6 @@ import com.caravan.caravan.databinding.BottomDialogTripBinding
 import com.caravan.caravan.databinding.FragmentSearchBinding
 import com.caravan.caravan.model.*
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.Extensions.toast
 
 
 class SearchFragment : BaseFragment() {
@@ -184,7 +183,7 @@ class SearchFragment : BaseFragment() {
                     "Ogabek Matyakubov",
                     true,
                     4.5,
-                    Price(150.0, "USD", "day"),
+                    Price(150, "USD", "day"),
                     ArrayList<Language>().apply {
                         add(Language("1", "English", "Advanced"))
                         add(Language("1", "Uzbek", "Native"))
@@ -229,7 +228,7 @@ class SearchFragment : BaseFragment() {
             "Ogabek Matyakubov",
             true,
             4.5,
-            Price(150.0, "USD", "day"),
+            Price(150, "USD", "day"),
             ArrayList<Language>().apply {
                 add(Language("1", "English", "Advanced"))
                 add(Language("1", "Uzbek", "Native"))
@@ -283,7 +282,7 @@ class SearchFragment : BaseFragment() {
                         add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
                     },
                     "Khiva in 3 days",
-                    Price(1200.0, "USD", "trip"),
+                    Price(1200, "USD", "trip"),
                     5, 10,
                     guide,
                     "+998997492581",
