@@ -13,9 +13,4 @@ class LoginRepository(private val apiService: ApiService) {
 
     suspend fun checkSMS(loginSend: LoginSend) = apiService.checkSmsCode(loginSend)
 
-    suspend fun register(registerSend: RegisterSend): Response<RegisterRespond> {
-        Log.d("TAG", "register: ${apiService.registerUser(registerSend)}")
-        return  apiService.registerUser(registerSend)
-    }
-
 }

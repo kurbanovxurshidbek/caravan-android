@@ -25,6 +25,7 @@ import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
 import com.caravan.caravan.viewmodel.auth.LoginRepository
+import com.caravan.caravan.viewmodel.auth.RegisterRepository
 import com.caravan.caravan.viewmodel.auth.RegisterViewModel
 import com.caravan.caravan.viewmodel.auth.RegisterViewModelFactory
 
@@ -90,7 +91,7 @@ class RegisterActivity : BaseActivity() {
     private fun setUpViewModel() {
         viewModel = ViewModelProvider(
             this,
-            RegisterViewModelFactory(LoginRepository(RetrofitHttp.createService(ApiService::class.java)))
+            RegisterViewModelFactory(RegisterRepository(RetrofitHttp.createService(ApiService::class.java)))
         )[RegisterViewModel::class.java]
     }
 
