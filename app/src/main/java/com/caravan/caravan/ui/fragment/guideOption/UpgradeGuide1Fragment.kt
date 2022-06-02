@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,10 +20,8 @@ import com.caravan.caravan.model.Profile
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.Dialog
-import com.caravan.caravan.utils.OkInterface
-import com.caravan.caravan.utils.UiStateObject
-import com.caravan.caravan.utils.viewBinding
+import com.caravan.caravan.utils.*
+import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.viewmodel.guideOption.upgrade.first.UpgradeGuide1Repository
 import com.caravan.caravan.viewmodel.guideOption.upgrade.first.UpgradeGuide1ViewModel
 import com.caravan.caravan.viewmodel.guideOption.upgrade.first.UpgradeGuide1ViewModelFactory
@@ -37,7 +36,6 @@ import java.util.*
 class UpgradeGuide1Fragment : BaseFragment() {
     private val binding by viewBinding { FragmentUpgradeGuide1Binding.bind(it) }
     lateinit var viewModel: UpgradeGuide1ViewModel
-
     lateinit var profile: Profile
     lateinit var user: Profile
 
@@ -51,6 +49,8 @@ class UpgradeGuide1Fragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        toast("Created")
 
         setUpViewModel()
         setUpObservers()
@@ -112,33 +112,7 @@ class UpgradeGuide1Fragment : BaseFragment() {
                 }
             }
         }
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            viewModel.update.collect {
-                when (it) {
-                    is UiStateObject.LOADING -> {
-                        showLoading()
-                    }
-                    is UiStateObject.SUCCESS -> {
-                        dismissLoading()
-                        openNextFragment()
-                    }
-                    is UiStateObject.ERROR -> {
-                        dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
-                            getString(R.string.str_no_connection),
-                            getString(R.string.str_try_again),
-                            object : OkInterface {
-                                override fun onClick() {
-                                    return
-                                }
 
-                            })
-                    }
-                    else -> Unit
-                }
-            }
-        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -176,6 +150,35 @@ class UpgradeGuide1Fragment : BaseFragment() {
             )
             Log.d("@@@", "initViews: $user")
             viewModel.updateProfile(profile.id, user)
+
+            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+                viewModel.update.collect {
+                    when (it) {
+                        is UiStateObject.LOADING -> {
+                            showLoading()
+                        }
+                        is UiStateObject.SUCCESS -> {
+                            dismissLoading()
+                                openNextFragment()
+
+                        }
+                        is UiStateObject.ERROR -> {
+                            dismissLoading()
+                            Dialog.showDialogWarning(
+                                requireContext(),
+                                getString(R.string.str_no_connection),
+                                getString(R.string.str_try_again),
+                                object : OkInterface {
+                                    override fun onClick() {
+                                        return
+                                    }
+
+                                })
+                        }
+                        else -> Unit
+                    }
+                }
+            }
         }
     }
 
@@ -214,6 +217,8 @@ class UpgradeGuide1Fragment : BaseFragment() {
             R.id.action_upgradeGuide1Fragment_to_upgradeGuide2Fragment,
             bundle
         )
+
+        UpgradeGuideObject.isCreated = true
     }
 
 }

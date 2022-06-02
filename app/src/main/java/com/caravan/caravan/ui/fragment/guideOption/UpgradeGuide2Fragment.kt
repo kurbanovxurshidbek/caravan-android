@@ -10,9 +10,11 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -35,15 +37,8 @@ import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.viewmodel.guideOption.upgrade.second.UpgradeGuide2Repository
 import com.caravan.caravan.viewmodel.guideOption.upgrade.second.UpgradeGuide2ViewModel
 import com.caravan.caravan.viewmodel.guideOption.upgrade.second.UpgradeGuide2ViewModelFactory
-import kotlinx.coroutines.flow.collect
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [UpgradeGuide2Fragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
+class UpgradeGuide2Fragment : Fragment(), AdapterView.OnItemSelectedListener {
     private val binding by viewBinding { FragmentUpgradeGuide2Binding.bind(it) }
     lateinit var viewModel: UpgradeGuide2ViewModel
     lateinit var adapterlocation: UpgradeGuideLocationAdapter
@@ -58,11 +53,11 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
     lateinit var province: String
     lateinit var district: String
     var desc: String = ""
-    var currency:String = ""
-    var option:String = ""
-    lateinit var profileId:String
+    var currency: String = ""
+    var option: String = ""
+    lateinit var profileId: String
 
-    val args:UpgradeGuide2FragmentArgs by navArgs()
+    val args: UpgradeGuide2FragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,6 +65,24 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
     ): View? {
         return inflater.inflate(R.layout.fragment_upgrade_guide2, container, false)
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(shouldInterceptBackPress()){
+                   toast("clicked")
+                    UpgradeGuideObject.isCreated = false
+                    findNavController().popBackStack()
+                }else{
+                    isEnabled = false
+                    activity?.onBackPressed()
+                }
+            }
+        })
+    }
+
+    fun shouldInterceptBackPress() = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -79,7 +92,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
         profileId = SharedPref(requireContext()).getString("profileId")!!
 
-        initViews(profileId!!)
+        initViews(profileId)
     }
 
     private fun setUpViewModel() {
@@ -95,19 +108,19 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         )[UpgradeGuide2ViewModel::class.java]
     }
 
-    private fun setUpObservers(){
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated{
-            viewModel.upgrade.collect{
-                when(it){
-                    is UiStateObject.LOADING ->{
-                        showLoading()
+    private fun setUpObservers() {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModel.upgrade.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                      //  showLoading()
                     }
-                    is UiStateObject.SUCCESS ->{
-                        dismissLoading()
+                    is UiStateObject.SUCCESS -> {
+                      //  dismissLoading()
                         completeAction()
                     }
-                    is UiStateObject.ERROR ->{
-                        dismissLoading()
+                    is UiStateObject.ERROR -> {
+                     //   dismissLoading()
                         Dialog.showDialogWarning(
                             requireContext(),
                             getString(R.string.str_no_connection),
@@ -125,49 +138,52 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         }
     }
 
-
     private fun initViews(profileId: String) {
 
         binding.apply {
 
-        recyclerViewLocation.setLayoutManager(GridLayoutManager(activity, 1))
-        recyclerViewLanguage.setLayoutManager(GridLayoutManager(activity, 1))
+            recyclerViewLocation.layoutManager = GridLayoutManager(requireContext(), 1)
+            recyclerViewLanguage.layoutManager = GridLayoutManager(requireContext(), 1)
 
-        setSpinner()
+            setSpinner()
 
-        addLocationItems()
-        addLanguageItems()
+            val secondNumber = args.secondNumber
 
-        refreshAdapterLocation(UpgradeGuideObject.myLocationList)
-        refreshAdapterLanguage(UpgradeGuideObject.myLanguageList)
+            btnDone.setOnClickListener {
+                requireActivity().onBackPressed()
 
-        swipeToDeleteLocation()
-        swipeToDeleteLanguage()
+                if (etBiography.text.isNotEmpty() && etAmount.text.isNotEmpty() && UpgradeGuideObject.myLanguageList.isNotEmpty() && UpgradeGuideObject.myLocationList.isNotEmpty()) {
+                    val user = UpgradeSend(
+                        profileId,
+                        secondNumber,
+                        etBiography.text.toString(),
+                        Price(etAmount.text.toString().toDouble(), currency, option),
+                        UpgradeGuideObject.myLanguageList,
+                        UpgradeGuideObject.myLocationList
+                    )
 
+                    viewModel.upgradeToGuide(user)
+                } else {
+                    toast("Please, fill the field first")
+                }
+            }
 
+            addLocationItems()
+            addLanguageItems()
 
+            refreshAdapterLocation(UpgradeGuideObject.myLocationList)
+            refreshAdapterLanguage(UpgradeGuideObject.myLanguageList)
+
+            swipeToDeleteLocation()
+            swipeToDeleteLanguage()
 
         }
     }
 
-    fun completeAction(){
-        val secondNumber = args.secondNumber
-
-        binding.apply {
-            btnDone.setOnClickListener {
-                val user = UpgradeSend(
-                    profileId,
-                    secondNumber,
-                    etBiography.text.toString(),
-                    Price(etAmount.text.toString().toDouble(),currency,option),
-                    UpgradeGuideObject.myLanguageList,
-                    UpgradeGuideObject.myLocationList)
-
-                viewModel.upgradeToGuide(user)
-
-                toast("Completed")
-            }
-        }
+    fun completeAction() {
+        findNavController().navigate(
+            R.id.action_upgradeGuide2Fragment_to_guideGuideOptionFragment
+        )
     }
 
     private fun addLocationItems() {
@@ -217,7 +233,6 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
         }
     }
-
 
     private fun swipeToDeleteLocation() {
         val swipeToDeleteCallback = object : SwipeToDeleteCallback() {
@@ -271,7 +286,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         levels = resources.getStringArray(R.array.level)
         binding.spinnerLevel.onItemSelectedListener = itemSelectedLangaugeLevel
 
-        val adapter2: ArrayAdapter<*> = ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, levels!!)
+        val adapter2: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, levels!!)
 
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -338,14 +354,12 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
     fun refreshAdapterLocation(items: ArrayList<Location>) {
         adapterlocation = UpgradeGuideLocationAdapter(requireContext(), items)
         binding.recyclerViewLocation.adapter = adapterlocation
-        adapterlocation.notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
     fun refreshAdapterLanguage(items: ArrayList<Language>) {
         adapterLanguage = UpgradeGuideLanguageAdapter(requireContext(), items)
         binding.recyclerViewLanguage.adapter = adapterLanguage
-        adapterLanguage.notifyDataSetChanged()
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -354,6 +368,4 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
     }
-
-
 }

@@ -94,6 +94,9 @@
         <argument
             android:name="secondNumber"
             app:argType="string" />
+        <action
+            android:id="@+id/action_upgradeGuide2Fragment_to_guideGuideOptionFragment"
+            app:destination="@id/guideGuideOptionFragment" />
     </fragment>
     <fragment
         android:id="@+id/uploadImageFragment"

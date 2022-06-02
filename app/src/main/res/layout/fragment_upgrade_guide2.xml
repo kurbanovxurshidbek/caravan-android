@@ -266,7 +266,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/circular_std_bold"
-                        android:paddingEnd="20dp"
+                        android:paddingEnd="18dp"
                         android:text="@string/str_language"
                         android:textColor="#167351"
                         android:textSize="18sp"
@@ -308,7 +308,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:layout_marginTop="2dp"
-                                android:background="#87000000" />
+                                android:background="@color/main_color"/>
                         </LinearLayout>
 
 

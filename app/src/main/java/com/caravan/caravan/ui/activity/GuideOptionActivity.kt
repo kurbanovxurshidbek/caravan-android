@@ -15,4 +15,5 @@ class GuideOptionActivity : BaseActivity() {
         if (isGuide) navController.navigate(R.id.action_turistGuideOptionFragment_to_guideGuideOptionFragment)
     }
 
+
 }

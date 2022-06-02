@@ -8,9 +8,7 @@ import retrofit2.Response
 
 class RegisterRepository(private val apiService: ApiService) {
 
-    suspend fun register(registerSend: RegisterSend): Response<RegisterRespond> {
-        Log.d("TAG", "register: ${apiService.registerUser(registerSend)}")
-        return  apiService.registerUser(registerSend)
-    }
+    suspend fun register(registerSend: RegisterSend) = apiService.registerUser(registerSend)
+
 
 }
