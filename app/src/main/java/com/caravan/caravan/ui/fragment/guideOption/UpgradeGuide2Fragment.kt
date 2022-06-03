@@ -38,7 +38,7 @@ import com.caravan.caravan.viewmodel.guideOption.upgrade.second.UpgradeGuide2Rep
 import com.caravan.caravan.viewmodel.guideOption.upgrade.second.UpgradeGuide2ViewModel
 import com.caravan.caravan.viewmodel.guideOption.upgrade.second.UpgradeGuide2ViewModelFactory
 
-class UpgradeGuide2Fragment : Fragment(), AdapterView.OnItemSelectedListener {
+class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     private val binding by viewBinding { FragmentUpgradeGuide2Binding.bind(it) }
     lateinit var viewModel: UpgradeGuide2ViewModel
     lateinit var adapterlocation: UpgradeGuideLocationAdapter
@@ -66,29 +66,10 @@ class UpgradeGuide2Fragment : Fragment(), AdapterView.OnItemSelectedListener {
         return inflater.inflate(R.layout.fragment_upgrade_guide2, container, false)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if(shouldInterceptBackPress()){
-                   toast("clicked")
-                    UpgradeGuideObject.isCreated = false
-                    findNavController().popBackStack()
-                }else{
-                    isEnabled = false
-                    activity?.onBackPressed()
-                }
-            }
-        })
-    }
-
-    fun shouldInterceptBackPress() = true
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setUpViewModel()
-        setUpObservers()
 
         profileId = SharedPref(requireContext()).getString("profileId")!!
 
@@ -113,14 +94,14 @@ class UpgradeGuide2Fragment : Fragment(), AdapterView.OnItemSelectedListener {
             viewModel.upgrade.collect {
                 when (it) {
                     is UiStateObject.LOADING -> {
-                      //  showLoading()
+                        showLoading()
                     }
                     is UiStateObject.SUCCESS -> {
-                      //  dismissLoading()
+                        dismissLoading()
                         completeAction()
                     }
                     is UiStateObject.ERROR -> {
-                     //   dismissLoading()
+                        dismissLoading()
                         Dialog.showDialogWarning(
                             requireContext(),
                             getString(R.string.str_no_connection),
@@ -150,19 +131,20 @@ class UpgradeGuide2Fragment : Fragment(), AdapterView.OnItemSelectedListener {
             val secondNumber = args.secondNumber
 
             btnDone.setOnClickListener {
-                requireActivity().onBackPressed()
-
                 if (etBiography.text.isNotEmpty() && etAmount.text.isNotEmpty() && UpgradeGuideObject.myLanguageList.isNotEmpty() && UpgradeGuideObject.myLocationList.isNotEmpty()) {
                     val user = UpgradeSend(
                         profileId,
                         secondNumber,
                         etBiography.text.toString(),
-                        Price(etAmount.text.toString().toDouble(), currency, option),
+                        Price(etAmount.text.toString().toLong(), currency, option),
                         UpgradeGuideObject.myLanguageList,
                         UpgradeGuideObject.myLocationList
                     )
 
                     viewModel.upgradeToGuide(user)
+
+                    setUpObservers()
+
                 } else {
                     toast("Please, fill the field first")
                 }
@@ -184,6 +166,7 @@ class UpgradeGuide2Fragment : Fragment(), AdapterView.OnItemSelectedListener {
         findNavController().navigate(
             R.id.action_upgradeGuide2Fragment_to_guideGuideOptionFragment
         )
+
     }
 
     private fun addLocationItems() {

@@ -28,11 +28,6 @@ import com.caravan.caravan.viewmodel.guideOption.upgrade.first.UpgradeGuide1View
 import java.text.SimpleDateFormat
 import java.util.*
 
-/**
- * A simple [Fragment] subclass.
- * Use the [UpgradeGuide1Fragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class UpgradeGuide1Fragment : BaseFragment() {
     private val binding by viewBinding { FragmentUpgradeGuide1Binding.bind(it) }
     lateinit var viewModel: UpgradeGuide1ViewModel
@@ -49,8 +44,6 @@ class UpgradeGuide1Fragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        toast("Created")
 
         setUpViewModel()
         setUpObservers()
@@ -115,6 +108,37 @@ class UpgradeGuide1Fragment : BaseFragment() {
 
     }
 
+    fun setUpObserverUpdate(){
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModel.update.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        openNextFragment()
+
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        Dialog.showDialogWarning(
+                            requireContext(),
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+
+                            })
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     private fun setData(data: Profile) {
         binding.apply {
@@ -143,7 +167,7 @@ class UpgradeGuide1Fragment : BaseFragment() {
                 profile.role,
                 null,
                 profile.status,
-                profile.profilePhoto,
+                profile.photo,
                 profile.gender,
                 binding.tvBirthday.text.toString(),
                 profile.createdDate, null, profile.appLanguage, profile.devices
@@ -151,36 +175,12 @@ class UpgradeGuide1Fragment : BaseFragment() {
             Log.d("@@@", "initViews: $user")
             viewModel.updateProfile(profile.id, user)
 
-            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-                viewModel.update.collect {
-                    when (it) {
-                        is UiStateObject.LOADING -> {
-                            showLoading()
-                        }
-                        is UiStateObject.SUCCESS -> {
-                            dismissLoading()
-                                openNextFragment()
+            setUpObserverUpdate()
 
-                        }
-                        is UiStateObject.ERROR -> {
-                            dismissLoading()
-                            Dialog.showDialogWarning(
-                                requireContext(),
-                                getString(R.string.str_no_connection),
-                                getString(R.string.str_try_again),
-                                object : OkInterface {
-                                    override fun onClick() {
-                                        return
-                                    }
-
-                                })
-                        }
-                        else -> Unit
-                    }
-                }
-            }
         }
     }
+
+
 
     fun setBirthday() {
         val datePicker = Calendar.getInstance()

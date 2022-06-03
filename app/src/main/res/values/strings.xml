@@ -118,26 +118,25 @@
     <string name="went_wrong">Something went wrong. Please try again</string>
 
     <string-array name="location">
-        <item>Tashkent</item>
-        <item>Samarkand</item>
-        <item>Khorezm</item>
-        <item>Bukhara</item>
-        <item>Namangan</item>
-        <item>Fergana</item>
-        <item>Andijan</item>
-        <item>Sirdarya</item>
-        <item>Kashkadardya</item>
-        <item>Surkhandarya</item>
-        <item>Navoi</item>
-        <item>Jizzakh</item>
-        <item>Nukus</item>
+        <item>TASHKENT</item>
+        <item>SAMARKAND</item>
+        <item>KHOREZM</item>
+        <item>BUKHARA</item>
+        <item>NAMANGAN</item>
+        <item>FERGANA</item>
+        <item>ANDIJAN</item>
+        <item>SIRDARYA</item>
+        <item>KASHKADARYA</item>
+        <item>SURKHANDARYA</item>
+        <item>NAVOIY</item>
+        <item>JIZZAKH</item>
+        <item>RESPUBLIC_OF_KARAKALPAKISTAN</item>
     </string-array>
     <string-array name="level">
-        <item>Beginner</item>
-        <item>Elementary</item>
-        <item>Intermediete</item>
-        <item>Advanced</item>
-        <item>Native</item>
+        <item>BEGINNER</item>
+        <item>ELEMENTARY</item>
+        <item>INTERMEDIATE</item>
+        <item>NATIVE</item>
     </string-array>
 
     <string-array name="currencies">
@@ -147,9 +146,9 @@
     </string-array>
 
     <string-array name="options">
-        <item>Day</item>
-        <item>Hour</item>
-        <item>Trip</item>
+        <item>DAY</item>
+        <item>HOUR</item>
+        <item>TRIP</item>
     </string-array>
 
 

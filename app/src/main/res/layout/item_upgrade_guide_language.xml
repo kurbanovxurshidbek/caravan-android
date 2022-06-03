@@ -39,6 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/circular_std_bold"
+                    android:textAllCaps="true"
                     android:textColor="#99000000"
                     android:textStyle="normal" />
 

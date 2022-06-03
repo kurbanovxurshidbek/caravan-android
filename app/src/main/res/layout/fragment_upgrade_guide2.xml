@@ -284,6 +284,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/circular_std_bold"
                             android:hint="@string/str_language"
+                            android:inputType="textCapCharacters"
                             android:textColor="#99000000"
                             android:backgroundTint="@color/main_color"
                             android:textColorHint="#99000000"
