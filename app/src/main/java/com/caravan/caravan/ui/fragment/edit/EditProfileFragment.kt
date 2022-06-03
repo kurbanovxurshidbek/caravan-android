@@ -193,7 +193,7 @@ class EditProfileFragment : BaseFragment() {
                 checkboxMale.isChecked = true
             else
                 checkboxFemale.isChecked = true
-            tvBirthday.setText(profile.birthDate)
+            tvBirthday.text = profile.birthDate
         }
     }
 
@@ -211,9 +211,9 @@ class EditProfileFragment : BaseFragment() {
 
     private fun setBirthday() {
         val datePicker = Calendar.getInstance()
-        val year = datePicker[Calendar.YEAR]
-        val month = datePicker[Calendar.MONTH]
-        val day = datePicker[Calendar.DAY_OF_MONTH]
+        val day = profile.birthDate?.substring(0, 2)?.toInt()!!
+        val month = profile.birthDate?.substring(3, 5)?.toInt()!!-1
+        val year = profile.birthDate?.substring(6)?.toInt()!!
         val date =
             DatePickerDialog.OnDateSetListener { picker, pickedYear, pickedMonth, pickedDay ->
                 datePicker[Calendar.YEAR] = pickedYear
@@ -222,6 +222,7 @@ class EditProfileFragment : BaseFragment() {
                 val dateFormat = "dd.MM.yyyy"
                 val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
                 binding.tvBirthday.text = simpleDateFormat.format(datePicker.time)
+                profile.birthDate=binding.tvBirthday.text.toString()
             }
 
         val datePickerDialog = DatePickerDialog(
