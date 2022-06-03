@@ -20,9 +20,11 @@
             android:layout_height="156dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/background_btn_intro"
+            android:src="@drawable/default_profile"
             app:elevation="15dp"
             app:shapeAppearanceOverlay="@style/circle" />
+
+
 
         <TextView
             android:layout_width="match_parent"

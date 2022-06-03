@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
@@ -27,11 +26,13 @@ import com.caravan.caravan.utils.UiStateObject
 import com.caravan.caravan.viewmodel.auth.LoginRepository
 import com.caravan.caravan.viewmodel.auth.LoginViewModel
 import com.caravan.caravan.viewmodel.auth.LoginViewModelFactory
+import kotlinx.coroutines.*
 
 class LoginActivity : BaseActivity() {
     private lateinit var binding: ActivityLoginBinding
 
     private lateinit var viewModel: LoginViewModel
+    var job: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -219,20 +220,24 @@ class LoginActivity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setTimer() {
-        val count: CountDownTimer = object : CountDownTimer(60000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                val minut = (millisUntilFinished / 1000) / 60
-                val seconds = (millisUntilFinished / 1000) % 60
-                binding.tvTime.text = "$minut:$seconds"
-            }
-
-
-            override fun onFinish() {
-                binding.tvTime.text = getString(R.string.str_resend_code)
+        job?.cancel()
+        job = MainScope().launch {
+            var sec = 60
+            while (isActive) {
+                sec--
+                val min = sec / 60
+                val s = sec - min * 60
+                if (s < 10)
+                    binding.tvTime.text = "$min:0$s"
+                else
+                    binding.tvTime.text = "$min:$s"
+                if (sec == 0) {
+                    binding.tvTime.text = getString(R.string.str_resend_code)
+                    cancel()
+                }
+                delay(1000)
             }
         }
-
-        count.start()
     }
 
     override fun onBackPressed() {
