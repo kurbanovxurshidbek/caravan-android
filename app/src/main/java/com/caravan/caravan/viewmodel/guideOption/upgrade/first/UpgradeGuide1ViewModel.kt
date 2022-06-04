@@ -33,8 +33,12 @@ class UpgradeGuide1ViewModel(private val repository: UpgradeGuide1Repository) : 
         update.value = UiStateObject.LOADING
 
         try {
+
             val updateProfile = repository.updateProfile(id, profile)
-            _update.value = UiStateObject.SUCCESS(updateProfile)
+            if (updateProfile.isSuccessful)
+                _update.value = UiStateObject.SUCCESS(updateProfile.body()!!)
+            else
+                _update.value = UiStateObject.ERROR(updateProfile.message())
         } catch (e: Exception) {
             _update.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")
         }
