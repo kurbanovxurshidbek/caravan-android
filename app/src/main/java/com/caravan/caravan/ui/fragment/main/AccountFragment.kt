@@ -118,17 +118,7 @@ class AccountFragment : BaseFragment() {
                 goToEditActivity(false)
             }
             llGuideOption.setOnClickListener {
-                if (profile.photo != null)
                     goToGuideOptionActivity(isGuide())
-                else Dialog.showDialogWarning(
-                    requireContext(),
-                    "Waring", "Please upload image first",
-                    object : OkInterface {
-                        override fun onClick() {
-                            goToEditActivity(true)
-                        }
-
-                    })
             }
             llLogOut.setOnClickListener {
                 Dialog.showAlertDialog(
@@ -177,6 +167,6 @@ class AccountFragment : BaseFragment() {
     }
 
     private fun isGuide(): Boolean {
-        return profile.role == "GUIDE"
+        return !profile.guideId.isNullOrBlank()
     }
 }
