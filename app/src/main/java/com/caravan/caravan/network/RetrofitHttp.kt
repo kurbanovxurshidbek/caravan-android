@@ -30,7 +30,6 @@ object RetrofitHttp {
 
     private val retrofit = buildRetrofit(client)
 
-
     private fun buildRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(server())

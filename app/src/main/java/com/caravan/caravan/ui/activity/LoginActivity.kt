@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ActivityLoginBinding
 import com.caravan.caravan.manager.SharedPref
+import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Profile
 import com.caravan.caravan.model.auth.LoginRespond
 import com.caravan.caravan.model.auth.LoginSend

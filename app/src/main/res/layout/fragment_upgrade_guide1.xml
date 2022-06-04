@@ -35,9 +35,11 @@
             android:textSize="20sp"/>
 
         <EditText
+            android:id="@+id/etFullname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/str_fullname"
+            android:editable="true"
             android:backgroundTint="@color/main_color"
             android:layout_marginTop="100dp"
             android:textColorHint="#99000000"
@@ -47,9 +49,11 @@
             android:paddingStart="5dp"
             android:paddingEnd="10dp"/>
         <EditText
+            android:id="@+id/etPhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/str_phone_number"
+            android:editable="true"
             android:backgroundTint="@color/main_color"
             android:layout_marginTop="20dp"
             android:textColorHint="#99000000"
@@ -59,6 +63,7 @@
             android:paddingStart="5dp"
             android:paddingEnd="10dp"/>
         <EditText
+            android:id="@+id/etSecondPhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/str_second_phone_number"
@@ -71,6 +76,7 @@
             android:paddingStart="5dp"
             android:paddingEnd="10dp"/>
         <EditText
+            android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/str_enter_your_email"
@@ -90,16 +96,17 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_birthday"
+                android:id="@+id/tvBirthday"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="@string/str_enter_your_birth_date_dd_mm_yyyy"
+                android:hint="@string/str_enter_your_birth_date_dd_mm_yyyy"
                 android:paddingStart="5dp"
+                android:textColor="@color/black"
+                android:textColorHint="#99000000"
                 android:gravity="center_vertical"
                 android:fontFamily="@font/circular_std_bold"
                 android:textStyle="normal"
-                android:textColor="#99000000"
                 android:paddingEnd="10dp"
                 android:textSize="18sp"
                 app:drawableEndCompat="@drawable/ic_calendar" />

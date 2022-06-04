@@ -32,10 +32,10 @@ interface ApiService {
     suspend fun getProfile(@Path("profileId") profileId: String): Response<Profile>
 
     @PUT("/api/v1/profile/{profileId}")
-    suspend fun updateProfile(@Path("profileId") profileId: String, @Body profile: Profile): Response<Profile>
+    suspend fun updateProfile(@Path("profileId") profileId: String, @Body profile: Profile): Profile
 
     @POST("/api/v1/guide")
-    suspend fun upgradeToGuide(@Body upgradeSend: UpgradeSend): Response<GuideProfile>
+    suspend fun upgradeToGuide(@Body upgradeSend: UpgradeSend): GuideProfile
 
     @GET("/api/v1/profile/language/{profileId}")
     suspend fun getAppLanguage(@Path("profileId") profileId: String): Response<String>
