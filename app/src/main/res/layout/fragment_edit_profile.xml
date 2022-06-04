@@ -117,7 +117,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/str_choose_gender"
-                    android:textColor="@color/black"
+                    android:layout_marginStart="15dp"
+                    android:textColor="#99000000"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -170,7 +171,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1.2dp"
-            android:background="#0D121212" />
+            android:background="#979797" />
 
         <LinearLayout
             android:id="@+id/llCalendar"
@@ -185,7 +186,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/str_choose_birthday"
-
+                android:layout_marginStart="15dp"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -199,7 +200,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1.2dp"
-            android:background="#0D121212" />
+            android:background="#979797" />
 
         <LinearLayout
             android:layout_width="match_parent"

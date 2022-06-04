@@ -73,7 +73,7 @@ interface ApiService {
     @PUT("/api/v1/trip/finish/{tripId}")
     suspend fun completeTrip(@Path("tripId") tripId: String, secondSend: SecondSend): Response<ActionMessage>
 
-    @GET("//api/v1/district/{region}")
+    @GET("/api/v1/district/{region}")
     suspend fun getDistrict(@Path("region") region: String): Response<ArrayList<String>>
 
 }
