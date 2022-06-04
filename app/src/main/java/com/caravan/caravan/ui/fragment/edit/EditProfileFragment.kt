@@ -82,7 +82,19 @@ class EditProfileFragment : BaseFragment() {
         }
 
         binding.btnSave.setOnClickListener {
-            saveProfileData()
+            if (gender != null)
+                saveProfileData()
+            else
+                Dialog.showDialogWarning(
+                    requireContext(),
+                    "Warning",
+                    "Please check your gender",
+                    object : OkInterface {
+                        override fun onClick() {
+
+                        }
+
+                    })
         }
 
     }
@@ -203,6 +215,7 @@ class EditProfileFragment : BaseFragment() {
             profile.surname = etSurname.text.toString()
             profile.phoneNumber = etPhoneNumber.text.toString()
             profile.gender = gender!!
+            profile.email = etEmail.text.toString()
             profile.birthDate = tvBirthday.text.toString()
 
         }
@@ -212,7 +225,7 @@ class EditProfileFragment : BaseFragment() {
     private fun setBirthday() {
         val datePicker = Calendar.getInstance()
         val day = profile.birthDate?.substring(0, 2)?.toInt()!!
-        val month = profile.birthDate?.substring(3, 5)?.toInt()!!-1
+        val month = profile.birthDate?.substring(3, 5)?.toInt()!! - 1
         val year = profile.birthDate?.substring(6)?.toInt()!!
         val date =
             DatePickerDialog.OnDateSetListener { picker, pickedYear, pickedMonth, pickedDay ->
@@ -222,7 +235,7 @@ class EditProfileFragment : BaseFragment() {
                 val dateFormat = "dd.MM.yyyy"
                 val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
                 binding.tvBirthday.text = simpleDateFormat.format(datePicker.time)
-                profile.birthDate=binding.tvBirthday.text.toString()
+                profile.birthDate = binding.tvBirthday.text.toString()
             }
 
         val datePickerDialog = DatePickerDialog(
@@ -239,13 +252,21 @@ class EditProfileFragment : BaseFragment() {
     private fun manageGender() {
         binding.checkboxMale.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                binding.checkboxFemale.isChecked = false
+                binding.apply {
+                    checkboxFemale.isChecked = false
+                    checkboxMale.isEnabled = false
+                    checkboxFemale.isEnabled = true
+                }
                 gender = getString(R.string.str_gender_male)
             }
         }
         binding.checkboxFemale.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                binding.checkboxMale.isChecked = false
+                binding.apply {
+                    checkboxMale.isChecked = false
+                    checkboxFemale.isEnabled = false
+                    checkboxMale.isEnabled = true
+                }
                 gender = getString(R.string.str_gender_female)
             }
         }
