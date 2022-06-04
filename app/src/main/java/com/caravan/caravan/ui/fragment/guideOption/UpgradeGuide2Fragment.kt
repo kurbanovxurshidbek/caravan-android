@@ -1,12 +1,15 @@
 package com.caravan.caravan.ui.fragment.guideOption
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -47,7 +50,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
     var levelSelected: String = ""
     var languageSelected: String = ""
     var locationProvince: Array<String>? = null
-    var locationDistrict: Array<String>? = null
+    var locationDistrict: List<String>? = null
     var currencies: Array<String>? = null
     var options: Array<String>? = null
     lateinit var province: String
@@ -118,6 +121,37 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             }
         }
     }
+    private fun setUpObserversDistrict() {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModel.district.collect {
+                when (it) {
+                    is UiStateList.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateList.SUCCESS -> {
+                        dismissLoading()
+                        locationDistrict = it.data
+                        Log.d("@@@", "setUpObserversDistrict: ${it.data}")
+                        spinnerDistrict()
+                    }
+                    is UiStateList.ERROR -> {
+                        dismissLoading()
+                        Dialog.showDialogWarning(
+                            requireContext(),
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+
+                            })
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
 
     private fun initViews(profileId: String) {
 
@@ -167,6 +201,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             R.id.action_upgradeGuide2Fragment_to_guideGuideOptionFragment
         )
 
+
     }
 
     private fun addLocationItems() {
@@ -185,6 +220,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
                 UpgradeGuideObject.myLocationList.add(location)
                 refreshAdapterLocation(UpgradeGuideObject.myLocationList)
                 binding.etLocationDesc.text.clear()
+                hideKeyboard()
             } else {
                 Toast.makeText(requireContext(), "Please, fill the field first", Toast.LENGTH_SHORT)
                     .show()
@@ -209,6 +245,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
                 UpgradeGuideObject.myLanguageList.add(language)
                 refreshAdapterLanguage(UpgradeGuideObject.myLanguageList)
                 binding.etLanguage.text.clear()
+                hideKeyboard()
             } else {
                 Toast.makeText(requireContext(), "Please, fill the field first", Toast.LENGTH_SHORT)
                     .show()
@@ -289,18 +326,20 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
         binding.spinnerLocationFrom.adapter = adapter3
 
-        locationDistrict = resources.getStringArray(R.array.location)
+    }
+
+    fun spinnerDistrict(){
         binding.spinnerLocationTo.onItemSelectedListener = itemSelectedDistrict
 
-        val adapter4: ArrayAdapter<*> = ArrayAdapter<Any?>(
+        val adapter: ArrayAdapter<*> = ArrayAdapter<Any?>(
             requireContext(),
             android.R.layout.simple_spinner_item,
             locationDistrict!!
         )
 
-        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-        binding.spinnerLocationTo.adapter = adapter4
+        binding.spinnerLocationTo.adapter = adapter
     }
 
     val itemSelectedLangaugeLevel = object : AdapterView.OnItemSelectedListener {
@@ -313,6 +352,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
     val itemSelectedProvince = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
             province = locationProvince!![p2]
+            viewModel.getDistrict(province)
+            setUpObserversDistrict()
         }
 
         override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -345,8 +386,18 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         binding.recyclerViewLanguage.adapter = adapterLanguage
     }
 
+    private fun hideKeyboard() {
+        try {
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, 0)
+        } catch (e: Exception) {
+
+        }
+    }
+
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         currency = currencies!![p2]
+        hideKeyboard()
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {

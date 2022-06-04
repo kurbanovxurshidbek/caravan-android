@@ -8,4 +8,6 @@ class UpgradeGuide2Repository(private val apiService: ApiService) {
 
     suspend fun upgradeToGuide(upgradeSend: UpgradeSend) =
         apiService.upgradeToGuide(upgradeSend)
+
+    suspend fun getDistrict(region:String) = apiService.getDistrict(region)
 }

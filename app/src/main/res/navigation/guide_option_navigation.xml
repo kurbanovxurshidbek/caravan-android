@@ -98,7 +98,7 @@
             android:id="@+id/action_upgradeGuide2Fragment_to_guideGuideOptionFragment"
             app:destination="@id/guideGuideOptionFragment"
             app:popUpTo="@id/upgradeGuide2Fragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/uploadImageFragment"
