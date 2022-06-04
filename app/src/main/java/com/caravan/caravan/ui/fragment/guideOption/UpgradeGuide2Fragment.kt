@@ -93,7 +93,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
     }
 
     private fun setUpObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.upgrade.collect {
                 when (it) {
                     is UiStateObject.LOADING -> {
