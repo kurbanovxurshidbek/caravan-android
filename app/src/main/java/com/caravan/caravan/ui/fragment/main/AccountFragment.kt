@@ -68,7 +68,7 @@ class AccountFragment : BaseFragment() {
     }
 
     private fun setupObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.profile.collect {
                 when (it) {
                     is UiStateObject.LOADING -> {
@@ -102,7 +102,7 @@ class AccountFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun setData() {
         binding.apply {
-            Glide.with(ivGuide).load(profile.photo).into(ivGuide)
+            Glide.with(ivGuide).load(profile.photo).error(R.drawable.default_profile).into(ivGuide)
             tvGuidesFullName.text = "${profile.name} ${profile.surname}"
             tvGuidePhone.text = profile.phoneNumber
         }
@@ -118,7 +118,17 @@ class AccountFragment : BaseFragment() {
                 goToEditActivity(false)
             }
             llGuideOption.setOnClickListener {
-                goToGuideOptionActivity(isGuide())
+                if (profile.photo != null)
+                    goToGuideOptionActivity(isGuide())
+                else Dialog.showDialogWarning(
+                    requireContext(),
+                    "Waring", "Please upload image first",
+                    object : OkInterface {
+                        override fun onClick() {
+                            goToEditActivity(true)
+                        }
+
+                    })
             }
             llLogOut.setOnClickListener {
                 Dialog.showAlertDialog(

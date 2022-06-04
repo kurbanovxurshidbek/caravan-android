@@ -1,17 +1,28 @@
 package com.caravan.caravan.ui.fragment.edit
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.LanguageAdapter
 import com.caravan.caravan.databinding.FragmentLanguageBinding
 import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.AppLanguage
+import com.caravan.caravan.model.more.ActionMessage
+import com.caravan.caravan.network.ApiService
+import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Dialog
+import com.caravan.caravan.utils.OkInterface
+import com.caravan.caravan.utils.UiStateObject
 import com.caravan.caravan.utils.viewBinding
+import com.caravan.caravan.viewmodel.editProfile.language.LanguageRepository
+import com.caravan.caravan.viewmodel.editProfile.language.LanguageViewModel
+import com.caravan.caravan.viewmodel.editProfile.language.LanguageViewModelFactory
 
 /**
  * A simple [Fragment] subclass.
@@ -22,6 +33,8 @@ class LanguageFragment : BaseFragment() {
     private val adapter by lazy { LanguageAdapter() }
     private val binding by viewBinding { FragmentLanguageBinding.bind(it) }
     private var list = ArrayList<AppLanguage>()
+    private lateinit var viewModel: LanguageViewModel
+    private var profileId: String? = null
     private var appLanguage: String? = null
 
     override fun onCreateView(
@@ -39,20 +52,114 @@ class LanguageFragment : BaseFragment() {
     }
 
     private fun initViews() {
-        binding.rvLanguage.adapter = adapter
+        profileId = SharedPref(requireContext()).getString("profileId")
+        setupViewModel()
+        setupObservers()
+
         list = getLanguages()
+        binding.apply {
+            rvLanguage.adapter = adapter
+            btnSave.setOnClickListener {
+                viewModel.updateAppLanguage(profileId!!, appLanguage!!)
+            }
+        }
+
         adapter.submitList(list)
         adapter.click = { position ->
-            //sendRequest
             manageLanguage(position)
         }
+        viewModel.getAppLanguage(profileId!!)
     }
+
+    private fun setupObservers() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.appLanguage.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        setLanguage(it.data)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        Dialog.showDialogWarning(
+                            requireContext(),
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+
+                                }
+
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.updatedAppLanguage.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        success(it.data)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        Dialog.showDialogWarning(
+                            requireContext(),
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+
+                                }
+
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+    private fun success(data: ActionMessage) {
+        if (data.status)
+            requireActivity().onBackPressed()
+        else
+            Dialog.showDialogMessage(requireContext(),data.title!!,data.message!!,object :OkInterface{
+                override fun onClick() {
+                    //
+                }
+
+            })
+    }
+
+    private fun setLanguage(appLanguage: String) {
+        val position = when (appLanguage) {
+            "uz" -> 0
+            "en" -> 1
+            "ru" -> 2
+            else -> 1
+        }
+        manageLanguage(position)
+
+    }
+
 
     private fun manageLanguage(position: Int) {
         appLanguage = when (position) {
             0 -> "uz"
             1 -> "en"
-            3 -> "ru"
+            2 -> "ru"
             else -> "en"
         }
         list = getLanguages()
@@ -88,6 +195,13 @@ class LanguageFragment : BaseFragment() {
         )
 
         return languages
+    }
+
+    private fun setupViewModel() {
+        viewModel = ViewModelProvider(
+            this,
+            LanguageViewModelFactory(LanguageRepository(RetrofitHttp.createService(ApiService::class.java)))
+        )[LanguageViewModel::class.java]
     }
 
 }

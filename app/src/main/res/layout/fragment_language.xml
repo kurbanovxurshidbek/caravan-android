@@ -21,7 +21,19 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvLanguage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_language" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/button_rounded"
+        android:text="@string/str_save"
+        android:textAllCaps="false"
+        android:layout_marginBottom="16dp"
+        app:backgroundTint="@null" />
+
 </LinearLayout>
