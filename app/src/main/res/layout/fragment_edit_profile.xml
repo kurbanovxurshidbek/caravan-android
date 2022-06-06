@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.fragment.edit.EditProfileFragment">
 
@@ -20,9 +20,11 @@
             android:layout_height="156dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/background_btn_intro"
+            android:src="@drawable/default_profile"
             app:elevation="15dp"
             app:shapeAppearanceOverlay="@style/circle" />
+
+
 
         <TextView
             android:layout_width="match_parent"
@@ -53,9 +55,9 @@
             android:backgroundTint="@color/main_color"
             android:drawableEnd="@drawable/ic_user"
             android:hint="@string/str_enter_name"
+            android:inputType="textPersonName"
             android:padding="14dp"
             android:singleLine="true"
-            android:inputType="textPersonName"
             android:textColorHint="@color/black" />
 
         <EditText
@@ -77,15 +79,16 @@
             android:layout_height="54dp"
             android:layout_marginTop="0dp"
             android:backgroundTint="@color/main_color"
+            android:digits="0123456789+"
             android:drawableEnd="@drawable/ic_phone"
             android:hint="@string/str_enter_phone"
-            android:maxLength="13"
-            android:digits="0123456789+"
             android:inputType="phone"
+            android:maxLength="13"
             android:maxLines="1"
             android:padding="14dp"
             android:singleLine="true"
             android:textColorHint="@color/black" />
+
         <EditText
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
@@ -94,8 +97,8 @@
             android:backgroundTint="@color/main_color"
             android:drawableEnd="@drawable/ic_email"
             android:hint="@string/str_enter_email"
-            android:maxLines="1"
             android:inputType="textEmailAddress"
+            android:maxLines="1"
             android:padding="14dp"
             android:singleLine="true"
             android:textColorHint="@color/black" />
@@ -114,7 +117,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/str_choose_gender"
-                    android:textColor="@color/black"
+                    android:layout_marginStart="15dp"
+                    android:textColor="#99000000"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -137,6 +141,7 @@
                         android:buttonTint="@color/main_color" />
 
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -161,40 +166,56 @@
             </LinearLayout>
 
 
-
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1.2dp"
+            android:background="#979797" />
 
         <LinearLayout
             android:id="@+id/llCalendar"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="46dp"
             android:gravity="center"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/tvBirthday"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="16sp"
-                android:text="@string/str_choose_birthday"/>
+                android:text="@string/str_choose_birthday"
+                android:layout_marginStart="15dp"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_calendar"
-                android:layout_marginEnd="12dp"/>
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/ic_calendar" />
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btnSave"
+        <View
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/button_rounded"
-            android:text="@string/str_save"
-            android:layout_marginBottom="40dp"
-            android:textAllCaps="false"
-            app:backgroundTint="@null" />
+            android:layout_height="1.2dp"
+            android:background="#979797" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/button_rounded"
+                android:text="@string/str_save"
+                android:textAllCaps="false"
+                app:backgroundTint="@null" />
+        </LinearLayout>
 
     </LinearLayout>
 

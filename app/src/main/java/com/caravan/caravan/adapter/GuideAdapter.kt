@@ -1,6 +1,5 @@
 package com.caravan.caravan.adapter
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
@@ -10,32 +9,37 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemGuideBinding
 import com.caravan.caravan.model.GuideProfile
+import com.caravan.caravan.ui.fragment.BaseFragment
 
-class GuideAdapter(var items: ArrayList<GuideProfile>) :
+class GuideAdapter(var context: BaseFragment, var items: ArrayList<GuideProfile>) :
     RecyclerView.Adapter<GuideAdapter.ViewHolder>() {
 
-    inner class ViewHolder(private val itemGuideBinding: ItemGuideBinding) : RecyclerView.ViewHolder(itemGuideBinding.root) {
+    inner class ViewHolder(private val itemGuideBinding: ItemGuideBinding) :
+        RecyclerView.ViewHolder(itemGuideBinding.root) {
 
         fun onBind(guideProfile: GuideProfile) {
 
-            Glide.with(itemGuideBinding.ivGuide).load(guideProfile.profile.profilePhoto).into(itemGuideBinding.ivGuide)
-            itemGuideBinding.tvGuidesFullname.text = guideProfile.profile.name + " " + guideProfile.profile.surname
+            Glide.with(itemGuideBinding.ivGuide).load(guideProfile.profile.photo)
+                .into(itemGuideBinding.ivGuide)
+            itemGuideBinding.tvGuidesFullname.text =
+                guideProfile.profile.name + " " + guideProfile.profile.surname
             itemGuideBinding.tvGuidesCities.text = provinces(guideProfile)
             itemGuideBinding.tvGuidePrice.text = price(guideProfile)
             itemGuideBinding.tvGuidesLanguages.text = getLanguages(guideProfile)
             itemGuideBinding.ratingBarGuide.rating = guideProfile.rate.toFloat()
-            itemGuideBinding.tvGuidesCommentsCount.text = "(${guideProfile.comments?.size.toString()})"
+            itemGuideBinding.tvGuidesCommentsCount.text =
+                "(${guideProfile.reviews?.size.toString()})"
+            itemGuideBinding.tvGuidesCommentsCount.text = "(${guideProfile.reviews?.size.toString()})"
 
             itemView.setOnClickListener {
-                    // When Item Clicked
+                context.goToDetailsActivity(items[adapterPosition])
             }
 
         }
 
-        fun getLanguages(guide: GuideProfile): String {
+        private fun getLanguages(guide: GuideProfile): String {
             var text = ""
             for (language in guide.languages) {
                 text += "${language} "
@@ -43,15 +47,14 @@ class GuideAdapter(var items: ArrayList<GuideProfile>) :
             return text
         }
 
-        @SuppressLint("ResourceAsColor")
         private fun price(guide: GuideProfile): Spannable {
-            val text = "$${guide.price.price.toInt()}"
+            val text = "$${guide.price.cost.toInt()}"
             val endIndex = text.length
 
-            val outPutColoredText: Spannable = SpannableString("$text/${guide.price.option}")
+            val outPutColoredText: Spannable = SpannableString("$text/${guide.price.type}")
             outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
             outPutColoredText.setSpan(
-                ForegroundColorSpan(R.color.main_color),
+                ForegroundColorSpan(Color.parseColor("#167351")),
                 0,
                 endIndex,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -76,7 +79,7 @@ class GuideAdapter(var items: ArrayList<GuideProfile>) :
         ): Spannable {
             val outPutColoredText: Spannable = SpannableString(inputText)
             outPutColoredText.setSpan(
-               Color.parseColor(textColor),
+                Color.parseColor(textColor),
                 startIndex,
                 endIndex,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE

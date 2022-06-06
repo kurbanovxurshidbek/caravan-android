@@ -1,15 +1,14 @@
 package com.caravan.caravan.ui.activity
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.provider.Settings
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.caravan.caravan.R
 import com.caravan.caravan.manager.SharedPref
-import com.caravan.caravan.model.*
-import java.time.LocalDateTime
+import com.caravan.caravan.model.Device
+import com.caravan.caravan.utils.Dialog
+import com.caravan.caravan.utils.OkInterface
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -35,8 +34,28 @@ open class BaseActivity : AppCompatActivity() {
         val deviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         val deviceToken = SharedPref(context).getString("deviceToken") ?: ""
         val deviceType = 'A'
-        var device = Device(deviceId, deviceToken, deviceType)
-        return device
+        return Device(deviceId, deviceToken, deviceType)
     }
 
+    open fun showNoConnectionDialog() {
+        Dialog.showDialogWarning(this, getString(R.string.str_no_connection), getString(
+            R.string.str_try_again
+        ), object : OkInterface {
+            override fun onClick() {
+                return
+            }
+        })
+    }
+
+    open fun showLoading() {
+        Dialog.showLoading(this)
+    }
+
+    open fun dismissLoading() {
+        Dialog.dismissLoading()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 }

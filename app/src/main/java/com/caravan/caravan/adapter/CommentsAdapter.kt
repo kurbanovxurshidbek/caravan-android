@@ -9,10 +9,8 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemCommentBinding
 import com.caravan.caravan.model.Comment
-import com.caravan.caravan.model.GuideProfile
 
 class CommentsAdapter(var items: ArrayList<Comment>) :
     RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
@@ -21,7 +19,7 @@ class CommentsAdapter(var items: ArrayList<Comment>) :
         RecyclerView.ViewHolder(commentBinding.root) {
         @RequiresApi(Build.VERSION_CODES.O)
         fun onBind(comment: Comment) {
-            Glide.with(commentBinding.ivCommentsUserProfile).load(comment.from.profilePhoto)
+            Glide.with(commentBinding.ivCommentsUserProfile).load(comment.from.photo)
                 .into(commentBinding.ivCommentsUserProfile)
             commentBinding.tvCommentsUserFullname.text = comment.from.name+ " " + comment.from.surname
             commentBinding.tvCommentsUserLocaldate.text = comment.reviewTime.toString()
@@ -31,7 +29,7 @@ class CommentsAdapter(var items: ArrayList<Comment>) :
 
             // Guide`s answer here
             if (comment.answerContent != null){
-                Glide.with(commentBinding.ivCommentsGuideProfile).load(comment.guide?.profile?.profilePhoto)
+                Glide.with(commentBinding.ivCommentsGuideProfile).load(comment.guide?.profile?.photo)
                     .into(commentBinding.ivCommentsGuideProfile)
                 commentBinding.tvCommentsGuideFullname.text =comment.guide?.profile?.name+ " "+ comment.guide?.profile?.surname
                 commentBinding.tvCommentsGuideLocaldate.text = comment.answerTime.toString()

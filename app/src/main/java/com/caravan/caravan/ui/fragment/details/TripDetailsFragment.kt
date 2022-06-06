@@ -2,25 +2,35 @@ package com.caravan.caravan.ui.fragment.details
 
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.navigation.Navigation
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.CommentsAdapter
 import com.caravan.caravan.adapter.FacilitiesAdapter
 import com.caravan.caravan.adapter.TravelLocationsAdapter
 import com.caravan.caravan.adapter.TripPhotosAdapter
 import com.caravan.caravan.databinding.FragmentTripDetailsBinding
+import com.caravan.caravan.databinding.OverlayViewBinding
 import com.caravan.caravan.model.*
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.stfalcon.imageviewer.StfalconImageViewer
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
 
 class TripDetailsFragment : BaseFragment() {
     private lateinit var fragmentTripDetailsBinding: FragmentTripDetailsBinding
     private var tripId: String = "null"
+    private lateinit var overlayViewBinding: OverlayViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,33 +44,87 @@ class TripDetailsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         fragmentTripDetailsBinding = FragmentTripDetailsBinding.inflate(layoutInflater)
-
         initViews()
         return fragmentTripDetailsBinding.root
     }
 
     private fun initViews() {
+        overlayViewBinding = OverlayViewBinding.bind(
+            LayoutInflater.from(requireContext())
+                .inflate(R.layout.overlay_view, RelativeLayout(requireContext()), false)
+        )
+
         setViewPager()
         setTravelLocations()
         setFacilities()
         setCommentsRv()
         setLeaveCommentsPart()
-
+        fragmentTripDetailsBinding.tvTripPrice.text = setPrice(myTrip())
+        fragmentTripDetailsBinding.tvGuidePrice.text = setPrice(myTrip())
 
         fragmentTripDetailsBinding.guideProfile.setOnClickListener {
-            Navigation.findNavController(fragmentTripDetailsBinding.root)
+            Navigation.findNavController(requireActivity(), R.id.details_nav_fragment)
                 .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment);
         }
 
+    }
 
+    fun setImageViewer(position: Int) {
+
+        val mView = LayoutInflater.from(requireContext())
+            .inflate(R.layout.overlay_view, LinearLayout(requireContext()), false)
+
+        overlayViewBinding.name.text =
+            myTrip().photos[position].location.province + ", " + myTrip().photos[position].location.district
+        overlayViewBinding.tvDescription.text =
+            myTrip().photos[position].location.description
+
+        StfalconImageViewer.Builder(
+            requireContext(),
+            myTrip().photos
+        ) { view, image ->
+
+
+            Glide.with(requireContext()).load(image.url).into(view)
+        }.withHiddenStatusBar(false)
+            .withDismissListener {
+                overlayViewBinding = OverlayViewBinding.bind(mView)
+            }
+            .withStartPosition(position)
+            .withOverlayView(
+                overlayViewBinding.root
+            ).withImageChangeListener {
+                overlayViewBinding.name.text =
+                    myTrip().photos[it].location.province + ", " + myTrip().photos[it].location.district
+                overlayViewBinding.tvDescription.text =
+                    myTrip().photos[it].location.description
+            }
+            .show()
+    }
+
+
+    private fun setPrice(trip: Trip): Spannable {
+        val text = "$${trip.price.cost.toInt()}"
+        val endIndex = text.length
+
+        val outPutColoredText: Spannable = SpannableString("$text/${trip.price.type}")
+        outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
+        outPutColoredText.setSpan(
+            ForegroundColorSpan(Color.parseColor("#167351")),
+            0,
+            endIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        return outPutColoredText
     }
 
     private fun setLeaveCommentsPart() {
         if (myTrip().attendancesProfileId.contains("userId")) {   // UserId qo'yiladi
             fragmentTripDetailsBinding.leaveCommentPart.visibility = View.VISIBLE
 
-            if (!myTrip().comments.isNullOrEmpty()) {
-                for (comment in myTrip().comments!!) {
+            if (!myTrip().reviews.isNullOrEmpty()) {
+                for (comment in myTrip().reviews!!) {
                     if (comment.from.id == "userId") {  //UserId qo'yiladi
                         fragmentTripDetailsBinding.leaveCommentPart.visibility = View.GONE
                         break
@@ -82,7 +146,7 @@ class TripDetailsFragment : BaseFragment() {
                 registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
-                        //any code you want to perform when viewPager pageChanges
+
                     }
                 })
             }
@@ -90,7 +154,7 @@ class TripDetailsFragment : BaseFragment() {
     }
 
     private fun setCommentsRv() {
-        fragmentTripDetailsBinding.fragmentTripCommentsRV.adapter = myTrip().comments?.let {
+        fragmentTripDetailsBinding.fragmentTripCommentsRV.adapter = myTrip().reviews?.let {
             CommentsAdapter(
                 it
             )
@@ -110,6 +174,7 @@ class TripDetailsFragment : BaseFragment() {
                 "+998997492581",
                 "ogabekdev@gmail.com",
                 "GUIDE",
+                null,
                 "ACTIVE",
                 "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84",
                 "MALE",
@@ -123,15 +188,15 @@ class TripDetailsFragment : BaseFragment() {
             "Ogabek Matyakubov",
             true,
             4.5,
-            Price(150.0, "USD", "day"),
+            Price(150.0.toLong(), "USD", "day"),
             ArrayList<Language>().apply {
                 add(Language("1", "English", "Advanced"))
                 add(Language("2", "Uzbek", "Native"))
             },
             ArrayList<Location>().apply {
                 add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                add(Location("1", "Tashkent", "Yakkasaroy", "Boshliq"))
+                add(Location("1", "America", "Washington DC", "Beach"))
             },
             arrayListOf(),
             arrayListOf(),
@@ -144,33 +209,21 @@ class TripDetailsFragment : BaseFragment() {
                 add(
                     TourPhoto(
                         "1",
-                        1,
-                        "jpg",
                         Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                        "12.02.2022",
-                        null,
                         "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
                     )
                 )
                 add(
                     TourPhoto(
                         "1",
-                        1,
-                        "jpg",
                         Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                        "12.02.2022",
-                        null,
                         "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
                     )
                 )
                 add(
                     TourPhoto(
                         "1",
-                        1,
-                        "jpg",
                         Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                        "12.02.2022",
-                        null,
                         "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
                     )
                 )
@@ -186,7 +239,7 @@ class TripDetailsFragment : BaseFragment() {
                 add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
             },
             "Khiva in 3 days",
-            Price(1200.0, "USD", "trip"),
+            Price(1200.0.toLong(), "USD", "trip"),
             5, 10,
             guide,
             "+998997492581",
@@ -205,6 +258,7 @@ class TripDetailsFragment : BaseFragment() {
                         "+998997492581",
                         "ogabekdev@gmail.com",
                         "GUIDE",
+                        null,
                         "ACTIVE",
                         "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg",
                         "MALE",

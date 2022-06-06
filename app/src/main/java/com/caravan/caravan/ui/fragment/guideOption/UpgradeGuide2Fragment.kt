@@ -1,60 +1,405 @@
 package com.caravan.caravan.ui.fragment.guideOption
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.caravan.caravan.R
+import com.caravan.caravan.adapter.UpgradeGuideLanguageAdapter
+import com.caravan.caravan.adapter.UpgradeGuideLocationAdapter
+import com.caravan.caravan.databinding.FragmentUpgradeGuide2Binding
+import com.caravan.caravan.manager.SharedPref
+import com.caravan.caravan.model.GuideProfile
+import com.caravan.caravan.model.Language
+import com.caravan.caravan.model.Location
+import com.caravan.caravan.model.Price
+import com.caravan.caravan.model.upgrade.UpgradeSend
+import com.caravan.caravan.network.ApiService
+import com.caravan.caravan.network.RetrofitHttp
+import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.*
+import com.caravan.caravan.utils.Extensions.toast
+import com.caravan.caravan.viewmodel.guideOption.upgrade.second.UpgradeGuide2Repository
+import com.caravan.caravan.viewmodel.guideOption.upgrade.second.UpgradeGuide2ViewModel
+import com.caravan.caravan.viewmodel.guideOption.upgrade.second.UpgradeGuide2ViewModelFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
+    private val binding by viewBinding { FragmentUpgradeGuide2Binding.bind(it) }
+    lateinit var viewModel: UpgradeGuide2ViewModel
+    lateinit var adapterlocation: UpgradeGuideLocationAdapter
+    lateinit var adapterLanguage: UpgradeGuideLanguageAdapter
+    var levels: Array<String>? = null
+    var levelSelected: String = ""
+    var languageSelected: String = ""
+    var locationProvince: Array<String>? = null
+    var locationDistrict: List<String>? = null
+    var currencies: Array<String>? = null
+    var options: Array<String>? = null
+    lateinit var province: String
+    lateinit var district: String
+    var desc: String = ""
+    var currency: String = ""
+    var option: String = ""
+    lateinit var profileId: String
 
-/**
- * A simple [Fragment] subclass.
- * Use the [UpgradeGuide2Fragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class UpgradeGuide2Fragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    val args: UpgradeGuide2FragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_upgrade_guide2, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UpgradeGuide2Fragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UpgradeGuide2Fragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setUpViewModel()
+
+        profileId = SharedPref(requireContext()).getString("profileId")!!
+
+        initViews(profileId)
+    }
+
+    private fun setUpViewModel() {
+        viewModel = ViewModelProvider(
+            this,
+            UpgradeGuide2ViewModelFactory(
+                UpgradeGuide2Repository(
+                    RetrofitHttp.createService(
+                        ApiService::class.java
+                    )
+                )
+            )
+        )[UpgradeGuide2ViewModel::class.java]
+    }
+
+    private fun setUpObservers() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.upgrade.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        completeAction()
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        Dialog.showDialogWarning(
+                            requireContext(),
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+
+                            })
+                    }
+                    else -> Unit
                 }
             }
+        }
+    }
+    private fun setUpObserversDistrict() {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModel.district.collect {
+                when (it) {
+                    is UiStateList.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateList.SUCCESS -> {
+                        dismissLoading()
+                        locationDistrict = it.data
+                        Log.d("@@@", "setUpObserversDistrict: ${it.data}")
+                        spinnerDistrict()
+                    }
+                    is UiStateList.ERROR -> {
+                        dismissLoading()
+                        Dialog.showDialogWarning(
+                            requireContext(),
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+
+                            })
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+    private fun initViews(profileId: String) {
+
+        binding.apply {
+
+            recyclerViewLocation.layoutManager = GridLayoutManager(requireContext(), 1)
+            recyclerViewLanguage.layoutManager = GridLayoutManager(requireContext(), 1)
+
+            setSpinner()
+
+            val secondNumber = args.secondNumber
+
+            btnDone.setOnClickListener {
+                if (etBiography.text.isNotEmpty() && etAmount.text.isNotEmpty() && UpgradeGuideObject.myLanguageList.isNotEmpty() && UpgradeGuideObject.myLocationList.isNotEmpty()) {
+                    val user = UpgradeSend(
+                        profileId,
+                        secondNumber,
+                        etBiography.text.toString(),
+                        Price(etAmount.text.toString().toLong(), currency, option),
+                        UpgradeGuideObject.myLanguageList,
+                        UpgradeGuideObject.myLocationList
+                    )
+
+                    viewModel.upgradeToGuide(user)
+
+                    setUpObservers()
+
+                } else {
+                    toast("Please, fill the field first")
+                }
+            }
+
+            addLocationItems()
+            addLanguageItems()
+
+            refreshAdapterLocation(UpgradeGuideObject.myLocationList)
+            refreshAdapterLanguage(UpgradeGuideObject.myLanguageList)
+
+            swipeToDeleteLocation()
+            swipeToDeleteLanguage()
+
+        }
+    }
+
+    fun completeAction() {
+        findNavController().navigate(
+            R.id.action_upgradeGuide2Fragment_to_guideGuideOptionFragment
+        )
+
+
+    }
+
+    private fun addLocationItems() {
+        binding.etLocationDesc.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {
+                desc = binding.etLocationDesc.text.toString()
+            }
+        })
+
+        binding.tvAddLocation.setOnClickListener {
+            if (desc != "") {
+                val location = Location("1", province, district, desc)
+
+                UpgradeGuideObject.myLocationList.add(location)
+                refreshAdapterLocation(UpgradeGuideObject.myLocationList)
+                binding.etLocationDesc.text.clear()
+                hideKeyboard()
+            } else {
+                Toast.makeText(requireContext(), "Please, fill the field first", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+        }
+    }
+
+    private fun addLanguageItems() {
+        binding.etLanguage.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {
+                languageSelected = binding.etLanguage.text.toString()
+            }
+
+        })
+
+        binding.tvAddLanguage.setOnClickListener {
+            if (languageSelected != "") {
+                val language = Language("1", languageSelected, levelSelected)
+                UpgradeGuideObject.myLanguageList.add(language)
+                refreshAdapterLanguage(UpgradeGuideObject.myLanguageList)
+                binding.etLanguage.text.clear()
+                hideKeyboard()
+            } else {
+                Toast.makeText(requireContext(), "Please, fill the field first", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+        }
+    }
+
+    private fun swipeToDeleteLocation() {
+        val swipeToDeleteCallback = object : SwipeToDeleteCallback() {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val pos = viewHolder.adapterPosition
+                UpgradeGuideObject.myLocationList.removeAt(pos)
+                refreshAdapterLocation(UpgradeGuideObject.myLocationList)
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerViewLocation)
+    }
+
+    private fun swipeToDeleteLanguage() {
+        val swipeToDeleteCallback = object : SwipeToDeleteCallback() {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val pos = viewHolder.adapterPosition
+                UpgradeGuideObject.myLanguageList.removeAt(pos)
+                adapterLanguage.notifyItemRemoved(pos)
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerViewLanguage)
+    }
+
+    private fun setSpinner() {
+        currencies = resources.getStringArray(R.array.currencies)
+        binding.spinnerCurrency.onItemSelectedListener = this
+
+        val adapter: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, currencies!!)
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        binding.spinnerCurrency.adapter = adapter
+
+        options = resources.getStringArray(R.array.options)
+        binding.spinnerDay.onItemSelectedListener = itemSelectedOption
+
+        val adapter1: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, options!!)
+
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        binding.spinnerDay.adapter = adapter1
+
+        levels = resources.getStringArray(R.array.level)
+        binding.spinnerLevel.onItemSelectedListener = itemSelectedLangaugeLevel
+
+        val adapter2: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, levels!!)
+
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        binding.spinnerLevel.adapter = adapter2
+
+        locationProvince = resources.getStringArray(R.array.location)
+        binding.spinnerLocationFrom.onItemSelectedListener = itemSelectedProvince
+
+        val adapter3: ArrayAdapter<*> = ArrayAdapter<Any?>(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            locationProvince!!
+        )
+
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        binding.spinnerLocationFrom.adapter = adapter3
+
+    }
+
+    fun spinnerDistrict(){
+        binding.spinnerLocationTo.onItemSelectedListener = itemSelectedDistrict
+
+        val adapter: ArrayAdapter<*> = ArrayAdapter<Any?>(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            locationDistrict!!
+        )
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        binding.spinnerLocationTo.adapter = adapter
+    }
+
+    val itemSelectedLangaugeLevel = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            levelSelected = levels!![p2]
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {}
+    }
+    val itemSelectedProvince = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            province = locationProvince!![p2]
+            viewModel.getDistrict(province)
+            setUpObserversDistrict()
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {}
+    }
+    val itemSelectedDistrict = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            district = locationDistrict!![p2]
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {}
+    }
+    val itemSelectedOption = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            option = options!![p2]
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {}
+    }
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun refreshAdapterLocation(items: ArrayList<Location>) {
+        adapterlocation = UpgradeGuideLocationAdapter(requireContext(), items)
+        binding.recyclerViewLocation.adapter = adapterlocation
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun refreshAdapterLanguage(items: ArrayList<Language>) {
+        adapterLanguage = UpgradeGuideLanguageAdapter(requireContext(), items)
+        binding.recyclerViewLanguage.adapter = adapterLanguage
+    }
+
+    private fun hideKeyboard() {
+        try {
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, 0)
+        } catch (e: Exception) {
+
+        }
+    }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        currency = currencies!![p2]
+        hideKeyboard()
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
     }
 }

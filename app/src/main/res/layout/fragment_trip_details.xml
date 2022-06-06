@@ -12,6 +12,7 @@
         android:orientation="vertical">
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/tripNestedScrollVIew"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -43,6 +44,7 @@
                             android:layout_alignParentBottom="true"
                             android:layout_centerHorizontal="true"
                             android:layout_margin="10dp" />
+
 
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
@@ -286,6 +288,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/square_ripple"
@@ -293,28 +296,28 @@
                     android:focusable="true"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="12dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="16dp">
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginHorizontal="12dp"-->
+<!--                        android:layout_marginTop="16dp"-->
+<!--                        android:layout_marginBottom="16dp">-->
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/chat_bubble2" />
+<!--                        <ImageView-->
+<!--                            android:layout_width="20dp"-->
+<!--                            android:layout_height="20dp"-->
+<!--                            android:layout_gravity="center_vertical"-->
+<!--                            android:src="@drawable/chat_bubble2" />-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:fontFamily="@font/circular_std_bold"
-                            android:text="@string/chat_with_guide"
-                            android:textColor="@color/black"
-                            android:textSize="18sp" />
-                    </LinearLayout>
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginStart="16dp"-->
+<!--                            android:fontFamily="@font/circular_std_bold"-->
+<!--                            android:text="@string/chat_with_guide"-->
+<!--                            android:textColor="@color/black"-->
+<!--                            android:textSize="18sp" />-->
+<!--                    </LinearLayout>-->
 
 
                     <LinearLayout
@@ -380,11 +383,11 @@
 
                 <LinearLayout
                     android:id="@+id/leaveCommentPart"
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="16dp">
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone">
 
                     <EditText
                         android:id="@+id/etLeaveComment"

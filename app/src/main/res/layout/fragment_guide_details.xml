@@ -50,6 +50,7 @@
                     android:layout_marginTop="12dp"
                     android:clickable="false"
                     android:max="5"
+                    android:secondaryProgressTint="@color/main_color"
                     android:progressBackgroundTint="#90000000"
                     android:progressTint="@color/main_color"
                     android:rating="3.5" />
@@ -170,28 +171,28 @@
                     android:focusable="true"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="12dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="16dp">
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginHorizontal="12dp"-->
+<!--                        android:layout_marginTop="16dp"-->
+<!--                        android:layout_marginBottom="16dp">-->
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/chat_bubble2" />
+<!--                        <ImageView-->
+<!--                            android:layout_width="20dp"-->
+<!--                            android:layout_height="20dp"-->
+<!--                            android:layout_gravity="center_vertical"-->
+<!--                            android:src="@drawable/chat_bubble2" />-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:fontFamily="@font/circular_std_bold"
-                            android:text="@string/chat_with_guide"
-                            android:textColor="@color/black"
-                            android:textSize="18sp" />
-                    </LinearLayout>
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginStart="16dp"-->
+<!--                            android:fontFamily="@font/circular_std_bold"-->
+<!--                            android:text="@string/chat_with_guide"-->
+<!--                            android:textColor="@color/black"-->
+<!--                            android:textSize="18sp" />-->
+<!--                    </LinearLayout>-->
 
 
                     <LinearLayout
@@ -313,6 +314,7 @@
                         android:max="5"
                         android:progressBackgroundTint="#4B000000"
                         android:progressTint="@color/main_color"
+                        android:secondaryProgressTint="@color/main_color"
                         android:rating="1.0"
                         android:scaleX="0.8"
                         android:scaleY="0.8"

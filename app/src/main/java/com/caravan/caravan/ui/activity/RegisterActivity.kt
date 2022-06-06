@@ -10,27 +10,88 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ActivityRegisterBinding
 import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.Profile
 import com.caravan.caravan.model.auth.RegisterRespond
 import com.caravan.caravan.model.auth.RegisterSend
+import com.caravan.caravan.network.ApiService
+import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.utils.Dialog
 import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
+import com.caravan.caravan.utils.UiStateObject
+import com.caravan.caravan.viewmodel.auth.RegisterRepository
+import com.caravan.caravan.viewmodel.auth.RegisterViewModel
+import com.caravan.caravan.viewmodel.auth.RegisterViewModelFactory
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : BaseActivity() {
     private var gender: String? = null
     private lateinit var request: RegisterSend
     private lateinit var phoneNumber: String
     private lateinit var binding: ActivityRegisterBinding
+
+    private lateinit var viewModel: RegisterViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setUpViewModel()
+        setUpObserves()
         initViews()
+    }
+
+    private fun setUpObserves() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.register.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        register(it.data)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        showNoConnectionDialog()
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+    private fun register(data: RegisterRespond) {
+        if (data.isRegistered) {
+            if (data.profile != null) {
+                SharedPref(this).saveString("profileId", data.profile.id)
+            }
+            callMainActivity(data.profile)
+        } else {
+            Dialog.showDialogWarning(
+                this,
+                data.title!!,
+                data.message!!,
+                object : OkInterface {
+                    override fun onClick() {
+
+                    }
+
+                })
+        }
+    }
+
+    private fun setUpViewModel() {
+        viewModel = ViewModelProvider(
+            this,
+            RegisterViewModelFactory(RegisterRepository(RetrofitHttp.createService(ApiService::class.java)))
+        )[RegisterViewModel::class.java]
     }
 
     private fun initViews() {
@@ -44,23 +105,12 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun saveProfile() {
         if (getEditTextData()) {
-            // send request here
-            //delete follow object
-            val respond = RegisterRespond(true, "null", "null", null)
-            if (respond.isRegistered) {
-                callMainActivity(respond.profile)
-            } else {
-                Dialog.showDialogWarning(
-                    this,
-                    respond.title!!,
-                    respond.message!!,
-                    object : OkInterface {
-                        override fun onClick() {
 
-                        }
+            val name = binding.etFirstName.text.toString()
+            val surname = binding.etSurname.text.toString()
+            val registerSend = RegisterSend(name, surname, phoneNumber, gender!!)
+            viewModel.register(registerSend)
 
-                    })
-            }
         }
     }
 
@@ -87,17 +137,24 @@ class RegisterActivity : AppCompatActivity() {
         return false
     }
 
-
     private fun manageGender() {
         binding.checkboxMale.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                binding.checkboxFemale.isChecked = false
+                binding.apply {
+                    checkboxFemale.isChecked = false
+                    checkboxMale.isEnabled = false
+                    checkboxFemale.isEnabled = true
+                }
                 gender = getString(R.string.str_gender_male)
             }
         }
         binding.checkboxFemale.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                binding.checkboxMale.isChecked = false
+                binding.apply {
+                    checkboxMale.isChecked = false
+                    checkboxFemale.isEnabled = false
+                    checkboxMale.isEnabled = true
+                }
                 gender = getString(R.string.str_gender_female)
             }
         }

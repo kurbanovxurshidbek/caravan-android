@@ -13,6 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
-        />
+        app:navGraph="@navigation/guide_option_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

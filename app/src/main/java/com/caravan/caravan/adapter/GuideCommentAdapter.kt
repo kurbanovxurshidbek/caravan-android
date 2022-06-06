@@ -1,30 +1,22 @@
 package com.caravan.caravan.adapter
 
-import android.content.Context
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.caravan.caravan.R
-import com.caravan.caravan.databinding.FragmentFeedbackListBinding
-import com.caravan.caravan.databinding.FragmentFeedbackRespondBinding
 import com.caravan.caravan.databinding.ItemGuideCommentBinding
 import com.caravan.caravan.model.Comment
-import com.caravan.caravan.ui.activity.GuideOptionActivity
-import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.ui.fragment.guideOption.FeedbackListFragment
-import com.caravan.caravan.ui.fragment.guideOption.FeedbackRespondFragment
 
 class GuideCommentAdapter(var context: FeedbackListFragment, var items: ArrayList<Comment>) :
     RecyclerView.Adapter<GuideCommentAdapter.ViewHolder>() {
     inner class ViewHolder(private val guideCommentBinding: ItemGuideCommentBinding) :
         RecyclerView.ViewHolder(guideCommentBinding.root) {
         fun onBind(comment: Comment) {
-            Glide.with(guideCommentBinding.ivCommentProfile).load(comment.from.profilePhoto)
+            Glide.with(guideCommentBinding.ivCommentProfile).load(comment.from.photo)
                 .into(guideCommentBinding.ivCommentProfile)
             guideCommentBinding.tvCommentFullname.text =
                 comment.from.name + " " + comment.from.surname

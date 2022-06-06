@@ -4,18 +4,22 @@ import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.AlertDialogBinding
+import com.caravan.caravan.databinding.DialogLoadingBinding
 import com.caravan.caravan.databinding.DialogMessageBinding
 import com.caravan.caravan.databinding.DialogWarningBinding
+import com.caravan.caravan.utils.Extensions.setTransparentWindow
 
 object Dialog {
+
+    private var loadingDialog: Dialog? = null
 
     fun showAlertDialog(context: Context, title: String, handler: OkWithCancelInterface) {
         val dialog = Dialog(context)
         val alertDialogBinding = AlertDialogBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(alertDialogBinding.root)
+        dialog.setCancelable(false)
 
         alertDialogBinding.tvTitle.text = title
         alertDialogBinding.btnYes.setOnClickListener {
@@ -44,6 +48,7 @@ object Dialog {
         val dialog = Dialog(context)
         val msgDialogBinding = DialogMessageBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(msgDialogBinding.root)
+        dialog.setCancelable(false)
 
         msgDialogBinding.tvTitle.text = title
         msgDialogBinding.tvMessage.text = description
@@ -64,6 +69,7 @@ object Dialog {
         val dialog = Dialog(context)
         val warningBinding = DialogWarningBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(warningBinding.root)
+        dialog.setCancelable(false)
 
         warningBinding.tvTitle.text = title
         warningBinding.tvMessage.text = description
@@ -79,6 +85,29 @@ object Dialog {
         )
         dialog.show()
     }
+
+    fun showLoading(context: Context) {
+        if (loadingDialog == null) {
+            loadingDialog = Dialog(context)
+            val loadingBinding = DialogLoadingBinding.inflate(LayoutInflater.from(context))
+            loadingDialog?.setContentView(loadingBinding.root)
+            loadingDialog?.setCancelable(false)
+
+            loadingDialog?.setTransparentWindow()
+            loadingDialog?.window?.setLayout(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            loadingDialog?.show()
+        }
+
+    }
+
+    fun dismissLoading() {
+        loadingDialog?.dismiss()
+        loadingDialog = null
+    }
+
 }
 
 interface OkWithCancelInterface {

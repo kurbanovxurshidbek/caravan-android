@@ -4,7 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_thanks">No, Thanks</string>
     <string name="yes_sure">Yes, Sure</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="get_started">Get Started</string>
     <string name="str_continue">Continue</string>
     <string name="intro_text_1">Get Inspiration \nfor your next trip</string>
@@ -41,6 +41,7 @@
     <string name="str_check_agreement">Please check Agreement</string>
     <string name="str_fill_all_fields">Please fill all fields</string>
     <string name="str_url_agreement">https://t.me/Bogibek_Matyaqubov</string>
+    <string name="str_url_get_info">https://t.me/Bogibek_Matyaqubov</string>
     <string name="str_gender">Gender</string>
     <string name="str_male">Male</string>
     <string name="str_female">Female</string>
@@ -67,4 +68,89 @@
     <string name="guide_s_trips">Guide\'s Trips</string>
     <string name="hire_guide">Hire Guide</string>
     <string name="write_respond">Write Respond</string>
+    <string name="str_english">English</string>
+    <string name="str_uzbek">O\'zbekcha</string>
+    <string name="str_choose_language">Choose Language</string>
+    <string name="str_isHiring">Are you ready to get tourists?</string>
+    <string name="str_edit_guide_profile">Edit Guide Profile</string>
+    <string name="str_register_as_a_guide">Register as a Guide</string>
+    <string name="str_my_trips">My Trips</string>
+    <string name="str_get_more_information_about_guide">Get more information about Guide</string>
+    <string name="str_no_connection">No Connection</string>
+    <string name="str_try_again">No Connection with our server. Please try again.</string>
+    <string name="str_guide_option">Guide Option</string>
+    <string name="str_is_hiring">Is Hiring</string>
+    <string name="str_delete_guide_mode">Delete Guide Mode</string>
+    <string name="str_fill_your_information">Fill your information</string>
+    <string name="str_fill_the_field_to_continue">Fill the field to continue</string>
+    <string name="str_fullname">Fullname</string>
+    <string name="str_second_phone_number">Second phone number</string>
+    <string name="str_enter_your_email">Enter your email</string>
+    <string name="str_enter_your_birth_date_dd_mm_yyyy">Enter your birth date (dd.mm.yyyy)</string>
+    <string name="str_next">Next</string>
+    <string name="str_fill_your_guide">Fill your Guide</string>
+    <string name="str_travel_locations">Travel locations</string>
+    <string name="str_location">Location</string>
+    <string name="str_short_information">Short information</string>
+    <string name="str_add_more">Add</string>
+    <string name="str_price">Price</string>
+    <string name="str_amount">Amount</string>
+    <string name="str_language">Language</string>
+    <string name="str_describe_yourself">Describe yourself</string>
+    <string name="str_write_more_information_about_yourself">Write more information about yourself</string>
+    <string name="str_done">Done</string>
+    <string name="str_fill_your_trip">Fill your Trip</string>
+    <string name="str_name">Name</string>
+    <string name="str_trip_s_name">Trip\'s name</string>
+    <string name="str_locations">Locations</string>
+    <string name="str_people">People</string>
+    <string name="str_min">Min</string>
+    <string name="str_max">Max</string>
+    <string name="str_upload_photos_min_2_max_5">Upload photos (Min: 2, Max: 5)</string>
+    <string name="str_facility">Facility</string>
+    <string name="str_title">Title</string>
+    <string name="str_description">Description</string>
+    <string name="str_add_image">Add Image</string>
+    <string name="str_upload_photo">Upload Photo</string>
+    <string name="str_fill_the_location_of_that_picture">Fill the location of that picture</string>
+    <string name="str_upload">Upload</string>
+    <string name="error">Error</string>
+    <string name="went_wrong">Something went wrong. Please try again</string>
+
+    <string-array name="location">
+        <item>TASHKENT</item>
+        <item>SAMARKAND</item>
+        <item>KHOREZM</item>
+        <item>BUKHARA</item>
+        <item>NAMANGAN</item>
+        <item>FERGANA</item>
+        <item>ANDIJAN</item>
+        <item>SIRDARYA</item>
+        <item>KASHKADARYA</item>
+        <item>SURKHANDARYA</item>
+        <item>NAVOIY</item>
+        <item>JIZZAKH</item>
+        <item>RESPUBLIC_OF_KARAKALPAKISTAN</item>
+    </string-array>
+    <string-array name="level">
+        <item>BEGINNER</item>
+        <item>ELEMENTARY</item>
+        <item>INTERMEDIATE</item>
+        <item>NATIVE</item>
+    </string-array>
+
+    <string-array name="currencies">
+        <item>USD</item>
+        <item>UZS</item>
+        <item>EUR</item>
+    </string-array>
+
+    <string-array name="options">
+        <item>DAY</item>
+        <item>HOUR</item>
+        <item>TRIP</item>
+    </string-array>
+
+
+
 </resources>

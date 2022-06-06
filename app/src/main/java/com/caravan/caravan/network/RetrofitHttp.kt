@@ -1,9 +1,13 @@
 package com.caravan.caravan.network
 
-import com.caravan.caravan.network.service.AuthService
+import com.caravan.caravan.BuildConfig
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
+import java.net.SocketTimeoutException
+import java.util.concurrent.TimeUnit
 
 object RetrofitHttp {
 
@@ -11,7 +15,7 @@ object RetrofitHttp {
 
     const val IS_TESTER = true
 
-    private const val SERVER_DEVELOPMENT = "http://167.172.77.166:8080"
+    private const val SERVER_DEVELOPMENT = "http://137.184.80.70:8080"
     private const val SERVER_PRODUCTION = ""
 
     private fun server(): String {
@@ -22,13 +26,80 @@ object RetrofitHttp {
         }
     }
 
-    private fun getRetrofit(): Retrofit {
+    private val client = buildClient()
+
+    private val retrofit = buildRetrofit(client)
+
+    private fun buildRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(server())
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
             .build()
     }
 
-    val authService: AuthService = getRetrofit().create(AuthService::class.java)
+    private fun buildClient(): OkHttpClient {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        val builder = OkHttpClient.Builder()
+        try {
+            builder.callTimeout(1, TimeUnit.MINUTES)
+                .addNetworkInterceptor(Interceptor { chain ->
+                    var request = chain.request()
+                    val builder = request.newBuilder()
+                    builder.addHeader("Accept", "application/json")
+                    builder.addHeader("x-app", "driver")
+                    request = builder.build()
+                    chain.proceed(request)
+                })
+        } catch (e: Exception) {
+            when (e) {
+                is SocketTimeoutException -> {
+                    throw SocketTimeoutException()
+                }
+            }
+        }
 
+        if (BuildConfig.DEBUG) {
+            builder.addInterceptor(interceptor)
+            builder.addNetworkInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
+        }
+        return builder.build()
+    }
+
+    @JvmStatic
+    fun <T> createService(service: Class<T>?): T {
+        val newClient =
+            OkHttpClient.Builder().connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS).addInterceptor(Interceptor { chain ->
+                    val builder = chain.request().newBuilder()
+                    builder.header("Content-Type", "application/json")
+                    chain.proceed(builder.build())
+                })
+        if (BuildConfig.DEBUG) {
+            val interceptor = HttpLoggingInterceptor()
+            interceptor.apply { interceptor.level = HttpLoggingInterceptor.Level.BODY }
+            newClient.addInterceptor(interceptor)
+        }
+        return retrofit.newBuilder().client(newClient.build()).build().create(service!!)
+    }
+
+    fun <T> createServiceWithAuth(service: Class<T>?): T {
+        val newClient =
+            client.newBuilder().addInterceptor(Interceptor { chain ->
+                val builder = chain.request().newBuilder()
+//                builder.addHeader("Authorization", "Bearer " + pref?.token)
+                builder.header("Content-Type", "application/json")
+                chain.proceed(builder.build())
+            })
+                .addNetworkInterceptor(HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                })
+                .build()
+        /*.authenticator(CustomAuthenticator.getInstance(tokenManager)).build()*/
+        val newRetrofit = retrofit.newBuilder().client(newClient).build()
+        return newRetrofit.create(service!!)
+    }
 }

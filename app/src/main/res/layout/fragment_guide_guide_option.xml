@@ -1,181 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:tag="MY_FRAGMENT"
+    android:padding="10dp"
     tools:context=".ui.fragment.guideOption.GuideGuideOptionFragment">
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/circular_std_bold"
+        android:text="@string/str_guide_option"
+        android:textColor="#DE000000"
+        android:textSize="32sp" />
+
     <LinearLayout
-        android:padding="16dp"
-        android:orientation="vertical"
+        android:id="@+id/llEditGuideProfile"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="37dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_user_checked" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Guide Option"
+            android:layout_marginStart="20dp"
             android:fontFamily="@font/circular_std_bold"
-            android:textSize="32sp"
-            android:textColor="#DE000000"/>
-
-        <LinearLayout
-            android:layout_marginTop="37dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_editguideprofile"
-                android:scaleType="centerCrop"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Edit Guide Profile"
-                android:textSize="16sp"
-                android:fontFamily="@font/circular_std_bold"
-                android:textColor="@color/black"
-                android:layout_marginLeft="20dp"/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:background="#0D121212"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="1.5dp"/>
-
-        <LinearLayout
-            android:layout_marginTop="18dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_ishiring"
-                android:scaleType="centerCrop"/>
-
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Is Hiring"
-                android:textSize="16sp"
-                android:fontFamily="@font/circular_std_bold"
-                android:textColor="@color/black"
-                android:layout_marginLeft="20dp"/>
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:background="#0D121212"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="1.5dp"/>
-
-        <LinearLayout
-            android:layout_marginTop="18dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_mytrips"
-                android:scaleType="centerCrop"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="My Trips>"
-                android:textSize="16sp"
-                android:fontFamily="@font/circular_std_bold"
-                android:textColor="@color/black"
-                android:layout_marginLeft="20dp"/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:background="#0D121212"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="1.5dp"/>
-
-        <LinearLayout
-            android:layout_marginTop="18dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_myfeedbacks"
-                android:scaleType="centerCrop"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="My Feedbacks"
-                android:textSize="16sp"
-                android:fontFamily="@font/circular_std_bold"
-                android:textColor="@color/black"
-                android:layout_marginLeft="20dp"/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:background="#0D121212"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="1.5dp"/>
-
-        <LinearLayout
-            android:layout_marginTop="18dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_deleteguide"
-                android:scaleType="centerCrop"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Delete Guide Mode"
-                android:textSize="16sp"
-                android:fontFamily="@font/circular_std_bold"
-                android:textColor="#80FF0000"
-                android:layout_marginLeft="20dp"/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:background="#0D121212"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="1.5dp"/>
-
+            android:text="@string/str_edit_guide_profile"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
 
     </LinearLayout>
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:layout_marginTop="20dp"
+        android:background="#0D121212" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_is_hiring" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/circular_std_bold"
+            android:text="@string/str_is_hiring"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/sbIsHiring"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            app:thumbTint="@color/main_color" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:layout_marginTop="20dp"
+        android:background="#0D121212" />
+
+    <LinearLayout
+        android:id="@+id/llMyTrips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_mapp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/circular_std_bold"
+            android:text="@string/str_my_trips"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:layout_marginTop="20dp"
+        android:background="#0D121212" />
+
+    <LinearLayout
+        android:id="@+id/llMyFeedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_message" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/circular_std_bold"
+            android:text="@string/str_my_feedbacks"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:layout_marginTop="20dp"
+        android:background="#0D121212" />
+
+    <LinearLayout
+        android:id="@+id/llDeleteGuideAccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_delete" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/circular_std_bold"
+            android:text="@string/str_delete_guide_mode"
+            android:textColor="#80FF0000"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:layout_marginTop="20dp"
+        android:background="#0D121212" />
+
+</LinearLayout>

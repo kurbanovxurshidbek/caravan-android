@@ -1,14 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp"
     tools:context=".ui.fragment.guideOption.UpgradeGuide1Fragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_fill_your_information"
+            android:textColor="#167351"
+            android:fontFamily="@font/circular_std_bold"
+            android:textStyle="bold"
+            android:textSize="25sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_fill_the_field_to_continue"
+            android:gravity="center_vertical"
+            android:fontFamily="@font/circular_std_bold"
+            android:textStyle="normal"
+            android:layout_marginTop="5dp"
+            android:textColor="#99000000"
+            android:textSize="20sp"/>
 
-</FrameLayout>
+        <EditText
+            android:id="@+id/etFullname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/str_fullname"
+            android:editable="true"
+            android:backgroundTint="@color/main_color"
+            android:layout_marginTop="100dp"
+            android:textColorHint="#99000000"
+            android:fontFamily="@font/circular_std_bold"
+            android:textStyle="normal"
+            android:drawableEnd="@drawable/ic_user"
+            android:paddingStart="5dp"
+            android:paddingEnd="10dp"/>
+        <EditText
+            android:id="@+id/etPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/str_phone_number"
+            android:editable="true"
+            android:digits="0123456789+"
+            android:inputType="phone"
+            android:maxLength="13"
+            android:maxLines="1"
+            android:backgroundTint="@color/main_color"
+            android:layout_marginTop="20dp"
+            android:textColorHint="#99000000"
+            android:fontFamily="@font/circular_std_bold"
+            android:textStyle="normal"
+            android:drawableEnd="@drawable/ic_phone"
+            android:paddingStart="5dp"
+            android:paddingEnd="10dp"/>
+        <EditText
+            android:id="@+id/etSecondPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/str_second_phone_number"
+            android:layout_marginTop="20dp"
+            android:digits="0123456789+"
+            android:inputType="phone"
+            android:maxLength="13"
+            android:maxLines="1"
+            android:backgroundTint="@color/main_color"
+            android:textColorHint="#99000000"
+            android:fontFamily="@font/circular_std_bold"
+            android:textStyle="normal"
+            android:drawableEnd="@drawable/ic_phone"
+            android:paddingStart="5dp"
+            android:paddingEnd="10dp"/>
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/str_enter_your_email"
+            android:layout_marginTop="20dp"
+            android:textColorHint="#99000000"
+            android:inputType="textEmailAddress"
+            android:backgroundTint="@color/main_color"
+            android:fontFamily="@font/circular_std_bold"
+            android:textStyle="normal"
+            android:drawableEnd="@drawable/ic_mail"
+            android:paddingStart="5dp"
+            android:paddingEnd="10dp"/>
+        <LinearLayout
+            android:id="@+id/ll_calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvBirthday"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:hint="@string/str_enter_your_birth_date_dd_mm_yyyy"
+                android:paddingStart="5dp"
+                android:textColor="@color/black"
+                android:textColorHint="#99000000"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/circular_std_bold"
+                android:textStyle="normal"
+                android:paddingEnd="10dp"
+                android:textSize="18sp"
+                app:drawableEndCompat="@drawable/ic_calendar" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="3dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/main_color"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/background_btn_intro"
+        android:stateListAnimator="@null"
+        android:text="@string/str_next"
+        android:fontFamily="@font/circular_std_bold"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:backgroundTint="@null"
+        android:translationZ="2dp" />
+
+</LinearLayout>
