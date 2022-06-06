@@ -5,10 +5,177 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.guideOption.GuideGuideOptionFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:padding="16dp"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Guide Option"
+            android:fontFamily="@font/circular_std_bold"
+            android:textSize="32sp"
+            android:textColor="#DE000000"/>
+
+        <LinearLayout
+            android:layout_marginTop="37dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_editguideprofile"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit Guide Profile"
+                android:textSize="16sp"
+                android:fontFamily="@font/circular_std_bold"
+                android:textColor="@color/black"
+                android:layout_marginLeft="20dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="#0D121212"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"/>
+
+        <LinearLayout
+            android:layout_marginTop="18dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_ishiring"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Is Hiring"
+                android:textSize="16sp"
+                android:fontFamily="@font/circular_std_bold"
+                android:textColor="@color/black"
+                android:layout_marginLeft="20dp"/>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="#0D121212"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"/>
+
+        <LinearLayout
+            android:layout_marginTop="18dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_mytrips"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Trips>"
+                android:textSize="16sp"
+                android:fontFamily="@font/circular_std_bold"
+                android:textColor="@color/black"
+                android:layout_marginLeft="20dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="#0D121212"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"/>
+
+        <LinearLayout
+            android:layout_marginTop="18dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_myfeedbacks"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Feedbacks"
+                android:textSize="16sp"
+                android:fontFamily="@font/circular_std_bold"
+                android:textColor="@color/black"
+                android:layout_marginLeft="20dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="#0D121212"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"/>
+
+        <LinearLayout
+            android:layout_marginTop="18dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_deleteguide"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete Guide Mode"
+                android:textSize="16sp"
+                android:fontFamily="@font/circular_std_bold"
+                android:textColor="#80FF0000"
+                android:layout_marginLeft="20dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="#0D121212"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"/>
+
+
+
+    </LinearLayout>
 
 </FrameLayout>
