@@ -14,6 +14,7 @@ import com.caravan.caravan.adapter.GuideHomeAdapter
 import com.caravan.caravan.adapter.SliderViewAdapter
 import com.caravan.caravan.adapter.TripAdapter
 import com.caravan.caravan.databinding.FragmentHomeBinding
+import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.*
 import com.caravan.caravan.ui.fragment.BaseFragment
 import com.zhpan.indicator.enums.IndicatorSlideMode
@@ -94,7 +95,7 @@ class HomeFragment : BaseFragment() {
                 null,
                 "en",
                 arrayListOf()
-            ),
+            , SharedPref(requireContext()).getToken()),
             "+998932037313",
             "Ogabek Matyakubov",
             true,
@@ -189,7 +190,7 @@ class HomeFragment : BaseFragment() {
                         arrayListOf(
                             Device("", "", 'A')
                         )
-                    ),
+                    ,SharedPref(requireContext()).getToken()),
                     "",
                     "",
                     false,

@@ -21,6 +21,7 @@ import com.caravan.caravan.adapter.CommentsAdapter
 import com.caravan.caravan.adapter.FacilitiesAdapter
 import com.caravan.caravan.adapter.TravelLocationsAdapter
 import com.caravan.caravan.databinding.FragmentGuideDetailsBinding
+import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.*
 import com.caravan.caravan.ui.fragment.BaseFragment
 import com.stfalcon.imageviewer.StfalconImageViewer
@@ -173,8 +174,8 @@ class GuideDetailsFragment : BaseFragment() {
                 "12.02.1222",
                 null,
                 "en",
-                arrayListOf()
-            ),
+                arrayListOf(),
+            SharedPref(requireContext()).getToken()),
             "+998932037313",
             "Ogabek Matyakubov",
             true,
@@ -257,7 +258,8 @@ class GuideDetailsFragment : BaseFragment() {
                         "12.10.2022",
                         null,
                         "en",
-                        arrayListOf()
+                        arrayListOf(),
+                        SharedPref(requireContext()).getToken()
                     ),
                     "TRIP",
                     null,

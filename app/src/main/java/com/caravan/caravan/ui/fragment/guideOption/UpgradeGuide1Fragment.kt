@@ -171,7 +171,7 @@ class UpgradeGuide1Fragment : BaseFragment() {
                 profile.gender,
                 binding.tvBirthday.text.toString(),
                 profile.createdDate, null, profile.appLanguage, profile.devices
-            )
+            ,SharedPref(requireContext()).getToken())
             Log.d("@@@", "initViews: $user")
             viewModel.updateProfile(profile.id, user)
 

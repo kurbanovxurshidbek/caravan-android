@@ -21,7 +21,7 @@ interface ApiService {
     @POST("/api/v1/auth/send")
     suspend fun sendSmsCode(@Body loginSend: LoginSend): Response<ActionMessage>
 
-    @PUT("/api/v1/auth/login")
+    @POST("/api/v1/auth/login")
     suspend fun checkSmsCode(@Body loginSend: LoginSend): Response<LoginRespond>
 
     @POST("/api/v1/auth/registration")

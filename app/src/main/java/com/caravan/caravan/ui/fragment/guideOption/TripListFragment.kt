@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.caravan.caravan.adapter.TripAdapter
 import com.caravan.caravan.databinding.FragmentTripListBinding
+import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.*
 
 class TripListFragment : Fragment() {
@@ -54,7 +55,7 @@ class TripListFragment : Fragment() {
                 "12.10.2022",
                 null,
                 "en",
-                arrayListOf()
+                arrayListOf(), SharedPref(requireContext()).getToken()
             ),
             "+998932037313",
             "Ogabek Matyakubov",

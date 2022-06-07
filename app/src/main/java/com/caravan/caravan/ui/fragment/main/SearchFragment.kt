@@ -13,6 +13,7 @@ import com.caravan.caravan.adapter.TripAdapter
 import com.caravan.caravan.databinding.BottomDialogGuideBinding
 import com.caravan.caravan.databinding.BottomDialogTripBinding
 import com.caravan.caravan.databinding.FragmentSearchBinding
+import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.*
 import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.utils.Extensions.toast
@@ -179,7 +180,7 @@ class SearchFragment : BaseFragment() {
                         null,
                         "en",
                         arrayListOf()
-                    ),
+                    , SharedPref(requireContext()).getToken()),
                     "+998932037313",
                     "Ogabek Matyakubov",
                     true,
@@ -223,7 +224,7 @@ class SearchFragment : BaseFragment() {
                 "12.02.2022",
                 null,
                 "en",
-                arrayListOf()
+                arrayListOf(),SharedPref(requireContext()).getToken()
             ),
             "+998932037313",
             "Ogabek Matyakubov",
