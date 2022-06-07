@@ -92,7 +92,7 @@ object RetrofitHttp {
         val newClient =
             client.newBuilder().addInterceptor(Interceptor { chain ->
                 val builder = chain.request().newBuilder()
-//                builder.addHeader("Authorization", "Bearer " + pref?.token)
+                builder.addHeader("Authorization", "Bearer " + pref.getToken())
                 builder.header("Content-Type", "application/json")
                 chain.proceed(builder.build())
             })
