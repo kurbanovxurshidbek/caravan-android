@@ -45,4 +45,14 @@ class SharedPref(context: Context) {
         return pref.getFloat(key, 0F)
     }
 
+    fun saveToken(token: String) {
+        val editor = pref.edit()
+        editor.putString("token", token)
+        editor.apply()
+    }
+
+    fun getToken(): String {
+        return pref.getString("token", "")!!
+    }
+
 }

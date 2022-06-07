@@ -18,13 +18,13 @@ import retrofit2.http.*
 interface ApiService {
 
     // Login
-    @POST("/api/v1/login")
+    @POST("/api/v1/auth/send")
     suspend fun sendSmsCode(@Body loginSend: LoginSend): Response<ActionMessage>
 
-    @PUT("/api/v1/check")
+    @PUT("/api/v1/auth/login")
     suspend fun checkSmsCode(@Body loginSend: LoginSend): Response<LoginRespond>
 
-    @POST("/api/v1/registration")
+    @POST("/api/v1/auth/registration")
     suspend fun registerUser(@Body registerSend: RegisterSend): Response<RegisterRespond>
 
     // Profile

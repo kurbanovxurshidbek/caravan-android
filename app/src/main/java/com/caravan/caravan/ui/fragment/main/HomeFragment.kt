@@ -123,7 +123,7 @@ class HomeFragment : BaseFragment() {
                             TourPhoto(
                                 "1",
                                 Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                                "https://drive.google.com/uc?id=1YqaMT8yUzxZQ_jAfJpyYcaGmI6GF_aXa&export=download"
                             )
                         )
                         add(
@@ -180,7 +180,7 @@ class HomeFragment : BaseFragment() {
                         "GUIDE",
                         null,
                         "ACTIVE",
-                        null,
+                        "https://drive.google.com/file/d/1d8mL7QnNd9TbzUIXrUmWGRzAJ-XdYOmn/view?usp=drivesdk",
                         "Male",
                         null,
                         "12.02.2022",
