@@ -101,7 +101,6 @@ object Dialog {
             loadingDialog?.show()
         }
 
-
     }
 
     fun dismissLoading() {

@@ -92,7 +92,7 @@
     <string name="str_travel_locations">Travel locations</string>
     <string name="str_location">Location</string>
     <string name="str_short_information">Short information</string>
-    <string name="str_add_more">Add more</string>
+    <string name="str_add_more">Add</string>
     <string name="str_price">Price</string>
     <string name="str_amount">Amount</string>
     <string name="str_language">Language</string>
@@ -118,26 +118,39 @@
     <string name="went_wrong">Something went wrong. Please try again</string>
 
     <string-array name="location">
-        <item>Tashkent</item>
-        <item>Samarkand</item>
-        <item>Khorezm</item>
-        <item>Bukhara</item>
-        <item>Namangan</item>
-        <item>Fergana</item>
-        <item>Andijan</item>
-        <item>Sirdarya</item>
-        <item>Kashkadardya</item>
-        <item>Surkhandarya</item>
-        <item>Navoi</item>
-        <item>Jizzakh</item>
-        <item>Nukus</item>
+        <item>TASHKENT</item>
+        <item>SAMARKAND</item>
+        <item>KHOREZM</item>
+        <item>BUKHARA</item>
+        <item>NAMANGAN</item>
+        <item>FERGANA</item>
+        <item>ANDIJAN</item>
+        <item>SIRDARYA</item>
+        <item>KASHKADARYA</item>
+        <item>SURKHANDARYA</item>
+        <item>NAVOIY</item>
+        <item>JIZZAKH</item>
+        <item>RESPUBLIC_OF_KARAKALPAKISTAN</item>
     </string-array>
     <string-array name="level">
-        <item>Beginner</item>
-        <item>Elementary</item>
-        <item>Intermediete</item>
-        <item>Advanced</item>
-        <item>Native</item>
+        <item>BEGINNER</item>
+        <item>ELEMENTARY</item>
+        <item>INTERMEDIATE</item>
+        <item>NATIVE</item>
     </string-array>
+
+    <string-array name="currencies">
+        <item>USD</item>
+        <item>UZS</item>
+        <item>EUR</item>
+    </string-array>
+
+    <string-array name="options">
+        <item>DAY</item>
+        <item>HOUR</item>
+        <item>TRIP</item>
+    </string-array>
+
+
 
 </resources>

@@ -90,7 +90,16 @@
         android:id="@+id/upgradeGuide2Fragment"
         android:name="com.caravan.caravan.ui.fragment.guideOption.UpgradeGuide2Fragment"
         android:label="fragment_upgrade_guide2"
-        tools:layout="@layout/fragment_upgrade_guide2" />
+        tools:layout="@layout/fragment_upgrade_guide2" >
+        <argument
+            android:name="secondNumber"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_upgradeGuide2Fragment_to_guideGuideOptionFragment"
+            app:destination="@id/guideGuideOptionFragment"
+            app:popUpTo="@id/upgradeGuide2Fragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/uploadImageFragment"
         android:name="com.caravan.caravan.ui.fragment.guideOption.UploadImageFragment"

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.caravan.caravan.adapter.TripAdapter
 import com.caravan.caravan.databinding.FragmentTripListBinding
+import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.*
 
 class TripListFragment : Fragment() {
@@ -54,13 +55,13 @@ class TripListFragment : Fragment() {
                 "12.10.2022",
                 null,
                 "en",
-                arrayListOf()
+                arrayListOf(), SharedPref(requireContext()).getToken()
             ),
             "+998932037313",
             "Ogabek Matyakubov",
             true,
             4.5,
-            Price(150, "USD", "day"),
+            Price(150.0.toLong(), "USD", "day"),
             ArrayList<Language>().apply {
                 add(Language("1", "English", "Advanced"))
                 add(Language("2", "Uzbek", "Native"))
@@ -114,7 +115,7 @@ class TripListFragment : Fragment() {
                         add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
                     },
                     "Khiva in 3 days",
-                    Price(1200, "USD", "trip"),
+                    Price(1200.0.toLong(), "USD", "trip"),
                     5, 10,
                     guide,
                     "+998997492581",

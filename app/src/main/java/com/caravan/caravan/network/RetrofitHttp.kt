@@ -1,6 +1,8 @@
 package com.caravan.caravan.network
 
+import android.app.Application
 import com.caravan.caravan.BuildConfig
+import com.caravan.caravan.manager.SharedPref
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -29,7 +31,6 @@ object RetrofitHttp {
     private val client = buildClient()
 
     private val retrofit = buildRetrofit(client)
-
 
     private fun buildRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
@@ -87,11 +88,11 @@ object RetrofitHttp {
         return retrofit.newBuilder().client(newClient.build()).build().create(service!!)
     }
 
-    fun <T> createServiceWithAuth(service: Class<T>?): T {
+    fun <T> createServiceWithAuth(pref: SharedPref, service: Class<T>?): T {
         val newClient =
             client.newBuilder().addInterceptor(Interceptor { chain ->
                 val builder = chain.request().newBuilder()
-//                builder.addHeader("Authorization", "Bearer " + pref?.token)
+                builder.addHeader("Authorization", "Bearer " + pref.getToken())
                 builder.header("Content-Type", "application/json")
                 chain.proceed(builder.build())
             })

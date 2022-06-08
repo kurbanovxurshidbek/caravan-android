@@ -68,7 +68,7 @@ class AccountFragment : BaseFragment() {
     }
 
     private fun setupObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.profile.collect {
                 when (it) {
                     is UiStateObject.LOADING -> {
@@ -102,7 +102,7 @@ class AccountFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun setData() {
         binding.apply {
-            Glide.with(ivGuide).load(profile.photo).into(ivGuide)
+            Glide.with(ivGuide).load(profile.photo).error(R.drawable.default_profile).into(ivGuide)
             tvGuidesFullName.text = "${profile.name} ${profile.surname}"
             tvGuidePhone.text = profile.phoneNumber
         }
@@ -118,7 +118,7 @@ class AccountFragment : BaseFragment() {
                 goToEditActivity(false)
             }
             llGuideOption.setOnClickListener {
-                goToGuideOptionActivity(isGuide())
+                    goToGuideOptionActivity(isGuide())
             }
             llLogOut.setOnClickListener {
                 Dialog.showAlertDialog(
@@ -167,6 +167,6 @@ class AccountFragment : BaseFragment() {
     }
 
     private fun isGuide(): Boolean {
-        return profile.role == "GUIDE"
+        return !profile.guideId.isNullOrBlank()
     }
 }

@@ -24,7 +24,6 @@ import com.caravan.caravan.utils.Dialog
 import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
-import com.caravan.caravan.viewmodel.auth.LoginRepository
 import com.caravan.caravan.viewmodel.auth.RegisterRepository
 import com.caravan.caravan.viewmodel.auth.RegisterViewModel
 import com.caravan.caravan.viewmodel.auth.RegisterViewModelFactory
@@ -141,13 +140,21 @@ class RegisterActivity : BaseActivity() {
     private fun manageGender() {
         binding.checkboxMale.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                binding.checkboxFemale.isChecked = false
+                binding.apply {
+                    checkboxFemale.isChecked = false
+                    checkboxMale.isEnabled = false
+                    checkboxFemale.isEnabled = true
+                }
                 gender = getString(R.string.str_gender_male)
             }
         }
         binding.checkboxFemale.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                binding.checkboxMale.isChecked = false
+                binding.apply {
+                    checkboxMale.isChecked = false
+                    checkboxFemale.isEnabled = false
+                    checkboxMale.isEnabled = true
+                }
                 gender = getString(R.string.str_gender_female)
             }
         }

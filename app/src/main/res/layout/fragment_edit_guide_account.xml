@@ -103,7 +103,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:layout_marginTop="2dp"
-                                android:background="#87000000" />
+                                android:background="@color/main_color" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -124,7 +124,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:layout_marginTop="2dp"
-                                android:background="#87000000" />
+                                android:background="@color/main_color" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -134,6 +134,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
+                        android:backgroundTint="@color/main_color"
                         android:fontFamily="@font/circular_std_bold"
                         android:hint="@string/str_short_information"
                         android:textColorHint="#99000000"
@@ -191,6 +192,7 @@
                             android:fontFamily="@font/circular_std_bold"
                             android:hint="@string/str_amount"
                             android:inputType="number"
+                            android:backgroundTint="@color/main_color"
                             android:textColor="#99000000"
                             android:textColorHint="#99000000"
                             android:textSize="18sp"
@@ -212,7 +214,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:layout_marginTop="2dp"
-                                android:background="#87000000" />
+                                android:background="@color/main_color" />
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -233,7 +235,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:layout_marginTop="2dp"
-                                android:background="#87000000" />
+                                android:background="@color/main_color" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -264,7 +266,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/circular_std_bold"
-                        android:paddingEnd="20dp"
+                        android:paddingEnd="18dp"
                         android:text="@string/str_language"
                         android:textColor="#167351"
                         android:textSize="18sp"
@@ -282,7 +284,10 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/circular_std_bold"
                             android:hint="@string/str_language"
+                            android:textAllCaps="true"
+                            android:textIsSelectable="true"
                             android:textColor="#99000000"
+                            android:backgroundTint="@color/main_color"
                             android:textColorHint="#99000000"
                             android:textSize="18sp"
                             android:textStyle="normal" />
@@ -305,7 +310,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:layout_marginTop="2dp"
-                                android:background="#87000000" />
+                                android:background="@color/main_color"/>
                         </LinearLayout>
 
 
@@ -341,13 +346,16 @@
                 android:textStyle="normal" />
 
             <EditText
+                android:id="@+id/etBiography"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="20dp"
+                android:backgroundTint="@color/main_color"
                 android:fontFamily="@font/circular_std_bold"
                 android:hint="@string/str_write_more_information_about_yourself"
                 android:textColorHint="#99000000"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                android:layout_marginBottom="50dp"/>
 
 
         </LinearLayout>
