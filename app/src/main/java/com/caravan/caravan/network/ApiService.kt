@@ -17,7 +17,7 @@ import retrofit2.http.*
 
 interface ApiService {
 
-    // Login
+    // Login w
     @POST("/api/v1/auth/send")
     suspend fun sendSmsCode(@Body loginSend: LoginSend): Response<ActionMessage>
 
