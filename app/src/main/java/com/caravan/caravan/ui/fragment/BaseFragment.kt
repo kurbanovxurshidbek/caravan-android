@@ -72,4 +72,8 @@ open class BaseFragment : Fragment() {
         Dialog.dismissLoading()
     }
 
+    interface SearchFragmentAndChildFragments{
+        fun isScrolling()
+    }
+
 }

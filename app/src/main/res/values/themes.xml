@@ -71,6 +71,16 @@
     </style>
 
     <style name="corners">
-        <item name="cornerSize">10%</item></style>
+        <item name="cornerSize">10%</item>
+    </style>
+
+
+    <style name="Theme.RoundedTabLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabBackground">@drawable/tab_focused</item>
+        <item name="tabIndicator">@null</item>
+        <item name="android:background">@drawable/tab_unfocused</item>
+        <item name="tabSelectedTextColor">@color/main_color</item>
+        <item name="tabTextColor">@color/black</item>
+    </style>
 
 </resources>
