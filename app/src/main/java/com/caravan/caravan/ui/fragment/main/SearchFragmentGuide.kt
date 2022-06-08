@@ -71,7 +71,7 @@ class SearchFragmentGuide : BaseFragment() {
                         null,
                         "en",
                         arrayListOf()
-                    ),
+                    ,""),
                     "+998932037313",
                     "Ogabek Matyakubov",
                     true,

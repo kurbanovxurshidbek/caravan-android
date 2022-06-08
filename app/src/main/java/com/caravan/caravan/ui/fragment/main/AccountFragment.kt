@@ -84,7 +84,7 @@ class AccountFragment : BaseFragment() {
                         Dialog.showDialogWarning(
                             requireContext(),
                             getString(R.string.str_no_connection),
-                            getString(R.string.str_try_again),
+                            getString(R.string.str_try_again) + it.message,
                             object : OkInterface {
                                 override fun onClick() {
 
@@ -118,7 +118,7 @@ class AccountFragment : BaseFragment() {
                 goToEditActivity(false)
             }
             llGuideOption.setOnClickListener {
-                    goToGuideOptionActivity(isGuide())
+                goToGuideOptionActivity(isGuide())
             }
             llLogOut.setOnClickListener {
                 Dialog.showAlertDialog(
@@ -162,7 +162,15 @@ class AccountFragment : BaseFragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
             this,
-            AccountViewModelFactory(AccountRepository(RetrofitHttp.createService(ApiService::class.java)))
+            AccountViewModelFactory(
+                AccountRepository(
+                    RetrofitHttp.createServiceWithAuth(
+                        SharedPref(
+                            requireContext()
+                        ), ApiService::class.java
+                    )
+                )
+            )
         )[AccountViewModel::class.java]
     }
 
