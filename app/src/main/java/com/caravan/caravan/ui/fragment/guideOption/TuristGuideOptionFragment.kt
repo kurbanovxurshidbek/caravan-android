@@ -103,7 +103,7 @@ class TuristGuideOptionFragment : BaseFragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
             this,
-            TuristguideViewModelFactory(TuristGuideRepository(RetrofitHttp.createService(ApiService::class.java)))
+            TuristguideViewModelFactory(TuristGuideRepository(RetrofitHttp.createServiceWithAuth(SharedPref(requireContext()), ApiService::class.java)))
         )[TuristGuideViewModel::class.java]
     }
 

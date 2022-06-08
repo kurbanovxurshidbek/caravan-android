@@ -1,43 +1,54 @@
-package com.caravan.caravan.ui.fragment.guideOption
+package com.caravan.caravan.ui.fragment.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.caravan.caravan.adapter.TripAdapter
-import com.caravan.caravan.databinding.FragmentTripListBinding
-import com.caravan.caravan.manager.SharedPref
+import com.caravan.caravan.databinding.FragmentSearchTripBinding
 import com.caravan.caravan.model.*
+import com.caravan.caravan.ui.fragment.BaseFragment
 
-class TripListFragment : Fragment() {
 
-    private lateinit var binding: FragmentTripListBinding
-    lateinit var tripAdapter: TripAdapter
+class SearchFragmentTrip : BaseFragment() {
+    private lateinit var binding: FragmentSearchTripBinding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+
+        }
+    }
+
+    companion object {
+        fun newInstance() =
+            SearchFragmentTrip()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentTripListBinding.inflate(inflater, container, false)
+        binding = FragmentSearchTripBinding.inflate(layoutInflater)
         initViews()
         return binding.root
     }
 
     private fun initViews() {
-        binding.recyclerViewMyTrips.layoutManager = GridLayoutManager(activity, 1)
-
+        binding.apply {
+            recyclerView.adapter = TripAdapter(this@SearchFragmentTrip, loadItemTrips())
+            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    closeKeyboard(recyclerView)
+                }
+            })
+        }
     }
 
-    fun refreshAdapterTrip(list: ArrayList<Trip>) {
-        tripAdapter = TripAdapter(this, list)
-        binding.recyclerViewMyTrips.adapter = tripAdapter
-    }
-
-    fun loadTripsList(): ArrayList<Trip> {
-
+    private fun loadItemTrips(): ArrayList<Trip> {
+        val items = ArrayList<Trip>()
         val guide = GuideProfile(
             "100001",
             Profile(
@@ -52,19 +63,19 @@ class TripListFragment : Fragment() {
                 "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg",
                 "MALE",
                 null,
-                "12.10.2022",
+                "12.02.2022",
                 null,
                 "en",
-                arrayListOf(), SharedPref(requireContext()).getToken()
-            ),
+                arrayListOf()
+            ,""),
             "+998932037313",
             "Ogabek Matyakubov",
             true,
             4.5,
-            Price(150.0.toLong(), "USD", "day"),
+            Price(150, "USD", "day"),
             ArrayList<Language>().apply {
                 add(Language("1", "English", "Advanced"))
-                add(Language("2", "Uzbek", "Native"))
+                add(Language("1", "Uzbek", "Native"))
             },
             ArrayList<Location>().apply {
                 add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
@@ -76,9 +87,9 @@ class TripListFragment : Fragment() {
             arrayListOf()
         )
 
-        val list = ArrayList<Trip>()
-        for (i in 0..10) {
-            list.add(
+
+        for (i in 0..20) {
+            items.add(
                 Trip(
                     "1", "Khiva in 3 days",
                     ArrayList<TourPhoto>().apply {
@@ -115,7 +126,7 @@ class TripListFragment : Fragment() {
                         add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
                     },
                     "Khiva in 3 days",
-                    Price(1200.0.toLong(), "USD", "trip"),
+                    Price(1200, "USD", "trip"),
                     5, 10,
                     guide,
                     "+998997492581",
@@ -125,7 +136,9 @@ class TripListFragment : Fragment() {
                 )
             )
         }
-        return list
+
+        return items
     }
+
 
 }

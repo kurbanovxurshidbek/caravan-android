@@ -13,8 +13,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -27,7 +25,6 @@ import com.caravan.caravan.adapter.UpgradeGuideLanguageAdapter
 import com.caravan.caravan.adapter.UpgradeGuideLocationAdapter
 import com.caravan.caravan.databinding.FragmentUpgradeGuide2Binding
 import com.caravan.caravan.manager.SharedPref
-import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Language
 import com.caravan.caravan.model.Location
 import com.caravan.caravan.model.Price
@@ -83,7 +80,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             this,
             UpgradeGuide2ViewModelFactory(
                 UpgradeGuide2Repository(
-                    RetrofitHttp.createService(
+                    RetrofitHttp.createServiceWithAuth(
+                        SharedPref(requireContext()),
                         ApiService::class.java
                     )
                 )
@@ -120,6 +118,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             }
         }
     }
+
     private fun setUpObserversDistrict() {
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.district.collect {
@@ -327,7 +326,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
     }
 
-    fun spinnerDistrict(){
+    fun spinnerDistrict() {
         binding.spinnerLocationTo.onItemSelectedListener = itemSelectedDistrict
 
         val adapter: ArrayAdapter<*> = ArrayAdapter<Any?>(
@@ -387,7 +386,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
     private fun hideKeyboard() {
         try {
-            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm =
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, 0)
         } catch (e: Exception) {
 

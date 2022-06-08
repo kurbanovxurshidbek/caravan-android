@@ -162,7 +162,11 @@ class AccountFragment : BaseFragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
             this,
-            AccountViewModelFactory(AccountRepository(RetrofitHttp.createService(ApiService::class.java)))
+            AccountViewModelFactory(
+                AccountRepository(
+                    RetrofitHttp.createServiceWithAuth(SharedPref(requireContext()), ApiService::class.java)
+                )
+            )
         )[AccountViewModel::class.java]
     }
 

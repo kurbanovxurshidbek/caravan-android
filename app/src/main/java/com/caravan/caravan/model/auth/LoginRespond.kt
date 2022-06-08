@@ -4,6 +4,7 @@ import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Profile
 
 data class LoginRespond(
+    val status: Boolean,
     val title: String? = null, // Incorrect Sms code
     val message: String? = null, // The code you entered is incorrect. Please try again
     val isExist: Boolean = false,

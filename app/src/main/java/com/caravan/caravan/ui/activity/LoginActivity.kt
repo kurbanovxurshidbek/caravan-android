@@ -198,7 +198,8 @@ class LoginActivity : BaseActivity() {
     private fun callMainActivity(profile: Profile?, isGuide: Boolean, guideId: String?) {
         val intent = Intent(this, MainActivity::class.java)
         SharedPref(this).saveBoolean("loginDone", true)
-        SharedPref(this).saveString("profileId", profile!!.id)
+        SharedPref(this).saveToken(profile!!.token)
+        SharedPref(this).saveString("profileId", profile.id)
         if (isGuide) {
             SharedPref(this).saveString("guideId", guideId!!)
         }

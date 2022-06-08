@@ -3,18 +3,23 @@ package com.caravan.caravan.ui.fragment.main
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.view.*
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.navigation.NavController
+import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.GuideAdapter
+import com.caravan.caravan.adapter.SearchFragmentVPAdapter
 import com.caravan.caravan.adapter.TripAdapter
 import com.caravan.caravan.databinding.BottomDialogGuideBinding
 import com.caravan.caravan.databinding.BottomDialogTripBinding
 import com.caravan.caravan.databinding.FragmentSearchBinding
+import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.*
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Extensions.toast
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.caravan.caravan.utils.Extensions.toast
 
 
@@ -23,7 +28,7 @@ class SearchFragment : BaseFragment() {
     private var isGuide: Boolean = true
     private lateinit var dialogGuideBinding: BottomDialogGuideBinding
     lateinit var dialogTripBinding: BottomDialogTripBinding
-    var gender: String = ""
+    private var gender: String = ""
     lateinit var guideAdapter: GuideAdapter
     lateinit var tripAdapter: TripAdapter
 
@@ -51,20 +56,7 @@ class SearchFragment : BaseFragment() {
 
     fun initViews() {
         openKeyboard(binding.etSearch)
-
-        binding.recyclerView.layoutManager = GridLayoutManager(activity, 1)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.apply {
-                recyclerView.setOnScrollChangeListener { p0, p1, p2, p3, p4 ->
-                    if (etSearch.isFocused) {
-                        closeKeyboard(etSearch)
-                    }
-                }
-            }
-        }
-
-        selectRole()
+        setupViewPager()
 
         binding.ivFilter.setOnClickListener {
             if (isGuide) {
@@ -74,24 +66,35 @@ class SearchFragment : BaseFragment() {
             }
         }
 
-        refreshAdapterGuide(loadItemGuides())
-
     }
 
+    private fun setupViewPager() {
+        val tabLayout = binding.searchFragmentTabLayout
+        val viewPager = binding.searchFragmentViewPager
+        tabLayout.addTab(tabLayout.newTab().setText("Guide"))
+        tabLayout.addTab(tabLayout.newTab().setText("Trip"))
 
-    private fun selectRole() {
-        binding.tvGuide.setOnClickListener {
-            binding.tvGuide.setBackgroundResource(R.drawable.backgroung_text_search_selected)
-            binding.tvTrip.setBackgroundResource(R.drawable.backgroung_text_search)
-            refreshAdapterGuide(loadItemGuides())
-            isGuide = true
-        }
-        binding.tvTrip.setOnClickListener {
-            binding.tvGuide.setBackgroundResource(R.drawable.backgroung_text_search)
-            binding.tvTrip.setBackgroundResource(R.drawable.backgroung_text_search_selected)
-            refreshAdapterTrip(loadItemTrips())
-            isGuide = false
-        }
+        val fragmentAdapter = SearchFragmentVPAdapter(childFragmentManager, lifecycle)
+        viewPager.adapter = fragmentAdapter
+
+        viewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                tabLayout.selectTab(tabLayout.getTabAt(position))
+            }
+        })
+
+        tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                viewPager.currentItem = tab.position
+                isGuide = tab.position == 0
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
+
     }
 
     private fun showBottomGuideDialog() {
@@ -145,156 +148,4 @@ class SearchFragment : BaseFragment() {
             }
         }
     }
-
-    private fun refreshAdapterGuide(list: ArrayList<GuideProfile>) {
-        guideAdapter = GuideAdapter(this, list)
-        binding.recyclerView.adapter = guideAdapter
-    }
-
-    private fun refreshAdapterTrip(list: ArrayList<Trip>) {
-        tripAdapter = TripAdapter(this, list)
-        binding.recyclerView.adapter = tripAdapter
-    }
-
-    private fun loadItemGuides(): ArrayList<GuideProfile> {
-        val items = ArrayList<GuideProfile>()
-
-        for (i in 0..20) {
-            items.add(
-                GuideProfile(
-                    "100001",
-                    Profile(
-                        "1001",
-                        "Ogabek",
-                        "Matyakubov",
-                        "+998997492581",
-                        "ogabekdev@gmail.com",
-                        "GUIDE",
-                        null,
-                        "ACTIVE",
-                        "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg",
-                        "MALE",
-                        null,
-                        "12.02.2022",
-                        null,
-                        "en",
-                        arrayListOf()
-                    ,""),
-                    "+998932037313",
-                    "Ogabek Matyakubov",
-                    true,
-                    4.5,
-                    Price(150.0.toLong(), "USD", "day"),
-                    ArrayList<Language>().apply {
-                        add(Language("1", "English", "Advanced"))
-                        add(Language("1", "Uzbek", "Native"))
-                    },
-                    ArrayList<Location>().apply {
-                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                    },
-                    arrayListOf(),
-                    arrayListOf(),
-                    arrayListOf()
-                )
-            )
-        }
-
-        return items
-    }
-
-    private fun loadItemTrips(): ArrayList<Trip> {
-        val items = ArrayList<Trip>()
-        val guide = GuideProfile(
-            "100001",
-            Profile(
-                "1001",
-                "Ogabek",
-                "Matyakubov",
-                "+998997492581",
-                "ogabekdev@gmail.com",
-                "GUIDE",
-                null,
-                "ACTIVE",
-                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg",
-                "MALE",
-                null,
-                "12.02.2022",
-                null,
-                "en",
-                arrayListOf()
-            ,""),
-            "+998932037313",
-            "Ogabek Matyakubov",
-            true,
-            4.5,
-            Price(150.0.toLong(), "USD", "day"),
-            ArrayList<Language>().apply {
-                add(Language("1", "English", "Advanced"))
-                add(Language("1", "Uzbek", "Native"))
-            },
-            ArrayList<Location>().apply {
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-            },
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf()
-        )
-
-
-        for (i in 0..20) {
-            items.add(
-                Trip(
-                    "1", "Khiva in 3 days",
-                    ArrayList<TourPhoto>().apply {
-                        add(
-                            TourPhoto(
-                                "1",
-                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
-                            )
-                        )
-                        add(
-                            TourPhoto(
-                                "1",
-                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
-                            )
-                        )
-                        add(
-                            TourPhoto(
-                                "1",
-                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
-                            )
-                        )
-                    },
-                    ArrayList<Facility>().apply {
-                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-                    },
-                    ArrayList<Location>().apply {
-                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                    },
-                    "Khiva in 3 days",
-                    Price(1200.0.toLong(), "USD", "trip"),
-                    5, 10,
-                    guide,
-                    "+998997492581",
-                    4.5,
-                    arrayListOf(),
-                    null
-                )
-            )
-        }
-
-        return items
-    }
-
 }

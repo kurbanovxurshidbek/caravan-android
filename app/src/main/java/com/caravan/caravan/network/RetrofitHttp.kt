@@ -1,6 +1,7 @@
 package com.caravan.caravan.network
 
 import android.app.Application
+import android.util.Log
 import com.caravan.caravan.BuildConfig
 import com.caravan.caravan.manager.SharedPref
 import okhttp3.Interceptor
@@ -90,18 +91,18 @@ object RetrofitHttp {
 
     fun <T> createServiceWithAuth(pref: SharedPref, service: Class<T>?): T {
         val newClient =
-            client.newBuilder().addInterceptor(Interceptor { chain ->
-                val builder = chain.request().newBuilder()
-                builder.addHeader("Authorization", "Bearer " + pref.getToken())
-                builder.header("Content-Type", "application/json")
-                chain.proceed(builder.build())
-            })
-                .addNetworkInterceptor(HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BODY
+            OkHttpClient.Builder().connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS).addInterceptor(Interceptor { chain ->
+                    val builder = chain.request().newBuilder()
+                    builder.addHeader("Authorization", "Bearer " + pref.getToken())
+                    builder.header("Content-Type", "application/json")
+                    chain.proceed(builder.build())
                 })
-                .build()
-        /*.authenticator(CustomAuthenticator.getInstance(tokenManager)).build()*/
-        val newRetrofit = retrofit.newBuilder().client(newClient).build()
-        return newRetrofit.create(service!!)
+        if (BuildConfig.DEBUG) {
+            val interceptor = HttpLoggingInterceptor()
+            interceptor.apply { interceptor.level = HttpLoggingInterceptor.Level.BODY }
+            newClient.addInterceptor(interceptor)
+        }
+        return retrofit.newBuilder().client(newClient.build()).build().create(service!!)
     }
 }

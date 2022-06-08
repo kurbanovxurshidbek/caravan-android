@@ -116,9 +116,12 @@ class RegisterActivity : BaseActivity() {
 
     private fun callMainActivity(profile: Profile?) {
         val intent = Intent(this, MainActivity::class.java)
+
         SharedPref(this).saveBoolean("loginDone", true)
-        if (profile != null)
+        if (profile != null) {
+            SharedPref(this).saveToken(profile.token)
             SharedPref(this).saveString("profileId", profile.id)
+        }
         startActivity(intent)
         finish()
     }

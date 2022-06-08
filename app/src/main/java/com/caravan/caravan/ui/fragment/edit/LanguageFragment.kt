@@ -200,7 +200,7 @@ class LanguageFragment : BaseFragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
             this,
-            LanguageViewModelFactory(LanguageRepository(RetrofitHttp.createService(ApiService::class.java)))
+            LanguageViewModelFactory(LanguageRepository(RetrofitHttp.createServiceWithAuth(SharedPref(requireContext()), ApiService::class.java)))
         )[LanguageViewModel::class.java]
     }
 

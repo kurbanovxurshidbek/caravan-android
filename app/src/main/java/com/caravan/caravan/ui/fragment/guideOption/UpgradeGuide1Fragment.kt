@@ -70,7 +70,10 @@ class UpgradeGuide1Fragment : BaseFragment() {
             this,
             UpgradeGuide1ViewModelFactory(
                 UpgradeGuide1Repository(
-                    RetrofitHttp.createService(ApiService::class.java)
+                    RetrofitHttp.createServiceWithAuth(
+                        SharedPref(requireContext()),
+                        ApiService::class.java
+                    )
                 )
             )
         )[UpgradeGuide1ViewModel::class.java]
@@ -170,8 +173,9 @@ class UpgradeGuide1Fragment : BaseFragment() {
                 profile.photo,
                 profile.gender,
                 binding.tvBirthday.text.toString(),
-                profile.createdDate, null, profile.appLanguage, profile.devices
-            ,"")
+                profile.createdDate, null, profile.appLanguage, profile.devices,
+                profile.token,
+            )
             Log.d("@@@", "initViews: $user")
             viewModel.updateProfile(profile.id, user)
 
