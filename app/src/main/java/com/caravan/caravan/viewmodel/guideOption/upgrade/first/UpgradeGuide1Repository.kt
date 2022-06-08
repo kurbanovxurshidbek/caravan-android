@@ -7,6 +7,6 @@ class UpgradeGuide1Repository(private val apiService: ApiService) {
 
     suspend fun getProfile(profileId: String) = apiService.getProfile(profileId)
 
-    suspend fun updateProfile(profileId: String, profile: Profile) =
-        apiService.updateProfile(profileId, profile)
+    suspend fun updateProfile(profile: Profile) =
+        apiService.updateProfile(profile)
 }

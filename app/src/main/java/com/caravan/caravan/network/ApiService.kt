@@ -31,40 +31,43 @@ interface ApiService {
     @GET("/api/v1/profile/{profileId}")
     suspend fun getProfile(@Path("profileId") profileId: String): Response<Profile>
 
-    @PUT("/api/v1/profile/{profileId}")
-    suspend fun updateProfile(@Path("profileId") profileId: String, @Body profile: Profile): Response<Profile>
+    @PUT("/api/v1/profile")
+    suspend fun updateProfile(@Body profile: Profile): Response<Profile>
 
     @POST("/api/v1/guide")
     suspend fun upgradeToGuide(@Body upgradeSend: UpgradeSend): GuideProfile
 
-    @GET("/api/v1/profile/language/{profileId}")
-    suspend fun getAppLanguage(@Path("profileId") profileId: String): Response<String>
+    @GET("/api/v1/profile/language")
+    suspend fun getAppLanguage(): Response<String>
 
-    @PUT("/api/v1/profile/language/{profileId}")
-    suspend fun updateAppLanguage(@Path("profileId") profileId: String, @Query("lang") lang: String): Response<ActionMessage>
+    @PUT("/api/v1/profile/language")
+    suspend fun updateAppLanguage(@Query("lang") lang: String): Response<ActionMessage>
 
     @GET("/api/v1/home")
     suspend fun getHomeData(): Response<HomeRespond>
+
+    @DELETE("/api/v1/profile")
+    suspend fun deleteAccount(): Response<ActionMessage>
 
     // Guide Account
     @GET("/api/v1/guide/{guideId}")
     suspend fun getGuideProfile(@Path("guideId") guideId: String): Response<GuideProfile>
 
-    @PUT("/api/v1/guide/{guideId}")
-    suspend fun updateGuideProfile(@Path("guideId") guideId: String, @Body guideProfile: GuideProfile): Response<ActionMessage>
+    @PUT("/api/v1/guide")
+    suspend fun updateGuideProfile(@Body guideProfile: GuideProfile): Response<ActionMessage>
 
-    @DELETE("/api/v1/guide/{guideId}")
-    suspend fun deleteGuideProfile(@Path("guideId") guideId: String): Response<ActionMessage>
+    @DELETE("/api/v1/guide")
+    suspend fun deleteGuideProfile(): Response<ActionMessage>
 
-    @GET("/api/v1/guide/status/{guideId}")
-    suspend fun getGuideStatus(@Path("guideId") guideId: String): Response<Boolean>
+    @GET("/api/v1/guide/status")
+    suspend fun getGuideStatus(): Response<Boolean>
 
-    @PUT("/api/v1/guide/status/{guideId}")
-    suspend fun changeGuideStatus(@Path("guideId") guideId: String): Response<Boolean>
+    @PUT("/api/v1/guide/status")
+    suspend fun changeGuideStatus(): Response<Boolean>
 
     // Trip
-    @POST("/api/v1/trip/{guideId}")
-    suspend fun createTrip(@Path("guideId") guideId: String, @Body firstSend: FirstSend): Response<String> // Trip Id
+    @POST("/api/v1/trip")
+    suspend fun createTrip(@Body firstSend: FirstSend): Response<String> // Trip Id
 
     // Customise for file
     @POST("/api/v1/photo/upload")

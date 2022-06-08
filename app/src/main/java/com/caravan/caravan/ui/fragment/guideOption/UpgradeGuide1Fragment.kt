@@ -19,6 +19,7 @@ import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.utils.*
+import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.viewmodel.guideOption.upgrade.first.UpgradeGuide1Repository
 import com.caravan.caravan.viewmodel.guideOption.upgrade.first.UpgradeGuide1ViewModel
 import com.caravan.caravan.viewmodel.guideOption.upgrade.first.UpgradeGuide1ViewModelFactory
@@ -146,8 +147,7 @@ class UpgradeGuide1Fragment : BaseFragment() {
             etPhoneNumber.setText(data.phoneNumber)
             etEmail.setText(data.email ?: "")
             tvBirthday.text =
-                data.birthDate ?: getString(R.string.str_enter_your_birth_date_dd_mm_yyyy)
-            Log.d("@@@", "setData: ${tvBirthday.text}")
+                data.birthDate ?: getString(R.string.str_choose_birthday)
         }
     }
 
@@ -158,35 +158,43 @@ class UpgradeGuide1Fragment : BaseFragment() {
         }
 
         binding.btnNext.setOnClickListener {
-            user = Profile(
-                profile.id,
-                profile.name,
-                profile.surname,
-                profile.phoneNumber,
-                binding.etEmail.text.toString(),
-                profile.role,
-                null,
-                profile.status,
-                profile.photo,
-                profile.gender,
-                binding.tvBirthday.text.toString(),
-                profile.createdDate, null, profile.appLanguage, profile.devices,
-                profile.token,
-            )
-            Log.d("@@@", "initViews: $user")
-            viewModel.updateProfile(profile.id, user)
+            if (binding.tvBirthday.text != getString(R.string.str_choose_birthday) && binding.etEmail.text.isNotEmpty()) {
+                user = Profile(
+                    profile.id,
+                    profile.name,
+                    profile.surname,
+                    profile.phoneNumber,
+                    binding.etEmail.text.toString(),
+                    profile.role,
+                    null,
+                    profile.status,
+                    profile.photo,
+                    profile.gender,
+                    binding.tvBirthday.text.toString(),
+                    profile.createdDate, null, profile.appLanguage, profile.devices,
+                    SharedPref(requireContext()).getToken()
+                )
+                viewModel.updateProfile(user)
 
-            setUpObserverUpdate()
-
+                setUpObserverUpdate()
+            } else {
+                toast(getString(R.string.str_fill_all_fields))
+            }
         }
     }
 
 
     fun setBirthday() {
         val datePicker = Calendar.getInstance()
-        val year = datePicker[Calendar.YEAR]
-        val month = datePicker[Calendar.MONTH]
-        val day = datePicker[Calendar.DAY_OF_MONTH]
+        var year = datePicker[Calendar.YEAR]
+        var month = datePicker[Calendar.MONTH]
+        var day = datePicker[Calendar.DAY_OF_MONTH]
+        if (profile.birthDate != null) {
+            day = profile.birthDate?.substring(0, 2)?.toInt()!!
+            month = profile.birthDate?.substring(3, 5)?.toInt()!! - 1
+            year = profile.birthDate?.substring(6)?.toInt()!!
+        }
+
         val date =
             DatePickerDialog.OnDateSetListener { picker, pickedYear, pickedMonth, pickedDay ->
                 datePicker[Calendar.YEAR] = pickedYear
