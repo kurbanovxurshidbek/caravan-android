@@ -84,7 +84,7 @@ class AccountFragment : BaseFragment() {
                         Dialog.showDialogWarning(
                             requireContext(),
                             getString(R.string.str_no_connection),
-                            getString(R.string.str_try_again) + it.message,
+                            getString(R.string.str_try_again),
                             object : OkInterface {
                                 override fun onClick() {
 
@@ -164,11 +164,7 @@ class AccountFragment : BaseFragment() {
             this,
             AccountViewModelFactory(
                 AccountRepository(
-                    RetrofitHttp.createServiceWithAuth(
-                        SharedPref(
-                            requireContext()
-                        ), ApiService::class.java
-                    )
+                    RetrofitHttp.createServiceWithAuth(SharedPref(requireContext()), ApiService::class.java)
                 )
             )
         )[AccountViewModel::class.java]
