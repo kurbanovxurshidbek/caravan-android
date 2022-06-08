@@ -60,7 +60,7 @@ class LanguageFragment : BaseFragment() {
         binding.apply {
             rvLanguage.adapter = adapter
             btnSave.setOnClickListener {
-                viewModel.updateAppLanguage(profileId!!, appLanguage!!)
+                viewModel.updateAppLanguage(appLanguage!!)
             }
         }
 
@@ -68,7 +68,7 @@ class LanguageFragment : BaseFragment() {
         adapter.click = { position ->
             manageLanguage(position)
         }
-        viewModel.getAppLanguage(profileId!!)
+        viewModel.getAppLanguage()
     }
 
     private fun setupObservers() {

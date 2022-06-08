@@ -70,15 +70,27 @@ class EditProfileFragment : BaseFragment() {
     private fun initViews() {
         profileId = SharedPref(requireContext()).getString("profileId")
         setupViewModel()
-        getProfileDetails()
         setupObservers()
+        getProfileDetails()
         manageGender()
         binding.ivGuide.setOnClickListener {
             pickPhoto()
         }
 
         binding.llCalendar.setOnClickListener {
-            setBirthday()
+            var day: Int;
+            var month: Int;
+            var year: Int;
+            if (binding.tvBirthday.text.toString() == getString(R.string.str_choose_birthday)) {
+                day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+                month = Calendar.getInstance().get(Calendar.MONTH)
+                year = Calendar.getInstance().get(Calendar.YEAR)
+            } else {
+                day = profile.birthDate?.substring(0, 2)?.toInt()!!
+                month = profile.birthDate?.substring(3, 5)?.toInt()!! - 1
+                year = profile.birthDate?.substring(6)?.toInt()!!
+            }
+            setBirthday(year, month, day)
         }
 
         binding.btnSave.setOnClickListener {
@@ -205,7 +217,12 @@ class EditProfileFragment : BaseFragment() {
                 checkboxMale.isChecked = true
             else
                 checkboxFemale.isChecked = true
-            tvBirthday.text = profile.birthDate
+
+            if (profile.birthDate != null) {
+                tvBirthday.text = profile.birthDate
+            } else {
+                tvBirthday.text = getString(R.string.str_choose_birthday)
+            }
         }
     }
 
@@ -219,14 +236,11 @@ class EditProfileFragment : BaseFragment() {
             profile.birthDate = tvBirthday.text.toString()
 
         }
-        viewModel.updateProfile(profileId!!, profile)
+        viewModel.updateProfile(profile)
     }
 
-    private fun setBirthday() {
+    private fun setBirthday(year: Int, month: Int, day: Int) {
         val datePicker = Calendar.getInstance()
-        val day = profile.birthDate?.substring(0, 2)?.toInt()!!
-        val month = profile.birthDate?.substring(3, 5)?.toInt()!! - 1
-        val year = profile.birthDate?.substring(6)?.toInt()!!
         val date =
             DatePickerDialog.OnDateSetListener { picker, pickedYear, pickedMonth, pickedDay ->
                 datePicker[Calendar.YEAR] = pickedYear

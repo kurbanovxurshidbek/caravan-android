@@ -29,16 +29,16 @@ class UpgradeGuide1ViewModel(private val repository: UpgradeGuide1Repository) : 
     private val _update = MutableStateFlow<UiStateObject<Profile>>(UiStateObject.EMPTY)
     val update = _update
 
-    fun updateProfile(id: String, profile: Profile) = viewModelScope.launch {
-        _update.value = UiStateObject.LOADING
+    fun updateProfile(profile: Profile) = viewModelScope.launch {
+        update.value = UiStateObject.LOADING
 
         try {
 
-            val updateProfile = repository.updateProfile(id, profile)
-            if (!updateProfile.isSuccessful)
-                _update.value = UiStateObject.ERROR(updateProfile.message())
-            else
+            val updateProfile = repository.updateProfile(profile)
+            if (updateProfile.isSuccessful)
                 _update.value = UiStateObject.SUCCESS(updateProfile.body()!!)
+            else
+                _update.value = UiStateObject.ERROR(updateProfile.message())
         } catch (e: Exception) {
             _update.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")
         }
