@@ -55,7 +55,7 @@ class TripListFragment : Fragment() {
                 null,
                 "en",
                 arrayListOf()
-            ),
+            ,""),
             "+998932037313",
             "Ogabek Matyakubov",
             true,

@@ -59,7 +59,6 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
     var currency: String = ""
     var option: String = ""
     lateinit var profileId: String
-
     val args: UpgradeGuide2FragmentArgs by navArgs()
 
     override fun onCreateView(

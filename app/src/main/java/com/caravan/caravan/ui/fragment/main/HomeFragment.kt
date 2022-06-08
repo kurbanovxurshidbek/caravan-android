@@ -94,7 +94,7 @@ class HomeFragment : BaseFragment() {
                 null,
                 "en",
                 arrayListOf()
-            ),
+            ,""),
             "+998932037313",
             "Ogabek Matyakubov",
             true,
@@ -189,7 +189,7 @@ class HomeFragment : BaseFragment() {
                         arrayListOf(
                             Device("", "", 'A')
                         )
-                    ),
+                    ,""),
                     "",
                     "",
                     false,

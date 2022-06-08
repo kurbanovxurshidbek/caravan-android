@@ -225,7 +225,7 @@
                             android:layout_marginStart="20dp">
 
                             <Spinner
-                                android:id="@+id/spinnerDay"
+                                android:id="@+id/spinnerType"
                                 android:layout_width="60dp"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/background_spinner"
