@@ -4,12 +4,10 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -21,7 +19,6 @@ import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.utils.*
-import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.viewmodel.guideOption.upgrade.first.UpgradeGuide1Repository
 import com.caravan.caravan.viewmodel.guideOption.upgrade.first.UpgradeGuide1ViewModel
 import com.caravan.caravan.viewmodel.guideOption.upgrade.first.UpgradeGuide1ViewModelFactory
@@ -70,7 +67,10 @@ class UpgradeGuide1Fragment : BaseFragment() {
             this,
             UpgradeGuide1ViewModelFactory(
                 UpgradeGuide1Repository(
-                    RetrofitHttp.createService(ApiService::class.java)
+                    RetrofitHttp.createServiceWithAuth(
+                        SharedPref(requireContext()),
+                        ApiService::class.java
+                    )
                 )
             )
         )[UpgradeGuide1ViewModel::class.java]
@@ -108,7 +108,7 @@ class UpgradeGuide1Fragment : BaseFragment() {
 
     }
 
-    fun setUpObserverUpdate(){
+    fun setUpObserverUpdate() {
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.update.collect {
                 when (it) {
@@ -170,8 +170,9 @@ class UpgradeGuide1Fragment : BaseFragment() {
                 profile.photo,
                 profile.gender,
                 binding.tvBirthday.text.toString(),
-                profile.createdDate, null, profile.appLanguage, profile.devices
-            ,SharedPref(requireContext()).getToken())
+                profile.createdDate, null, profile.appLanguage, profile.devices,
+                profile.token,
+            )
             Log.d("@@@", "initViews: $user")
             viewModel.updateProfile(profile.id, user)
 
@@ -179,7 +180,6 @@ class UpgradeGuide1Fragment : BaseFragment() {
 
         }
     }
-
 
 
     fun setBirthday() {

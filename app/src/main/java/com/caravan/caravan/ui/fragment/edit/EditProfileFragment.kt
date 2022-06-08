@@ -305,7 +305,7 @@ class EditProfileFragment : BaseFragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
             this,
-            EditViewModelFactory(EditRepository(RetrofitHttp.createService(ApiService::class.java)))
+            EditViewModelFactory(EditRepository(RetrofitHttp.createServiceWithAuth(SharedPref(requireContext()), ApiService::class.java)))
         )[EditViewModel::class.java]
     }
 
