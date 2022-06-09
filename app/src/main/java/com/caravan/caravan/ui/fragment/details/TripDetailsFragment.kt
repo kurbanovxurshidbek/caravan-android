@@ -133,7 +133,7 @@ class TripDetailsFragment : BaseFragment() {
             .inflate(R.layout.overlay_view, LinearLayout(requireContext()), false)
 
         overlayViewBinding.name.text =
-            trip.photos[position].location.province + ", " + trip.photos[position].location.district
+            trip.photos[position].location.provence + ", " + trip.photos[position].location.district
         overlayViewBinding.tvDescription.text =
             trip.photos[position].location.description
 
@@ -153,7 +153,7 @@ class TripDetailsFragment : BaseFragment() {
                 overlayViewBinding.root
             ).withImageChangeListener {
                 overlayViewBinding.name.text =
-                    trip.photos[it].location.province + ", " + trip.photos[it].location.district
+                    trip.photos[it].location.district + ", " + trip.photos[it].location.district
                 overlayViewBinding.tvDescription.text =
                     trip.photos[it].location.description
             }
