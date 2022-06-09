@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="maximum_rating">Maximum Rating (0–5)</string>
+    <string name="minimum_rating">Minimum Rating (0–5)</string>
+    <string name="day">Day</string>
+    <string name="maximum_people">Maximum People</string>
+    <string name="minimum_people">Minimum People</string>
+    <string name="maximum_price">Maximum Price</string>
+    <string name="minimum_price">Minimum Price</string>
+    <string name="filter_your_search">Filter your Search</string>
+</resources>
