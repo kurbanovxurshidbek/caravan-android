@@ -236,7 +236,7 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
                         myLanguageList,
                         myLocationList,
                         guideProfile.reviews,
-                        //guideProfile.attendancesProfileId,
+                        guideProfile.attendancesProfileId,
                         guideProfile.trips
                     )
 

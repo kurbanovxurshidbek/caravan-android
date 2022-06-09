@@ -192,7 +192,7 @@ class GuideDetailsFragment : BaseFragment() {
             },
             arrayListOf(),
             arrayListOf(),
-            //arrayListOf()
+            arrayListOf()
         )
 
         val trip = Trip(
