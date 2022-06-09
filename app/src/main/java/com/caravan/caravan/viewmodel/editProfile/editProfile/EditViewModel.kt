@@ -29,10 +29,10 @@ class EditViewModel(private val repository: EditRepository) : ViewModel() {
         }
     }
 
-    fun updateProfile(id: String,profile: Profile) = viewModelScope.launch {
+    fun updateProfile(profile: Profile) = viewModelScope.launch {
         _updatedProfile.value=UiStateObject.LOADING
         try {
-            val updatedProfile = repository.updateProfile(id,profile)
+            val updatedProfile = repository.updateProfile(profile)
             if (!updatedProfile.isSuccessful) {
                 _updatedProfile.value = UiStateObject.ERROR(updatedProfile.message())
             }

@@ -29,12 +29,12 @@ class UpgradeGuide1ViewModel(private val repository: UpgradeGuide1Repository) : 
     private val _update = MutableStateFlow<UiStateObject<Profile>>(UiStateObject.EMPTY)
     val update = _update
 
-    fun updateProfile(id: String, profile: Profile) = viewModelScope.launch {
+    fun updateProfile(profile: Profile) = viewModelScope.launch {
         update.value = UiStateObject.LOADING
 
         try {
 
-            val updateProfile = repository.updateProfile(id, profile)
+            val updateProfile = repository.updateProfile(profile)
             if (updateProfile.isSuccessful)
                 _update.value = UiStateObject.SUCCESS(updateProfile.body()!!)
             else

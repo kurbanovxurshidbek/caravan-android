@@ -89,7 +89,6 @@ class AccountFragment : BaseFragment() {
                                 override fun onClick() {
 
                                 }
-
                             }
                         )
                     }
@@ -97,6 +96,36 @@ class AccountFragment : BaseFragment() {
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.delete.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        SharedPref(requireContext()).saveBoolean("loginDone", false)
+                        base.callLoginActivity()
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        Dialog.showDialogWarning(
+                            requireContext(),
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+
+                                }
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -143,9 +172,7 @@ class AccountFragment : BaseFragment() {
                     getString(R.string.str_delete_message),
                     object : OkWithCancelInterface {
                         override fun onOkClick() {
-                            // send request here
-                            SharedPref(requireContext()).saveBoolean("loginDone", false)
-                            base.callLoginActivity()
+                            viewModel.deleteProfile()
                         }
 
                         override fun onCancelClick() {
@@ -162,7 +189,11 @@ class AccountFragment : BaseFragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
             this,
-            AccountViewModelFactory(AccountRepository(RetrofitHttp.createService(ApiService::class.java)))
+            AccountViewModelFactory(
+                AccountRepository(
+                    RetrofitHttp.createServiceWithAuth(SharedPref(requireContext()), ApiService::class.java)
+                )
+            )
         )[AccountViewModel::class.java]
     }
 

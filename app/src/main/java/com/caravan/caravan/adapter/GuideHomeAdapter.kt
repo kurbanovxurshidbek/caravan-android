@@ -51,11 +51,11 @@ class GuideHomeAdapter(private val context: BaseFragment, private val list: List
             val numberOfProvince = guide.travelLocations.size
 
             return if(numberOfProvince > 1){
-                val text = "${province.province} and ${numberOfProvince - 1} more"
-                val endIndex = province.province.length
+                val text = "${province.provence} and ${numberOfProvince - 1} more"
+                val endIndex = province.provence.length
                 colorMyText(text, 0, endIndex, R.color.main_color2)
             }else{
-                colorMyText(province.province, 0, province.province.length, R.color.main_color2)
+                colorMyText(province.provence, 0, province.provence.length, R.color.main_color2)
             }
         }
 
