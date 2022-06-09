@@ -397,7 +397,7 @@
                         android:layout_weight="1"
                         android:backgroundTint="@color/main_color"
                         android:fontFamily="@font/circular_std_bold"
-                        android:hint="@string/write_respond"
+                        android:hint="@string/write_review"
                         android:inputType="textMultiLine"
                         android:maxLines="5"
                         android:textColor="@color/black"

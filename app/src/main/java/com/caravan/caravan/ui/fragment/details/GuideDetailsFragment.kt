@@ -1,8 +1,10 @@
 package com.caravan.caravan.ui.fragment.details
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Spannable
@@ -14,30 +16,47 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.CommentsAdapter
-import com.caravan.caravan.adapter.FacilitiesAdapter
 import com.caravan.caravan.adapter.TravelLocationsAdapter
 import com.caravan.caravan.databinding.FragmentGuideDetailsBinding
 import com.caravan.caravan.manager.SharedPref
-import com.caravan.caravan.model.*
+import com.caravan.caravan.model.Comment
+import com.caravan.caravan.model.GuideProfile
+import com.caravan.caravan.model.Location
+import com.caravan.caravan.model.Price
+import com.caravan.caravan.model.more.ActionMessage
+import com.caravan.caravan.model.review.Review
+import com.caravan.caravan.network.ApiService
+import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Dialog
+import com.caravan.caravan.utils.Extensions.toast
+import com.caravan.caravan.utils.OkInterface
+import com.caravan.caravan.utils.UiStateObject
+import com.caravan.caravan.viewmodel.details.GuideDetailsRepository
+import com.caravan.caravan.viewmodel.details.GuideDetailsViewModel
+import com.caravan.caravan.viewmodel.details.GuideDetailsViewModelFactory
 import com.stfalcon.imageviewer.StfalconImageViewer
 
 
 class GuideDetailsFragment : BaseFragment() {
     private lateinit var guideDetailsBinding: FragmentGuideDetailsBinding
     private var guideId: String = "null"
-    private var fromAnotherActivity = false
+
+    private var guideProfile: GuideProfile? = null
+
+    private lateinit var viewModel: GuideDetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
             guideId = it.getString("guideId").toString()
-            fromAnotherActivity = it.getBoolean("fromAnotherActivity")
         }
 
     }
@@ -47,19 +66,70 @@ class GuideDetailsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         guideDetailsBinding = FragmentGuideDetailsBinding.inflate(layoutInflater)
+
+        setUpViewModel()
+        setUpObserves()
+
+        viewModel.getGuideProfile(guideId)
+
         initViews()
+
         return guideDetailsBinding.root
     }
 
+    private fun setUpObserves() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.guideProfile.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        guideProfile = it.data
+                        setData(it.data)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        Dialog.showDialogWarning(
+                            requireContext(),
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    requireActivity().onBackPressed()
+                                }
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+    private fun setData(data: GuideProfile) {
+        setProfilePhoto(data.profile.photo!!)
+        setTravelLocations(data.travelLocations)
+        setCommentsRv(data.reviews)
+        setLeaveCommentsPart(data.attendancesProfileId, data.reviews)
+        guideDetailsBinding.tvGuidePrice.text = setPrice(data.price)
+    }
+
+    private fun setUpViewModel() {
+        viewModel = ViewModelProvider(
+            this, GuideDetailsViewModelFactory(
+                GuideDetailsRepository(
+                    RetrofitHttp.createServiceWithAuth(
+                        SharedPref(requireContext()), ApiService::class.java
+                    )
+                )
+            )
+        )[GuideDetailsViewModel::class.java]
+    }
 
 
     private fun initViews() {
-        setProfilePhoto()
-        setTravelLocations()
-        setFacilities()
-        setCommentsRv()
-        setLeaveCommentsPart()
-        guideDetailsBinding.tvTripPrice.text = setPrice(myTrip())
 
         guideDetailsBinding.apply {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -74,45 +144,107 @@ class GuideDetailsFragment : BaseFragment() {
                     }
                 }
             }
-        }
 
-        guideDetailsBinding.guideTrips.setOnClickListener {
-            Navigation.findNavController(requireActivity(), R.id.details_nav_fragment)
-                .navigate(R.id.action_guideDetailsFragment_to_guideTrips)
-        }
+            guideTrips.setOnClickListener {
+                Navigation.findNavController(requireActivity(), R.id.details_nav_fragment)
+                    .navigate(R.id.action_guideDetailsFragment_to_guideTrips)
+            }
 
-        guideDetailsBinding.guideProfilePhoto.setOnClickListener {
-            val myView = View.inflate(
-                requireContext(),
-                R.layout.overlay_view,
-                RelativeLayout(requireContext())
-            )
+            guideProfilePhoto.setOnClickListener {
+                val myView = View.inflate(
+                    requireContext(),
+                    R.layout.overlay_view,
+                    RelativeLayout(requireContext())
+                )
 
 
-            StfalconImageViewer.Builder<String?>(
-                requireContext(),
-                arrayOf(myTrip().guideProfile.profile.photo)
-            ) { view, _ ->
+                StfalconImageViewer.Builder<String?>(
+                    requireContext(),
+                    arrayOf(guideProfile?.profile?.photo)
+                ) { view, _ ->
+                    Glide.with(guideDetailsBinding.root).load(guideProfile?.profile?.photo).into(view)
+                }.withHiddenStatusBar(false)
+                    .withDismissListener {
 
-                Glide.with(guideDetailsBinding.root)
-                    .load("https://i.insider.com/5d35bf63454a3947b349c915?width=1136&format=jpeg")
-                    .into(view)
-            }.withHiddenStatusBar(false)
-                .withDismissListener {
+                    }
+                    .withOverlayView(myView)
+                    .show()
 
+            }
+
+            btnApplyGuide.setOnClickListener {
+                // Call to server to apple trip
+            }
+
+            btnSendComment.setOnClickListener {
+                if (etLeaveComment.text.isNotEmpty()) {
+                    val rate = ratingBarGuide.rating
+                    val review = Review(rate.toInt(), etLeaveComment.text.toString(), "GUIDE", null, guideId)
+
+                    setUpObservesReview()
+
+                    viewModel.postReview(review)
+
+                } else {
+                    toast(getString(R.string.str_send_message))
                 }
-                .withOverlayView(myView)
-                .show()
+            }
+
+            llCallToGuide.setOnClickListener {
+                val callIntent = Intent(Intent.ACTION_DIAL)
+                callIntent.data = Uri.parse("tel:${guideProfile?.profile?.phoneNumber}")
+                requireActivity().startActivity(callIntent)
+            }
 
         }
 
     }
 
-    private fun setPrice(trip: Trip): Spannable {
-        val text = "$${trip.price.cost.toInt()}"
+    private fun setUpObservesReview() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.postReview.collect {
+                when(it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        setStatus(it.data)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        Dialog.showDialogWarning(
+                            requireContext(),
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    requireActivity().onBackPressed()
+                                }
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+    private fun setStatus(data: ActionMessage) {
+        if (!data.status) {
+            Dialog.showDialogWarning(requireContext(), data.title!!, data.message!!, object: OkInterface {
+                override fun onClick() {
+                    return
+                }
+            })
+        }
+    }
+
+    private fun setPrice(price: Price): Spannable {
+        val text = "$${price.cost.toInt()}"
         val endIndex = text.length
 
-        val outPutColoredText: Spannable = SpannableString("$text/${trip.price.type}")
+        val outPutColoredText: Spannable = SpannableString("$text/${price.type}")
         outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
         outPutColoredText.setSpan(
             ForegroundColorSpan(Color.parseColor("#167351")),
@@ -124,154 +256,47 @@ class GuideDetailsFragment : BaseFragment() {
         return outPutColoredText
     }
 
-    private fun setLeaveCommentsPart() {
-        //code for Guide
+    private fun setLeaveCommentsPart(ids: ArrayList<String>?, reviews: ArrayList<Comment>?) {
+        val profileId = SharedPref(requireContext()).getString("profileId")
+        if (ids != null && ids.contains(profileId!!)) {
+
+            if (!reviews.isNullOrEmpty()) {
+                var isHave = true
+                for (i in reviews) {
+                    if (i.from.id == profileId) {
+                        isHave = true
+                        break
+                    }
+                }
+                if (isHave)
+                    guideDetailsBinding.leaveCommentPart.visibility = View.GONE
+                else
+                    guideDetailsBinding.leaveCommentPart.visibility = View.VISIBLE
+            } else {
+                guideDetailsBinding.leaveCommentPart.visibility = View.VISIBLE
+            }
+        } else {
+            guideDetailsBinding.leaveCommentPart.visibility = View.GONE
+        }
     }
 
-    private fun setProfilePhoto() {
+    private fun setProfilePhoto(photo: String) {
         Glide.with(guideDetailsBinding.root)
-            .load("https://i.insider.com/5d35bf63454a3947b349c915?width=1136&format=jpeg")
+            .load(photo)
             .placeholder(R.drawable.guide)
             .into(guideDetailsBinding.guideProfilePhoto)
     }
 
-    private fun setCommentsRv() {
-        guideDetailsBinding.fragmentTripCommentsRV.adapter = myTrip().reviews?.let {
-            CommentsAdapter(
-                it
-            )
+    private fun setCommentsRv(reviews: ArrayList<Comment>?) {
+        guideDetailsBinding.fragmentTripCommentsRV.adapter = reviews?.let {
+            CommentsAdapter(it)
         }
     }
 
-    private fun setTravelLocations() {
+    private fun setTravelLocations(travelLocations: ArrayList<Location>) {
         guideDetailsBinding.apply {
-            travelLocationsRV.adapter = TravelLocationsAdapter(myTrip().places)
+            travelLocationsRV.adapter = TravelLocationsAdapter(travelLocations)
         }
-    }
-
-    private fun setFacilities() {
-        guideDetailsBinding.apply {
-            facilitiesRV.adapter = FacilitiesAdapter(myTrip().facility)
-        }
-    }
-
-
-    private fun myTrip(): Trip {
-        val guide = GuideProfile(
-            "100001",
-            Profile(
-                "1001",
-                "Ogabek",
-                "Matyakubov",
-                "+998997492581",
-                "ogabekdev@gmail.com",
-                "GUIDE",
-                null,
-                "ACTIVE",
-                "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84",
-                "MALE",
-                null,
-                "12.02.1222",
-                null,
-                "en",
-                arrayListOf(),
-            SharedPref(requireContext()).getToken()),
-            "+998932037313",
-            "Ogabek Matyakubov",
-            true,
-            4.5,
-            Price(150.0.toLong(), "USD", "day"),
-            ArrayList<Language>().apply {
-                add(Language("1", "English", "Advanced"))
-                add(Language("2", "Uzbek", "Native"))
-            },
-            ArrayList<Location>().apply {
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-            },
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf()
-        )
-
-        val trip = Trip(
-            "1", "Khiva in 3 days",
-            ArrayList<TourPhoto>().apply {
-                add(
-                    TourPhoto(
-                        "1",
-                        Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                        "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
-                    )
-                )
-                add(
-                    TourPhoto(
-                        "1",
-                        Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                        "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
-                    )
-                )
-                add(
-                    TourPhoto(
-                        "1",
-                        Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                        "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
-                    )
-                )
-            },
-            ArrayList<Facility>().apply {
-                add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-                add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-                add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-            },
-            ArrayList<Location>().apply {
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-            },
-            "Khiva in 3 days",
-            Price(1200.0.toLong(), "USD", "trip"),
-            5, 10,
-            guide,
-            "+998997492581",
-            4.5,
-            arrayListOf(),
-            arrayListOf(
-                Comment(
-                    "123",
-                    4,
-                    "21.06.2001",
-                    "Hey Man, that was really cool!",
-                    Profile(
-                        "1001",
-                        "Ogabek",
-                        "Matyakubov",
-                        "+998997492581",
-                        "ogabekdev@gmail.com",
-                        "GUIDE",
-                        null,
-                        "ACTIVE",
-                        "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg",
-                        "MALE",
-                        null,
-                        "12.10.2022",
-                        null,
-                        "en",
-                        arrayListOf(),
-                        SharedPref(requireContext()).getToken()
-                    ),
-                    "TRIP",
-                    null,
-                    guide,
-                    "21.06.01",
-                    "Wassabi guys"
-
-                )
-            )
-        )
-
-        return trip
     }
 
 }

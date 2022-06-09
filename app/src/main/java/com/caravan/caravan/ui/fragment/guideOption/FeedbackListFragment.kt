@@ -6,13 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.FragmentFeedbackListBinding
 import com.caravan.caravan.model.Comment
-import com.caravan.caravan.ui.fragment.main.HomeFragment
 
 class FeedbackListFragment : Fragment() {
 

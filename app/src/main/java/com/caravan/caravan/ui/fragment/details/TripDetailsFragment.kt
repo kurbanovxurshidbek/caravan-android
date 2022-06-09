@@ -11,6 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -23,7 +25,16 @@ import com.caravan.caravan.databinding.FragmentTripDetailsBinding
 import com.caravan.caravan.databinding.OverlayViewBinding
 import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.*
+import com.caravan.caravan.model.Comment
+import com.caravan.caravan.network.ApiService
+import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Dialog
+import com.caravan.caravan.utils.OkInterface
+import com.caravan.caravan.utils.UiStateObject
+import com.caravan.caravan.viewmodel.details.TripDetailsRepository
+import com.caravan.caravan.viewmodel.details.TripDetailsViewModel
+import com.caravan.caravan.viewmodel.details.TripDetailsViewModelFactory
 import com.stfalcon.imageviewer.StfalconImageViewer
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
@@ -32,6 +43,9 @@ class TripDetailsFragment : BaseFragment() {
     private lateinit var fragmentTripDetailsBinding: FragmentTripDetailsBinding
     private var tripId: String = "null"
     private lateinit var overlayViewBinding: OverlayViewBinding
+
+    private lateinit var viewModel: TripDetailsViewModel
+    private lateinit var trip: Trip
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +59,59 @@ class TripDetailsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         fragmentTripDetailsBinding = FragmentTripDetailsBinding.inflate(layoutInflater)
+
+        setUpViewModel()
+        setUpObserves()
+
         initViews()
         return fragmentTripDetailsBinding.root
+    }
+
+    private fun setUpObserves() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.trip.collect {
+                when(it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+
+                        setUpDate(it.data)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        Dialog.showDialogWarning(
+                            requireContext(),
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    requireActivity().onBackPressed()
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setUpDate(data: Trip) {
+        setViewPager(data.photos)
+        setTravelLocations(data.places)
+        setFacilities(data.facility)
+        setCommentsRv(data.reviews)
+        setLeaveCommentsPart(data.attendancesProfileId, data.reviews)
+
+        fragmentTripDetailsBinding.tvTripPrice.text = setPrice(trip.price)
+        fragmentTripDetailsBinding.tvGuidePrice.text = setPrice(trip.price)
+
+    }
+
+    private fun setUpViewModel() {
+        viewModel = ViewModelProvider(this, TripDetailsViewModelFactory(TripDetailsRepository(RetrofitHttp.createServiceWithAuth(
+            SharedPref(requireContext()), ApiService::class.java))))[TripDetailsViewModel::class.java]
     }
 
     private fun initViews() {
@@ -54,14 +119,6 @@ class TripDetailsFragment : BaseFragment() {
             LayoutInflater.from(requireContext())
                 .inflate(R.layout.overlay_view, RelativeLayout(requireContext()), false)
         )
-
-        setViewPager()
-        setTravelLocations()
-        setFacilities()
-        setCommentsRv()
-        setLeaveCommentsPart()
-        fragmentTripDetailsBinding.tvTripPrice.text = setPrice(myTrip())
-        fragmentTripDetailsBinding.tvGuidePrice.text = setPrice(myTrip())
 
         fragmentTripDetailsBinding.guideProfile.setOnClickListener {
             Navigation.findNavController(requireActivity(), R.id.details_nav_fragment)
@@ -76,13 +133,13 @@ class TripDetailsFragment : BaseFragment() {
             .inflate(R.layout.overlay_view, LinearLayout(requireContext()), false)
 
         overlayViewBinding.name.text =
-            myTrip().photos[position].location.province + ", " + myTrip().photos[position].location.district
+            trip.photos[position].location.province + ", " + trip.photos[position].location.district
         overlayViewBinding.tvDescription.text =
-            myTrip().photos[position].location.description
+            trip.photos[position].location.description
 
         StfalconImageViewer.Builder(
             requireContext(),
-            myTrip().photos
+            trip.photos
         ) { view, image ->
 
 
@@ -96,16 +153,16 @@ class TripDetailsFragment : BaseFragment() {
                 overlayViewBinding.root
             ).withImageChangeListener {
                 overlayViewBinding.name.text =
-                    myTrip().photos[it].location.province + ", " + myTrip().photos[it].location.district
+                    trip.photos[it].location.province + ", " + trip.photos[it].location.district
                 overlayViewBinding.tvDescription.text =
-                    myTrip().photos[it].location.description
+                    trip.photos[it].location.description
             }
             .show()
     }
 
 
-    private fun setPrice(trip: Trip): Spannable {
-        val text = "$${trip.price.cost.toInt()}"
+    private fun setPrice(price: Price): Spannable {
+        val text = "$${price.cost.toInt()}"
         val endIndex = text.length
 
         val outPutColoredText: Spannable = SpannableString("$text/${trip.price.type}")
@@ -120,28 +177,36 @@ class TripDetailsFragment : BaseFragment() {
         return outPutColoredText
     }
 
-    private fun setLeaveCommentsPart() {
-        if (myTrip().attendancesProfileId.contains("userId")) {   // UserId qo'yiladi
-            fragmentTripDetailsBinding.leaveCommentPart.visibility = View.VISIBLE
+    private fun setLeaveCommentsPart(ids: ArrayList<String>?, reviews: ArrayList<Comment>?) {
+        val profileId = SharedPref(requireContext()).getString("profileId")
+        if (ids != null && ids.contains(profileId!!)) {
 
-            if (!myTrip().reviews.isNullOrEmpty()) {
-                for (comment in myTrip().reviews!!) {
-                    if (comment.from.id == "userId") {  //UserId qo'yiladi
-                        fragmentTripDetailsBinding.leaveCommentPart.visibility = View.GONE
+            if (!reviews.isNullOrEmpty()) {
+                var isHave = true
+                for (i in reviews) {
+                    if (i.from.id == profileId) {
+                        isHave = true
                         break
                     }
                 }
+                if (isHave)
+                    fragmentTripDetailsBinding.leaveCommentPart.visibility = View.GONE
+                else
+                    fragmentTripDetailsBinding.leaveCommentPart.visibility = View.VISIBLE
+            } else {
+                fragmentTripDetailsBinding.leaveCommentPart.visibility = View.VISIBLE
             }
-
+        } else {
+            fragmentTripDetailsBinding.leaveCommentPart.visibility = View.GONE
         }
     }
 
-    private fun setViewPager() {
+    private fun setViewPager(photos: ArrayList<TourPhoto>) {
         fragmentTripDetailsBinding.apply {
             viewPager2.apply {
                 adapter = TripPhotosAdapter(
                     this@TripDetailsFragment,
-                    myTrip().photos
+                    photos
                 ) //TripDetailsFragment viewPager items, It should be Trip items and they should come from server
                 setIndicator()
                 registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -154,143 +219,24 @@ class TripDetailsFragment : BaseFragment() {
         }
     }
 
-    private fun setCommentsRv() {
-        fragmentTripDetailsBinding.fragmentTripCommentsRV.adapter = myTrip().reviews?.let {
-            CommentsAdapter(
-                it
-            )
+    private fun setCommentsRv(reviews: ArrayList<Comment>?) {
+        fragmentTripDetailsBinding.fragmentTripCommentsRV.adapter = reviews?.let {
+            CommentsAdapter(it)
         }
     }
 
     /*TripDetailsFragment viewPager items, It should be Trip items and they should come from server
     */
 
-    private fun myTrip(): Trip {
-        val guide = GuideProfile(
-            "100001",
-            Profile(
-                "1001",
-                "Ogabek",
-                "Matyakubov",
-                "+998997492581",
-                "ogabekdev@gmail.com",
-                "GUIDE",
-                null,
-                "ACTIVE",
-                "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84",
-                "MALE",
-                null,
-                "12.02.1222",
-                null,
-                "en",
-                arrayListOf(),SharedPref(requireContext()).getToken()
-            ),
-            "+998932037313",
-            "Ogabek Matyakubov",
-            true,
-            4.5,
-            Price(150.0.toLong(), "USD", "day"),
-            ArrayList<Language>().apply {
-                add(Language("1", "English", "Advanced"))
-                add(Language("2", "Uzbek", "Native"))
-            },
-            ArrayList<Location>().apply {
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location("1", "Tashkent", "Yakkasaroy", "Boshliq"))
-                add(Location("1", "America", "Washington DC", "Beach"))
-            },
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf()
-        )
-
-        val trip = Trip(
-            "1", "Khiva in 3 days",
-            ArrayList<TourPhoto>().apply {
-                add(
-                    TourPhoto(
-                        "1",
-                        Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                        "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
-                    )
-                )
-                add(
-                    TourPhoto(
-                        "1",
-                        Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                        "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
-                    )
-                )
-                add(
-                    TourPhoto(
-                        "1",
-                        Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                        "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
-                    )
-                )
-            },
-            ArrayList<Facility>().apply {
-                add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-                add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-                add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-            },
-            ArrayList<Location>().apply {
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-            },
-            "Khiva in 3 days",
-            Price(1200.0.toLong(), "USD", "trip"),
-            5, 10,
-            guide,
-            "+998997492581",
-            4.5,
-            arrayListOf(),
-            arrayListOf(
-                Comment(
-                    "123",
-                    4,
-                    "21.06.2001",
-                    "Hey Man, that was really cool!",
-                    Profile(
-                        "1001",
-                        "Ogabek",
-                        "Matyakubov",
-                        "+998997492581",
-                        "ogabekdev@gmail.com",
-                        "GUIDE",
-                        null,
-                        "ACTIVE",
-                        "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg",
-                        "MALE",
-                        null,
-                        "12.10.2022",
-                        null,
-                        "en",
-                        arrayListOf(), SharedPref(requireContext()).getToken()
-                    ),
-                    "TRIP",
-                    null,
-                    guide,
-                    "21.06.01",
-                    "Wassabi guys"
-
-                )
-            )
-        )
-
-        return trip
-    }
-
-    private fun setTravelLocations() {
+    private fun setTravelLocations(places: ArrayList<Location>) {
         fragmentTripDetailsBinding.apply {
-            travelLocationsRV.adapter = TravelLocationsAdapter(myTrip().places)
+            travelLocationsRV.adapter = TravelLocationsAdapter(places)
         }
     }
 
-    private fun setFacilities() {
+    private fun setFacilities(facility: ArrayList<Facility>) {
         fragmentTripDetailsBinding.apply {
-            facilitiesRV.adapter = FacilitiesAdapter(myTrip().facility)
+            facilitiesRV.adapter = FacilitiesAdapter(facility)
         }
     }
 

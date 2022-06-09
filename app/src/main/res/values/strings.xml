@@ -67,7 +67,7 @@
     <string name="str_send">Send</string>
     <string name="guide_s_trips">Guide\'s Trips</string>
     <string name="hire_guide">Hire Guide</string>
-    <string name="write_respond">Write Respond</string>
+    <string name="write_review">Write Review</string>
     <string name="str_english">English</string>
     <string name="str_uzbek">O\'zbekcha</string>
     <string name="str_choose_language">Choose Language</string>
@@ -116,6 +116,7 @@
     <string name="str_upload">Upload</string>
     <string name="error">Error</string>
     <string name="went_wrong">Something went wrong. Please try again</string>
+    <string name="str_send_message">Please write review</string>
 
     <string-array name="location">
         <item>TASHKENT</item>
