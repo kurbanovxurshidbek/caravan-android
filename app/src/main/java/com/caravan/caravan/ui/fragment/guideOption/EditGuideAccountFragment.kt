@@ -8,7 +8,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -45,8 +48,8 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
     var languages: Array<String>? = null
     var currencies: Array<String>? = null
     var options: Array<String>? = null
-    var level:String = ""
-    var language:String = ""
+    var level: String = ""
+    var language: String = ""
     var currency: String = ""
     var option: String = ""
     var locationProvince: Array<String>? = null
@@ -72,8 +75,8 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
         initViews()
     }
 
-    private fun setUpViewModel(){
-        viewModel =  ViewModelProvider(
+    private fun setUpViewModel() {
+        viewModel = ViewModelProvider(
             this,
             EditGuideOptionViewModelFactory(
                 EditGuideOptionRepository(
@@ -86,7 +89,7 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
         )[EditGuideOptionViewModel::class.java]
     }
 
-    private fun setUpObservers(){
+    private fun setUpObservers() {
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.profile.collect {
                 when (it) {
@@ -118,7 +121,7 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
         }
     }
 
-    fun setUpObserverUpdate(){
+    fun setUpObserverUpdate() {
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.update.collect {
                 when (it) {
@@ -147,6 +150,7 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
             }
         }
     }
+
     private fun setUpObserversDistrict() {
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.district.collect {
@@ -189,8 +193,8 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
             viewModel.getGuideProfile(id)
         }
 
-        binding.recyclerViewLocation.setLayoutManager(GridLayoutManager(activity,1))
-        binding.recyclerViewLanguage.setLayoutManager(GridLayoutManager(activity,1))
+        binding.recyclerViewLocation.setLayoutManager(GridLayoutManager(activity, 1))
+        binding.recyclerViewLanguage.setLayoutManager(GridLayoutManager(activity, 1))
 
         setSpinner()
 
@@ -206,12 +210,12 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
         updateGuideOption()
     }
 
-    private fun setData(guideProfile: GuideProfile){
+    private fun setData(guideProfile: GuideProfile) {
         binding.apply {
             etAmount.setText("${guideProfile.price.cost}")
             etBiography.setText(guideProfile.biography)
-            selectSpinnerItemByValue(spinnerCurrency,guideProfile.price.currency)
-            selectSpinnerItemByValue(spinnerType,guideProfile.price.type)
+            selectSpinnerItemByValue(spinnerCurrency, guideProfile.price.currency)
+            selectSpinnerItemByValue(spinnerType, guideProfile.price.type)
             myLanguageList = guideProfile.languages
             myLocationList = guideProfile.travelLocations
 
@@ -221,10 +225,10 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
         }
     }
 
-    private fun updateGuideOption(){
+    private fun updateGuideOption() {
         binding.apply {
             btnSave.setOnClickListener {
-                if (etBiography.text.isNotEmpty() && etAmount.text.isNotEmpty() && myLanguageList.isNotEmpty() && myLocationList.isNotEmpty()){
+                if (etBiography.text.isNotEmpty() && etAmount.text.isNotEmpty() && myLanguageList.isNotEmpty() && myLocationList.isNotEmpty()) {
                     val guide = GuideProfile(
                         guideProfile.id,
                         guideProfile.profile,
@@ -232,7 +236,7 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
                         etBiography.text.toString(),
                         guideProfile.isHiring,
                         guideProfile.rate,
-                        Price(etAmount.text.toString().toLong(),currency,option),
+                        Price(etAmount.text.toString().toLong(), currency, option),
                         myLanguageList,
                         myLocationList,
                         guideProfile.reviews,
@@ -242,14 +246,14 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
 
                     viewModel.updateGuideProfile(guide)
                     setUpObserverUpdate()
-                }else{
+                } else {
                     toast(getString(R.string.str_fill_all_fields))
                 }
             }
         }
     }
 
-    private fun addLocationItems(){
+    private fun addLocationItems() {
         binding.etLocationDesc.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -259,20 +263,21 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
         })
 
         binding.tvAddLocation.setOnClickListener {
-            if(desc != ""){
-                val location = Location("1",province,district,desc)
+            if (desc != "") {
+                val location = Location("1", province, district, desc)
 
                 myLocationList.add(location)
                 refreshAdapterLocation(myLocationList)
                 binding.etLocationDesc.text.clear()
-            }else{
-                Toast.makeText(requireContext(), "Please, fill the field first", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Please, fill the field first", Toast.LENGTH_SHORT)
+                    .show()
             }
 
         }
     }
 
-    private fun addLanguageItems(){
+    private fun addLanguageItems() {
         binding.etLanguage.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -284,19 +289,20 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
 
         binding.tvAddLanguage.setOnClickListener {
             if (language != "") {
-                val language = Language("1",language,level)
+                val language = Language("1", language, level)
                 myLanguageList.add(language)
                 refreshAdapterLanguage(myLanguageList)
                 binding.etLanguage.text.clear()
-            }else{
-                Toast.makeText(requireContext(), "Please, fill the field first", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Please, fill the field first", Toast.LENGTH_SHORT)
+                    .show()
             }
 
         }
     }
 
 
-    private fun swipeToDeleteLocation(){
+    private fun swipeToDeleteLocation() {
         val swipeToDeleteCallback = object : SwipeToDeleteCallback() {
             @SuppressLint("NotifyDataSetChanged")
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -309,7 +315,8 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
         itemTouchHelper.attachToRecyclerView(binding.recyclerViewLocation)
     }
-    private fun swipeToDeleteLanguage(){
+
+    private fun swipeToDeleteLanguage() {
         val swipeToDeleteCallback = object : SwipeToDeleteCallback() {
             @SuppressLint("NotifyDataSetChanged")
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -323,11 +330,12 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
         itemTouchHelper.attachToRecyclerView(binding.recyclerViewLanguage)
     }
 
-    private fun setSpinner(){
+    private fun setSpinner() {
         currencies = resources.getStringArray(R.array.currencies)
         binding.spinnerCurrency.onItemSelectedListener = this
 
-        val adapter: ArrayAdapter<*> = ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, currencies!!)
+        val adapter: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, currencies!!)
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -336,7 +344,8 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
         options = resources.getStringArray(R.array.options)
         binding.spinnerType.onItemSelectedListener = itemSelectedOption
 
-        val adapter1: ArrayAdapter<*> = ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, options!!)
+        val adapter1: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, options!!)
 
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -345,7 +354,8 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
         languages = resources.getStringArray(R.array.level)
         binding.spinnerLevel.onItemSelectedListener = itemSelectedLangaugeLevel
 
-        val adapter2: ArrayAdapter<*> = ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, languages!!)
+        val adapter2: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, languages!!)
 
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -354,12 +364,17 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
         locationProvince = resources.getStringArray(R.array.location)
         binding.spinnerLocationFrom.onItemSelectedListener = itemSelectedProvince
 
-        val adapter3: ArrayAdapter<*> = ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, locationProvince!!)
+        val adapter3: ArrayAdapter<*> = ArrayAdapter<Any?>(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            locationProvince!!
+        )
 
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         binding.spinnerLocationFrom.adapter = adapter3
     }
+
     fun spinnerDistrict() {
         binding.spinnerLocationTo.onItemSelectedListener = itemSelectedDistrict
 
@@ -378,6 +393,7 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
             level = languages!![p2]
         }
+
         override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
     val itemSelectedProvince = object : AdapterView.OnItemSelectedListener {
@@ -386,12 +402,14 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
             viewModel.getDistrict(province)
             setUpObserversDistrict()
         }
+
         override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
     val itemSelectedDistrict = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
             district = locationDistrict!![p2]
         }
+
         override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
     val itemSelectedOption = object : AdapterView.OnItemSelectedListener {
@@ -401,6 +419,7 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
 
         override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
+
     private fun selectSpinnerItemByValue(spinner: Spinner, value: String) {
         for (i in 0 until spinner.count) {
             if (spinner.getItemAtPosition(i) == value) {
@@ -412,15 +431,15 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
 
 
     @SuppressLint("NotifyDataSetChanged")
-    fun refreshAdapterLocation(items:ArrayList<Location>){
-        adapterlocation = UpgradeGuideLocationAdapter(requireContext(),items)
+    fun refreshAdapterLocation(items: ArrayList<Location>) {
+        adapterlocation = UpgradeGuideLocationAdapter(requireContext(), items)
         binding.recyclerViewLocation.adapter = adapterlocation
         adapterlocation.notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun refreshAdapterLanguage(items:ArrayList<Language>){
-        adapterLanguage = UpgradeGuideLanguageAdapter(requireContext(),items)
+    fun refreshAdapterLanguage(items: ArrayList<Language>) {
+        adapterLanguage = UpgradeGuideLanguageAdapter(requireContext(), items)
         binding.recyclerViewLanguage.adapter = adapterLanguage
         adapterLanguage.notifyDataSetChanged()
     }
@@ -428,6 +447,7 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         currency = currencies!![p2]
     }
+
     override fun onNothingSelected(p0: AdapterView<*>?) {}
 
 }

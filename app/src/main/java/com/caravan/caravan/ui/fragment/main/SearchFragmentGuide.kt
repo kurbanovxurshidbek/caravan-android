@@ -88,7 +88,7 @@ class SearchFragmentGuide : BaseFragment() {
                     },
                     arrayListOf(),
                     arrayListOf(),
-                    //arrayListOf()
+                    arrayListOf()
                 )
             )
         }

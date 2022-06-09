@@ -117,7 +117,7 @@ class HomeFragment : BaseFragment() {
             },
             arrayListOf(),
             arrayListOf(),
-            //arrayListOf()
+            arrayListOf()
         )
 
         for (i in 0..10) {
@@ -205,7 +205,7 @@ class HomeFragment : BaseFragment() {
                     arrayListOf(),
                     arrayListOf(),
                     arrayListOf(),
-                    //arrayListOf()
+                    arrayListOf()
                 )
             )
         }

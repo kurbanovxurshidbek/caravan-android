@@ -9,9 +9,7 @@ import com.caravan.caravan.model.Language
 import com.caravan.caravan.model.Location
 
 object UpgradeGuideObject {
-    var isCreated = false
     var myTripList = ArrayList<CreateTrip>()
     var myLocationList = ArrayList<Location>()
     var myFacilityList = ArrayList<Facility>()
-    var myLanguageList = ArrayList<Language>()
 }

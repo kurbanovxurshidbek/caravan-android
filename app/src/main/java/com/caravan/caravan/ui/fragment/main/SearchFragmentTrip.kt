@@ -84,7 +84,7 @@ class SearchFragmentTrip : BaseFragment() {
             },
             arrayListOf(),
             arrayListOf(),
-            //arrayListOf()
+            arrayListOf()
         )
 
 
