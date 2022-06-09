@@ -7,7 +7,9 @@ class EditGuideOptionRepository(private val apiService: ApiService) {
 
     suspend fun getGuideProfile(guideId: String) = apiService.getGuideProfile(guideId)
 
-    suspend fun updateGuideProfile(guideId: String, guideProfile: GuideProfile) =
-        apiService.updateGuideProfile(guideId, guideProfile)
+    suspend fun updateGuideProfile( guideProfile: GuideProfile) =
+        apiService.updateGuideProfile(guideProfile)
+
+    suspend fun getDistrict(region:String) = apiService.getDistrict(region)
 
 }

@@ -73,7 +73,7 @@ class TripListFragment : Fragment() {
             },
             arrayListOf(),
             arrayListOf(),
-            arrayListOf()
+            //arrayListOf()
         )
 
         val list = ArrayList<Trip>()

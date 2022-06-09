@@ -13,7 +13,7 @@ data class GuideProfile(
     val languages: ArrayList<Language>,
     val travelLocations: ArrayList<Location>,
     val reviews: ArrayList<Comment>?,
-    val attendancesProfileId: ArrayList<String>,
+    //val attendancesProfileId: ArrayList<String>,
     val trips: ArrayList<Trip>?
 ) : Serializable
 

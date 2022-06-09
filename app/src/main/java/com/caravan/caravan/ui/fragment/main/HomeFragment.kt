@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.GuideHomeAdapter
@@ -71,6 +72,10 @@ class HomeFragment : BaseFragment() {
             }
         }
 
+        /*homeBinding.ivBurger.setOnClickListener {
+            findNavController().navigate(R.id.action_turistGuideOptionFragment_to_createTrip1Fragment)
+        }*/
+
 
     }
 
@@ -112,7 +117,7 @@ class HomeFragment : BaseFragment() {
             },
             arrayListOf(),
             arrayListOf(),
-            arrayListOf()
+            //arrayListOf()
         )
 
         for (i in 0..10) {
@@ -200,7 +205,7 @@ class HomeFragment : BaseFragment() {
                     arrayListOf(),
                     arrayListOf(),
                     arrayListOf(),
-                    arrayListOf()
+                    //arrayListOf()
                 )
             )
         }

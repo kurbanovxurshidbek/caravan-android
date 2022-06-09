@@ -185,8 +185,6 @@ class UpgradeGuide1Fragment : BaseFragment() {
         }
     }
 
-
-
     fun setBirthday() {
         val datePicker = Calendar.getInstance()
         var year = datePicker[Calendar.YEAR]
@@ -228,8 +226,6 @@ class UpgradeGuide1Fragment : BaseFragment() {
             R.id.action_upgradeGuide1Fragment_to_upgradeGuide2Fragment,
             bundle
         )
-
-        UpgradeGuideObject.isCreated = true
     }
 
 }

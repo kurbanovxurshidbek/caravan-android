@@ -43,6 +43,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
     lateinit var viewModel: UpgradeGuide2ViewModel
     lateinit var adapterlocation: UpgradeGuideLocationAdapter
     lateinit var adapterLanguage: UpgradeGuideLanguageAdapter
+    private var myLocationList = ArrayList<Location>()
+    private var myLanguageList = ArrayList<Language>()
     var levels: Array<String>? = null
     var levelSelected: String = ""
     var languageSelected: String = ""
@@ -98,6 +100,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
+                        Log.d("@@@", "setUpObservers: ${it.data}")
+                        SharedPref(requireContext()).saveString("guideId",it.data.id)
                         completeAction()
                     }
                     is UiStateObject.ERROR -> {
@@ -129,7 +133,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
                     is UiStateList.SUCCESS -> {
                         dismissLoading()
                         locationDistrict = it.data
-                        Log.d("@@@", "setUpObserversDistrict: ${it.data}")
+
                         spinnerDistrict()
                     }
                     is UiStateList.ERROR -> {
@@ -163,14 +167,14 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             val secondNumber = args.secondNumber
 
             btnDone.setOnClickListener {
-                if (etBiography.text.isNotEmpty() && etAmount.text.isNotEmpty() && UpgradeGuideObject.myLanguageList.isNotEmpty() && UpgradeGuideObject.myLocationList.isNotEmpty()) {
+                if (etBiography.text.isNotEmpty() && etAmount.text.isNotEmpty() && myLanguageList.isNotEmpty() && myLocationList.isNotEmpty()) {
                     val user = UpgradeSend(
                         profileId,
                         secondNumber,
                         etBiography.text.toString(),
                         Price(etAmount.text.toString().toLong(), currency, option),
-                        UpgradeGuideObject.myLanguageList,
-                        UpgradeGuideObject.myLocationList
+                        myLanguageList,
+                        myLocationList
                     )
 
                     viewModel.upgradeToGuide(user)
@@ -185,8 +189,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             addLocationItems()
             addLanguageItems()
 
-            refreshAdapterLocation(UpgradeGuideObject.myLocationList)
-            refreshAdapterLanguage(UpgradeGuideObject.myLanguageList)
+            refreshAdapterLocation(myLocationList)
+            refreshAdapterLanguage(myLanguageList)
 
             swipeToDeleteLocation()
             swipeToDeleteLanguage()
@@ -198,8 +202,6 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         findNavController().navigate(
             R.id.action_upgradeGuide2Fragment_to_guideGuideOptionFragment
         )
-
-
     }
 
     private fun addLocationItems() {
@@ -215,8 +217,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             if (desc != "") {
                 val location = Location("1", province, district, desc)
 
-                UpgradeGuideObject.myLocationList.add(location)
-                refreshAdapterLocation(UpgradeGuideObject.myLocationList)
+                myLocationList.add(location)
+                refreshAdapterLocation(myLocationList)
                 binding.etLocationDesc.text.clear()
                 hideKeyboard()
             } else {
@@ -240,8 +242,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         binding.tvAddLanguage.setOnClickListener {
             if (languageSelected != "") {
                 val language = Language("1", languageSelected, levelSelected)
-                UpgradeGuideObject.myLanguageList.add(language)
-                refreshAdapterLanguage(UpgradeGuideObject.myLanguageList)
+                myLanguageList.add(language)
+                refreshAdapterLanguage(myLanguageList)
                 binding.etLanguage.text.clear()
                 hideKeyboard()
             } else {
@@ -257,8 +259,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             @SuppressLint("NotifyDataSetChanged")
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val pos = viewHolder.adapterPosition
-                UpgradeGuideObject.myLocationList.removeAt(pos)
-                refreshAdapterLocation(UpgradeGuideObject.myLocationList)
+                myLocationList.removeAt(pos)
+                refreshAdapterLocation(myLocationList)
             }
         }
 
@@ -271,8 +273,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             @SuppressLint("NotifyDataSetChanged")
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val pos = viewHolder.adapterPosition
-                UpgradeGuideObject.myLanguageList.removeAt(pos)
-                adapterLanguage.notifyItemRemoved(pos)
+                myLanguageList.removeAt(pos)
+                refreshAdapterLanguage(myLanguageList)
             }
         }
 

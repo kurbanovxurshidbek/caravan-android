@@ -8,7 +8,7 @@ class EditGuideOptionViewModelFactory(private val repository: EditGuideOptionRep
     ViewModelProvider.Factory  {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(EditGuideOptionRepository::class.java)){
+        if (modelClass.isAssignableFrom(EditGuideOptionViewModel::class.java)){
             return EditGuideOptionViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel Class")

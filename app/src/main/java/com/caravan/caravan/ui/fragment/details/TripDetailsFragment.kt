@@ -76,7 +76,7 @@ class TripDetailsFragment : BaseFragment() {
             .inflate(R.layout.overlay_view, LinearLayout(requireContext()), false)
 
         overlayViewBinding.name.text =
-            myTrip().photos[position].location.province + ", " + myTrip().photos[position].location.district
+            myTrip().photos[position].location.provence + ", " + myTrip().photos[position].location.district
         overlayViewBinding.tvDescription.text =
             myTrip().photos[position].location.description
 
@@ -96,7 +96,7 @@ class TripDetailsFragment : BaseFragment() {
                 overlayViewBinding.root
             ).withImageChangeListener {
                 overlayViewBinding.name.text =
-                    myTrip().photos[it].location.province + ", " + myTrip().photos[it].location.district
+                    myTrip().photos[it].location.provence + ", " + myTrip().photos[it].location.district
                 overlayViewBinding.tvDescription.text =
                     myTrip().photos[it].location.description
             }
@@ -201,7 +201,7 @@ class TripDetailsFragment : BaseFragment() {
             },
             arrayListOf(),
             arrayListOf(),
-            arrayListOf()
+            //arrayListOf()
         )
 
         val trip = Trip(
