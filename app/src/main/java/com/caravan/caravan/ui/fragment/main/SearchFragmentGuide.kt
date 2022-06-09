@@ -4,14 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.caravan.caravan.adapter.GuideAdapter
 import com.caravan.caravan.databinding.FragmentSearchGuideBinding
 import com.caravan.caravan.model.*
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Extensions.toast
+import com.caravan.caravan.viewmodel.main.home.SearchSharedVM
 
 class SearchFragmentGuide : BaseFragment() {
     private lateinit var binding: FragmentSearchGuideBinding
+    private val sharedViewModel: SearchSharedVM by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +50,10 @@ class SearchFragmentGuide : BaseFragment() {
             })
         }
 
+        sharedViewModel.guideSearch.observe(viewLifecycleOwner) {
+            toast(it.key)
+        }
+
     }
 
     private fun loadItemGuides(): ArrayList<GuideProfile> {
@@ -70,7 +78,8 @@ class SearchFragmentGuide : BaseFragment() {
                         "12.02.2022",
                         null,
                         "en",
-                        arrayListOf()
+                        arrayListOf(),
+                        ""
                     ),
                     "+998932037313",
                     "Ogabek Matyakubov",

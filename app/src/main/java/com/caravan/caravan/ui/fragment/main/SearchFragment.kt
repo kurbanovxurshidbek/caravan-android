@@ -4,23 +4,26 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.*
-import androidx.navigation.NavController
+import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
-import com.caravan.caravan.adapter.GuideAdapter
 import com.caravan.caravan.adapter.SearchFragmentVPAdapter
-import com.caravan.caravan.adapter.TripAdapter
 import com.caravan.caravan.databinding.BottomDialogGuideBinding
 import com.caravan.caravan.databinding.BottomDialogTripBinding
 import com.caravan.caravan.databinding.FragmentSearchBinding
-import com.caravan.caravan.manager.SharedPref
-import com.caravan.caravan.model.*
+import com.caravan.caravan.model.Price
+import com.caravan.caravan.model.search.FilterGuide
+import com.caravan.caravan.model.search.FilterTrip
+import com.caravan.caravan.model.search.SearchGuideSend
+import com.caravan.caravan.model.search.SearchTripSend
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.Extensions.toast
+import com.caravan.caravan.viewmodel.main.home.SearchSharedVM
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import com.caravan.caravan.utils.Extensions.toast
 
 
 class SearchFragment : BaseFragment() {
@@ -28,9 +31,21 @@ class SearchFragment : BaseFragment() {
     private var isGuide: Boolean = true
     private lateinit var dialogGuideBinding: BottomDialogGuideBinding
     lateinit var dialogTripBinding: BottomDialogTripBinding
+
     private var gender: String = ""
-    lateinit var guideAdapter: GuideAdapter
-    lateinit var tripAdapter: TripAdapter
+    private val minPrice: Price? = null
+    private val maxPrice: Price? = null
+    private val minRating: Int = 1
+    private val maxRating: Int = 5
+    private val day: Int? = null
+    private val minPeople: Int? = null
+    private val maxPeople: Int? = null
+
+    private var filterTrip: FilterTrip? = null
+    private var filterGuide: FilterGuide? = null
+
+    private val sharedViewModel: SearchSharedVM by activityViewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +81,26 @@ class SearchFragment : BaseFragment() {
             }
         }
 
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                if (isGuide) {
+                    sharedViewModel.setGuideSearch(SearchGuideSend(p0.toString(), filterGuide))
+                    Log.d("@@@", "afterTextChanged: ${filterGuide.toString()}")
+                } else {
+                    sharedViewModel.setTripSearch(SearchTripSend(p0.toString(), filterTrip))
+                    Log.d("@@@", "afterTextChanged: ${filterTrip.toString()}")
+                }
+            }
+
+        })
     }
 
     private fun setupViewPager() {
@@ -106,6 +141,45 @@ class SearchFragment : BaseFragment() {
 
         manageGender()
 
+        dialogGuideBinding.apply {
+            applyFilter.setOnClickListener {
+                val minPrice = if (minPrice.text.isNullOrBlank()) {
+                    0L
+                } else {
+                    minPrice.text.toString().toLong()
+                }
+
+                val maxPrice = if (maxPrice.text.isNullOrBlank()) {
+                    1000000000L
+                } else {
+                    maxPrice.text.toString().toLong()
+                }
+
+                val minRating = if (minRating.text.isNullOrBlank()) {
+                    0
+                } else {
+                    minRating.text.toString().toInt()
+                }
+
+                val maxRating = if (maxRating.text.isNullOrBlank()) {
+                    5
+                } else {
+                    maxRating.text.toString().toInt()
+                }
+
+
+                filterGuide = FilterGuide(
+                    Price(minPrice, "UZS", "Cash"), // Bu o'zgartirish kk one day!
+                    Price(maxPrice, "UZS", "Cash"),
+                    minRating,
+                    maxRating,
+                    gender
+                )
+                dialog.hide()
+            }
+
+        }
+
         dialog.window!!.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
@@ -124,6 +198,63 @@ class SearchFragment : BaseFragment() {
         dialog.show()
 
 
+        dialogTripBinding.apply {
+            applyFilter.setOnClickListener {
+                val minPrice = if (minPrice.text.isNullOrBlank()) {
+                    0L
+                } else {
+                    minPrice.text.toString().toLong()
+                }
+
+                val maxPrice = if (maxPrice.text.isNullOrBlank()) {
+                    1000000000L
+                } else {
+                    maxPrice.text.toString().toLong()
+                }
+
+                val minRating = if (minRating.text.isNullOrBlank()) {
+                    0
+                } else {
+                    minRating.text.toString().toInt()
+                }
+
+                val maxRating = if (maxRating.text.isNullOrBlank()) {
+                    5
+                } else {
+                    maxRating.text.toString().toInt()
+                }
+
+                val day: Int = if (day.text.isNullOrBlank()) {
+                    0
+                } else {
+                    day.text.toString().toInt()
+                }
+
+                val minPeople: Int = if (minPeople.text.isNullOrBlank()) {
+                    1
+                } else {
+                    minPeople.text.toString().toInt()
+                }
+
+                val maxPeople: Int = if (maxPeople.text.isNullOrBlank()) {
+                    999
+                } else {
+                    maxPeople.text.toString().toInt()
+                }
+                filterTrip = FilterTrip(
+                    Price(minPrice, "UZS", "Cash"), // Bu o'zgartirish kk one day!
+                    Price(maxPrice, "UZS", "Cash"),
+                    minRating,
+                    maxRating,
+                    day,
+                    minPeople,
+                    maxPeople
+                )
+                dialog.hide()
+            }
+
+        }
+
         dialog.window!!.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
@@ -135,7 +266,7 @@ class SearchFragment : BaseFragment() {
     }
 
     private fun manageGender() {
-        dialogGuideBinding.checkboxMale.setOnCheckedChangeListener { buttonView, isChecked ->
+        dialogGuideBinding.checkboxMale.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 dialogGuideBinding.checkboxFemale.isChecked = false
                 gender = getString(R.string.str_male)
