@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -109,7 +111,7 @@ class UpgradeGuide1Fragment : BaseFragment() {
 
     }
 
-    fun setUpObserverUpdate() {
+    fun setUpObserverUpdate(){
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.update.collect {
                 when (it) {
@@ -183,7 +185,6 @@ class UpgradeGuide1Fragment : BaseFragment() {
         }
     }
 
-
     fun setBirthday() {
         val datePicker = Calendar.getInstance()
         var year = datePicker[Calendar.YEAR]
@@ -225,8 +226,6 @@ class UpgradeGuide1Fragment : BaseFragment() {
             R.id.action_upgradeGuide1Fragment_to_upgradeGuide2Fragment,
             bundle
         )
-
-        UpgradeGuideObject.isCreated = true
     }
 
 }

@@ -55,7 +55,7 @@ class CreateTripAdapter(var fragment: CreateTrip2Fragment, var items:ArrayList<C
             binding.apply {
 
                 Glide.with(fragment).load(trip.photo).into(ivTrip)
-                tvProvince.text = trip.location.province
+                tvProvince.text = trip.location.provence
                 tvDistrict.text = trip.location.district
                 tvDesc.text = trip.location.description
 
