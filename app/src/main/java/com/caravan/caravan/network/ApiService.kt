@@ -2,6 +2,7 @@ package com.caravan.caravan.network
 
 import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Profile
+import com.caravan.caravan.model.Trip
 import com.caravan.caravan.model.auth.LoginRespond
 import com.caravan.caravan.model.auth.LoginSend
 import com.caravan.caravan.model.auth.RegisterRespond
@@ -11,6 +12,8 @@ import com.caravan.caravan.model.create_trip.PhotoRespond
 import com.caravan.caravan.model.create_trip.SecondSend
 import com.caravan.caravan.model.home.HomeRespond
 import com.caravan.caravan.model.more.ActionMessage
+import com.caravan.caravan.model.review.Answer
+import com.caravan.caravan.model.review.Review
 import com.caravan.caravan.model.upgrade.UpgradeSend
 import retrofit2.Response
 import retrofit2.http.*
@@ -69,6 +72,9 @@ interface ApiService {
     @POST("/api/v1/trip")
     suspend fun createTrip(@Body firstSend: FirstSend): Response<String> // Trip Id
 
+    @GET("/api/v1/trip/{tripId}")
+    suspend fun getTrip(@Path("tripId") tripId: String): Response<Trip>
+
     // Customise for file
     @POST("/api/v1/photo/upload")
     suspend fun uploadPhoto(@Body file: Multipart): Response<PhotoRespond>
@@ -78,5 +84,11 @@ interface ApiService {
 
     @GET("/api/v1/district/{region}")
     suspend fun getDistrict(@Path("region") region: String): Response<ArrayList<String>>
+
+    @POST("/api/v1/review")
+    suspend fun postReview(@Body review: Review): Response<ActionMessage>
+
+    @POST("/api/v1/review/answer")
+    suspend fun answerReview(@Body answer: Answer) : Response<ActionMessage>
 
 }

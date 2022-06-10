@@ -198,6 +198,6 @@ class AccountFragment : BaseFragment() {
     }
 
     private fun isGuide(): Boolean {
-        return !profile.guideId.isNullOrBlank()
+        return profile.role == "ROLE_GUIDE"
     }
 }
