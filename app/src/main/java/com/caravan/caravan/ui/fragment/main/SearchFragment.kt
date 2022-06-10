@@ -33,13 +33,13 @@ class SearchFragment : BaseFragment() {
     lateinit var dialogTripBinding: BottomDialogTripBinding
 
     private var gender: String = ""
-    private val minPrice: Price? = null
-    private val maxPrice: Price? = null
-    private val minRating: Int = 1
-    private val maxRating: Int = 5
-    private val day: Int? = null
-    private val minPeople: Int? = null
-    private val maxPeople: Int? = null
+//    private val minPrice: Price? = null
+//    private val maxPrice: Price? = null
+//    private val minRating: Int = 1
+//    private val maxRating: Int = 5
+//    private val day: Int? = null
+//    private val minPeople: Int? = null
+//    private val maxPeople: Int? = null
 
     private var filterTrip: FilterTrip? = null
     private var filterGuide: FilterGuide? = null
@@ -139,6 +139,25 @@ class SearchFragment : BaseFragment() {
         dialog.setContentView(dialogGuideBinding.root)
         dialog.show()
 
+        filterGuide?.let {
+            dialogGuideBinding.apply {
+                minRating.setText(filterGuide!!.minRating?.toString())
+                maxRating.setText(filterGuide!!.maxRating?.toString())
+                when (gender) {
+                    "Male" -> {
+                        checkboxMale.isChecked = true
+                    }
+                    "" -> {
+                        checkboxMale.isChecked = true
+                        checkboxFemale.isChecked = true
+                    }
+                    else -> {
+                        checkboxFemale.isChecked = true
+                    }
+                }
+            }
+        }
+
         manageGender()
 
         dialogGuideBinding.apply {
@@ -165,6 +184,13 @@ class SearchFragment : BaseFragment() {
                     5
                 } else {
                     maxRating.text.toString().toInt()
+                }
+                gender = if (checkboxMale.isChecked) {
+                    "Male"
+                } else if (checkboxFemale.isChecked) {
+                    "Female"
+                } else {
+                    ""
                 }
 
 
@@ -197,6 +223,17 @@ class SearchFragment : BaseFragment() {
         dialog.setContentView(dialogTripBinding.root)
         dialog.show()
 
+        filterTrip?.let {
+            dialogTripBinding.apply {
+                minPeople.setText(filterTrip!!.minPeople.toString())
+                maxPeople.setText(filterTrip!!.maxPeople.toString())
+                minRating.setText((filterTrip!!.minRating.toString()))
+                maxRating.setText((filterTrip!!.maxRating.toString()))
+            }
+        }
+
+
+
 
         dialogTripBinding.apply {
             applyFilter.setOnClickListener {
@@ -224,8 +261,8 @@ class SearchFragment : BaseFragment() {
                     maxRating.text.toString().toInt()
                 }
 
-                val day: Int = if (day.text.isNullOrBlank()) {
-                    0
+                val day: Int? = if (day.text.isNullOrBlank()) {
+                    null
                 } else {
                     day.text.toString().toInt()
                 }

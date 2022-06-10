@@ -18,9 +18,8 @@ class MainActivity : BaseActivity() {
 
         //Initialize the bottom navigation view
         //create bottom navigation view object
-        val bottomNavigationView = mainBinding.bottomNavigationView
         val navController = findNavController(R.id.nav_fragment)
-        bottomNavigationView.setupWithNavController(navController)
+        mainBinding.bottomNavigationView.setupWithNavController(navController)
 
 
     }
