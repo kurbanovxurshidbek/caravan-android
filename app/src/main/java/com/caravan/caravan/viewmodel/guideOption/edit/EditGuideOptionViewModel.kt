@@ -22,8 +22,9 @@ class EditGuideOptionViewModel(private val repository: EditGuideOptionRepository
             val getGuideProfile = repository.getGuideProfile(guideId)
             if(!getGuideProfile.isSuccessful){
                 _profile.value = UiStateObject.ERROR(getGuideProfile.message())
+            } else {
+                _profile.value = UiStateObject.SUCCESS(getGuideProfile.body()!!)
             }
-            _profile.value = UiStateObject.SUCCESS(getGuideProfile.body()!!)
         }catch (e:Exception){
             _profile.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")
         }

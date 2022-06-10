@@ -78,7 +78,9 @@
             />
         <action
             android:id="@+id/action_turistGuideOptionFragment_to_createTrip1Fragment"
-            app:destination="@id/createTrip1Fragment" />
+            app:destination="@id/createTrip1Fragment"
+            app:popUpTo="@id/turistGuideOptionFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/upgradeGuide1Fragment"

@@ -34,7 +34,6 @@ import com.caravan.caravan.model.review.Review
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.Dialog
 import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
@@ -91,16 +90,14 @@ class GuideDetailsFragment : BaseFragment() {
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
                                 override fun onClick() {
-                                    requireActivity().onBackPressed()
+                                    requireActivity().finish()
                                 }
-                            }
-                        )
+                            })
                     }
                     else -> Unit
                 }
@@ -162,7 +159,8 @@ class GuideDetailsFragment : BaseFragment() {
                     requireContext(),
                     arrayOf(guideProfile?.profile?.photo)
                 ) { view, _ ->
-                    Glide.with(guideDetailsBinding.root).load(guideProfile?.profile?.photo).into(view)
+                    Glide.with(guideDetailsBinding.root).load(guideProfile?.profile?.photo)
+                        .into(view)
                 }.withHiddenStatusBar(false)
                     .withDismissListener {
 
@@ -179,7 +177,8 @@ class GuideDetailsFragment : BaseFragment() {
             btnSendComment.setOnClickListener {
                 if (etLeaveComment.text.isNotEmpty()) {
                     val rate = ratingBarGuide.rating
-                    val review = Review(rate.toInt(), etLeaveComment.text.toString(), "GUIDE", null, guideId)
+                    val review =
+                        Review(rate.toInt(), etLeaveComment.text.toString(), "GUIDE", null, guideId)
 
                     setUpObservesReview()
 
@@ -203,7 +202,7 @@ class GuideDetailsFragment : BaseFragment() {
     private fun setUpObservesReview() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.postReview.collect {
-                when(it) {
+                when (it) {
                     is UiStateObject.LOADING -> {
                         showLoading()
                     }
@@ -213,13 +212,12 @@ class GuideDetailsFragment : BaseFragment() {
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
                                 override fun onClick() {
-                                    requireActivity().onBackPressed()
+                                    return
                                 }
                             }
                         )
@@ -232,11 +230,16 @@ class GuideDetailsFragment : BaseFragment() {
 
     private fun setStatus(data: ActionMessage) {
         if (!data.status) {
-            Dialog.showDialogWarning(requireContext(), data.title!!, data.message!!, object: OkInterface {
+            showDialogWarning(data.title!!, data.message!!, object : OkInterface {
                 override fun onClick() {
                     return
                 }
             })
+        } else {
+            guideDetailsBinding.apply {
+                etLeaveComment.setText("")
+                leaveCommentPart.visibility = View.GONE
+            }
         }
     }
 

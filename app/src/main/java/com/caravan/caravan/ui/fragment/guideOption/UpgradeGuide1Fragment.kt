@@ -4,12 +4,10 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -20,8 +18,10 @@ import com.caravan.caravan.model.Profile
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.*
 import com.caravan.caravan.utils.Extensions.toast
+import com.caravan.caravan.utils.OkInterface
+import com.caravan.caravan.utils.UiStateObject
+import com.caravan.caravan.utils.viewBinding
 import com.caravan.caravan.viewmodel.guideOption.upgrade.first.UpgradeGuide1Repository
 import com.caravan.caravan.viewmodel.guideOption.upgrade.first.UpgradeGuide1ViewModel
 import com.caravan.caravan.viewmodel.guideOption.upgrade.first.UpgradeGuide1ViewModelFactory
@@ -53,8 +53,7 @@ class UpgradeGuide1Fragment : BaseFragment() {
         if (id != null)
             initViews(id)
         else
-            Dialog.showDialogWarning(
-                requireContext(),
+            showDialogWarning(
                 getString(R.string.error),
                 getString(R.string.went_wrong),
                 object : OkInterface {
@@ -93,8 +92,7 @@ class UpgradeGuide1Fragment : BaseFragment() {
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -111,7 +109,7 @@ class UpgradeGuide1Fragment : BaseFragment() {
 
     }
 
-    fun setUpObserverUpdate(){
+    fun setUpObserverUpdate() {
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.update.collect {
                 when (it) {
@@ -125,8 +123,7 @@ class UpgradeGuide1Fragment : BaseFragment() {
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {

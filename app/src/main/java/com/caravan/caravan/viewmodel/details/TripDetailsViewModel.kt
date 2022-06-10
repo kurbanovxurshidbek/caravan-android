@@ -22,8 +22,9 @@ class TripDetailsViewModel(private val repository: TripDetailsRepository): ViewM
             val trip = repository.getTrip(tripId)
             if (!trip.isSuccessful) {
                 _trip.value = UiStateObject.ERROR(trip.message())
+            } else {
+                _trip.value = UiStateObject.SUCCESS(trip.body()!!)
             }
-            _trip.value = UiStateObject.SUCCESS(trip.body()!!)
         } catch (e: Exception) {
             _trip.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")
         }

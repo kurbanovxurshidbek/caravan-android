@@ -9,15 +9,20 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.activityViewModels
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
+import com.caravan.caravan.adapter.GuideAdapter
 import com.caravan.caravan.adapter.SearchFragmentVPAdapter
+import com.caravan.caravan.adapter.TripAdapter
 import com.caravan.caravan.databinding.BottomDialogGuideBinding
 import com.caravan.caravan.databinding.BottomDialogTripBinding
 import com.caravan.caravan.databinding.FragmentSearchBinding
 import com.caravan.caravan.model.Price
 import com.caravan.caravan.model.search.FilterGuide
 import com.caravan.caravan.model.search.FilterTrip
+
 import com.caravan.caravan.model.search.SearchGuideSend
 import com.caravan.caravan.model.search.SearchTripSend
 import com.caravan.caravan.ui.fragment.BaseFragment
@@ -33,13 +38,22 @@ class SearchFragment : BaseFragment() {
     lateinit var dialogTripBinding: BottomDialogTripBinding
 
     private var gender: String = ""
-//    private val minPrice: Price? = null
-//    private val maxPrice: Price? = null
-//    private val minRating: Int = 1
-//    private val maxRating: Int = 5
-//    private val day: Int? = null
-//    private val minPeople: Int? = null
-//    private val maxPeople: Int? = null
+    var currenciesMinGuide: Array<String>? = null
+    var optionsMinGuide: Array<String>? = null
+    var currencyMinGuide: String = ""
+    var optionMinGuide: String = ""
+    var currenciesMaxGuide: Array<String>? = null
+    var optionsMaxGuide: Array<String>? = null
+    var currencyMaxGuide: String = ""
+    var optionMaxGuide: String = ""
+    var currenciesMinTrip: Array<String>? = null
+    var optionsMinTrip: Array<String>? = null
+    var currencyMinTrip: String = ""
+    var optionMinTrip: String = ""
+    var currenciesMaxTrip: Array<String>? = null
+    var optionsMaxTrip: Array<String>? = null
+    var currencyMaxTrip: String = ""
+    var optionMaxTrip: String = ""
 
     private var filterTrip: FilterTrip? = null
     private var filterGuide: FilterGuide? = null
@@ -159,6 +173,8 @@ class SearchFragment : BaseFragment() {
         }
 
         manageGender()
+        setSpinnerGuide()
+
 
         dialogGuideBinding.apply {
             applyFilter.setOnClickListener {
@@ -223,6 +239,7 @@ class SearchFragment : BaseFragment() {
         dialog.setContentView(dialogTripBinding.root)
         dialog.show()
 
+        setSpinnerTrip()
         filterTrip?.let {
             dialogTripBinding.apply {
                 minPeople.setText(filterTrip!!.minPeople.toString())
@@ -296,6 +313,7 @@ class SearchFragment : BaseFragment() {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
+
         dialog.window!!.attributes.windowAnimations = R.style.DialogAnimation
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window!!.setGravity(Gravity.BOTTOM)
@@ -303,17 +321,221 @@ class SearchFragment : BaseFragment() {
     }
 
     private fun manageGender() {
-        dialogGuideBinding.checkboxMale.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                dialogGuideBinding.checkboxFemale.isChecked = false
+        dialogGuideBinding.apply {
+
+            checkboxMale.isChecked = true
+            checkboxFemale.isChecked = true
+
+            checkboxMale.setOnCheckedChangeListener { buttonView, isChecked ->
+
+                if (!isChecked) {
+                    checkboxFemale.isChecked = true
+                    checkboxFemale.isEnabled = false
+                }else{
+                    checkboxMale.isEnabled = true
+                    checkboxFemale.isEnabled = true
+                }
+
+            }
+
+            checkboxFemale.setOnCheckedChangeListener { buttonView, isChecked ->
+
+                if (!isChecked) {
+                    checkboxMale.isChecked = true
+                    checkboxMale.isEnabled = false
+                }else {
+                    checkboxFemale.isEnabled = true
+                    checkboxMale.isEnabled = true
+                }
+
+            }
+
+            if (checkboxMale.isChecked == true && checkboxFemale.isChecked == false) {
                 gender = getString(R.string.str_male)
             }
-        }
-        dialogGuideBinding.checkboxFemale.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                dialogGuideBinding.checkboxMale.isChecked = false
+            if (checkboxMale.isChecked == false && checkboxFemale.isChecked == true) {
                 gender = getString(R.string.str_female)
             }
+            if (checkboxMale.isChecked == true && checkboxFemale.isChecked == true) {
+                gender = getString(R.string.str_all)
+            }
         }
+
+    }
+
+    private fun setSpinnerGuide() {
+        currenciesMinGuide = resources.getStringArray(R.array.currencies)
+        dialogGuideBinding.spinnerCurrencyMin.onItemSelectedListener = this
+
+        val adapter1: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                currenciesMinGuide!!
+            )
+
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        dialogGuideBinding.spinnerCurrencyMin.adapter = adapter1
+
+        optionsMinGuide = resources.getStringArray(R.array.options)
+        dialogGuideBinding.spinnerDayMin.onItemSelectedListener = itemSelectedOptionMinGuide
+
+        val adapter2: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                optionsMinGuide!!
+            )
+
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        dialogGuideBinding.spinnerDayMin.adapter = adapter2
+
+
+        currenciesMaxGuide = resources.getStringArray(R.array.currencies)
+        dialogGuideBinding.spinnerCurrencyMax.onItemSelectedListener = itemSelectedCurrencyMaxGuide
+
+        val adapter3: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                currenciesMaxGuide!!
+            )
+
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        dialogGuideBinding.spinnerCurrencyMax.adapter = adapter3
+
+        optionsMaxGuide = resources.getStringArray(R.array.options)
+        dialogGuideBinding.spinnerDayMax.onItemSelectedListener = itemSelectedOptionMaxGuide
+
+        val adapter4: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                optionsMaxGuide!!
+            )
+
+        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        dialogGuideBinding.spinnerDayMax.adapter = adapter4
+    }
+
+    private fun setSpinnerTrip() {
+        currenciesMinTrip = resources.getStringArray(R.array.currencies)
+        dialogTripBinding.spinnerCurrencyMin.onItemSelectedListener = itemSelectedCurrencyMinTrip
+
+        val adapter1: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                currenciesMinTrip!!
+            )
+
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        dialogTripBinding.spinnerCurrencyMin.adapter = adapter1
+
+        optionsMinTrip = resources.getStringArray(R.array.options)
+        dialogTripBinding.spinnerDayMin.onItemSelectedListener = itemSelectedOptionMinTrip
+
+        val adapter2: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                optionsMinTrip!!
+            )
+
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        dialogTripBinding.spinnerDayMin.adapter = adapter2
+
+
+        currenciesMaxTrip = resources.getStringArray(R.array.currencies)
+        dialogTripBinding.spinnerCurrencyMax.onItemSelectedListener = itemSelectedCurrencyMaxTrip
+
+        val adapter3: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                currenciesMaxTrip!!
+            )
+
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        dialogTripBinding.spinnerCurrencyMax.adapter = adapter3
+
+        optionsMaxTrip = resources.getStringArray(R.array.options)
+        dialogTripBinding.spinnerDayMax.onItemSelectedListener = itemSelectedOptionMaxTrip
+
+        val adapter4: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                optionsMaxGuide!!
+            )
+
+        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        dialogTripBinding.spinnerDayMax.adapter = adapter4
+    }
+
+    val itemSelectedOptionMinGuide = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            optionMinGuide = optionsMinGuide!![p2]
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {}
+    }
+    val itemSelectedCurrencyMaxGuide = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            currencyMaxGuide = currenciesMaxGuide!![p2]
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {}
+    }
+    val itemSelectedOptionMaxGuide = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            optionMaxGuide = optionsMaxGuide!![p2]
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {}
+    }
+
+    val itemSelectedCurrencyMinTrip = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            currencyMinTrip = currenciesMinTrip!![p2]
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {}
+    }
+    val itemSelectedOptionMinTrip = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            optionMinTrip = optionsMinTrip!![p2]
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {}
+    }
+    val itemSelectedCurrencyMaxTrip = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            currencyMaxTrip = currenciesMaxTrip!![p2]
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {}
+    }
+    val itemSelectedOptionMaxTrip = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            optionMaxTrip = optionsMaxTrip!![p2]
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {}
+    }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        currencyMinGuide = currenciesMinGuide!![p2]
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
     }
 }

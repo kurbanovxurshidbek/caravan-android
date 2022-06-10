@@ -20,7 +20,6 @@ import com.caravan.caravan.model.Profile
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.Dialog
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
 import com.caravan.caravan.utils.viewBinding
@@ -97,10 +96,9 @@ class EditProfileFragment : BaseFragment() {
             if (gender != null)
                 saveProfileData()
             else
-                Dialog.showDialogWarning(
-                    requireContext(),
-                    "Warning",
-                    "Please check your gender",
+                showDialogWarning(
+                    getString(R.string.warning),
+                    getString(R.string.check_gender),
                     object : OkInterface {
                         override fun onClick() {
 
@@ -125,8 +123,8 @@ class EditProfileFragment : BaseFragment() {
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
+
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -150,8 +148,7 @@ class EditProfileFragment : BaseFragment() {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        Dialog.showDialogMessage(
-                            requireContext(),
+                        showDialogMessage(
                             getString(R.string.str_saved),
                             getString(R.string.str_save_message),
                             object : OkInterface {
@@ -164,8 +161,7 @@ class EditProfileFragment : BaseFragment() {
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -190,8 +186,7 @@ class EditProfileFragment : BaseFragment() {
         if (profileId != null) {
             viewModel.getProfile(profileId!!)
         } else {
-            Dialog.showDialogWarning(
-                requireContext(),
+            showDialogWarning(
                 getString(R.string.error),
                 getString(R.string.went_wrong),
                 object : OkInterface {
@@ -319,7 +314,15 @@ class EditProfileFragment : BaseFragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
             this,
-            EditViewModelFactory(EditRepository(RetrofitHttp.createServiceWithAuth(SharedPref(requireContext()), ApiService::class.java)))
+            EditViewModelFactory(
+                EditRepository(
+                    RetrofitHttp.createServiceWithAuth(
+                        SharedPref(
+                            requireContext()
+                        ), ApiService::class.java
+                    )
+                )
+            )
         )[EditViewModel::class.java]
     }
 

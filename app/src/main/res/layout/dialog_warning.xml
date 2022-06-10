@@ -25,6 +25,7 @@
         android:text="You entered wrong code. Please try again. We send code to +998 93 203 73 13.
 \nIf the code didn’t come. Please contact us."
         android:textSize="16sp"
+        android:textColor="@color/black_60"
         android:layout_margin="10dp"
         android:textStyle="normal" />
 

@@ -104,8 +104,7 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -134,8 +133,7 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -165,8 +163,7 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
                     }
                     is UiStateList.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -300,7 +297,6 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
 
         }
     }
-
 
     private fun swipeToDeleteLocation() {
         val swipeToDeleteCallback = object : SwipeToDeleteCallback() {

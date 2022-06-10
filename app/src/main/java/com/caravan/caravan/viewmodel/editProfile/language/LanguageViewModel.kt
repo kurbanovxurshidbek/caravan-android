@@ -22,8 +22,9 @@ class LanguageViewModel(private val repository: LanguageRepository) : ViewModel(
             val appLanguage = repository.getAppLanguage()
             if (!appLanguage.isSuccessful) {
                 _appLanguage.value = UiStateObject.ERROR(appLanguage.message())
+            } else {
+                _appLanguage.value = UiStateObject.SUCCESS(appLanguage.body()!!)
             }
-            _appLanguage.value = UiStateObject.SUCCESS(appLanguage.body()!!)
 
         } catch (e: Exception) {
             _appLanguage.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")

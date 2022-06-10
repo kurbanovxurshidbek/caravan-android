@@ -1,5 +1,6 @@
 package com.caravan.caravan.ui.fragment.main
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -8,7 +9,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.GuideHomeAdapter
@@ -17,7 +17,9 @@ import com.caravan.caravan.adapter.TripAdapter
 import com.caravan.caravan.databinding.FragmentHomeBinding
 import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.*
+import com.caravan.caravan.ui.activity.GuideOptionActivity
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Extensions.toast
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
 
@@ -62,20 +64,21 @@ class HomeFragment : BaseFragment() {
             })
         }
 
-        homeBinding.homeGuideRecyclerView.adapter = GuideHomeAdapter(this, homeGuideList())
-
-        homeBinding.homeTripRecyclerView.adapter = TripAdapter(this, homeTripList())
-
         homeBinding.apply {
+            homeGuideRecyclerView.adapter = GuideHomeAdapter(this@HomeFragment, homeGuideList())
+            homeTripRecyclerView.adapter = TripAdapter(this@HomeFragment, homeTripList())
+
+            ivBurger.setOnClickListener {
+                if (SharedPref(requireContext()).getString("guideId") != null)
+                    goToGuideOptionActivity(true)
+                else
+                    toast("Please upgrade account to Guide first")
+            }
+
             etSearch.setOnClickListener {
                 navigateToSearchFragment()
             }
         }
-
-        /*homeBinding.ivBurger.setOnClickListener {
-            findNavController().navigate(R.id.action_turistGuideOptionFragment_to_createTrip1Fragment)
-        }*/
-
 
     }
 
@@ -99,8 +102,8 @@ class HomeFragment : BaseFragment() {
                 "12.10.2022",
                 null,
                 "en",
-                arrayListOf()
-            , SharedPref(requireContext()).getToken()),
+                arrayListOf(), SharedPref(requireContext()).getToken()
+            ),
             "+998932037313",
             "Ogabek Matyakubov",
             true,
@@ -176,9 +179,9 @@ class HomeFragment : BaseFragment() {
         for (i in 0..10) {
             list.add(
                 GuideProfile(
-                    "i * 100L + 1",
+                    "100axxcasuwbsdcladcbaofvamcoiadnc",
                     Profile(
-                        "i * 100L",
+                        "skjdnsdnfoiasnmasxkasxa",
                         "Asasin df  asj  sd a skj ask s dj as;j aik cakk caai; casj",
                         "Sobirov",
                         "",
@@ -194,8 +197,8 @@ class HomeFragment : BaseFragment() {
                         "English",
                         arrayListOf(
                             Device("", "", 'A')
-                        )
-                    ,SharedPref(requireContext()).getToken()),
+                        ), SharedPref(requireContext()).getToken()
+                    ),
                     "",
                     "",
                     false,
@@ -251,5 +254,11 @@ class HomeFragment : BaseFragment() {
         list.add(SliderViewItem(R.drawable.slider4))
 
         return list
+    }
+
+    override fun goToGuideOptionActivity(isTrip: Boolean) {
+        val intent = Intent(requireContext(), GuideOptionActivity::class.java)
+        intent.putExtra("isTrip", isTrip)
+        startActivity(intent)
     }
 }

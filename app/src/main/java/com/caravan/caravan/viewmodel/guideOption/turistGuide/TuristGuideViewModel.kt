@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.caravan.caravan.model.Profile
 import com.caravan.caravan.utils.UiStateObject
+import com.caravan.caravan.viewmodel.guideOption.guideOption.GuideOptionRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -21,8 +22,9 @@ class TuristGuideViewModel(private val repository: TuristGuideRepository) : View
             val profile = repository.getProfile(id)
             if (!profile.isSuccessful) {
                 _profile.value = UiStateObject.ERROR(profile.message())
+            } else {
+                _profile.value = UiStateObject.SUCCESS(profile.body()!!)
             }
-            _profile.value = UiStateObject.SUCCESS(profile.body()!!)
 
         } catch (e: Exception) {
             _profile.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")

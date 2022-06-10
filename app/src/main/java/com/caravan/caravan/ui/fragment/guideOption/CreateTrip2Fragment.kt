@@ -4,14 +4,13 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -23,6 +22,7 @@ import com.caravan.caravan.databinding.FragmentCreateTrip2Binding
 import com.caravan.caravan.model.CreateTrip
 import com.caravan.caravan.model.Facility
 import com.caravan.caravan.model.Location
+import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.utils.*
 
 
@@ -31,13 +31,13 @@ import com.caravan.caravan.utils.*
  * Use the [CreateTrip2Fragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CreateTrip2Fragment : Fragment(), AdapterView.OnItemSelectedListener {
+class CreateTrip2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     private val binding by viewBinding { FragmentCreateTrip2Binding.bind(it) }
     lateinit var adapter: TripFacilityAdapter
     lateinit var adapterTripAdapter: CreateTripAdapter
-    var amount:String = ""
-    var title:String = ""
-    var description:String = ""
+    var amount: String = ""
+    var title: String = ""
+    var description: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,7 +68,7 @@ class CreateTrip2Fragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun addFacilityItems() {
-        binding.etAmount.addTextChangedListener(object :TextWatcher{
+        binding.etAmount.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
@@ -94,32 +94,43 @@ class CreateTrip2Fragment : Fragment(), AdapterView.OnItemSelectedListener {
         })
 
         binding.tvAddFacility.setOnClickListener {
-            if(title != "" && description != ""){
-                val facility = Facility("1",title,description)
+            if (title != "" && description != "") {
+                val facility = Facility("1", title, description)
 
-                UpgradeGuideObject.myFacilityList.add(0,facility)
+                UpgradeGuideObject.myFacilityList.add(0, facility)
                 refreshAdapter(UpgradeGuideObject.myFacilityList)
 
                 binding.etTitle.text.clear()
                 binding.etDesciption.text.clear()
-            }else{
-                Toast.makeText(requireContext(), "Please, fill the fields first", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Please, fill the fields first",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
         }
     }
 
-    fun complete(){
+    fun complete() {
         binding.btnDone.setOnClickListener {
-            if (amount != "" && UpgradeGuideObject.myTripList.size >= 2 ){
-                Dialog.showDialogMessage(requireContext(),"Sent","Your Trip request has been sent to Admins. We will notify the result. Please wait :)", object :OkInterface{
-                    override fun onClick() {
+            if (amount != "" && UpgradeGuideObject.myTripList.size >= 2) {
+                showDialogMessage(
+                    "Sent",
+                    "Your Trip request has been sent to Admins. We will notify the result. Please wait :)",
+                    object : OkInterface {
+                        override fun onClick() {
 
-                    }
+                        }
 
-                })
-            }else{
-                Toast.makeText(requireContext(), "Please, fill the fields first", Toast.LENGTH_SHORT).show()
+                    })
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Please, fill the fields first",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -129,7 +140,7 @@ class CreateTrip2Fragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun removeItem(index:Int){
+    fun removeItem(index: Int) {
         UpgradeGuideObject.myTripList.removeAt(index)
         adapterTripAdapter.notifyDataSetChanged()
     }
@@ -169,7 +180,6 @@ class CreateTrip2Fragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         binding.spinnerDay.adapter = adapter1
     }
-
 
 
     @SuppressLint("NotifyDataSetChanged")

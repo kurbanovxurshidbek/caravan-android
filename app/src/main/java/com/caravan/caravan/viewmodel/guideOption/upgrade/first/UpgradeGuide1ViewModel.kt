@@ -19,8 +19,9 @@ class UpgradeGuide1ViewModel(private val repository: UpgradeGuide1Repository) : 
             val getProfile = repository.getProfile(id)
             if (!getProfile.isSuccessful) {
                 _profile.value = UiStateObject.ERROR(getProfile.message())
+            } else {
+                _profile.value = UiStateObject.SUCCESS(getProfile.body()!!)
             }
-            _profile.value = UiStateObject.SUCCESS(getProfile.body()!!)
         } catch (e: Exception) {
             _profile.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")
         }

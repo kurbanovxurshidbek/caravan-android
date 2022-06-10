@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/background_dialog_trip"
-    android:orientation="vertical"
-    android:paddingHorizontal="20dp">
+    android:paddingHorizontal="20dp"
+    android:background="@drawable/background_dialog_trip">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -26,43 +26,129 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/minPrice"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:backgroundTint="@color/main_color"
-                android:digits="1234567890"
-                android:drawableEnd="@drawable/ic_dollar"
-                android:fontFamily="@font/circular_std_bold"
-                android:hint="@string/minimum_price"
-                android:inputType="number"
-                android:maxLength="10"
-                android:maxLines="1"
-                android:paddingStart="5dp"
-                android:paddingEnd="10dp"
-                android:textColorHint="#60000000"
-                android:textCursorDrawable="@drawable/cursor"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/maxPrice"
+                <EditText
+                    android:id="@+id/minPrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/circular_std_bold"
+                    android:hint="@string/minimum_price"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:backgroundTint="@color/main_color"
+                    android:textColorHint="#60000000"
+                    android:textCursorDrawable="@drawable/cursor"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="3dp"
+                    android:orientation="vertical">
+                    <Spinner
+                        android:id="@+id/spinnerCurrencyMin"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_spinner" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/main_color" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginStart="5dp">
+
+                    <Spinner
+                        android:id="@+id/spinnerDayMin"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_spinner"
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/main_color" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:backgroundTint="@color/main_color"
-                android:digits="1234567890"
-                android:drawableEnd="@drawable/ic_dollar"
-                android:fontFamily="@font/circular_std_bold"
-                android:hint="@string/maximum_price"
-                android:inputType="number"
-                android:maxLength="10"
-                android:maxLines="1"
-                android:paddingStart="5dp"
-                android:paddingEnd="10dp"
-                android:textColorHint="#60000000"
-                android:textCursorDrawable="@drawable/cursor"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/maxPrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/circular_std_bold"
+                    android:hint="@string/minimum_price"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:backgroundTint="@color/main_color"
+                    android:textColorHint="#60000000"
+                    android:textCursorDrawable="@drawable/cursor"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="3dp"
+                    android:orientation="vertical">
+                    <Spinner
+                        android:id="@+id/spinnerCurrencyMax"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_spinner" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/main_color" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginStart="5dp">
+
+                    <Spinner
+                        android:id="@+id/spinnerDayMax"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_spinner"
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/main_color" />
+                </LinearLayout>
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/minPeople"
@@ -181,6 +267,4 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-
 </LinearLayout>
