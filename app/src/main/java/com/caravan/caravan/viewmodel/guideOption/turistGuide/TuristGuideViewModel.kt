@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.caravan.caravan.model.Profile
 import com.caravan.caravan.utils.UiStateObject
+import com.caravan.caravan.viewmodel.guideOption.guideOption.GuideOptionRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 

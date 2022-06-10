@@ -17,7 +17,6 @@ import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.activity.BaseActivity
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.OkWithCancelInterface
 import com.caravan.caravan.utils.UiStateObject
@@ -32,6 +31,7 @@ class AccountFragment : BaseFragment() {
     private lateinit var base: BaseActivity
     private lateinit var viewModel: AccountViewModel
     private lateinit var profile: Profile
+    private var id: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,9 +45,9 @@ class AccountFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         base = requireActivity() as BaseActivity
         setupViewModel()
-        val id = SharedPref(requireContext()).getString("profileId")
+        id = SharedPref(requireContext()).getString("profileId")
         if (id != null) {
-            viewModel.getProfile(id)
+            viewModel.getProfile(id!!)
         } else {
             showDialogWarning(
                 getString(R.string.error),
@@ -149,6 +149,7 @@ class AccountFragment : BaseFragment() {
                     getString(R.string.str_logout_message),
                     object : OkWithCancelInterface {
                         override fun onOkClick() {
+                            //something
                             SharedPref(requireContext()).saveBoolean("loginDone", false)
                             base.callLoginActivity()
                         }
@@ -193,6 +194,25 @@ class AccountFragment : BaseFragment() {
     }
 
     private fun isGuide(): Boolean {
-        return profile.role == "ROLE_GUIDE"
+        return !profile.guideId.isNullOrBlank()
+    }
+
+
+    override fun onResume() {
+        if (id != null) {
+            viewModel.getProfile(id!!)
+        } else {
+            showDialogWarning(
+                getString(R.string.error),
+                getString(R.string.went_wrong),
+                object : OkInterface {
+                    override fun onClick() {
+
+                    }
+
+                }
+            )
+        }
+        super.onResume()
     }
 }
