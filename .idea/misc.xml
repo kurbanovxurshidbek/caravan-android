@@ -12,6 +12,7 @@
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_message.xml" value="0.25416666666666665" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_upgrade_guide1.xml" value="0.1160081053698075" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_upgrade_guide2.xml" value="0.2" />
+        <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/photo_adder_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/drawable/cursor.xml" value="0.264" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/drawable/et_background.xml" value="0.117" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/drawable/ic_send_drawable.xml" value="0.264" />
@@ -54,15 +55,10 @@
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/menu/bottom_nav.xml" value="0.3619791666666667" />
         <entry key="app/src/main/res/layout/activity_intro.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.29739583333333336" />
-        <entry key="app/src/main/res/layout/dialog_warning.xml" value="0.29739583333333336" />
-        <entry key="app/src/main/res/layout/fragment_create_trip1.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.2574074074074074" />
-        <entry key="app/src/main/res/layout/fragment_guide_details.xml" value="0.15263298583266507" />
-        <entry key="app/src/main/res/layout/fragment_guide_guide_option.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/fragment_guide_trips.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/fragment_language.xml" value="0.29739583333333336" />
-        <entry key="app/src/main/res/layout/fragment_trip_details.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/fragment_upgrade_guide1.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/fragment_upgrade_guide2.xml" value="0.29739583333333336" />
       </map>

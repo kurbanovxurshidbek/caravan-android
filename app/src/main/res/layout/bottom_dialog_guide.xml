@@ -10,12 +10,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Filter your Search"
-        android:textColor="#167351"
+        android:layout_marginTop="40dp"
         android:fontFamily="@font/circular_std_bold"
-        android:textStyle="bold"
+        android:text="@string/filter_your_search"
+        android:textColor="#167351"
         android:textSize="20sp"
-        android:layout_marginTop="40dp" />
+        android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +24,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/etAmountMin"
+            android:id="@+id/minPrice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -84,7 +85,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/etAmountMax"
+            android:id="@+id/maxPrice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -139,102 +140,127 @@
     </LinearLayout>
 
     <EditText
+        android:id="@+id/minRating"
+        android:textCursorDrawable="@drawable/cursor"
+        android:backgroundTint="@color/main_color"
+        android:inputType="number"
+        android:digits="012345"
+        android:maxLength="1"
+        android:maxLines="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Minimum Rating"
         android:layout_marginTop="25dp"
-        android:textColorHint="#99000000"
-        android:fontFamily="@font/circular_std_bold"
-        android:textStyle="normal"
-        android:backgroundTint="@color/main_color"
         android:drawableEnd="@drawable/ic_star"
+        android:fontFamily="@font/circular_std_bold"
+        android:hint="@string/minimum_rating"
         android:paddingStart="5dp"
-        android:paddingEnd="10dp"/>
+        android:paddingEnd="10dp"
+        android:textColorHint="#99000000"
+        android:textStyle="normal" />
+
     <EditText
+        android:id="@+id/maxRating"
+        android:textCursorDrawable="@drawable/cursor"
+        android:backgroundTint="@color/main_color"
+        android:inputType="number"
+        android:digits="012345"
+        android:maxLength="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Maximum Rating"
         android:layout_marginTop="25dp"
-        android:textColorHint="#99000000"
-        android:backgroundTint="@color/main_color"
-        android:fontFamily="@font/circular_std_bold"
-        android:textStyle="normal"
         android:drawableEnd="@drawable/ic_star"
+        android:fontFamily="@font/circular_std_bold"
+        android:hint="@string/maximum_rating"
         android:paddingStart="5dp"
-        android:paddingEnd="10dp"/>
+        android:paddingEnd="10dp"
+        android:textColorHint="#99000000"
+        android:textStyle="normal" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
+
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/str_gender"
-                android:paddingStart="5dp"
-                android:gravity="center_vertical"
                 android:fontFamily="@font/circular_std_bold"
-                android:textStyle="normal"
+                android:gravity="center_vertical"
+                android:paddingStart="5dp"
+                android:text="@string/str_gender"
                 android:textColor="#99000000"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:textStyle="normal" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:paddingEnd="3dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingEnd="3dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/circular_std_bold"
                     android:text="@string/str_male"
                     android:textColor="#ABABAB"
                     android:textSize="16sp"
-                    android:fontFamily="@font/circular_std_bold"
-                    android:textStyle="normal"/>
+                    android:textStyle="normal" />
+
                 <CheckBox
                     android:id="@+id/checkboxMale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:buttonTint="@color/main_color"/>
+                    android:buttonTint="@color/main_color" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/circular_std_bold"
                     android:text="@string/str_female"
                     android:textColor="#ABABAB"
                     android:textSize="16sp"
-                    android:fontFamily="@font/circular_std_bold"
-                    android:textStyle="normal"/>
+                    android:textStyle="normal" />
+
                 <CheckBox
                     android:id="@+id/checkboxFemale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:buttonTint="@color/main_color"/>
+                    android:buttonTint="@color/main_color" />
             </LinearLayout>
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/main_color"/>
+            android:background="#87000000" />
 
     </LinearLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/applyFilter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
         android:layout_marginVertical="30dp"
-        android:background="@drawable/background_btn_intro"
-        app:backgroundTint="@null"
+        android:layout_marginBottom="16dp"
         android:elevation="5dp"
-        android:stateListAnimator="@null"
-        android:text="Apply Filter"
         android:fontFamily="@font/circular_std_bold"
+        android:paddingVertical="14dp"
+        android:stateListAnimator="@null"
+        android:text="@string/apply_trip"
         android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:translationZ="2dp" />
+        android:textSize="16sp"
+        android:translationZ="2dp"
+        app:backgroundTint="@color/main_color"
+        app:cornerRadius="50dp"
+        app:elevation="5dp" />
 </LinearLayout>

@@ -13,13 +13,16 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
+import com.caravan.caravan.adapter.GuideAdapter
 import com.caravan.caravan.adapter.SearchFragmentVPAdapter
+import com.caravan.caravan.adapter.TripAdapter
 import com.caravan.caravan.databinding.BottomDialogGuideBinding
 import com.caravan.caravan.databinding.BottomDialogTripBinding
 import com.caravan.caravan.databinding.FragmentSearchBinding
 import com.caravan.caravan.model.Price
 import com.caravan.caravan.model.search.FilterGuide
 import com.caravan.caravan.model.search.FilterTrip
+
 import com.caravan.caravan.model.search.SearchGuideSend
 import com.caravan.caravan.model.search.SearchTripSend
 import com.caravan.caravan.ui.fragment.BaseFragment
@@ -50,15 +53,6 @@ class SearchFragment : BaseFragment() {
     var optionsMaxTrip: Array<String>? = null
     var currencyMaxTrip: String = ""
     var optionMaxTrip: String = ""
-    lateinit var guideAdapter: GuideAdapter
-    lateinit var tripAdapter: TripAdapter
-    private val minPrice: Price? = null
-    private val maxPrice: Price? = null
-    private val minRating: Int = 1
-    private val maxRating: Int = 5
-    private val day: Int? = null
-    private val minPeople: Int? = null
-    private val maxPeople: Int? = null
 
     private var filterTrip: FilterTrip? = null
     private var filterGuide: FilterGuide? = null
