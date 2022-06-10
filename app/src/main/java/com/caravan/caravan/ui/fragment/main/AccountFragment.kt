@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -18,16 +17,15 @@ import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.activity.BaseActivity
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.*
+import com.caravan.caravan.utils.Extensions.toast
+import com.caravan.caravan.utils.OkInterface
+import com.caravan.caravan.utils.OkWithCancelInterface
+import com.caravan.caravan.utils.UiStateObject
+import com.caravan.caravan.utils.viewBinding
 import com.caravan.caravan.viewmodel.main.account.AccountRepository
 import com.caravan.caravan.viewmodel.main.account.AccountViewModel
 import com.caravan.caravan.viewmodel.main.account.AccountViewModelFactory
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AccountFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AccountFragment : BaseFragment() {
 
     private val binding by viewBinding { FragmentAccountBinding.bind(it) }
@@ -51,8 +49,7 @@ class AccountFragment : BaseFragment() {
         if (id != null) {
             viewModel.getProfile(id)
         } else {
-            Dialog.showDialogWarning(
-                requireContext(),
+            showDialogWarning(
                 getString(R.string.error),
                 getString(R.string.went_wrong),
                 object : OkInterface {
@@ -81,8 +78,7 @@ class AccountFragment : BaseFragment() {
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -110,8 +106,7 @@ class AccountFragment : BaseFragment() {
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -147,28 +142,25 @@ class AccountFragment : BaseFragment() {
                 goToEditActivity(false)
             }
             llGuideOption.setOnClickListener {
-                    goToGuideOptionActivity(isGuide())
+                goToGuideOptionActivity(isGuide())
             }
             llLogOut.setOnClickListener {
-                Dialog.showAlertDialog(
-                    requireContext(),
+                showAlertDialog(
                     getString(R.string.str_logout_message),
                     object : OkWithCancelInterface {
                         override fun onOkClick() {
-                            //something
                             SharedPref(requireContext()).saveBoolean("loginDone", false)
                             base.callLoginActivity()
                         }
 
                         override fun onCancelClick() {
-                            //something
+                            return
                         }
 
                     })
             }
             llDeleteAccount.setOnClickListener {
-                Dialog.showAlertDialog(
-                    requireContext(),
+                showAlertDialog(
                     getString(R.string.str_delete_message),
                     object : OkWithCancelInterface {
                         override fun onOkClick() {
@@ -176,7 +168,7 @@ class AccountFragment : BaseFragment() {
                         }
 
                         override fun onCancelClick() {
-
+                            return
                         }
 
                     })
@@ -191,7 +183,10 @@ class AccountFragment : BaseFragment() {
             this,
             AccountViewModelFactory(
                 AccountRepository(
-                    RetrofitHttp.createServiceWithAuth(SharedPref(requireContext()), ApiService::class.java)
+                    RetrofitHttp.createServiceWithAuth(
+                        SharedPref(requireContext()),
+                        ApiService::class.java
+                    )
                 )
             )
         )[AccountViewModel::class.java]

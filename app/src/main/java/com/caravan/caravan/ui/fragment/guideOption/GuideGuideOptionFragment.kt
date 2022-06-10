@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -13,8 +12,6 @@ import com.caravan.caravan.databinding.FragmentGuideGuideOptionBinding
 import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.ui.activity.BaseActivity
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.Dialog
-import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkWithCancelInterface
 import com.caravan.caravan.utils.viewBinding
 
@@ -55,8 +52,7 @@ class GuideGuideOptionFragment : BaseFragment() {
             }
             sbIsHiring.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked && buttonView.isPressed) {
-                    Dialog.showAlertDialog(
-                        requireContext(),
+                    showAlertDialog(
                         getString(R.string.str_isHiring),
                         object : OkWithCancelInterface {
                             override fun onOkClick() {
@@ -82,8 +78,7 @@ class GuideGuideOptionFragment : BaseFragment() {
                 findNavController().navigate(R.id.action_guideGuideOptionFragment_to_feedbackListFragment)
             }
             llDeleteGuideAccount.setOnClickListener {
-                Dialog.showAlertDialog(
-                    requireContext(),
+                showAlertDialog(
                     getString(R.string.str_delete_message),
                     object : OkWithCancelInterface {
                         override fun onOkClick() {

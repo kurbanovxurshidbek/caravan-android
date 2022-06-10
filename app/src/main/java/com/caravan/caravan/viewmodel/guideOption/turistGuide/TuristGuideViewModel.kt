@@ -21,8 +21,9 @@ class TuristGuideViewModel(private val repository: TuristGuideRepository) : View
             val profile = repository.getProfile(id)
             if (!profile.isSuccessful) {
                 _profile.value = UiStateObject.ERROR(profile.message())
+            } else {
+                _profile.value = UiStateObject.SUCCESS(profile.body()!!)
             }
-            _profile.value = UiStateObject.SUCCESS(profile.body()!!)
 
         } catch (e: Exception) {
             _profile.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")

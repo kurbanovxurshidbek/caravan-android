@@ -125,6 +125,8 @@
     <string name="maximum_price">Maximum Price</string>
     <string name="minimum_price">Minimum Price</string>
     <string name="filter_your_search">Filter your Search</string>
+    <string name="warning">Warning</string>
+    <string name="check_gender">Please check your gender</string>
 
     <string-array name="location">
         <item>TASHKENT</item>

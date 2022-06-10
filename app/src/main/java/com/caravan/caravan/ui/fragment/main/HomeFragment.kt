@@ -176,9 +176,9 @@ class HomeFragment : BaseFragment() {
         for (i in 0..10) {
             list.add(
                 GuideProfile(
-                    "i * 100L + 1",
+                    "100axxcasuwbsdcladcbaofvamcoiadnc",
                     Profile(
-                        "i * 100L",
+                        "skjdnsdnfoiasnmasxkasxa",
                         "Asasin df  asj  sd a skj ask s dj as;j aik cakk caai; casj",
                         "Sobirov",
                         "",

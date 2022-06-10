@@ -25,11 +25,9 @@ import com.caravan.caravan.databinding.FragmentTripDetailsBinding
 import com.caravan.caravan.databinding.OverlayViewBinding
 import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.*
-import com.caravan.caravan.model.Comment
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.Dialog
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
 import com.caravan.caravan.viewmodel.details.TripDetailsRepository
@@ -70,19 +68,18 @@ class TripDetailsFragment : BaseFragment() {
     private fun setUpObserves() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.trip.collect {
-                when(it) {
+                when (it) {
                     is UiStateObject.LOADING -> {
                         showLoading()
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-
+                        trip = it.data
                         setUpDate(it.data)
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -110,8 +107,15 @@ class TripDetailsFragment : BaseFragment() {
     }
 
     private fun setUpViewModel() {
-        viewModel = ViewModelProvider(this, TripDetailsViewModelFactory(TripDetailsRepository(RetrofitHttp.createServiceWithAuth(
-            SharedPref(requireContext()), ApiService::class.java))))[TripDetailsViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this, TripDetailsViewModelFactory(
+                TripDetailsRepository(
+                    RetrofitHttp.createServiceWithAuth(
+                        SharedPref(requireContext()), ApiService::class.java
+                    )
+                )
+            )
+        )[TripDetailsViewModel::class.java]
     }
 
     private fun initViews() {
@@ -123,6 +127,10 @@ class TripDetailsFragment : BaseFragment() {
         fragmentTripDetailsBinding.guideProfile.setOnClickListener {
             Navigation.findNavController(requireActivity(), R.id.details_nav_fragment)
                 .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment);
+        }
+
+        fragmentTripDetailsBinding.btnSendComment.setOnClickListener {
+
         }
 
     }
@@ -182,7 +190,7 @@ class TripDetailsFragment : BaseFragment() {
         if (ids != null && ids.contains(profileId!!)) {
 
             if (!reviews.isNullOrEmpty()) {
-                var isHave = true
+                var isHave = false
                 for (i in reviews) {
                     if (i.from.id == profileId) {
                         isHave = true
@@ -207,7 +215,7 @@ class TripDetailsFragment : BaseFragment() {
                 adapter = TripPhotosAdapter(
                     this@TripDetailsFragment,
                     photos
-                ) //TripDetailsFragment viewPager items, It should be Trip items and they should come from server
+                )
                 setIndicator()
                 registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
@@ -224,9 +232,6 @@ class TripDetailsFragment : BaseFragment() {
             CommentsAdapter(it)
         }
     }
-
-    /*TripDetailsFragment viewPager items, It should be Trip items and they should come from server
-    */
 
     private fun setTravelLocations(places: ArrayList<Location>) {
         fragmentTripDetailsBinding.apply {

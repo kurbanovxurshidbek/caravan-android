@@ -1,5 +1,6 @@
 package com.caravan.caravan.viewmodel.details
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.caravan.caravan.model.GuideProfile
@@ -8,6 +9,7 @@ import com.caravan.caravan.model.review.Review
 import com.caravan.caravan.utils.UiStateObject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 class GuideDetailsViewModel(private val repository: GuideDetailsRepository): ViewModel() {
 
@@ -20,8 +22,9 @@ class GuideDetailsViewModel(private val repository: GuideDetailsRepository): Vie
             val profile = repository.getGuideProfile(profileId)
             if (!profile.isSuccessful) {
                 _guideProfile.value = UiStateObject.ERROR(profile.message())
+            } else {
+                _guideProfile.value = UiStateObject.SUCCESS(profile.body()!!)
             }
-            _guideProfile.value = UiStateObject.SUCCESS(profile.body()!!)
         } catch (e: Exception) {
             _guideProfile.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")
         }

@@ -101,13 +101,12 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
                         Log.d("@@@", "setUpObservers: ${it.data}")
-                        SharedPref(requireContext()).saveString("guideId",it.data.id)
+                        SharedPref(requireContext()).saveString("guideId", it.data.id)
                         completeAction()
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -138,8 +137,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
                     }
                     is UiStateList.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
