@@ -120,6 +120,7 @@ class TripListFragment : Fragment() {
                     guide,
                     "+998997492581",
                     4.5,
+                    3,
                     arrayListOf(),
                     null
                 )
