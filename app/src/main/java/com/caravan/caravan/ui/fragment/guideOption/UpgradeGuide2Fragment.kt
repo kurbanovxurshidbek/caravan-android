@@ -386,15 +386,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         binding.recyclerViewLanguage.adapter = adapterLanguage
     }
 
-    private fun hideKeyboard() {
-        try {
-            val imm =
-                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, 0)
-        } catch (e: Exception) {
 
-        }
-    }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         currency = currencies!![p2]

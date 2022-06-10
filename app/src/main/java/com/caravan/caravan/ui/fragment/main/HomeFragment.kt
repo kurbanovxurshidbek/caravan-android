@@ -72,11 +72,6 @@ class HomeFragment : BaseFragment() {
             }
         }
 
-        /*homeBinding.ivBurger.setOnClickListener {
-            findNavController().navigate(R.id.action_turistGuideOptionFragment_to_createTrip1Fragment)
-        }*/
-
-
     }
 
     private fun homeTripList(): ArrayList<Trip> {

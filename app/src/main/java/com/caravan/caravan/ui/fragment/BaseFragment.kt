@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Rect
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import com.caravan.caravan.R
 import com.caravan.caravan.model.GuideProfile
@@ -16,7 +17,7 @@ import com.caravan.caravan.ui.activity.MainActivity
 import com.caravan.caravan.utils.Dialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-open class BaseFragment : Fragment() {
+open class BaseFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     open fun goToDetailsActivity(trip: Trip) {
         val intent = Intent(requireContext(), DetailsActivity::class.java)
@@ -63,6 +64,15 @@ open class BaseFragment : Fragment() {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
+    open fun hideKeyboard() {
+        try {
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, 0)
+        } catch (e: Exception) {
+
+        }
+    }
+
 
     fun showLoading() {
         Dialog.showLoading(requireContext())
@@ -76,4 +86,6 @@ open class BaseFragment : Fragment() {
         fun isScrolling()
     }
 
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {}
+    override fun onNothingSelected(p0: AdapterView<*>?) {}
 }

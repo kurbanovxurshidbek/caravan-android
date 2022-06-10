@@ -301,7 +301,6 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
         }
     }
 
-
     private fun swipeToDeleteLocation() {
         val swipeToDeleteCallback = object : SwipeToDeleteCallback() {
             @SuppressLint("NotifyDataSetChanged")
