@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.caravan.caravan.databinding.FragmentFeedbackRespondBinding
 import com.caravan.caravan.model.*
+import com.caravan.caravan.model.Comment
 import com.caravan.caravan.ui.fragment.BaseFragment
 
 class FeedbackRespondFragment : BaseFragment() {
