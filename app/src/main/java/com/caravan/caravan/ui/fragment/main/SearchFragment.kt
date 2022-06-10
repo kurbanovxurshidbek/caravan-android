@@ -169,8 +169,8 @@ class SearchFragment : BaseFragment() {
 
 
                 filterGuide = FilterGuide(
-                    Price(minPrice, "UZS", "Cash"), // Bu o'zgartirish kk one day!
-                    Price(maxPrice, "UZS", "Cash"),
+                    Price(minPrice, "UZS", "Day"), // Bu o'zgartirish kk one day!
+                    Price(maxPrice, "UZS", "Day"),
                     minRating,
                     maxRating,
                     gender
