@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.DialogLoadingBinding
@@ -22,7 +23,7 @@ import com.caravan.caravan.utils.*
 import com.caravan.caravan.utils.Extensions.setTransparentWindow
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-open class BaseFragment : Fragment() {
+open class BaseFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     open fun goToDetailsActivity(trip: Trip) {
         val intent = Intent(requireContext(), DetailsActivity::class.java)
@@ -69,6 +70,15 @@ open class BaseFragment : Fragment() {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
+    open fun hideKeyboard() {
+        try {
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, 0)
+        } catch (e: Exception) {
+
+        }
+    }
+
     private var loadingDialog: android.app.Dialog? = null
 
     open fun showLoading() {
@@ -85,9 +95,8 @@ open class BaseFragment : Fragment() {
             )
             loadingDialog?.show()
         }
-
     }
-
+    
     open fun showAlertDialog(title: String, action: OkWithCancelInterface) {
         val dialog = DialogAlert(title)
         Log.d("TAG", "showAlertDialog: ustinda")
@@ -126,10 +135,11 @@ open class BaseFragment : Fragment() {
     open fun dismissLoading() {
         loadingDialog?.dismiss()
         loadingDialog = null
-    }
 
     interface SearchFragmentAndChildFragments{
         fun isScrolling()
     }
 
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {}
+    override fun onNothingSelected(p0: AdapterView<*>?) {}
 }
