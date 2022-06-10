@@ -21,6 +21,9 @@ import com.caravan.caravan.utils.Dialog
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
 import com.caravan.caravan.utils.viewBinding
+import com.caravan.caravan.viewmodel.guideOption.guideOption.GuideOptionRepository
+import com.caravan.caravan.viewmodel.guideOption.guideOption.GuideOptionViewModel
+import com.caravan.caravan.viewmodel.guideOption.guideOption.GuideOptionViewModelFactory
 import com.caravan.caravan.viewmodel.guideOption.turistGuide.TuristGuideRepository
 import com.caravan.caravan.viewmodel.guideOption.turistGuide.TuristGuideViewModel
 import com.caravan.caravan.viewmodel.guideOption.turistGuide.TuristguideViewModelFactory

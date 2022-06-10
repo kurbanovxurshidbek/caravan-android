@@ -34,6 +34,7 @@ class AccountFragment : BaseFragment() {
     private lateinit var base: BaseActivity
     private lateinit var viewModel: AccountViewModel
     private lateinit var profile: Profile
+    private var id: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,23 +47,8 @@ class AccountFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         base = requireActivity() as BaseActivity
+        id = SharedPref(requireContext()).getString("profileId")
         setupViewModel()
-        val id = SharedPref(requireContext()).getString("profileId")
-        if (id != null) {
-            viewModel.getProfile(id)
-        } else {
-            Dialog.showDialogWarning(
-                requireContext(),
-                getString(R.string.error),
-                getString(R.string.went_wrong),
-                object : OkInterface {
-                    override fun onClick() {
-
-                    }
-
-                }
-            )
-        }
         setupObservers()
         initViews()
     }
@@ -147,7 +133,7 @@ class AccountFragment : BaseFragment() {
                 goToEditActivity(false)
             }
             llGuideOption.setOnClickListener {
-                    goToGuideOptionActivity(isGuide())
+                goToGuideOptionActivity(isGuide())
             }
             llLogOut.setOnClickListener {
                 Dialog.showAlertDialog(
@@ -191,7 +177,10 @@ class AccountFragment : BaseFragment() {
             this,
             AccountViewModelFactory(
                 AccountRepository(
-                    RetrofitHttp.createServiceWithAuth(SharedPref(requireContext()), ApiService::class.java)
+                    RetrofitHttp.createServiceWithAuth(
+                        SharedPref(requireContext()),
+                        ApiService::class.java
+                    )
                 )
             )
         )[AccountViewModel::class.java]
@@ -199,5 +188,25 @@ class AccountFragment : BaseFragment() {
 
     private fun isGuide(): Boolean {
         return !profile.guideId.isNullOrBlank()
+    }
+
+
+    override fun onResume() {
+        if (id != null) {
+            viewModel.getProfile(id!!)
+        } else {
+            Dialog.showDialogWarning(
+                requireContext(),
+                getString(R.string.error),
+                getString(R.string.went_wrong),
+                object : OkInterface {
+                    override fun onClick() {
+
+                    }
+
+                }
+            )
+        }
+        super.onResume()
     }
 }

@@ -4,19 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.FragmentGuideGuideOptionBinding
 import com.caravan.caravan.manager.SharedPref
+import com.caravan.caravan.model.more.ActionMessage
+import com.caravan.caravan.network.ApiService
+import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.activity.BaseActivity
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.Dialog
-import com.caravan.caravan.utils.Extensions.toast
-import com.caravan.caravan.utils.OkWithCancelInterface
-import com.caravan.caravan.utils.viewBinding
+import com.caravan.caravan.utils.*
+import com.caravan.caravan.viewmodel.guideOption.guideOption.GuideOptionRepository
+import com.caravan.caravan.viewmodel.guideOption.guideOption.GuideOptionViewModel
+import com.caravan.caravan.viewmodel.guideOption.guideOption.GuideOptionViewModelFactory
 
 
 /**
@@ -26,6 +30,8 @@ import com.caravan.caravan.utils.viewBinding
  */
 class GuideGuideOptionFragment : BaseFragment() {
     lateinit var base: BaseActivity
+    var isHiring = false
+    lateinit var viewModel: GuideOptionViewModel
     private val binding by viewBinding { FragmentGuideGuideOptionBinding.bind(it) }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +44,7 @@ class GuideGuideOptionFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initViews()
     }
 
@@ -49,6 +56,9 @@ class GuideGuideOptionFragment : BaseFragment() {
     }
 
     private fun initViews() {
+        setupViewModel()
+        setupObservers()
+        viewModel.getGuideStatus()
         binding.apply {
             llEditGuideProfile.setOnClickListener {
                 findNavController().navigate(R.id.action_guideGuideOptionFragment_to_editGuideAccountFragment)
@@ -60,19 +70,17 @@ class GuideGuideOptionFragment : BaseFragment() {
                         getString(R.string.str_isHiring),
                         object : OkWithCancelInterface {
                             override fun onOkClick() {
-                                //sendResponse
+                                viewModel.changeGuideStatus()
                             }
 
                             override fun onCancelClick() {
-                                //
-                                sbIsHiring.isChecked = false
+                                binding.sbIsHiring.isChecked=isHiring
                             }
 
 
                         })
-                } else {
-                    //sendResponse
-
+                } else if (!isChecked && buttonView.isPressed) {
+                    viewModel.changeGuideStatus()
                 }
             }
             llMyTrips.setOnClickListener {
@@ -87,9 +95,7 @@ class GuideGuideOptionFragment : BaseFragment() {
                     getString(R.string.str_delete_message),
                     object : OkWithCancelInterface {
                         override fun onOkClick() {
-                            // send request here
-                            SharedPref(requireContext()).saveBoolean("loginDone", false)
-                            base.callLoginActivity()
+                            viewModel.deleteGuideProfile()
                         }
 
                         override fun onCancelClick() {
@@ -100,6 +106,116 @@ class GuideGuideOptionFragment : BaseFragment() {
             }
 
         }
+    }
+
+    private fun setupObservers() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.deletedGuideProfile.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        isDelete(it.data)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+
+                        Dialog.showDialogWarning(
+                            requireContext(),
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+
+                                }
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.guideStatus.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        binding.sbIsHiring.isChecked = it.data
+                        isHiring=it.data
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        Dialog.showDialogWarning(
+                            requireContext(),
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+
+                                }
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.changedGuideStatus.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        binding.sbIsHiring.isChecked = it.data
+                        isHiring=it.data
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        Dialog.showDialogWarning(
+                            requireContext(),
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+
+                                }
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+    private fun isDelete(data: ActionMessage) {
+        if (data.status) {
+            SharedPref(requireContext()).saveBoolean("loginDone", false)
+            base.callLoginActivity()
+        }
+    }
+
+    private fun setupViewModel() {
+        viewModel = ViewModelProvider(
+            this,
+            GuideOptionViewModelFactory(
+                GuideOptionRepository(
+                    RetrofitHttp.createServiceWithAuth(
+                        SharedPref(requireContext()),
+                        ApiService::class.java
+                    )
+                )
+            )
+        )[GuideOptionViewModel::class.java]
     }
 
 }
