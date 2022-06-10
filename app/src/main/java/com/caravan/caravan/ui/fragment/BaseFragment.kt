@@ -37,15 +37,18 @@ open class BaseFragment : Fragment(), AdapterView.OnItemSelectedListener {
         startActivity(intent)
     }
 
+
     open fun goToEditActivity(isEdit: Boolean) {
         val intent = Intent(requireContext(), EditActivity::class.java)
         intent.putExtra("isEdit", isEdit)
         startActivity(intent)
     }
 
+
     open fun goToGuideOptionActivity(isGuide: Boolean) {
         val intent = Intent(requireContext(), GuideOptionActivity::class.java)
         intent.putExtra("isGuide", isGuide)
+
         startActivity(intent)
     }
 
