@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidProjects/caravan-android/app/src/main/res/layout/activity_details.xml" value="0.25" />
+        <entry key="..\:/AndroidProjects/caravan-android/app/src/main/res/layout/bottom_dialog_trip.xml" value="0.25" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_edit_profile.xml" value="0.23854166666666668" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_upgrade_guide1.xml" value="0.1160081053698075" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/drawable/cursor.xml" value="0.264" />
