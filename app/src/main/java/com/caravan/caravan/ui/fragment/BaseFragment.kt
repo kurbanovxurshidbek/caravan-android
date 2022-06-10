@@ -135,6 +135,7 @@ open class BaseFragment : Fragment(), AdapterView.OnItemSelectedListener {
     open fun dismissLoading() {
         loadingDialog?.dismiss()
         loadingDialog = null
+    }
 
     interface SearchFragmentAndChildFragments{
         fun isScrolling()
