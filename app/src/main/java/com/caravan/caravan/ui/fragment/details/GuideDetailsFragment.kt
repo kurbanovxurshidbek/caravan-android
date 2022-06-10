@@ -217,7 +217,7 @@ class GuideDetailsFragment : BaseFragment() {
                             getString(R.string.str_try_again),
                             object : OkInterface {
                                 override fun onClick() {
-                                    requireActivity().onBackPressed()
+                                    return
                                 }
                             }
                         )
@@ -236,7 +236,10 @@ class GuideDetailsFragment : BaseFragment() {
                 }
             })
         } else {
-
+            guideDetailsBinding.apply {
+                etLeaveComment.setText("")
+                leaveCommentPart.visibility = View.GONE
+            }
         }
     }
 
