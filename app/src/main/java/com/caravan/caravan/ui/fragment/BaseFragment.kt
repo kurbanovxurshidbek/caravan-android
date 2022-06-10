@@ -82,7 +82,7 @@ open class BaseFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
-    private var loadingDialog: android.app.Dialog? = null
+    private var loadingDialog: Dialog? = null
 
     open fun showLoading() {
         if (loadingDialog == null) {
@@ -102,15 +102,11 @@ open class BaseFragment : Fragment(), AdapterView.OnItemSelectedListener {
     
     open fun showAlertDialog(title: String, action: OkWithCancelInterface) {
         val dialog = DialogAlert(title)
-        Log.d("TAG", "showAlertDialog: ustinda")
         dialog.noListener = {
-            Log.d("TAG", "showAlertDialog: no")
             action.onCancelClick()
             dialog.dismiss()
         }
         dialog.yesListener = {
-            Log.d("TAG", "showAlertDialog: yes")
-            Log.d("TAG", "showAlertDialog: bosildi")
             action.onOkClick()
             dialog.dismiss()
         }
