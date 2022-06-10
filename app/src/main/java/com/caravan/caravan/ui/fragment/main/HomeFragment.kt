@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.GuideHomeAdapter
@@ -70,7 +71,6 @@ class HomeFragment : BaseFragment() {
                 navigateToSearchFragment()
             }
         }
-
 
     }
 
@@ -171,9 +171,9 @@ class HomeFragment : BaseFragment() {
         for (i in 0..10) {
             list.add(
                 GuideProfile(
-                    "i * 100L + 1",
+                    "100axxcasuwbsdcladcbaofvamcoiadnc",
                     Profile(
-                        "i * 100L",
+                        "skjdnsdnfoiasnmasxkasxa",
                         "Asasin df  asj  sd a skj ask s dj as;j aik cakk caai; casj",
                         "Sobirov",
                         "",

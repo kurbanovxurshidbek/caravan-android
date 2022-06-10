@@ -45,6 +45,7 @@
     <string name="str_gender">Gender</string>
     <string name="str_male">Male</string>
     <string name="str_female">Female</string>
+    <string name="str_all">All</string>
     <string name="str_guide">Guide</string>
     <string name="str_trip">Trip</string>
     <string name="trial_text">Bukhara is a very beautiful city in Uzbekistan. You must like there if you came. I give you that opportunity to discover Bukhara. In this trip you can customise the trip days where to visit. Add more like opportunites. Take me and discover Bukhara</string>
@@ -67,7 +68,7 @@
     <string name="str_send">Send</string>
     <string name="guide_s_trips">Guide\'s Trips</string>
     <string name="hire_guide">Hire Guide</string>
-    <string name="write_respond">Write Respond</string>
+    <string name="write_review">Write Review</string>
     <string name="str_english">English</string>
     <string name="str_uzbek">O\'zbekcha</string>
     <string name="str_choose_language">Choose Language</string>
@@ -116,6 +117,19 @@
     <string name="str_upload">Upload</string>
     <string name="error">Error</string>
     <string name="went_wrong">Something went wrong. Please try again</string>
+    <string name="str_send_message">Please write review</string>
+    <string name="maximum_rating">Maximum Rating (0–5)</string>
+    <string name="minimum_rating">Minimum Rating (0–5)</string>
+    <string name="day">Day</string>
+    <string name="maximum_people">Maximum People</string>
+    <string name="minimum_people">Minimum People</string>
+    <string name="maximum_price">Maximum Price</string>
+    <string name="minimum_price">Minimum Price</string>
+    <string name="filter_your_search">Filter your Search</string>
+    <string name="warning">Warning</string>
+    <string name="check_gender">Please check your gender</string>
+    <string name="str_minimum_price">Minimum Price</string>
+    <string name="str_maximum_price">Maximum Price</string>
 
     <string-array name="location">
         <item>TASHKENT</item>

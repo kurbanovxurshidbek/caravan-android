@@ -296,29 +296,6 @@
                     android:focusable="true"
                     android:orientation="vertical">
 
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginHorizontal="12dp"-->
-<!--                        android:layout_marginTop="16dp"-->
-<!--                        android:layout_marginBottom="16dp">-->
-
-<!--                        <ImageView-->
-<!--                            android:layout_width="20dp"-->
-<!--                            android:layout_height="20dp"-->
-<!--                            android:layout_gravity="center_vertical"-->
-<!--                            android:src="@drawable/chat_bubble2" />-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginStart="16dp"-->
-<!--                            android:fontFamily="@font/circular_std_bold"-->
-<!--                            android:text="@string/chat_with_guide"-->
-<!--                            android:textColor="@color/black"-->
-<!--                            android:textSize="18sp" />-->
-<!--                    </LinearLayout>-->
-
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -330,6 +307,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llCallToGuide"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/square_ripple"
@@ -385,34 +363,57 @@
                     android:id="@+id/leaveCommentPart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="16dp"
-                    android:visibility="gone">
+                    android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/etLeaveComment"
-                        android:layout_width="0dp"
+                    <RatingBar
+                        android:id="@+id/rateTheTrip"
+                        style="?android:attr/ratingBarStyle"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:backgroundTint="@color/main_color"
-                        android:fontFamily="@font/circular_std_bold"
-                        android:hint="@string/write_respond"
-                        android:inputType="textMultiLine"
-                        android:maxLines="5"
-                        android:textColor="@color/black"
-                        android:textCursorDrawable="@drawable/cursor" />
+                        android:layout_gravity="center_horizontal"
+                        android:backgroundTint="@color/black"
+                        android:clickable="false"
+                        android:max="5"
+                        android:progressBackgroundTint="#4B000000"
+                        android:progressTint="@color/main_color"
+                        android:rating="1.0"
+                        android:scaleX="0.8"
+                        android:scaleY="0.8"
+                        android:secondaryProgressTint="@color/main_color"
+                        android:stepSize="1.0" />
 
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="4dp"
-                        android:background="@drawable/ripple"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:src="@drawable/ic_send_drawable" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginTop="16dp">
 
+                        <EditText
+                            android:id="@+id/etLeaveComment"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/main_color"
+                            android:fontFamily="@font/circular_std_bold"
+                            android:hint="@string/write_review"
+                            android:inputType="textMultiLine"
+                            android:maxLines="5"
+                            android:textColor="@color/black"
+                            android:textCursorDrawable="@drawable/cursor" />
+
+                        <ImageView
+                            android:id="@+id/btnSendComment"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="4dp"
+                            android:background="@drawable/ripple"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:src="@drawable/ic_send_drawable" />
+
+                    </LinearLayout>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

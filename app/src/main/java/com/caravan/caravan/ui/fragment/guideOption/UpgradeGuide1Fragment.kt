@@ -18,8 +18,10 @@ import com.caravan.caravan.model.Profile
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.*
 import com.caravan.caravan.utils.Extensions.toast
+import com.caravan.caravan.utils.OkInterface
+import com.caravan.caravan.utils.UiStateObject
+import com.caravan.caravan.utils.viewBinding
 import com.caravan.caravan.viewmodel.guideOption.upgrade.first.UpgradeGuide1Repository
 import com.caravan.caravan.viewmodel.guideOption.upgrade.first.UpgradeGuide1ViewModel
 import com.caravan.caravan.viewmodel.guideOption.upgrade.first.UpgradeGuide1ViewModelFactory
@@ -51,8 +53,7 @@ class UpgradeGuide1Fragment : BaseFragment() {
         if (id != null)
             initViews(id)
         else
-            Dialog.showDialogWarning(
-                requireContext(),
+            showDialogWarning(
                 getString(R.string.error),
                 getString(R.string.went_wrong),
                 object : OkInterface {
@@ -91,8 +92,7 @@ class UpgradeGuide1Fragment : BaseFragment() {
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -123,8 +123,7 @@ class UpgradeGuide1Fragment : BaseFragment() {
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -183,7 +182,6 @@ class UpgradeGuide1Fragment : BaseFragment() {
         }
     }
 
-
     fun setBirthday() {
         val datePicker = Calendar.getInstance()
         var year = datePicker[Calendar.YEAR]
@@ -225,8 +223,6 @@ class UpgradeGuide1Fragment : BaseFragment() {
             R.id.action_upgradeGuide1Fragment_to_upgradeGuide2Fragment,
             bundle
         )
-
-        UpgradeGuideObject.isCreated = true
     }
 
 }

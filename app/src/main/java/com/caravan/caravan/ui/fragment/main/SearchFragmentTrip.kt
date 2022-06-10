@@ -4,15 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.caravan.caravan.adapter.TripAdapter
 import com.caravan.caravan.databinding.FragmentSearchTripBinding
 import com.caravan.caravan.model.*
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Extensions.toast
+import com.caravan.caravan.viewmodel.main.home.SearchSharedVM
 
 
 class SearchFragmentTrip : BaseFragment() {
     private lateinit var binding: FragmentSearchTripBinding
+    private val sharedViewModel: SearchSharedVM by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +48,10 @@ class SearchFragmentTrip : BaseFragment() {
                     closeKeyboard(recyclerView)
                 }
             })
+        }
+
+        sharedViewModel.tripSearch.observe(viewLifecycleOwner) {
+            toast(it.key)
         }
     }
 

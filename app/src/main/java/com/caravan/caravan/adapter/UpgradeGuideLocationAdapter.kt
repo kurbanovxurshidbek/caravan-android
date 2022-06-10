@@ -33,7 +33,7 @@ class UpgradeGuideLocationAdapter(var context: Context, var items: ArrayList<Loc
             val item = items[adapterPosition]
 
             binding.apply {
-                tvLocationProvince.text = item.province
+                tvLocationProvince.text = item.provence
                 tvLocationDistrict.text = item.district
                 tvDesc.text = item.description
             }
