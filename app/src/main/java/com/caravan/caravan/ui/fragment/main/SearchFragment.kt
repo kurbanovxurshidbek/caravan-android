@@ -8,21 +8,18 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.activityViewModels
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
-import com.caravan.caravan.adapter.GuideAdapter
 import com.caravan.caravan.adapter.SearchFragmentVPAdapter
-import com.caravan.caravan.adapter.TripAdapter
 import com.caravan.caravan.databinding.BottomDialogGuideBinding
 import com.caravan.caravan.databinding.BottomDialogTripBinding
 import com.caravan.caravan.databinding.FragmentSearchBinding
 import com.caravan.caravan.model.Price
 import com.caravan.caravan.model.search.FilterGuide
 import com.caravan.caravan.model.search.FilterTrip
-
 import com.caravan.caravan.model.search.SearchGuideSend
 import com.caravan.caravan.model.search.SearchTripSend
 import com.caravan.caravan.ui.fragment.BaseFragment
@@ -37,23 +34,23 @@ class SearchFragment : BaseFragment() {
     private lateinit var dialogGuideBinding: BottomDialogGuideBinding
     lateinit var dialogTripBinding: BottomDialogTripBinding
 
-    private var gender: String = ""
+    private var gender: String = getString(R.string.str_all)
     var currenciesMinGuide: Array<String>? = null
     var optionsMinGuide: Array<String>? = null
-    var currencyMinGuide: String = ""
-    var optionMinGuide: String = ""
+    var currencyMinGuide: String = "UZS"
+    var optionMinGuide: String = "DAY"
     var currenciesMaxGuide: Array<String>? = null
     var optionsMaxGuide: Array<String>? = null
-    var currencyMaxGuide: String = ""
-    var optionMaxGuide: String = ""
+    var currencyMaxGuide: String = "UZS"
+    var optionMaxGuide: String = "DAY"
     var currenciesMinTrip: Array<String>? = null
     var optionsMinTrip: Array<String>? = null
-    var currencyMinTrip: String = ""
-    var optionMinTrip: String = ""
+    var currencyMinTrip: String = "UZS"
+    var optionMinTrip: String = "DAY"
     var currenciesMaxTrip: Array<String>? = null
     var optionsMaxTrip: Array<String>? = null
-    var currencyMaxTrip: String = ""
-    var optionMaxTrip: String = ""
+    var currencyMaxTrip: String = "UZS"
+    var optionMaxTrip: String = "DAY"
 
     private var filterTrip: FilterTrip? = null
     private var filterGuide: FilterGuide? = null
@@ -153,15 +150,18 @@ class SearchFragment : BaseFragment() {
         dialog.setContentView(dialogGuideBinding.root)
         dialog.show()
 
+        manageGender()
+        setSpinnerGuide()
+
         filterGuide?.let {
             dialogGuideBinding.apply {
                 minRating.setText(filterGuide!!.minRating?.toString())
                 maxRating.setText(filterGuide!!.maxRating?.toString())
                 when (gender) {
-                    "Male" -> {
+                    getString(R.string.str_male) -> {
                         checkboxMale.isChecked = true
                     }
-                    "" -> {
+                    getString(R.string.str_all) -> {
                         checkboxMale.isChecked = true
                         checkboxFemale.isChecked = true
                     }
@@ -169,12 +169,33 @@ class SearchFragment : BaseFragment() {
                         checkboxFemale.isChecked = true
                     }
                 }
+                when(filterGuide!!.minPrice!!.currency){
+                    "USD" -> spinnerCurrencyMin.setSelection(0)
+                    "UZS" -> spinnerCurrencyMin.setSelection(1)
+                    "EUR" -> spinnerCurrencyMin.setSelection(2)
+                }
+
+                when(filterGuide!!.maxPrice!!.currency){
+                    "USD" -> spinnerCurrencyMax.setSelection(0)
+                    "UZS" -> spinnerCurrencyMax.setSelection(1)
+                    "EUR" -> spinnerCurrencyMax.setSelection(2)
+                }
+
+                when(filterGuide!!.minPrice!!.type){
+                    "DAY" -> spinnerTypeMin.setSelection(0)
+                    "HOUR" -> spinnerTypeMin.setSelection(1)
+                    "PERSON" -> spinnerTypeMin.setSelection(2)
+                    "TRIP" -> spinnerTypeMin.setSelection(3)
+                }
+
+                when(filterGuide!!.maxPrice!!.type){
+                    "DAY" -> spinnerTypeMax.setSelection(0)
+                    "HOUR" -> spinnerTypeMax.setSelection(1)
+                    "PERSON" -> spinnerTypeMax.setSelection(2)
+                    "TRIP" -> spinnerTypeMax.setSelection(3)
+                }
             }
         }
-
-        manageGender()
-        setSpinnerGuide()
-
 
         dialogGuideBinding.apply {
             applyFilter.setOnClickListener {
@@ -201,6 +222,7 @@ class SearchFragment : BaseFragment() {
                 } else {
                     maxRating.text.toString().toInt()
                 }
+
                 gender = if (checkboxMale.isChecked) {
                     "Male"
                 } else if (checkboxFemale.isChecked) {
@@ -209,10 +231,9 @@ class SearchFragment : BaseFragment() {
                     ""
                 }
 
-
                 filterGuide = FilterGuide(
-                    Price(minPrice, "UZS", "Day"), // Bu o'zgartirish kk one day!
-                    Price(maxPrice, "UZS", "Day"),
+                    Price(minPrice, currencyMinGuide, optionMinGuide),
+                    Price(maxPrice, currencyMaxGuide, optionMaxGuide),
                     minRating,
                     maxRating,
                     gender
@@ -246,10 +267,34 @@ class SearchFragment : BaseFragment() {
                 maxPeople.setText(filterTrip!!.maxPeople.toString())
                 minRating.setText((filterTrip!!.minRating.toString()))
                 maxRating.setText((filterTrip!!.maxRating.toString()))
+
+                when(filterTrip!!.minPrice!!.currency){
+                    "USD" -> spinnerCurrencyMin.setSelection(0)
+                    "UZS" -> spinnerCurrencyMin.setSelection(1)
+                    "EUR" -> spinnerCurrencyMin.setSelection(2)
+                }
+
+                when(filterTrip!!.maxPrice!!.currency){
+                    "USD" -> spinnerCurrencyMax.setSelection(0)
+                    "UZS" -> spinnerCurrencyMax.setSelection(1)
+                    "EUR" -> spinnerCurrencyMax.setSelection(2)
+                }
+
+                when(filterTrip!!.minPrice!!.type){
+                    "DAY" -> spinnerTypeMin.setSelection(0)
+                    "HOUR" -> spinnerTypeMin.setSelection(1)
+                    "PERSON" -> spinnerTypeMin.setSelection(2)
+                    "TRIP" -> spinnerTypeMin.setSelection(3)
+                }
+
+                when(filterTrip!!.maxPrice!!.type){
+                    "DAY" -> spinnerTypeMax.setSelection(0)
+                    "HOUR" -> spinnerTypeMax.setSelection(1)
+                    "PERSON" -> spinnerTypeMax.setSelection(2)
+                    "TRIP" -> spinnerTypeMax.setSelection(3)
+                }
             }
         }
-
-
 
 
         dialogTripBinding.apply {
@@ -296,8 +341,8 @@ class SearchFragment : BaseFragment() {
                     maxPeople.text.toString().toInt()
                 }
                 filterTrip = FilterTrip(
-                    Price(minPrice, "UZS", "Cash"), // Bu o'zgartirish kk one day!
-                    Price(maxPrice, "UZS", "Cash"),
+                    Price(minPrice, currencyMinTrip, optionMinTrip),
+                    Price(maxPrice, currencyMaxTrip, optionMaxTrip),
                     minRating,
                     maxRating,
                     day,
@@ -325,15 +370,18 @@ class SearchFragment : BaseFragment() {
 
             checkboxMale.isChecked = true
             checkboxFemale.isChecked = true
+            gender = getString(R.string.str_all)
 
-            checkboxMale.setOnCheckedChangeListener { buttonView, isChecked ->
+            checkboxMale.setOnCheckedChangeListener { _, isChecked ->
 
                 if (!isChecked) {
                     checkboxFemale.isChecked = true
                     checkboxFemale.isEnabled = false
-                }else{
+                    gender = getString(R.string.str_male)
+                } else {
                     checkboxMale.isEnabled = true
                     checkboxFemale.isEnabled = true
+                    gender = getString(R.string.str_all)
                 }
 
             }
@@ -343,20 +391,22 @@ class SearchFragment : BaseFragment() {
                 if (!isChecked) {
                     checkboxMale.isChecked = true
                     checkboxMale.isEnabled = false
-                }else {
+                    gender = getString(R.string.str_female)
+                } else {
                     checkboxFemale.isEnabled = true
                     checkboxMale.isEnabled = true
+                    gender = getString(R.string.str_all)
                 }
 
             }
 
-            if (checkboxMale.isChecked == true && checkboxFemale.isChecked == false) {
+            if (checkboxMale.isChecked && !checkboxFemale.isChecked) {
                 gender = getString(R.string.str_male)
             }
-            if (checkboxMale.isChecked == false && checkboxFemale.isChecked == true) {
+            if (!checkboxMale.isChecked && checkboxFemale.isChecked) {
                 gender = getString(R.string.str_female)
             }
-            if (checkboxMale.isChecked == true && checkboxFemale.isChecked == true) {
+            if (checkboxMale.isChecked && checkboxFemale.isChecked) {
                 gender = getString(R.string.str_all)
             }
         }
@@ -379,7 +429,7 @@ class SearchFragment : BaseFragment() {
         dialogGuideBinding.spinnerCurrencyMin.adapter = adapter1
 
         optionsMinGuide = resources.getStringArray(R.array.options)
-        dialogGuideBinding.spinnerDayMin.onItemSelectedListener = itemSelectedOptionMinGuide
+        dialogGuideBinding.spinnerTypeMin.onItemSelectedListener = itemSelectedOptionMinGuide
 
         val adapter2: ArrayAdapter<*> =
             ArrayAdapter<Any?>(
@@ -390,7 +440,7 @@ class SearchFragment : BaseFragment() {
 
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-        dialogGuideBinding.spinnerDayMin.adapter = adapter2
+        dialogGuideBinding.spinnerTypeMin.adapter = adapter2
 
 
         currenciesMaxGuide = resources.getStringArray(R.array.currencies)
@@ -408,7 +458,7 @@ class SearchFragment : BaseFragment() {
         dialogGuideBinding.spinnerCurrencyMax.adapter = adapter3
 
         optionsMaxGuide = resources.getStringArray(R.array.options)
-        dialogGuideBinding.spinnerDayMax.onItemSelectedListener = itemSelectedOptionMaxGuide
+        dialogGuideBinding.spinnerTypeMax.onItemSelectedListener = itemSelectedOptionMaxGuide
 
         val adapter4: ArrayAdapter<*> =
             ArrayAdapter<Any?>(
@@ -419,7 +469,7 @@ class SearchFragment : BaseFragment() {
 
         adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-        dialogGuideBinding.spinnerDayMax.adapter = adapter4
+        dialogGuideBinding.spinnerTypeMax.adapter = adapter4
     }
 
     private fun setSpinnerTrip() {
@@ -438,7 +488,7 @@ class SearchFragment : BaseFragment() {
         dialogTripBinding.spinnerCurrencyMin.adapter = adapter1
 
         optionsMinTrip = resources.getStringArray(R.array.options)
-        dialogTripBinding.spinnerDayMin.onItemSelectedListener = itemSelectedOptionMinTrip
+        dialogTripBinding.spinnerTypeMin.onItemSelectedListener = itemSelectedOptionMinTrip
 
         val adapter2: ArrayAdapter<*> =
             ArrayAdapter<Any?>(
@@ -449,7 +499,7 @@ class SearchFragment : BaseFragment() {
 
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-        dialogTripBinding.spinnerDayMin.adapter = adapter2
+        dialogTripBinding.spinnerTypeMin.adapter = adapter2
 
 
         currenciesMaxTrip = resources.getStringArray(R.array.currencies)
@@ -467,7 +517,7 @@ class SearchFragment : BaseFragment() {
         dialogTripBinding.spinnerCurrencyMax.adapter = adapter3
 
         optionsMaxTrip = resources.getStringArray(R.array.options)
-        dialogTripBinding.spinnerDayMax.onItemSelectedListener = itemSelectedOptionMaxTrip
+        dialogTripBinding.spinnerTypeMax.onItemSelectedListener = itemSelectedOptionMaxTrip
 
         val adapter4: ArrayAdapter<*> =
             ArrayAdapter<Any?>(
@@ -478,24 +528,24 @@ class SearchFragment : BaseFragment() {
 
         adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-        dialogTripBinding.spinnerDayMax.adapter = adapter4
+        dialogTripBinding.spinnerTypeMax.adapter = adapter4
     }
 
-    val itemSelectedOptionMinGuide = object : AdapterView.OnItemSelectedListener {
+    private val itemSelectedOptionMinGuide = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
             optionMinGuide = optionsMinGuide!![p2]
         }
 
         override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
-    val itemSelectedCurrencyMaxGuide = object : AdapterView.OnItemSelectedListener {
+    private val itemSelectedCurrencyMaxGuide = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
             currencyMaxGuide = currenciesMaxGuide!![p2]
         }
 
         override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
-    val itemSelectedOptionMaxGuide = object : AdapterView.OnItemSelectedListener {
+    private val itemSelectedOptionMaxGuide = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
             optionMaxGuide = optionsMaxGuide!![p2]
         }
@@ -503,28 +553,28 @@ class SearchFragment : BaseFragment() {
         override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
 
-    val itemSelectedCurrencyMinTrip = object : AdapterView.OnItemSelectedListener {
+    private val itemSelectedCurrencyMinTrip = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
             currencyMinTrip = currenciesMinTrip!![p2]
         }
 
         override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
-    val itemSelectedOptionMinTrip = object : AdapterView.OnItemSelectedListener {
+    private val itemSelectedOptionMinTrip = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
             optionMinTrip = optionsMinTrip!![p2]
         }
 
         override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
-    val itemSelectedCurrencyMaxTrip = object : AdapterView.OnItemSelectedListener {
+    private val itemSelectedCurrencyMaxTrip = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
             currencyMaxTrip = currenciesMaxTrip!![p2]
         }
 
         override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
-    val itemSelectedOptionMaxTrip = object : AdapterView.OnItemSelectedListener {
+    private val itemSelectedOptionMaxTrip = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
             optionMaxTrip = optionsMaxTrip!![p2]
         }
