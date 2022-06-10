@@ -195,7 +195,7 @@ class HomeFragment : BaseFragment() {
                         null,
                         "12.02.2022",
                         null,
-                        "English",
+                        "UZBEK",
                         arrayListOf(
                             Device("", "", 'A')
                         ), SharedPref(requireContext()).getToken()
