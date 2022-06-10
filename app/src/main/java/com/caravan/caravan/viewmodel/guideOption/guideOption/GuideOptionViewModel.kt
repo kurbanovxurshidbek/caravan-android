@@ -51,7 +51,7 @@ class GuideOptionViewModel(private val repository: GuideOptionRepository) : View
     fun getGuideStatus() = viewModelScope.launch {
         _guideStatus.value = UiStateObject.LOADING
         try {
-            val response = repository.changeGuideStatus()
+            val response = repository.getGuideStatus()
             if (!response.isSuccessful) {
                 _guideStatus.value = UiStateObject.ERROR(response.message())
             }
