@@ -34,7 +34,7 @@ class SearchFragment : BaseFragment() {
     private lateinit var dialogGuideBinding: BottomDialogGuideBinding
     lateinit var dialogTripBinding: BottomDialogTripBinding
 
-    private var gender: String = getString(R.string.str_all)
+    private var gender: String = ""
     var currenciesMinGuide: Array<String>? = null
     var optionsMinGuide: Array<String>? = null
     var currencyMinGuide: String = "UZS"
