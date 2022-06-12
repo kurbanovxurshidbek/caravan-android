@@ -2,7 +2,6 @@ package com.caravan.caravan.viewmodel.guideOption.guideOption
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.caravan.caravan.model.Profile
 import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.utils.UiStateObject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +9,8 @@ import kotlinx.coroutines.launch
 
 class GuideOptionViewModel(private val repository: GuideOptionRepository) : ViewModel() {
 
-    private val _deletedGuideProfile = MutableStateFlow<UiStateObject<ActionMessage>>(UiStateObject.EMPTY)
+    private val _deletedGuideProfile =
+        MutableStateFlow<UiStateObject<ActionMessage>>(UiStateObject.EMPTY)
     val deletedGuideProfile = _deletedGuideProfile
 
     fun deleteGuideProfile() = viewModelScope.launch {
@@ -51,7 +51,7 @@ class GuideOptionViewModel(private val repository: GuideOptionRepository) : View
     fun getGuideStatus() = viewModelScope.launch {
         _guideStatus.value = UiStateObject.LOADING
         try {
-            val response = repository.changeGuideStatus()
+            val response = repository.getGuideStatus()
             if (!response.isSuccessful) {
                 _guideStatus.value = UiStateObject.ERROR(response.message())
             }
