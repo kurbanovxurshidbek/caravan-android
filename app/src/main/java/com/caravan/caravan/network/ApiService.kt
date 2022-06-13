@@ -10,13 +10,11 @@ import com.caravan.caravan.model.auth.RegisterSend
 import com.caravan.caravan.model.create_trip.FirstSend
 import com.caravan.caravan.model.create_trip.PhotoRespond
 import com.caravan.caravan.model.create_trip.SecondSend
-import com.caravan.caravan.model.create_trip.TripUploadPhoto
 import com.caravan.caravan.model.home.HomeRespond
 import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.model.review.Answer
 import com.caravan.caravan.model.review.Review
 import com.caravan.caravan.model.upgrade.UpgradeSend
-import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -87,6 +85,9 @@ interface ApiService {
 
     @POST("/api/v1/trip/trip-upload")
     suspend fun uploadTripPhoto(@Body tripPhoto: TripUploadPhoto): Response<TripUploadPhoto>
+    @Multipart
+    @PUT("/api/v1/profile/photo")
+    suspend fun uploadProfilePhoto(@Part image: MultipartBody.Part): Response<PhotoRespond>
 
     @GET("/api/v1/district/{region}")
     suspend fun getDistrict(@Path("region") region: String): Response<ArrayList<String>>

@@ -82,6 +82,7 @@ class HomeFragment : BaseFragment() {
 
     }
 
+
     private fun homeTripList(): ArrayList<Trip> {
         val list = ArrayList<Trip>()
 
@@ -166,6 +167,7 @@ class HomeFragment : BaseFragment() {
                     guide,
                     "+998997492581",
                     4.5,
+                    3,
                     arrayListOf(),
                     null
                 )

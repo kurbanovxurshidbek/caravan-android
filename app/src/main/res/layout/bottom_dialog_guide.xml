@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="20dp"
-    android:background="@drawable/background_dialog_trip">
+    android:background="@drawable/background_dialog_trip"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -28,46 +28,47 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/main_color"
             android:fontFamily="@font/circular_std_bold"
             android:hint="@string/str_minimum_price"
             android:inputType="number"
-            android:backgroundTint="@color/main_color"
-            android:textColor="#99000000"
-            android:textColorHint="#99000000"
+            android:textColorHint="#60000000"
             android:textSize="18sp"
-            android:textStyle="normal" />
+            android:textCursorDrawable="@drawable/cursor" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
             android:layout_marginTop="3dp"
+            android:gravity="center_vertical"
             android:orientation="vertical">
+
             <Spinner
                 android:id="@+id/spinnerCurrencyMin"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_spinner" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="2dp"
                 android:background="@color/main_color" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="3dp"
-            android:layout_marginStart="5dp">
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
             <Spinner
-                android:id="@+id/spinnerDayMin"
+                android:id="@+id/spinnerTypeMin"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_spinner"
-                />
+                android:background="@drawable/background_spinner" />
 
             <View
                 android:layout_width="match_parent"
@@ -89,46 +90,48 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/main_color"
             android:fontFamily="@font/circular_std_bold"
             android:hint="@string/str_maximum_price"
+            android:textCursorDrawable="@drawable/cursor"
             android:inputType="number"
-            android:backgroundTint="@color/main_color"
-            android:textColor="#99000000"
-            android:textColorHint="#99000000"
+            android:textColorHint="#60000000"
             android:textSize="18sp"
-            android:textStyle="normal" />
+            />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
             android:layout_marginTop="3dp"
+            android:gravity="center_vertical"
             android:orientation="vertical">
+
             <Spinner
                 android:id="@+id/spinnerCurrencyMax"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_spinner" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="2dp"
                 android:background="@color/main_color" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="3dp"
-            android:layout_marginStart="5dp">
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
             <Spinner
-                android:id="@+id/spinnerDayMax"
+                android:id="@+id/spinnerTypeMax"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_spinner"
-                />
+                android:background="@drawable/background_spinner" />
 
             <View
                 android:layout_width="match_parent"
@@ -141,40 +144,40 @@
 
     <EditText
         android:id="@+id/minRating"
-        android:textCursorDrawable="@drawable/cursor"
-        android:backgroundTint="@color/main_color"
-        android:inputType="number"
-        android:digits="012345"
-        android:maxLength="1"
-        android:maxLines="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
+        android:backgroundTint="@color/main_color"
+        android:digits="012345"
         android:drawableEnd="@drawable/ic_star"
         android:fontFamily="@font/circular_std_bold"
         android:hint="@string/minimum_rating"
+        android:inputType="number"
+        android:maxLength="1"
+        android:maxLines="1"
         android:paddingStart="5dp"
         android:paddingEnd="10dp"
-        android:textColorHint="#99000000"
-        android:textStyle="normal" />
+        android:textColorHint="#60000000"
+        android:textCursorDrawable="@drawable/cursor"
+        />
 
     <EditText
         android:id="@+id/maxRating"
-        android:textCursorDrawable="@drawable/cursor"
-        android:backgroundTint="@color/main_color"
-        android:inputType="number"
-        android:digits="012345"
-        android:maxLength="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
+        android:backgroundTint="@color/main_color"
+        android:digits="012345"
         android:drawableEnd="@drawable/ic_star"
         android:fontFamily="@font/circular_std_bold"
         android:hint="@string/maximum_rating"
+        android:inputType="number"
+        android:maxLength="1"
         android:paddingStart="5dp"
         android:paddingEnd="10dp"
-        android:textColorHint="#99000000"
-        android:textStyle="normal" />
+        android:textColorHint="#60000000"
+        android:textCursorDrawable="@drawable/cursor"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -195,7 +198,7 @@
                 android:gravity="center_vertical"
                 android:paddingStart="5dp"
                 android:text="@string/str_gender"
-                android:textColor="#99000000"
+                android:textColor="#60000000"
                 android:textSize="18sp"
                 android:textStyle="normal" />
 
