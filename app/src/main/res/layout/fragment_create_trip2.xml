@@ -194,6 +194,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:maxLength="1"
                             android:fontFamily="@font/circular_std_bold"
                             android:hint="@string/str_amount"
                             android:inputType="number"
@@ -214,8 +215,7 @@
                                 android:id="@+id/spinnerCurrency"
                                 android:layout_width="60dp"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/background_spinner"
-                                android:paddingEnd="15dp" />
+                                android:background="@drawable/background_spinner" />
 
                             <View
                                 android:layout_width="match_parent"
@@ -236,8 +236,7 @@
                                 android:id="@+id/spinnerDay"
                                 android:layout_width="60dp"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/background_spinner"
-                                android:paddingEnd="15dp" />
+                                android:background="@drawable/background_spinner" />
 
                             <View
                                 android:layout_width="match_parent"

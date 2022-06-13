@@ -183,6 +183,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:maxLength="2"
                         android:fontFamily="@font/circular_std_bold"
                         android:hint="@string/str_amount"
                         android:inputType="number"
@@ -339,12 +340,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="20dp"
+                android:textColor="@color/black_60"
                 android:backgroundTint="@color/main_color"
                 android:fontFamily="@font/circular_std_bold"
                 android:hint="@string/str_write_more_information_about_yourself"
                 android:textColorHint="#99000000"
                 android:textStyle="normal" />
-
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

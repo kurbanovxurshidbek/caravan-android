@@ -93,7 +93,7 @@
     <string name="str_travel_locations">Travel locations</string>
     <string name="str_location">Location</string>
     <string name="str_short_information">Short information</string>
-    <string name="str_add_more">Add</string>
+    <string name="str_add_more">Add More</string>
     <string name="str_price">Price</string>
     <string name="str_amount">Amount</string>
     <string name="str_language">Language</string>
@@ -130,6 +130,9 @@
     <string name="check_gender">Please check your gender</string>
     <string name="str_minimum_price">Minimum Price</string>
     <string name="str_maximum_price">Maximum Price</string>
+    <string name="str_length">Length</string>
+    <string name="str_trip_days_1_10">Trip Days</string>
+    <string name="str_compleate_create">Your trip has been created</string>
 
     <string-array name="location">
         <item>TASHKENT</item>
@@ -150,14 +153,13 @@
         <item>BEGINNER</item>
         <item>ELEMENTARY</item>
         <item>INTERMEDIATE</item>
-        <item>ADVANCED</item>
         <item>NATIVE</item>
     </string-array>
 
     <string-array name="currencies">
         <item>USD</item>
         <item>UZS</item>
-        <item>EUR</item>
+        <item>RUB</item>
     </string-array>
 
     <string-array name="options">

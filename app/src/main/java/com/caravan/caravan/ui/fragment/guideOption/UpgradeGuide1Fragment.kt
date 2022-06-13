@@ -201,7 +201,6 @@ class UpgradeGuide1Fragment : BaseFragment() {
                 val dateFormat = "dd.MM.yyyy"
                 val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
                 binding.tvBirthday.text = simpleDateFormat.format(datePicker.time)
-                Log.d("@@@", "setData: ${binding.tvBirthday.text}")
             }
 
         val datePickerDialog = DatePickerDialog(

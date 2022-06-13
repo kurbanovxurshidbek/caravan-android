@@ -63,9 +63,10 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/circular_std_bold"
                     android:hint="@string/str_trip_s_name"
+                    android:textColor="@color/black_60"
+                    android:textCursorDrawable="@drawable/cursor"
                     android:backgroundTint="@color/main_color"
-                    android:textColor="#99000000"
-                    android:textColorHint="#99000000"
+                    android:textColorHint="@color/black_60"
                     android:textSize="18sp"
                     android:textStyle="normal" />
             </LinearLayout>
@@ -167,9 +168,11 @@
                         android:fontFamily="@font/circular_std_bold"
                         android:hint="@string/str_short_information"
                         android:textColor="#99000000"
+                        android:textCursorDrawable="@drawable/cursor"
                         android:backgroundTint="@color/main_color"
                         android:textColorHint="#99000000"
-                        android:textStyle="normal" />
+                        android:textSize="18sp"
+                        android:textStyle="normal"/>
                 </LinearLayout>
 
                 <TextView
@@ -221,8 +224,10 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/circular_std_bold"
                             android:hint="@string/str_min"
+                            android:textColor="@color/black_60"
+                            android:maxLength="2"
                             android:inputType="number"
-                            android:textColor="#99000000"
+                            android:textCursorDrawable="@drawable/cursor"
                             android:backgroundTint="@color/main_color"
                             android:textColorHint="#99000000"
                             android:textSize="18sp"
@@ -235,19 +240,69 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/circular_std_bold"
                             android:hint="@string/str_max"
+                            android:textColor="@color/black_60"
+                            android:maxLength="2"
                             android:inputType="number"
+                            android:textCursorDrawable="@drawable/cursor"
                             android:backgroundTint="@color/main_color"
-                            android:textColor="#99000000"
                             android:textColorHint="#99000000"
-
                             android:textSize="18sp"
-                            android:textStyle="normal" />
+                            android:textStyle="normal"/>
                     </LinearLayout>
                     <!-- <View
                          android:layout_width="match_parent"
                          android:layout_height="1dp"
                          android:layout_marginTop="2dp"
                          android:background="#87000000"/>-->
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/circular_std_bold"
+                    android:paddingEnd="50dp"
+                    android:text="@string/str_length"
+                    android:textColor="#167351"
+                    android:textSize="18sp"
+                    android:textStyle="normal" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/etDays"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:maxLength="2"
+                            android:fontFamily="@font/circular_std_bold"
+                            android:hint="@string/str_trip_days_1_10"
+
+                            android:inputType="number"
+                            android:textCursorDrawable="@drawable/cursor"
+                            android:backgroundTint="@color/main_color"
+                            android:textColorHint="#99000000"
+                            android:textSize="18sp"
+                            android:textColor="@color/black_60"
+                            android:textStyle="normal" />
+                    </LinearLayout>
 
                 </LinearLayout>
             </LinearLayout>
@@ -268,12 +323,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="20dp"
-                android:backgroundTint="@color/main_color"
                 android:fontFamily="@font/circular_std_bold"
                 android:hint="@string/str_write_more_information_about_yourself"
-                android:textColor="#99000000"
+                android:textCursorDrawable="@drawable/cursor"
+                android:backgroundTint="@color/main_color"
+                android:textColor="@color/black_60"
                 android:textColorHint="#99000000"
-                android:textStyle="normal" />
+                android:textSize="18sp"
+                android:textStyle="normal"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

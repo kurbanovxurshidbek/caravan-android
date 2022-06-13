@@ -1,9 +1,8 @@
 package com.caravan.caravan.network
 
-import android.app.Application
-import android.util.Log
 import com.caravan.caravan.BuildConfig
 import com.caravan.caravan.manager.SharedPref
+import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -11,6 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
+
 
 object RetrofitHttp {
 
