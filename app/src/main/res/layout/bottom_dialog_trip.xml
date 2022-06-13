@@ -73,7 +73,7 @@
                     android:layout_marginStart="5dp">
 
                     <Spinner
-                        android:id="@+id/spinnerDayMin"
+                        android:id="@+id/spinnerTypeMin"
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/background_spinner"
@@ -135,7 +135,7 @@
                     android:layout_marginStart="5dp">
 
                     <Spinner
-                        android:id="@+id/spinnerDayMax"
+                        android:id="@+id/spinnerTypeMax"
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/background_spinner"

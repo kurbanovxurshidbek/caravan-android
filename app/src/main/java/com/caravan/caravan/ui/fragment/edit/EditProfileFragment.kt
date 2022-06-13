@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,11 @@ import com.caravan.caravan.viewmodel.editProfile.editProfile.EditViewModel
 import com.caravan.caravan.viewmodel.editProfile.editProfile.EditViewModelFactory
 import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,6 +51,7 @@ class EditProfileFragment : BaseFragment() {
     private lateinit var viewModel: EditViewModel
     private var allPhotos = ArrayList<Uri>()
     private var profileId: String? = null
+    private lateinit var body: MultipartBody.Part
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,9 +84,9 @@ class EditProfileFragment : BaseFragment() {
         }
 
         binding.llCalendar.setOnClickListener {
-            var day: Int;
-            var month: Int;
-            var year: Int;
+            val day: Int;
+            val month: Int;
+            val year: Int;
             if (binding.tvBirthday.text.toString() == getString(R.string.str_choose_birthday)) {
                 day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
                 month = Calendar.getInstance().get(Calendar.MONTH)
@@ -179,6 +186,32 @@ class EditProfileFragment : BaseFragment() {
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             //for upload photo
+            viewModel.uploadPhoto.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        profile.photo = it.data.webViewLink
+                        viewModel.updateProfile(profile)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+
+                                }
+
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
         }
     }
 
@@ -231,7 +264,10 @@ class EditProfileFragment : BaseFragment() {
             profile.birthDate = tvBirthday.text.toString()
 
         }
-        viewModel.updateProfile(profile)
+        if (pickedPhoto == null)
+            viewModel.updateProfile(profile)
+        else
+            viewModel.uploadUserPhoto(body)
     }
 
     private fun setBirthday(year: Int, month: Int, day: Int) {
@@ -307,7 +343,23 @@ class EditProfileFragment : BaseFragment() {
 
     private fun uploadUserPhoto() {
         if (pickedPhoto == null) return
-        //save photo to storage
+        val ins = requireActivity().contentResolver.openInputStream(pickedPhoto!!)
+        val file = File.createTempFile(
+            "file",
+            ".jpg",
+            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        )
+
+        val fileOutputStream = FileOutputStream(file)
+
+        ins?.copyTo(fileOutputStream)
+        ins?.close()
+        fileOutputStream.close()
+        val reqFile: RequestBody = RequestBody.create("image/jpg".toMediaTypeOrNull(), file)
+        body = MultipartBody.Part.createFormData("file", file.name, reqFile)
+
+
+
         binding.ivGuide.setImageURI(pickedPhoto)
     }
 
