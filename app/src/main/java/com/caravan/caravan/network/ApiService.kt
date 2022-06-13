@@ -15,6 +15,7 @@ import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.model.review.Answer
 import com.caravan.caravan.model.review.Review
 import com.caravan.caravan.model.upgrade.UpgradeSend
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -78,6 +79,10 @@ interface ApiService {
     // Customise for file
     @POST("/api/v1/photo/upload")
     suspend fun uploadPhoto(@Body file: Multipart): Response<PhotoRespond>
+
+    @Multipart
+    @PUT("/api/v1/profile/photo")
+    suspend fun uploadProfilePhoto(@Part image: MultipartBody.Part): Response<PhotoRespond>
 
     @PUT("/api/v1/trip/finish/{tripId}")
     suspend fun completeTrip(@Path("tripId") tripId: String, secondSend: SecondSend): Response<ActionMessage>

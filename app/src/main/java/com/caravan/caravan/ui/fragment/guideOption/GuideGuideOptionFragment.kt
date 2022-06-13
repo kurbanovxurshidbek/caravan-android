@@ -196,8 +196,7 @@ class GuideGuideOptionFragment : BaseFragment() {
 
     private fun isDelete(data: ActionMessage) {
         if (data.status) {
-            SharedPref(requireContext()).saveBoolean("loginDone", false)
-            base.callLoginActivity()
+           requireActivity().onBackPressed()
         }
     }
 
