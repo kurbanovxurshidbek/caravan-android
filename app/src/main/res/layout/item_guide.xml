@@ -69,9 +69,12 @@
 
                 <TextView
                     android:id="@+id/tvGuidesLanguages"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp"
+
+                    android:layout_marginEnd="8dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/circular_std_bold"
                     android:lines="1"
