@@ -45,7 +45,7 @@
                     android:backgroundTint="@color/main_color"
                     android:textColorHint="#60000000"
                     android:textCursorDrawable="@drawable/cursor"
-                    android:textStyle="bold" />
+                    />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -100,14 +100,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/circular_std_bold"
-                    android:hint="@string/minimum_price"
+                    android:hint="@string/maximum_price"
                     android:inputType="number"
                     android:maxLength="10"
                     android:maxLines="1"
                     android:backgroundTint="@color/main_color"
                     android:textColorHint="#60000000"
-                    android:textCursorDrawable="@drawable/cursor"
-                    android:textStyle="bold" />
+                    android:textCursorDrawable="@drawable/cursor" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -167,7 +166,7 @@
                 android:paddingEnd="10dp"
                 android:textColorHint="#60000000"
                 android:textCursorDrawable="@drawable/cursor"
-                android:textStyle="bold" />
+                />
 
             <EditText
                 android:id="@+id/maxPeople"
@@ -185,8 +184,7 @@
                 android:paddingStart="5dp"
                 android:paddingEnd="10dp"
                 android:textColorHint="#60000000"
-                android:textCursorDrawable="@drawable/cursor"
-                android:textStyle="bold" />
+                android:textCursorDrawable="@drawable/cursor" />
 
             <EditText
                 android:id="@+id/day"
@@ -204,8 +202,7 @@
                 android:paddingStart="5dp"
                 android:paddingEnd="10dp"
                 android:textColorHint="#60000000"
-                android:textCursorDrawable="@drawable/cursor"
-                android:textStyle="bold" />
+                android:textCursorDrawable="@drawable/cursor" />
 
             <EditText
                 android:id="@+id/minRating"
@@ -223,8 +220,7 @@
                 android:paddingStart="5dp"
                 android:paddingEnd="10dp"
                 android:textColorHint="#60000000"
-                android:textCursorDrawable="@drawable/cursor"
-                android:textStyle="bold" />
+                android:textCursorDrawable="@drawable/cursor" />
 
             <EditText
                 android:id="@+id/maxRating"
@@ -242,8 +238,7 @@
                 android:paddingStart="5dp"
                 android:paddingEnd="10dp"
                 android:textColorHint="#60000000"
-                android:textCursorDrawable="@drawable/cursor"
-                android:textStyle="bold" />
+                android:textCursorDrawable="@drawable/cursor" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/applyFilter"

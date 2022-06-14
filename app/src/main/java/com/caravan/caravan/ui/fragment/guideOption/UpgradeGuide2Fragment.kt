@@ -165,6 +165,18 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             val secondNumber = args.secondNumber
 
             btnDone.setOnClickListener {
+
+                if (desc != "") {
+                    val location = Location("1", province, district, desc)
+
+                    myLocationList.add(0,location)
+                }
+                if (languageSelected != "") {
+                    val language = Language("1", languageSelected, levelSelected)
+                    myLanguageList.add(0,language)
+                }
+
+
                 if (etBiography.text.isNotEmpty() && etAmount.text.isNotEmpty() && myLanguageList.isNotEmpty() && myLocationList.isNotEmpty()) {
                     val user = UpgradeSend(
                         profileId,

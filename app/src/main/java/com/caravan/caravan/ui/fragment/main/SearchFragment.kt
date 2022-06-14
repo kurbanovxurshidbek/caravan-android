@@ -1,16 +1,19 @@
 package com.caravan.caravan.ui.fragment.main
-
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.SearchFragmentVPAdapter
@@ -23,6 +26,7 @@ import com.caravan.caravan.model.search.FilterTrip
 import com.caravan.caravan.model.search.SearchGuideSend
 import com.caravan.caravan.model.search.SearchTripSend
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.viewmodel.main.home.SearchSharedVM
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
@@ -33,6 +37,8 @@ class SearchFragment : BaseFragment() {
     private var isGuide: Boolean = true
     private lateinit var dialogGuideBinding: BottomDialogGuideBinding
     lateinit var dialogTripBinding: BottomDialogTripBinding
+    private lateinit var handler: Handler
+
 
     private var gender: String = ""
     var currenciesMinGuide: Array<String>? = null
@@ -56,7 +62,7 @@ class SearchFragment : BaseFragment() {
     private var filterGuide: FilterGuide? = null
 
     private val sharedViewModel: SearchSharedVM by activityViewModels()
-
+    private lateinit var runnable: Runnable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +87,7 @@ class SearchFragment : BaseFragment() {
     }
 
     fun initViews() {
+
         openKeyboard(binding.etSearch)
         setupViewPager()
 
@@ -102,16 +109,54 @@ class SearchFragment : BaseFragment() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                if (isGuide) {
-                    sharedViewModel.setGuideSearch(SearchGuideSend(p0.toString(), filterGuide))
-                    Log.d("@@@", "afterTextChanged: ${filterGuide.toString()}")
-                } else {
-                    sharedViewModel.setTripSearch(SearchTripSend(p0.toString(), filterTrip))
-                    Log.d("@@@", "afterTextChanged: ${filterTrip.toString()}")
+
+                try {
+                    handler.removeCallbacks(runnable)
+                } catch (e: Exception) {
+
+                }
+
+                runnable = Runnable {
+                    if (isGuide) {
+                        sharedViewModel.setGuideSearch(
+                            SearchGuideSend(
+                                p0.toString(),
+                                filterGuide
+                            )
+                        )
+
+                    } else {
+                        sharedViewModel.setTripSearch(SearchTripSend(p0.toString(), filterTrip))
+                    }
+                }
+
+                try {
+                    handler = Handler(Looper.myLooper()!!)
+                    handler.postDelayed(runnable, 1500)
+                } catch (exception: Exception) {
+
                 }
             }
 
         })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        try {
+            handler.removeCallbacks(runnable)
+        } catch (e: Exception) {
+
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        try {
+            handler.removeCallbacks(runnable)
+        } catch (e: Exception) {
+
+        }
     }
 
     private fun setupViewPager() {
@@ -169,26 +214,26 @@ class SearchFragment : BaseFragment() {
                         checkboxFemale.isChecked = true
                     }
                 }
-                when(filterGuide!!.minPrice!!.currency){
+                when (filterGuide!!.minPrice!!.currency) {
                     "USD" -> spinnerCurrencyMin.setSelection(0)
                     "UZS" -> spinnerCurrencyMin.setSelection(1)
                     "EUR" -> spinnerCurrencyMin.setSelection(2)
                 }
 
-                when(filterGuide!!.maxPrice!!.currency){
+                when (filterGuide!!.maxPrice!!.currency) {
                     "USD" -> spinnerCurrencyMax.setSelection(0)
                     "UZS" -> spinnerCurrencyMax.setSelection(1)
                     "EUR" -> spinnerCurrencyMax.setSelection(2)
                 }
 
-                when(filterGuide!!.minPrice!!.type){
+                when (filterGuide!!.minPrice!!.type) {
                     "DAY" -> spinnerTypeMin.setSelection(0)
                     "HOUR" -> spinnerTypeMin.setSelection(1)
                     "PERSON" -> spinnerTypeMin.setSelection(2)
                     "TRIP" -> spinnerTypeMin.setSelection(3)
                 }
 
-                when(filterGuide!!.maxPrice!!.type){
+                when (filterGuide!!.maxPrice!!.type) {
                     "DAY" -> spinnerTypeMax.setSelection(0)
                     "HOUR" -> spinnerTypeMax.setSelection(1)
                     "PERSON" -> spinnerTypeMax.setSelection(2)
@@ -258,7 +303,7 @@ class SearchFragment : BaseFragment() {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialogTripBinding = BottomDialogTripBinding.inflate(layoutInflater)
         dialog.setContentView(dialogTripBinding.root)
-        dialog.show()
+
 
         setSpinnerTrip()
         filterTrip?.let {
@@ -268,26 +313,26 @@ class SearchFragment : BaseFragment() {
                 minRating.setText((filterTrip!!.minRating.toString()))
                 maxRating.setText((filterTrip!!.maxRating.toString()))
 
-                when(filterTrip!!.minPrice!!.currency){
+                when (filterTrip!!.minPrice!!.currency) {
                     "USD" -> spinnerCurrencyMin.setSelection(0)
                     "UZS" -> spinnerCurrencyMin.setSelection(1)
                     "EUR" -> spinnerCurrencyMin.setSelection(2)
                 }
 
-                when(filterTrip!!.maxPrice!!.currency){
+                when (filterTrip!!.maxPrice!!.currency) {
                     "USD" -> spinnerCurrencyMax.setSelection(0)
                     "UZS" -> spinnerCurrencyMax.setSelection(1)
                     "EUR" -> spinnerCurrencyMax.setSelection(2)
                 }
 
-                when(filterTrip!!.minPrice!!.type){
+                when (filterTrip!!.minPrice!!.type) {
                     "DAY" -> spinnerTypeMin.setSelection(0)
                     "HOUR" -> spinnerTypeMin.setSelection(1)
                     "PERSON" -> spinnerTypeMin.setSelection(2)
                     "TRIP" -> spinnerTypeMin.setSelection(3)
                 }
 
-                when(filterTrip!!.maxPrice!!.type){
+                when (filterTrip!!.maxPrice!!.type) {
                     "DAY" -> spinnerTypeMax.setSelection(0)
                     "HOUR" -> spinnerTypeMax.setSelection(1)
                     "PERSON" -> spinnerTypeMax.setSelection(2)
@@ -362,6 +407,7 @@ class SearchFragment : BaseFragment() {
         dialog.window!!.attributes.windowAnimations = R.style.DialogAnimation
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window!!.setGravity(Gravity.BOTTOM)
+        dialog.show()
 
     }
 
@@ -386,7 +432,7 @@ class SearchFragment : BaseFragment() {
 
             }
 
-            checkboxFemale.setOnCheckedChangeListener { buttonView, isChecked ->
+            checkboxFemale.setOnCheckedChangeListener { _, isChecked ->
 
                 if (!isChecked) {
                     checkboxMale.isChecked = true
@@ -397,7 +443,6 @@ class SearchFragment : BaseFragment() {
                     checkboxMale.isEnabled = true
                     gender = getString(R.string.str_all)
                 }
-
             }
 
             if (checkboxMale.isChecked && !checkboxFemale.isChecked) {
@@ -523,7 +568,7 @@ class SearchFragment : BaseFragment() {
             ArrayAdapter<Any?>(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
-                optionsMaxGuide!!
+                optionsMaxTrip!!
             )
 
         adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

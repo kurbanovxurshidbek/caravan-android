@@ -225,6 +225,18 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
     private fun updateGuideOption() {
         binding.apply {
             btnSave.setOnClickListener {
+
+                if (desc != "") {
+                    val location = Location("1", province, district, desc)
+
+                    myLocationList.add(0,location)
+                }
+                if (language != "") {
+                    val language = Language("1", language, level)
+                    myLanguageList.add(0,language)
+                }
+
+
                 if (etBiography.text.isNotEmpty() && etAmount.text.isNotEmpty() && myLanguageList.isNotEmpty() && myLocationList.isNotEmpty()) {
                     val guide = GuideProfile(
                         guideProfile.id,

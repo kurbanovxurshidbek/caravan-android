@@ -32,10 +32,9 @@
             android:fontFamily="@font/circular_std_bold"
             android:hint="@string/str_minimum_price"
             android:inputType="number"
-            android:textColor="#99000000"
-            android:textColorHint="#99000000"
+            android:textColorHint="#60000000"
             android:textSize="18sp"
-            android:textStyle="normal" />
+            android:textCursorDrawable="@drawable/cursor" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -94,11 +93,11 @@
             android:backgroundTint="@color/main_color"
             android:fontFamily="@font/circular_std_bold"
             android:hint="@string/str_maximum_price"
+            android:textCursorDrawable="@drawable/cursor"
             android:inputType="number"
-            android:textColor="#99000000"
-            android:textColorHint="#99000000"
+            android:textColorHint="#60000000"
             android:textSize="18sp"
-            android:textStyle="normal" />
+            />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -158,9 +157,9 @@
         android:maxLines="1"
         android:paddingStart="5dp"
         android:paddingEnd="10dp"
-        android:textColorHint="#99000000"
+        android:textColorHint="#60000000"
         android:textCursorDrawable="@drawable/cursor"
-        android:textStyle="normal" />
+        />
 
     <EditText
         android:id="@+id/maxRating"
@@ -176,9 +175,9 @@
         android:maxLength="1"
         android:paddingStart="5dp"
         android:paddingEnd="10dp"
-        android:textColorHint="#99000000"
+        android:textColorHint="#60000000"
         android:textCursorDrawable="@drawable/cursor"
-        android:textStyle="normal" />
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -199,7 +198,7 @@
                 android:gravity="center_vertical"
                 android:paddingStart="5dp"
                 android:text="@string/str_gender"
-                android:textColor="#99000000"
+                android:textColor="#60000000"
                 android:textSize="18sp"
                 android:textStyle="normal" />
 

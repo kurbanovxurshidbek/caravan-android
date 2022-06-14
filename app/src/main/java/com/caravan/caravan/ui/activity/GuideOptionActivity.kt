@@ -18,6 +18,7 @@ class GuideOptionActivity : BaseActivity() {
         val isTrip = intent.getBooleanExtra("isTrip", false)
         if (isTrip) navController.navigate(R.id.action_turistGuideOptionFragment_to_createTrip1Fragment)
         if (isGuide) navController.navigate(R.id.action_turistGuideOptionFragment_to_guideGuideOptionFragment)
+
     }
 
 }

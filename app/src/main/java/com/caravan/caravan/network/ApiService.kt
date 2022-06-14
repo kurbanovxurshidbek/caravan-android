@@ -15,7 +15,6 @@ import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.model.review.Answer
 import com.caravan.caravan.model.review.Review
 import com.caravan.caravan.model.upgrade.UpgradeSend
-import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -71,21 +70,24 @@ interface ApiService {
 
     // Trip
     @POST("/api/v1/trip")
-    suspend fun createTrip(@Body firstSend: FirstSend): Response<String> // Trip Id
+    suspend fun createTrip(@Body firstSend: FirstSend): Response<FirstSend> // Trip Id
 
     @GET("/api/v1/trip/{tripId}")
     suspend fun getTrip(@Path("tripId") tripId: String): Response<Trip>
 
     // Customise for file
-    @POST("/api/v1/photo/upload")
-    suspend fun uploadPhoto(@Body file: Multipart): Response<PhotoRespond>
+    @Multipart
+    @POST("/api/v1/attach/upload")
+    suspend fun uploadPhoto(@Part image: MultipartBody.Part): Response<PhotoRespond>
 
+    @PUT("/api/v1/trip/photo/{tripId}")
+    suspend fun completeTrip(@Path("tripId") tripId: String, @Body secondSend: SecondSend): Response<ActionMessage>
+
+    @POST("/api/v1/trip/trip-upload")
+    suspend fun uploadTripPhoto(@Body tripPhoto: TripUploadPhoto): Response<TripUploadPhoto>
     @Multipart
     @PUT("/api/v1/profile/photo")
     suspend fun uploadProfilePhoto(@Part image: MultipartBody.Part): Response<PhotoRespond>
-
-    @PUT("/api/v1/trip/finish/{tripId}")
-    suspend fun completeTrip(@Path("tripId") tripId: String, secondSend: SecondSend): Response<ActionMessage>
 
     @GET("/api/v1/district/{region}")
     suspend fun getDistrict(@Path("region") region: String): Response<ArrayList<String>>
