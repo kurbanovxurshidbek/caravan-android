@@ -133,21 +133,21 @@ class HomeFragment : BaseFragment() {
                             TourPhoto(
                                 "1",
                                 Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "https://drive.google.com/uc?id=1YqaMT8yUzxZQ_jAfJpyYcaGmI6GF_aXa&export=download"
+                                "https://images.unsplash.com/photo-1605199423916-b725a00b324b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1940&q=80"
                             )
                         )
                         add(
                             TourPhoto(
                                 "1",
                                 Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                                "https://images.unsplash.com/photo-1605199423916-b725a00b324b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1940&q=80"
                             )
                         )
                         add(
                             TourPhoto(
                                 "1",
                                 Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                                "https://images.unsplash.com/photo-1605199423916-b725a00b324b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1940&q=80"
                             )
                         )
                     },
@@ -191,7 +191,7 @@ class HomeFragment : BaseFragment() {
                         "GUIDE",
                         null,
                         "ACTIVE",
-                        "https://drive.google.com/file/d/1d8mL7QnNd9TbzUIXrUmWGRzAJ-XdYOmn/view?usp=drivesdk",
+                        "https://images.unsplash.com/photo-1605199423916-b725a00b324b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1940&q=80",
                         "Male",
                         null,
                         "12.02.2022",

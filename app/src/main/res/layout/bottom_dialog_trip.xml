@@ -257,7 +257,7 @@
                 android:maxLines="1"
                 android:paddingVertical="16dp"
                 android:stateListAnimator="@null"
-                android:text="@string/apply_trip"
+                android:text="@string/str_search"
                 android:textAllCaps="false"
                 android:textSize="14sp"
                 android:translationZ="2dp"

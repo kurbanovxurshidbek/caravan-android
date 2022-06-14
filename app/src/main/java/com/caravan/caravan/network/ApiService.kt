@@ -96,4 +96,8 @@ interface ApiService {
     @POST("/api/v1/review/answer")
     suspend fun answerReview(@Body answer: Answer) : Response<ActionMessage>
 
+    // Search
+    @GET("/api/v1/trip/filter")
+    suspend fun searchTrip(): Response<ArrayList<Trip>>
+
 }

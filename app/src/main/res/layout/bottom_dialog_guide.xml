@@ -260,7 +260,7 @@
         android:fontFamily="@font/circular_std_bold"
         android:paddingVertical="14dp"
         android:stateListAnimator="@null"
-        android:text="@string/apply_trip"
+        android:text="@string/str_search"
         android:textAllCaps="false"
         android:textSize="16sp"
         android:translationZ="2dp"

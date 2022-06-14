@@ -130,6 +130,7 @@
     <string name="check_gender">Please check your gender</string>
     <string name="str_minimum_price">Minimum Price</string>
     <string name="str_maximum_price">Maximum Price</string>
+    <string name="str_search">Search</string>
 
     <string-array name="location">
         <item>TASHKENT</item>

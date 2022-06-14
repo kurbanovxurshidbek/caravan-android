@@ -81,14 +81,23 @@ class GuideDetailsFragment : BaseFragment() {
             viewModel.guideProfile.collect {
                 when (it) {
                     is UiStateObject.LOADING -> {
+                        guideDetailsBinding.apply {
+                            llRoot.visibility = View.GONE
+                        }
                         showLoading()
                     }
                     is UiStateObject.SUCCESS -> {
+                        guideDetailsBinding.apply {
+                            llRoot.visibility = View.VISIBLE
+                        }
                         dismissLoading()
                         guideProfile = it.data
                         setData(it.data)
                     }
                     is UiStateObject.ERROR -> {
+                        guideDetailsBinding.apply {
+                            llRoot.visibility = View.GONE
+                        }
                         dismissLoading()
                         showDialogWarning(
                             getString(R.string.str_no_connection),

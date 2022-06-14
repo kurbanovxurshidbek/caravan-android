@@ -7,6 +7,7 @@
     tools:context=".ui.fragment.details.TripDetailsFragment">
 
     <LinearLayout
+        android:id="@+id/llRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -74,7 +75,6 @@
                         android:layout_marginTop="2dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/circular_std_bold"
-                        android:text="Bukhara trips in 5 days "
                         android:textColor="#000000"
                         android:textSize="28sp" />
 
@@ -85,7 +85,6 @@
                         android:layout_marginHorizontal="8dp"
                         android:fontFamily="@font/circular_std_bold"
                         android:singleLine="true"
-                        android:text="$100/day"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -99,7 +98,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/circular_std_bold"
-                    android:text="Min: 5 people, Max: 10 people"
+                    android:text="Min: 0 people, Max: 0 people"
                     android:textColor="@color/main_color"
                     android:textSize="16sp" />
 
@@ -110,7 +109,6 @@
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginTop="@dimen/dp_20"
                     android:fontFamily="@font/circular_std_bold"
-                    android:text="@string/trial_text"
                     android:textColor="#CC181818"
                     android:textSize="18sp" />
 
@@ -132,9 +130,7 @@
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginTop="4dp"
                     android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/item_travel_locations" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -154,9 +150,7 @@
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginTop="4dp"
                     android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/item_facilities" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -187,7 +181,6 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/guide"
                         app:shapeAppearance="@drawable/corner_item"
                         app:shapeAppearanceOverlay="@drawable/corner_item" />
 
@@ -202,7 +195,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/circular_std_bold"
-                            android:text="Saidbek Abdullayev"
                             android:textColor="#181818"
                             android:textSize="18sp" />
 
@@ -213,7 +205,6 @@
                             android:layout_marginTop="5dp"
                             android:fontFamily="@font/circular_std_bold"
                             android:lines="1"
-                            android:text="Samarqand, Khiva, Kokand, Toshkent"
                             android:textColor="#167351"
                             android:textSize="12sp" />
 
@@ -231,19 +222,18 @@
                                 android:layout_marginTop="5dp"
                                 android:fontFamily="@font/circular_std_bold"
                                 android:lines="1"
-                                android:text="$100 / day"
-                                android:textSize="14dp" />
+                                android:textSize="14sp" />
 
 
                             <TextView
                                 android:id="@+id/tvGuidesLanguages"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="30dp"
+                                android:layout_marginEnd="30dp"
                                 android:layout_marginTop="5dp"
                                 android:fontFamily="@font/circular_std_bold"
                                 android:lines="1"
-                                android:text="English, Uzbek, Russian"
+
                                 android:textColor="#99000000"
                                 android:textSize="12sp" />
 
@@ -423,9 +413,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="100dp"
                     android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="10"
-                    tools:listitem="@layout/item_comment" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
             </LinearLayout>

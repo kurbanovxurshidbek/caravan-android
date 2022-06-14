@@ -25,9 +25,12 @@ import com.caravan.caravan.databinding.FragmentTripDetailsBinding
 import com.caravan.caravan.databinding.OverlayViewBinding
 import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.*
+import com.caravan.caravan.model.more.ActionMessage
+import com.caravan.caravan.model.review.Review
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
 import com.caravan.caravan.viewmodel.details.TripDetailsRepository
@@ -48,7 +51,7 @@ class TripDetailsFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            tripId = it.getString("tripId", "defaultValue")
+            tripId = it.getString("tripId", null)
         }
     }
 
@@ -70,14 +73,23 @@ class TripDetailsFragment : BaseFragment() {
             viewModel.trip.collect {
                 when (it) {
                     is UiStateObject.LOADING -> {
+                        fragmentTripDetailsBinding.apply {
+                            llRoot.visibility = View.GONE
+                        }
                         showLoading()
                     }
                     is UiStateObject.SUCCESS -> {
+                        fragmentTripDetailsBinding.apply {
+                            llRoot.visibility = View.VISIBLE
+                        }
                         dismissLoading()
                         trip = it.data
                         setUpDate(it.data)
                     }
                     is UiStateObject.ERROR -> {
+                        fragmentTripDetailsBinding.apply {
+                            llRoot.visibility = View.GONE
+                        }
                         dismissLoading()
                         showDialogWarning(
                             getString(R.string.str_no_connection),
@@ -119,6 +131,9 @@ class TripDetailsFragment : BaseFragment() {
     }
 
     private fun initViews() {
+
+        viewModel.getTrip(tripId)
+
         overlayViewBinding = OverlayViewBinding.bind(
             LayoutInflater.from(requireContext())
                 .inflate(R.layout.overlay_view, RelativeLayout(requireContext()), false)
@@ -129,10 +144,67 @@ class TripDetailsFragment : BaseFragment() {
                 .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment);
         }
 
-        fragmentTripDetailsBinding.btnSendComment.setOnClickListener {
+        fragmentTripDetailsBinding.apply {
+
+            btnSendComment.setOnClickListener {
+                if (etLeaveComment.text.isNotEmpty()) {
+                    val rate = ratingBarGuide.rating
+                    val review =
+                        Review(rate.toInt(), etLeaveComment.text.toString(), "GUIDE", null, trip.guideProfile.id)
+
+                    setUpObservesReview()
+
+                    viewModel.postReview(review)
+
+                } else {
+                    toast(getString(R.string.str_send_message))
+                }
+            }
 
         }
 
+    }
+
+    private fun setUpObservesReview() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.review.collect {
+                when(it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        setStatus(it.data)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+                            })
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setStatus(data: ActionMessage) {
+        if (!data.status) {
+            showDialogWarning(data.title!!, data.message!!, object : OkInterface {
+                override fun onClick() {
+                    return
+                }
+            })
+        } else {
+            fragmentTripDetailsBinding.apply {
+                etLeaveComment.setText("")
+                leaveCommentPart.visibility = View.GONE
+            }
+        }
     }
 
     fun setImageViewer(position: Int) {
