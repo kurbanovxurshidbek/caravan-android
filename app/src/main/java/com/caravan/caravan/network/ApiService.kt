@@ -1,5 +1,6 @@
 package com.caravan.caravan.network
 
+import com.caravan.caravan.model.Comment
 import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Profile
 import com.caravan.caravan.model.Trip
@@ -10,17 +11,22 @@ import com.caravan.caravan.model.auth.RegisterSend
 import com.caravan.caravan.model.create_trip.FirstSend
 import com.caravan.caravan.model.create_trip.PhotoRespond
 import com.caravan.caravan.model.create_trip.SecondSend
+import com.caravan.caravan.model.create_trip.TripUploadPhoto
 import com.caravan.caravan.model.home.HomeRespond
 import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.model.review.Answer
 import com.caravan.caravan.model.review.Review
+import com.caravan.caravan.model.review.ReviewsByPagination
+import com.caravan.caravan.model.search.SearchGuideSend
+import com.caravan.caravan.model.search.SearchTripSend
 import com.caravan.caravan.model.upgrade.UpgradeSend
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiService {
 
-    // Login w
+    // Login
     @POST("/api/v1/auth/send")
     suspend fun sendSmsCode(@Body loginSend: LoginSend): Response<ActionMessage>
 
@@ -92,14 +98,27 @@ interface ApiService {
     @GET("/api/v1/district/{region}")
     suspend fun getDistrict(@Path("region") region: String): Response<ArrayList<String>>
 
+    // Review
     @POST("/api/v1/review")
     suspend fun postReview(@Body review: Review): Response<ActionMessage>
 
     @POST("/api/v1/review/answer")
     suspend fun answerReview(@Body answer: Answer) : Response<ActionMessage>
 
+    @GET("/api/v1/review/trip-review/{tripId}")
+    suspend fun getTripComments(@Query("page") page: Int, @Path("tripId") tripId: String): Response<ReviewsByPagination>
+
+    @GET("/api/v1/review/{guideId}/guide-fedback")
+    suspend fun getGuideComments(@Query("page") page: Int, @Path("guideId") guideId: String): Response<ReviewsByPagination>
+
+    @GET("/api/v1/review/all")
+    suspend fun getGuidesAllComments(@Query("page") page:Int): Response<ReviewsByPagination>
+
     // Search
     @GET("/api/v1/trip/filter")
-    suspend fun searchTrip(): Response<ArrayList<Trip>>
+    suspend fun searchTrip(@Query("page") page: Int, @Body searchTripSend: SearchTripSend): Response<ArrayList<Trip>>
+
+    @GET("/api/v1/guide/search")
+    suspend fun searchGuide(@Query("page") page: Int, @Body searchGuideSend: SearchGuideSend): Response<ArrayList<GuideProfile>>
 
 }

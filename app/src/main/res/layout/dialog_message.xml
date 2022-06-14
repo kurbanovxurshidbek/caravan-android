@@ -35,7 +35,6 @@
         android:layout_margin="30dp"
         android:fontFamily="@font/circular_std_bold"
         android:gravity="center"
-        android:textColor="@color/black_60"
         android:text="Your information has been saved to your account. You can change it anytime."
         android:textSize="16sp"
         android:textColor="@color/black_60"

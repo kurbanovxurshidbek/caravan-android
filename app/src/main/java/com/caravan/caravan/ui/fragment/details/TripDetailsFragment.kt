@@ -14,6 +14,7 @@ import android.widget.RelativeLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
@@ -47,6 +48,9 @@ class TripDetailsFragment : BaseFragment() {
 
     private lateinit var viewModel: TripDetailsViewModel
     private lateinit var trip: Trip
+
+    private var page = 0
+    private var allPages = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -150,7 +154,13 @@ class TripDetailsFragment : BaseFragment() {
                 if (etLeaveComment.text.isNotEmpty()) {
                     val rate = ratingBarGuide.rating
                     val review =
-                        Review(rate.toInt(), etLeaveComment.text.toString(), "GUIDE", null, trip.guideProfile.id)
+                        Review(
+                            rate.toInt(),
+                            etLeaveComment.text.toString(),
+                            "GUIDE",
+                            null,
+                            trip.guideProfile.id
+                        )
 
                     setUpObservesReview()
 
@@ -168,7 +178,7 @@ class TripDetailsFragment : BaseFragment() {
     private fun setUpObservesReview() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.review.collect {
-                when(it) {
+                when (it) {
                     is UiStateObject.LOADING -> {
                         showLoading()
                     }
@@ -190,13 +200,53 @@ class TripDetailsFragment : BaseFragment() {
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.reviews.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        allPages = it.data.totalPages
+                        page = it.data.currentPageNumber
+
+                        if (page + 1 <= allPages) {
+                            page++
+                        }
+
+                        updateComments(it.data.comments)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
+    }
+
+    private fun updateComments(data: ArrayList<Comment>) {
+        fragmentTripDetailsBinding.fragmentTripCommentsRV.adapter = CommentsAdapter(data)
+        fragmentTripDetailsBinding.fragmentTripCommentsRV.adapter?.notifyDataSetChanged()
     }
 
     private fun setStatus(data: ActionMessage) {
         if (!data.status) {
             showDialogWarning(data.title!!, data.message!!, object : OkInterface {
                 override fun onClick() {
-                    return
+                    viewModel.getReviews(page, tripId)
                 }
             })
         } else {
@@ -303,6 +353,17 @@ class TripDetailsFragment : BaseFragment() {
         fragmentTripDetailsBinding.fragmentTripCommentsRV.adapter = reviews?.let {
             CommentsAdapter(it)
         }
+
+        fragmentTripDetailsBinding.fragmentTripCommentsRV.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    viewModel.getReviews(page, tripId)
+                }
+            }
+        })
     }
 
     private fun setTravelLocations(places: ArrayList<Location>) {

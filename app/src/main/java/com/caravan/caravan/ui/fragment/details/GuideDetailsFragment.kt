@@ -19,6 +19,7 @@ import android.widget.RelativeLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.CommentsAdapter
@@ -50,6 +51,9 @@ class GuideDetailsFragment : BaseFragment() {
     private var guideProfile: GuideProfile? = null
 
     private lateinit var viewModel: GuideDetailsViewModel
+
+    private var page = 0
+    private var allPages = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -235,13 +239,53 @@ class GuideDetailsFragment : BaseFragment() {
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.reviews.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        allPages = it.data.totalPages
+                        page = it.data.currentPageNumber
+
+                        if (page + 1 <= allPages) {
+                            page++
+                        }
+
+                        updateComments(it.data.comments)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
+    }
+
+    private fun updateComments(data: ArrayList<Comment>) {
+        guideDetailsBinding.fragmentTripCommentsRV.adapter = CommentsAdapter(data)
+        guideDetailsBinding.fragmentTripCommentsRV.adapter?.notifyDataSetChanged()
     }
 
     private fun setStatus(data: ActionMessage) {
         if (!data.status) {
             showDialogWarning(data.title!!, data.message!!, object : OkInterface {
                 override fun onClick() {
-                    return
+                    viewModel.getReviews(0, guideId)
                 }
             })
         } else {
@@ -303,6 +347,17 @@ class GuideDetailsFragment : BaseFragment() {
         guideDetailsBinding.fragmentTripCommentsRV.adapter = reviews?.let {
             CommentsAdapter(it)
         }
+
+        guideDetailsBinding.fragmentTripCommentsRV.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    viewModel.getReviews(page, guideId)
+                }
+            }
+        })
     }
 
     private fun setTravelLocations(travelLocations: ArrayList<Location>) {
