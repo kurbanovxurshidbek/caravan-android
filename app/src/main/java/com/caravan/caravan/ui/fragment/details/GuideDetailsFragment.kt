@@ -26,10 +26,7 @@ import com.caravan.caravan.adapter.CommentsAdapter
 import com.caravan.caravan.adapter.TravelLocationsAdapter
 import com.caravan.caravan.databinding.FragmentGuideDetailsBinding
 import com.caravan.caravan.manager.SharedPref
-import com.caravan.caravan.model.Comment
-import com.caravan.caravan.model.GuideProfile
-import com.caravan.caravan.model.Location
-import com.caravan.caravan.model.Price
+import com.caravan.caravan.model.*
 import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.model.review.Review
 import com.caravan.caravan.network.ApiService
@@ -119,11 +116,25 @@ class GuideDetailsFragment : BaseFragment() {
     }
 
     private fun setData(data: GuideProfile) {
+        guideDetailsBinding.apply {
+            tvGuideFullName.text = data.profile.name + " " + data.profile.surname
+            tvGuideLanguages.text = setLanguages(data.languages)
+            tvGuideDescription.text = data.biography
+        }
         setProfilePhoto(data.profile.photo!!)
         setTravelLocations(data.travelLocations)
         setCommentsRv(data.reviews)
         setLeaveCommentsPart(data.attendancesProfileId, data.reviews)
         guideDetailsBinding.tvGuidePrice.text = setPrice(data.price)
+    }
+
+    private fun setLanguages(languages: java.util.ArrayList<Language>): String {
+        var text = ""
+        for (i in languages) {
+            text += i.name + ", "
+        }
+        text = text.substring(0, text.length - 2)
+        return text
     }
 
     private fun setUpViewModel() {

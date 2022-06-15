@@ -52,9 +52,6 @@ interface ApiService {
     @PUT("/api/v1/profile/language")
     suspend fun updateAppLanguage(@Query("lang") lang: String): Response<ActionMessage>
 
-    @GET("/api/v1/home")
-    suspend fun getHomeData(): Response<HomeRespond>
-
     @DELETE("/api/v1/profile")
     suspend fun deleteAccount(): Response<ActionMessage>
 
@@ -120,5 +117,9 @@ interface ApiService {
 
     @GET("/api/v1/guide/search")
     suspend fun searchGuide(@Query("page") page: Int, @Body searchGuideSend: SearchGuideSend): Response<ArrayList<GuideProfile>>
+
+    // Home
+    @GET("/api/v1/main")
+    suspend fun getHomeData(): Response<HomeRespond>
 
 }

@@ -25,12 +25,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/et_background"
-                android:hint="Search some places..."
+                android:hint="@string/search_some_places"
                 android:inputType="text"
                 android:maxLines="1"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
                 android:textCursorDrawable="@drawable/cursor"
+                android:imeOptions="actionSearch"
                 android:textSize="18sp" />
 
             <ImageView
