@@ -16,24 +16,25 @@ class LanguageViewModel(private val repository: LanguageRepository) : ViewModel(
         MutableStateFlow<UiStateObject<ActionMessage>>(UiStateObject.EMPTY)
     val updatedAppLanguage = _updatedAppLanguage
 
-    fun getAppLanguage(id: String) = viewModelScope.launch {
+    fun getAppLanguage() = viewModelScope.launch {
         _appLanguage.value = UiStateObject.LOADING
         try {
-            val appLanguage = repository.getAppLanguage(id)
+            val appLanguage = repository.getAppLanguage()
             if (!appLanguage.isSuccessful) {
                 _appLanguage.value = UiStateObject.ERROR(appLanguage.message())
+            } else {
+                _appLanguage.value = UiStateObject.SUCCESS(appLanguage.body()!!)
             }
-            _appLanguage.value = UiStateObject.SUCCESS(appLanguage.body()!!)
 
         } catch (e: Exception) {
             _appLanguage.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")
         }
     }
 
-    fun updateAppLanguage(id: String, appLanguage: String) = viewModelScope.launch {
+    fun updateAppLanguage(appLanguage: String) = viewModelScope.launch {
         _updatedAppLanguage.value = UiStateObject.LOADING
         try {
-            val response = repository.updateAppLanguage(id, appLanguage)
+            val response = repository.updateAppLanguage(appLanguage)
             if (!response.isSuccessful) {
                 _updatedAppLanguage.value = UiStateObject.ERROR(response.message())
             }

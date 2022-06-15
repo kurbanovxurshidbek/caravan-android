@@ -110,7 +110,7 @@
                     android:layout_marginEnd="5dp"
                     android:orientation="vertical">
                     <Spinner
-                        android:id="@+id/spinnerLocationFrom"
+                        android:id="@+id/spinnerLocationProvince"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingEnd="15dp"
@@ -128,7 +128,7 @@
                     android:layout_marginStart="5dp"
                     android:orientation="vertical">
                     <Spinner
-                        android:id="@+id/spinnerLocationTo"
+                        android:id="@+id/spinnerLocationDistrict"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingEnd="15dp"
@@ -148,6 +148,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/str_short_information"
                 android:layout_marginTop="20dp"
+                android:textColor="@color/black_60"
                 android:textColorHint="#99000000"
                 android:backgroundTint="@color/main_color"
                 android:fontFamily="@font/circular_std_bold"

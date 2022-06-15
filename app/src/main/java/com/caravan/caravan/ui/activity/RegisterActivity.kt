@@ -20,7 +20,6 @@ import com.caravan.caravan.model.auth.RegisterRespond
 import com.caravan.caravan.model.auth.RegisterSend
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
-import com.caravan.caravan.utils.Dialog
 import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
@@ -74,8 +73,7 @@ class RegisterActivity : BaseActivity() {
             }
             callMainActivity(data.profile)
         } else {
-            Dialog.showDialogWarning(
-                this,
+            showDialogWarning(
                 data.title!!,
                 data.message!!,
                 object : OkInterface {
@@ -116,9 +114,12 @@ class RegisterActivity : BaseActivity() {
 
     private fun callMainActivity(profile: Profile?) {
         val intent = Intent(this, MainActivity::class.java)
+
         SharedPref(this).saveBoolean("loginDone", true)
-        if (profile != null)
+        if (profile != null) {
+            SharedPref(this).saveToken(profile.token)
             SharedPref(this).saveString("profileId", profile.id)
+        }
         startActivity(intent)
         finish()
     }

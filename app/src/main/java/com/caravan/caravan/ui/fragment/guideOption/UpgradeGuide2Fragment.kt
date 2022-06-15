@@ -13,8 +13,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -27,7 +25,6 @@ import com.caravan.caravan.adapter.UpgradeGuideLanguageAdapter
 import com.caravan.caravan.adapter.UpgradeGuideLocationAdapter
 import com.caravan.caravan.databinding.FragmentUpgradeGuide2Binding
 import com.caravan.caravan.manager.SharedPref
-import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Language
 import com.caravan.caravan.model.Location
 import com.caravan.caravan.model.Price
@@ -46,6 +43,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
     lateinit var viewModel: UpgradeGuide2ViewModel
     lateinit var adapterlocation: UpgradeGuideLocationAdapter
     lateinit var adapterLanguage: UpgradeGuideLanguageAdapter
+    private var myLocationList = ArrayList<Location>()
+    private var myLanguageList = ArrayList<Language>()
     var levels: Array<String>? = null
     var levelSelected: String = ""
     var languageSelected: String = ""
@@ -59,7 +58,6 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
     var currency: String = ""
     var option: String = ""
     lateinit var profileId: String
-
     val args: UpgradeGuide2FragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -84,7 +82,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             this,
             UpgradeGuide2ViewModelFactory(
                 UpgradeGuide2Repository(
-                    RetrofitHttp.createService(
+                    RetrofitHttp.createServiceWithAuth(
+                        SharedPref(requireContext()),
                         ApiService::class.java
                     )
                 )
@@ -101,12 +100,13 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
+                        Log.d("@@@", "setUpObservers: ${it.data}")
+                        SharedPref(requireContext()).saveString("guideId", it.data.id)
                         completeAction()
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -121,6 +121,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             }
         }
     }
+
     private fun setUpObserversDistrict() {
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.district.collect {
@@ -131,13 +132,12 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
                     is UiStateList.SUCCESS -> {
                         dismissLoading()
                         locationDistrict = it.data
-                        Log.d("@@@", "setUpObserversDistrict: ${it.data}")
+
                         spinnerDistrict()
                     }
                     is UiStateList.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -165,14 +165,26 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             val secondNumber = args.secondNumber
 
             btnDone.setOnClickListener {
-                if (etBiography.text.isNotEmpty() && etAmount.text.isNotEmpty() && UpgradeGuideObject.myLanguageList.isNotEmpty() && UpgradeGuideObject.myLocationList.isNotEmpty()) {
+
+                if (desc != "") {
+                    val location = Location("1", province, district, desc)
+
+                    myLocationList.add(0,location)
+                }
+                if (languageSelected != "") {
+                    val language = Language("1", languageSelected, levelSelected)
+                    myLanguageList.add(0,language)
+                }
+
+
+                if (etBiography.text.isNotEmpty() && etAmount.text.isNotEmpty() && myLanguageList.isNotEmpty() && myLocationList.isNotEmpty()) {
                     val user = UpgradeSend(
                         profileId,
                         secondNumber,
                         etBiography.text.toString(),
                         Price(etAmount.text.toString().toLong(), currency, option),
-                        UpgradeGuideObject.myLanguageList,
-                        UpgradeGuideObject.myLocationList
+                        myLanguageList,
+                        myLocationList
                     )
 
                     viewModel.upgradeToGuide(user)
@@ -187,8 +199,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             addLocationItems()
             addLanguageItems()
 
-            refreshAdapterLocation(UpgradeGuideObject.myLocationList)
-            refreshAdapterLanguage(UpgradeGuideObject.myLanguageList)
+            refreshAdapterLocation(myLocationList)
+            refreshAdapterLanguage(myLanguageList)
 
             swipeToDeleteLocation()
             swipeToDeleteLanguage()
@@ -200,8 +212,6 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         findNavController().navigate(
             R.id.action_upgradeGuide2Fragment_to_guideGuideOptionFragment
         )
-
-
     }
 
     private fun addLocationItems() {
@@ -217,8 +227,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             if (desc != "") {
                 val location = Location("1", province, district, desc)
 
-                UpgradeGuideObject.myLocationList.add(location)
-                refreshAdapterLocation(UpgradeGuideObject.myLocationList)
+                myLocationList.add(location)
+                refreshAdapterLocation(myLocationList)
                 binding.etLocationDesc.text.clear()
                 hideKeyboard()
             } else {
@@ -242,8 +252,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         binding.tvAddLanguage.setOnClickListener {
             if (languageSelected != "") {
                 val language = Language("1", languageSelected, levelSelected)
-                UpgradeGuideObject.myLanguageList.add(language)
-                refreshAdapterLanguage(UpgradeGuideObject.myLanguageList)
+                myLanguageList.add(language)
+                refreshAdapterLanguage(myLanguageList)
                 binding.etLanguage.text.clear()
                 hideKeyboard()
             } else {
@@ -259,8 +269,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             @SuppressLint("NotifyDataSetChanged")
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val pos = viewHolder.adapterPosition
-                UpgradeGuideObject.myLocationList.removeAt(pos)
-                refreshAdapterLocation(UpgradeGuideObject.myLocationList)
+                myLocationList.removeAt(pos)
+                refreshAdapterLocation(myLocationList)
             }
         }
 
@@ -273,8 +283,8 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             @SuppressLint("NotifyDataSetChanged")
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val pos = viewHolder.adapterPosition
-                UpgradeGuideObject.myLanguageList.removeAt(pos)
-                adapterLanguage.notifyItemRemoved(pos)
+                myLanguageList.removeAt(pos)
+                refreshAdapterLanguage(myLanguageList)
             }
         }
 
@@ -328,7 +338,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
     }
 
-    fun spinnerDistrict(){
+    fun spinnerDistrict() {
         binding.spinnerLocationTo.onItemSelectedListener = itemSelectedDistrict
 
         val adapter: ArrayAdapter<*> = ArrayAdapter<Any?>(
@@ -386,14 +396,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         binding.recyclerViewLanguage.adapter = adapterLanguage
     }
 
-    private fun hideKeyboard() {
-        try {
-            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, 0)
-        } catch (e: Exception) {
 
-        }
-    }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         currency = currencies!![p2]

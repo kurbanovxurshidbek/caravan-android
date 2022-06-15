@@ -17,5 +17,6 @@ data class Profile(
     val createdDate: String,
     val updatedDate: String? = null,
     var appLanguage: String, // en, ru, uz
-    val devices: ArrayList<Device>
+    val devices: ArrayList<Device>,
+    val token: String = ""
 ) : Serializable

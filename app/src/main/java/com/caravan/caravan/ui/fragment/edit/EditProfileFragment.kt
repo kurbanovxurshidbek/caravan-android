@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,6 @@ import com.caravan.caravan.model.Profile
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.Dialog
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
 import com.caravan.caravan.utils.viewBinding
@@ -29,6 +29,11 @@ import com.caravan.caravan.viewmodel.editProfile.editProfile.EditViewModel
 import com.caravan.caravan.viewmodel.editProfile.editProfile.EditViewModelFactory
 import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -46,6 +51,7 @@ class EditProfileFragment : BaseFragment() {
     private lateinit var viewModel: EditViewModel
     private var allPhotos = ArrayList<Uri>()
     private var profileId: String? = null
+    private lateinit var body: MultipartBody.Part
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,25 +76,36 @@ class EditProfileFragment : BaseFragment() {
     private fun initViews() {
         profileId = SharedPref(requireContext()).getString("profileId")
         setupViewModel()
-        getProfileDetails()
         setupObservers()
+        getProfileDetails()
         manageGender()
         binding.ivGuide.setOnClickListener {
             pickPhoto()
         }
 
         binding.llCalendar.setOnClickListener {
-            setBirthday()
+            val day: Int;
+            val month: Int;
+            val year: Int;
+            if (binding.tvBirthday.text.toString() == getString(R.string.str_choose_birthday)) {
+                day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+                month = Calendar.getInstance().get(Calendar.MONTH)
+                year = Calendar.getInstance().get(Calendar.YEAR)
+            } else {
+                day = profile.birthDate?.substring(0, 2)?.toInt()!!
+                month = profile.birthDate?.substring(3, 5)?.toInt()!! - 1
+                year = profile.birthDate?.substring(6)?.toInt()!!
+            }
+            setBirthday(year, month, day)
         }
 
         binding.btnSave.setOnClickListener {
             if (gender != null)
                 saveProfileData()
             else
-                Dialog.showDialogWarning(
-                    requireContext(),
-                    "Warning",
-                    "Please check your gender",
+                showDialogWarning(
+                    getString(R.string.warning),
+                    getString(R.string.check_gender),
                     object : OkInterface {
                         override fun onClick() {
 
@@ -113,8 +130,8 @@ class EditProfileFragment : BaseFragment() {
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
+
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -138,8 +155,7 @@ class EditProfileFragment : BaseFragment() {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        Dialog.showDialogMessage(
-                            requireContext(),
+                        showDialogMessage(
                             getString(R.string.str_saved),
                             getString(R.string.str_save_message),
                             object : OkInterface {
@@ -152,8 +168,7 @@ class EditProfileFragment : BaseFragment() {
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -171,6 +186,32 @@ class EditProfileFragment : BaseFragment() {
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             //for upload photo
+            viewModel.uploadPhoto.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        profile.photo = it.data.webViewLink
+                        viewModel.updateProfile(profile)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+
+                                }
+
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
         }
     }
 
@@ -178,8 +219,7 @@ class EditProfileFragment : BaseFragment() {
         if (profileId != null) {
             viewModel.getProfile(profileId!!)
         } else {
-            Dialog.showDialogWarning(
-                requireContext(),
+            showDialogWarning(
                 getString(R.string.error),
                 getString(R.string.went_wrong),
                 object : OkInterface {
@@ -205,7 +245,12 @@ class EditProfileFragment : BaseFragment() {
                 checkboxMale.isChecked = true
             else
                 checkboxFemale.isChecked = true
-            tvBirthday.text = profile.birthDate
+
+            if (profile.birthDate != null) {
+                tvBirthday.text = profile.birthDate
+            } else {
+                tvBirthday.text = getString(R.string.str_choose_birthday)
+            }
         }
     }
 
@@ -219,14 +264,14 @@ class EditProfileFragment : BaseFragment() {
             profile.birthDate = tvBirthday.text.toString()
 
         }
-        viewModel.updateProfile(profileId!!, profile)
+        if (pickedPhoto == null)
+            viewModel.updateProfile(profile)
+        else
+            viewModel.uploadUserPhoto(body)
     }
 
-    private fun setBirthday() {
+    private fun setBirthday(year: Int, month: Int, day: Int) {
         val datePicker = Calendar.getInstance()
-        val day = profile.birthDate?.substring(0, 2)?.toInt()!!
-        val month = profile.birthDate?.substring(3, 5)?.toInt()!! - 1
-        val year = profile.birthDate?.substring(6)?.toInt()!!
         val date =
             DatePickerDialog.OnDateSetListener { picker, pickedYear, pickedMonth, pickedDay ->
                 datePicker[Calendar.YEAR] = pickedYear
@@ -298,14 +343,38 @@ class EditProfileFragment : BaseFragment() {
 
     private fun uploadUserPhoto() {
         if (pickedPhoto == null) return
-        //save photo to storage
+        val ins = requireActivity().contentResolver.openInputStream(pickedPhoto!!)
+        val file = File.createTempFile(
+            "file",
+            ".jpg",
+            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        )
+
+        val fileOutputStream = FileOutputStream(file)
+
+        ins?.copyTo(fileOutputStream)
+        ins?.close()
+        fileOutputStream.close()
+        val reqFile: RequestBody = RequestBody.create("image/jpg".toMediaTypeOrNull(), file)
+        body = MultipartBody.Part.createFormData("file", file.name, reqFile)
+
+
+
         binding.ivGuide.setImageURI(pickedPhoto)
     }
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
             this,
-            EditViewModelFactory(EditRepository(RetrofitHttp.createService(ApiService::class.java)))
+            EditViewModelFactory(
+                EditRepository(
+                    RetrofitHttp.createServiceWithAuth(
+                        SharedPref(
+                            requireContext()
+                        ), ApiService::class.java
+                    )
+                )
+            )
         )[EditViewModel::class.java]
     }
 

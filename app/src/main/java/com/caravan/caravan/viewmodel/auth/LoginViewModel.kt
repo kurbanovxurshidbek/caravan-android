@@ -41,7 +41,7 @@ class LoginViewModel(private val repository: LoginRepository) : ViewModel() {
             if (checkSMS.code() >= 400) {
                 val error =
                     Gson().fromJson(checkSMS.errorBody()!!.charStream(), LoginRespond::class.java)
-                _checkSMS.value = UiStateObject.ERROR(error.title!!)
+                _checkSMS.value = UiStateObject.SUCCESS(error)
             } else {
                 _checkSMS.value = UiStateObject.SUCCESS(checkSMS.body()!!)
             }

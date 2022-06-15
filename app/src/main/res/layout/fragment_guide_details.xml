@@ -7,6 +7,7 @@
     tools:context=".ui.fragment.details.TripDetailsFragment">
 
     <LinearLayout
+        android:id="@+id/llRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -42,7 +43,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <RatingBar
-                    android:id="@+id/ratingBarTrip"
+                    android:id="@+id/ratingBarGuide"
                     style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -50,35 +51,33 @@
                     android:layout_marginTop="12dp"
                     android:clickable="false"
                     android:max="5"
-                    android:secondaryProgressTint="@color/main_color"
                     android:progressBackgroundTint="#90000000"
                     android:progressTint="@color/main_color"
-                    android:rating="3.5" />
+                    android:rating="3.5"
+                    android:secondaryProgressTint="@color/main_color" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/tvGuideFullname"
+                        android:id="@+id/tvGuideFullName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="2dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/circular_std_bold"
-                        android:text="Saidbek Abdullayev"
                         android:textColor="#000000"
                         android:textSize="28sp" />
 
                     <TextView
-                        android:id="@+id/tvTripPrice"
+                        android:id="@+id/tvGuidePrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="8dp"
                         android:fontFamily="@font/circular_std_bold"
                         android:singleLine="true"
-                        android:text="$100/day"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -92,18 +91,16 @@
                     android:layout_marginTop="2dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/circular_std_bold"
-                    android:text="Uzbek, English, French, Russian"
                     android:textColor="@color/main_color"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/tvTripDescription"
+                    android:id="@+id/tvGuideDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginTop="@dimen/dp_20"
                     android:fontFamily="@font/circular_std_bold"
-                    android:text="@string/trial_text"
                     android:textColor="#CC181818"
                     android:textSize="18sp" />
 
@@ -125,31 +122,7 @@
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginTop="4dp"
                     android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/item_travel_locations" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/circular_std_bold"
-                    android:text="@string/facilities"
-                    android:textColor="@color/main_color"
-                    android:textSize="20sp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/facilitiesRV"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="4dp"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/item_facilities" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -171,40 +144,11 @@
                     android:focusable="true"
                     android:orientation="vertical">
 
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginHorizontal="12dp"-->
-<!--                        android:layout_marginTop="16dp"-->
-<!--                        android:layout_marginBottom="16dp">-->
-
-<!--                        <ImageView-->
-<!--                            android:layout_width="20dp"-->
-<!--                            android:layout_height="20dp"-->
-<!--                            android:layout_gravity="center_vertical"-->
-<!--                            android:src="@drawable/chat_bubble2" />-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginStart="16dp"-->
-<!--                            android:fontFamily="@font/circular_std_bold"-->
-<!--                            android:text="@string/chat_with_guide"-->
-<!--                            android:textColor="@color/black"-->
-<!--                            android:textSize="18sp" />-->
-<!--                    </LinearLayout>-->
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginHorizontal="12dp"
-                        android:background="#0D121212" />
-
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llCallToGuide"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/square_ripple"
@@ -299,6 +243,7 @@
                     android:textSize="20sp" />
 
                 <LinearLayout
+                    android:id="@+id/leaveCommentPart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -314,14 +259,13 @@
                         android:max="5"
                         android:progressBackgroundTint="#4B000000"
                         android:progressTint="@color/main_color"
-                        android:secondaryProgressTint="@color/main_color"
                         android:rating="1.0"
                         android:scaleX="0.8"
                         android:scaleY="0.8"
+                        android:secondaryProgressTint="@color/main_color"
                         android:stepSize="1.0" />
 
                     <LinearLayout
-                        android:id="@+id/leaveCommentPart"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="8dp"
@@ -335,13 +279,14 @@
                             android:layout_weight="1"
                             android:backgroundTint="@color/main_color"
                             android:fontFamily="@font/circular_std_bold"
-                            android:hint="@string/write_respond"
+                            android:hint="@string/write_review"
                             android:inputType="textMultiLine"
                             android:maxLines="5"
                             android:textColor="@color/black"
                             android:textCursorDrawable="@drawable/cursor" />
 
                         <ImageView
+                            android:id="@+id/btnSendComment"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_gravity="center_vertical"
@@ -362,9 +307,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="100dp"
                     android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="10"
-                    tools:listitem="@layout/item_comment" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 
             </LinearLayout>
@@ -376,7 +319,7 @@
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnApplyTrip"
+        android:id="@+id/btnApplyGuide"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"

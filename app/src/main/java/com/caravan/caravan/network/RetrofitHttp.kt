@@ -1,6 +1,8 @@
 package com.caravan.caravan.network
 
 import com.caravan.caravan.BuildConfig
+import com.caravan.caravan.manager.SharedPref
+import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -8,6 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
+
 
 object RetrofitHttp {
 
@@ -86,20 +89,20 @@ object RetrofitHttp {
         return retrofit.newBuilder().client(newClient.build()).build().create(service!!)
     }
 
-    fun <T> createServiceWithAuth(service: Class<T>?): T {
+    fun <T> createServiceWithAuth(pref: SharedPref, service: Class<T>?): T {
         val newClient =
-            client.newBuilder().addInterceptor(Interceptor { chain ->
-                val builder = chain.request().newBuilder()
-//                builder.addHeader("Authorization", "Bearer " + pref?.token)
-                builder.header("Content-Type", "application/json")
-                chain.proceed(builder.build())
-            })
-                .addNetworkInterceptor(HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BODY
+            OkHttpClient.Builder().connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS).addInterceptor(Interceptor { chain ->
+                    val builder = chain.request().newBuilder()
+                    builder.addHeader("Authorization", "Bearer " + pref.getToken())
+                    builder.header("Content-Type", "application/json")
+                    chain.proceed(builder.build())
                 })
-                .build()
-        /*.authenticator(CustomAuthenticator.getInstance(tokenManager)).build()*/
-        val newRetrofit = retrofit.newBuilder().client(newClient).build()
-        return newRetrofit.create(service!!)
+        if (BuildConfig.DEBUG) {
+            val interceptor = HttpLoggingInterceptor()
+            interceptor.apply { interceptor.level = HttpLoggingInterceptor.Level.BODY }
+            newClient.addInterceptor(interceptor)
+        }
+        return retrofit.newBuilder().client(newClient.build()).build().create(service!!)
     }
 }

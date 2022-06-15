@@ -33,9 +33,9 @@ class UpgradeGuide2ViewModel(private val repository: UpgradeGuide2Repository) : 
 
         try {
             val getDistrict = repository.getDistrict(region)
-            /*if (!getDistrict.isSuccessful) {
+            if (!getDistrict.isSuccessful) {
                 _district.value = UiStateList.ERROR(getDistrict.message())
-            }*/
+            }
             _district.value = UiStateList.SUCCESS(getDistrict.body()!!)
         } catch (e: Exception) {
             _district.value = UiStateList.ERROR(e.localizedMessage ?: "No Connection")

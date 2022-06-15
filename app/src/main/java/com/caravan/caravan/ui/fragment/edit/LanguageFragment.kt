@@ -16,7 +16,6 @@ import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.Dialog
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
 import com.caravan.caravan.utils.viewBinding
@@ -60,7 +59,7 @@ class LanguageFragment : BaseFragment() {
         binding.apply {
             rvLanguage.adapter = adapter
             btnSave.setOnClickListener {
-                viewModel.updateAppLanguage(profileId!!, appLanguage!!)
+                viewModel.updateAppLanguage(appLanguage!!)
             }
         }
 
@@ -68,7 +67,7 @@ class LanguageFragment : BaseFragment() {
         adapter.click = { position ->
             manageLanguage(position)
         }
-        viewModel.getAppLanguage(profileId!!)
+        viewModel.getAppLanguage()
     }
 
     private fun setupObservers() {
@@ -84,8 +83,7 @@ class LanguageFragment : BaseFragment() {
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -113,8 +111,7 @@ class LanguageFragment : BaseFragment() {
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
@@ -135,7 +132,7 @@ class LanguageFragment : BaseFragment() {
         if (data.status)
             requireActivity().onBackPressed()
         else
-            Dialog.showDialogMessage(requireContext(),data.title!!,data.message!!,object :OkInterface{
+            showDialogMessage(data.title!!, data.message!!, object : OkInterface {
                 override fun onClick() {
                     //
                 }
@@ -200,7 +197,14 @@ class LanguageFragment : BaseFragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
             this,
-            LanguageViewModelFactory(LanguageRepository(RetrofitHttp.createService(ApiService::class.java)))
+            LanguageViewModelFactory(
+                LanguageRepository(
+                    RetrofitHttp.createServiceWithAuth(
+                        SharedPref(requireContext()),
+                        ApiService::class.java
+                    )
+                )
+            )
         )[LanguageViewModel::class.java]
     }
 

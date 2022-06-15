@@ -15,7 +15,9 @@ class SliderViewAdapter(
     RecyclerView.Adapter<SliderViewAdapter.ImageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val sliderBinding = ItemSliderBinding.bind(LayoutInflater.from(parent.context).inflate(R.layout.item_slider, parent, false))
+        val sliderBinding = ItemSliderBinding.bind(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_slider, parent, false)
+        )
 
         return ImageViewHolder(sliderBinding)
     }
@@ -31,7 +33,8 @@ class SliderViewAdapter(
         return items.size
     }
 
-    class ImageViewHolder(sliderBinding: ItemSliderBinding) : RecyclerView.ViewHolder(sliderBinding.root) {
+    class ImageViewHolder(sliderBinding: ItemSliderBinding) :
+        RecyclerView.ViewHolder(sliderBinding.root) {
         val imageView: ImageView = sliderBinding.ivSlider
     }
 }

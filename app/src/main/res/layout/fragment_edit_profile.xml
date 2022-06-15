@@ -56,9 +56,10 @@
             android:drawableEnd="@drawable/ic_user"
             android:hint="@string/str_enter_name"
             android:inputType="textPersonName"
+            android:fontFamily="@font/circular_std_bold"
             android:padding="14dp"
             android:singleLine="true"
-            android:textColorHint="@color/black" />
+            android:textColor="@color/black_60"/>
 
         <EditText
             android:id="@+id/etSurname"
@@ -71,7 +72,8 @@
             android:maxLines="1"
             android:padding="14dp"
             android:singleLine="true"
-            android:textColorHint="@color/black" />
+            android:fontFamily="@font/circular_std_bold"
+            android:textColor="@color/black_60"/>
 
         <EditText
             android:id="@+id/etPhoneNumber"
@@ -87,7 +89,8 @@
             android:maxLines="1"
             android:padding="14dp"
             android:singleLine="true"
-            android:textColorHint="@color/black" />
+            android:fontFamily="@font/circular_std_bold"
+            android:textColor="@color/black_60" />
 
         <EditText
             android:id="@+id/etEmail"
@@ -101,7 +104,8 @@
             android:maxLines="1"
             android:padding="14dp"
             android:singleLine="true"
-            android:textColorHint="@color/black" />
+            android:fontFamily="@font/circular_std_bold"
+            android:textColor="@color/black_60" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -118,8 +122,9 @@
                     android:layout_gravity="center_vertical"
                     android:text="@string/str_choose_gender"
                     android:layout_marginStart="15dp"
-                    android:textColor="#99000000"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/circular_std_bold"
+                    android:textColor="@color/black_60"
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -132,6 +137,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
+                        android:fontFamily="@font/circular_std_bold"
+                        android:textColor="#ABABAB"
                         android:text="@string/str_lowwer_male" />
 
                     <CheckBox
@@ -154,6 +161,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="0dp"
+                        android:fontFamily="@font/circular_std_bold"
+                        android:textColor="#ABABAB"
                         android:text="@string/str_lowwer_female" />
 
                     <CheckBox
@@ -187,7 +196,8 @@
                 android:layout_weight="1"
                 android:text="@string/str_choose_birthday"
                 android:layout_marginStart="15dp"
-                android:textColor="@color/black"
+                android:fontFamily="@font/circular_std_bold"
+                android:textColor="@color/black_60"
                 android:textSize="16sp" />
 
             <ImageView

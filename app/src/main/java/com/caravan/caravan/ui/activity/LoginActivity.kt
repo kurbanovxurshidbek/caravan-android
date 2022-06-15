@@ -13,14 +13,12 @@ import androidx.lifecycle.lifecycleScope
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ActivityLoginBinding
 import com.caravan.caravan.manager.SharedPref
-import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Profile
 import com.caravan.caravan.model.auth.LoginRespond
 import com.caravan.caravan.model.auth.LoginSend
 import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
-import com.caravan.caravan.utils.Dialog
 import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
@@ -93,8 +91,7 @@ class LoginActivity : BaseActivity() {
                 callMainActivity(data.profile, data.isGuide, data.guideId)
             } else callRegistrationActivity()
         } else {
-            Dialog.showDialogWarning(
-                this,
+            showDialogWarning(
                 data.title,
                 data.message!!,
                 object : OkInterface {
@@ -114,7 +111,7 @@ class LoginActivity : BaseActivity() {
             setTimer()
             hideKeyboard()
         } else {
-            Dialog.showDialogWarning(this, data.title!!, data.message!!, object : OkInterface {
+            showDialogWarning(data.title!!, data.message!!, object : OkInterface {
                 override fun onClick() {
 
                 }
@@ -198,7 +195,8 @@ class LoginActivity : BaseActivity() {
     private fun callMainActivity(profile: Profile?, isGuide: Boolean, guideId: String?) {
         val intent = Intent(this, MainActivity::class.java)
         SharedPref(this).saveBoolean("loginDone", true)
-        SharedPref(this).saveString("profileId", profile!!.id)
+        SharedPref(this).saveToken(profile!!.token)
+        SharedPref(this).saveString("profileId", profile.id)
         if (isGuide) {
             SharedPref(this).saveString("guideId", guideId!!)
         }

@@ -1,5 +1,6 @@
 package com.caravan.caravan.ui.fragment.main
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -14,8 +15,11 @@ import com.caravan.caravan.adapter.GuideHomeAdapter
 import com.caravan.caravan.adapter.SliderViewAdapter
 import com.caravan.caravan.adapter.TripAdapter
 import com.caravan.caravan.databinding.FragmentHomeBinding
+import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.*
+import com.caravan.caravan.ui.activity.GuideOptionActivity
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Extensions.toast
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
 
@@ -60,18 +64,24 @@ class HomeFragment : BaseFragment() {
             })
         }
 
-        homeBinding.homeGuideRecyclerView.adapter = GuideHomeAdapter(this, homeGuideList())
-
-        homeBinding.homeTripRecyclerView.adapter = TripAdapter(this, homeTripList())
-
         homeBinding.apply {
+            homeGuideRecyclerView.adapter = GuideHomeAdapter(this@HomeFragment, homeGuideList())
+            homeTripRecyclerView.adapter = TripAdapter(this@HomeFragment, homeTripList())
+
+            ivBurger.setOnClickListener {
+                if (SharedPref(requireContext()).getString("guideId") != null)
+                    goToGuideOptionActivity(true)
+                else
+                    toast("Please upgrade account to Guide first")
+            }
+
             etSearch.setOnClickListener {
                 navigateToSearchFragment()
             }
         }
 
-
     }
+
 
     private fun homeTripList(): ArrayList<Trip> {
         val list = ArrayList<Trip>()
@@ -93,7 +103,7 @@ class HomeFragment : BaseFragment() {
                 "12.10.2022",
                 null,
                 "en",
-                arrayListOf()
+                arrayListOf(), SharedPref(requireContext()).getToken()
             ),
             "+998932037313",
             "Ogabek Matyakubov",
@@ -123,21 +133,21 @@ class HomeFragment : BaseFragment() {
                             TourPhoto(
                                 "1",
                                 Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                                "https://images.unsplash.com/photo-1605199423916-b725a00b324b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1940&q=80"
                             )
                         )
                         add(
                             TourPhoto(
                                 "1",
                                 Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                                "https://images.unsplash.com/photo-1605199423916-b725a00b324b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1940&q=80"
                             )
                         )
                         add(
                             TourPhoto(
                                 "1",
                                 Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg"
+                                "https://images.unsplash.com/photo-1605199423916-b725a00b324b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1940&q=80"
                             )
                         )
                     },
@@ -157,6 +167,7 @@ class HomeFragment : BaseFragment() {
                     guide,
                     "+998997492581",
                     4.5,
+                    3,
                     arrayListOf(),
                     null
                 )
@@ -170,9 +181,9 @@ class HomeFragment : BaseFragment() {
         for (i in 0..10) {
             list.add(
                 GuideProfile(
-                    "i * 100L + 1",
+                    "100axxcasuwbsdcladcbaofvamcoiadnc",
                     Profile(
-                        "i * 100L",
+                        "skjdnsdnfoiasnmasxkasxa",
                         "Asasin df  asj  sd a skj ask s dj as;j aik cakk caai; casj",
                         "Sobirov",
                         "",
@@ -180,15 +191,15 @@ class HomeFragment : BaseFragment() {
                         "GUIDE",
                         null,
                         "ACTIVE",
-                        null,
+                        "https://images.unsplash.com/photo-1605199423916-b725a00b324b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1940&q=80",
                         "Male",
                         null,
                         "12.02.2022",
                         null,
-                        "English",
+                        "UZBEK",
                         arrayListOf(
                             Device("", "", 'A')
-                        )
+                        ), SharedPref(requireContext()).getToken()
                     ),
                     "",
                     "",
@@ -245,5 +256,11 @@ class HomeFragment : BaseFragment() {
         list.add(SliderViewItem(R.drawable.slider4))
 
         return list
+    }
+
+    override fun goToGuideOptionActivity(isTrip: Boolean) {
+        val intent = Intent(requireContext(), GuideOptionActivity::class.java)
+        intent.putExtra("isTrip", isTrip)
+        startActivity(intent)
     }
 }

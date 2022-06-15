@@ -13,7 +13,8 @@ data class Trip(
     val guideProfile: GuideProfile,
     val phoneNumber: String,
     val rate: Double,
-    val attendancesProfileId: ArrayList<String>,
+    val days: Int,
+    val attendancesProfileId: ArrayList<String>?,
     val reviews: ArrayList<Comment>? = null
 )
 

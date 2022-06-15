@@ -19,8 +19,9 @@ class UpgradeGuide1ViewModel(private val repository: UpgradeGuide1Repository) : 
             val getProfile = repository.getProfile(id)
             if (!getProfile.isSuccessful) {
                 _profile.value = UiStateObject.ERROR(getProfile.message())
+            } else {
+                _profile.value = UiStateObject.SUCCESS(getProfile.body()!!)
             }
-            _profile.value = UiStateObject.SUCCESS(getProfile.body()!!)
         } catch (e: Exception) {
             _profile.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")
         }
@@ -29,12 +30,12 @@ class UpgradeGuide1ViewModel(private val repository: UpgradeGuide1Repository) : 
     private val _update = MutableStateFlow<UiStateObject<Profile>>(UiStateObject.EMPTY)
     val update = _update
 
-    fun updateProfile(id: String, profile: Profile) = viewModelScope.launch {
+    fun updateProfile(profile: Profile) = viewModelScope.launch {
         update.value = UiStateObject.LOADING
 
         try {
 
-            val updateProfile = repository.updateProfile(id, profile)
+            val updateProfile = repository.updateProfile(profile)
             if (updateProfile.isSuccessful)
                 _update.value = UiStateObject.SUCCESS(updateProfile.body()!!)
             else

@@ -18,7 +18,7 @@ class TravelLocationsAdapter(val items: ArrayList<Location>) :
 
     override fun onBindViewHolder(holder: TravelLocationsVH, position: Int) {
         holder.binding.apply {
-            tvProvince.text = "${items[position].district}, ${items[position].province}"
+            tvProvince.text = "${items[position].district}, ${items[position].provence}"
             tvDescription.text = items[position].description
         }
     }

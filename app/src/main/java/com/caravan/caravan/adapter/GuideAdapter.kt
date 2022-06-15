@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.caravan.caravan.databinding.ItemGuideBinding
 import com.caravan.caravan.model.GuideProfile
+import com.caravan.caravan.model.Language
 import com.caravan.caravan.ui.fragment.BaseFragment
 
 class GuideAdapter(var context: BaseFragment, var items: ArrayList<GuideProfile>) :
@@ -27,7 +28,7 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<GuideProfile>
                 guideProfile.profile.name + " " + guideProfile.profile.surname
             itemGuideBinding.tvGuidesCities.text = provinces(guideProfile)
             itemGuideBinding.tvGuidePrice.text = price(guideProfile)
-            itemGuideBinding.tvGuidesLanguages.text = getLanguages(guideProfile)
+            itemGuideBinding.tvGuidesLanguages.text = getLanguages(guideProfile.languages)
             itemGuideBinding.ratingBarGuide.rating = guideProfile.rate.toFloat()
             itemGuideBinding.tvGuidesCommentsCount.text =
                 "(${guideProfile.reviews?.size.toString()})"
@@ -39,11 +40,13 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<GuideProfile>
 
         }
 
-        private fun getLanguages(guide: GuideProfile): String {
+        private fun getLanguages(languages: ArrayList<Language>): String {
             var text = ""
-            for (language in guide.languages) {
-                text += "${language} "
+            for (language in 0..languages.size-2) {
+                text += "${languages[language].name} "
+                text+=","
             }
+            text+= languages[languages.size-1].name
             return text
         }
 

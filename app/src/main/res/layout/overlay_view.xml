@@ -16,7 +16,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/circular_std_bold"
-            android:text="Saidbek Safarov"
             android:textColor="@color/main_color"
             android:textSize="18sp" />
 
@@ -25,9 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/circular_std_bold"
-            android:text="28 years old"
             android:textColor="@color/white" />
-
 
     </LinearLayout>
 

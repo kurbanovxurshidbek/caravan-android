@@ -9,25 +9,48 @@
         android:id="@+id/homeFragment"
         android:name="com.caravan.caravan.ui.fragment.main.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.caravan.caravan.ui.fragment.main.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_navigation"
+            app:destination="@id/navigation" />
+
+    </fragment>
+
     <fragment
         android:id="@+id/messageFragment"
         android:name="com.caravan.caravan.ui.fragment.main.MessageFragment"
         android:label="fragment_message"
         tools:layout="@layout/fragment_message" />
+
     <fragment
         android:id="@+id/accountFragment"
         android:name="com.caravan.caravan.ui.fragment.main.AccountFragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" />
+
+    <navigation
+        android:id="@+id/navigation"
+        app:startDestination="@id/searchFragmentGuide">
+        <fragment
+            android:id="@+id/searchFragmentGuide"
+            android:name="com.caravan.caravan.ui.fragment.main.SearchFragmentGuide"
+            android:label="fragment_search_guide"
+            tools:layout="@layout/fragment_search_guide" />
+        <fragment
+            android:id="@+id/searchFragmentTrip"
+            android:name="com.caravan.caravan.ui.fragment.main.SearchFragmentTrip"
+            android:label="fragment_search_trip"
+            tools:layout="@layout/fragment_search_trip" />
+    </navigation>
 
 </navigation>

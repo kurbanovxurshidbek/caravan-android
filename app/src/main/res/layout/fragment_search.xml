@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".ui.fragment.main.SearchFragment">
 
     <LinearLayout
@@ -57,42 +57,42 @@
             android:src="@drawable/ic_burger" />
     </LinearLayout>
 
+
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="8dp"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/tvGuide"
-            android:layout_width="wrap_content"
+        android:id="@+id/myVIew"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/str_guide"
-            android:fontFamily="@font/circular_std_bold"
-            android:textStyle="bold"
-            android:layout_marginEnd="5dp"
-            android:textColor="@color/black"
-            android:background="@drawable/backgroung_text_search_selected"
-            android:paddingVertical="10dp"
-            android:paddingHorizontal="50dp"/>
-        <TextView
-            android:id="@+id/tvTrip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/str_trip"
-            android:fontFamily="@font/circular_std_bold"
-            android:textStyle="bold"
-            android:layout_marginStart="5dp"
-            android:textColor="@color/black"
-            android:background="@drawable/backgroung_text_search"
-            android:paddingVertical="10dp"
-            android:paddingHorizontal="50dp"/>
+            android:layout_marginHorizontal="100dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="10dp"
+            app:cardCornerRadius="50dp">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/searchFragmentTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_margin="2dp"
+                app:tabBackground="@drawable/tab_selector"
+                app:tabIndicator="@null"
+                app:tabMode="fixed"
+                app:tabRippleColor="@null"
+                app:tabSelectedTextColor="@color/main_color" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/searchFragmentViewPager"
+            android:orientation="horizontal"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
 </LinearLayout>

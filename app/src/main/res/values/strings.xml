@@ -18,7 +18,7 @@
     <string name="have_been_searched_by_many_people_so_far">Have been searched by many people so far</string>
 
     <!--    for login-->
-    <string name="str_enter_email">Enter your email.</string>
+    <string name="str_enter_email">Enter your email</string>
     <string name="str_choose_birthday">Choose your birthday.</string>
     <string name="str_enter_phone">Enter your phone number.</string>
     <string name="str_verify_phone">Verify your phone number.</string>
@@ -40,11 +40,12 @@
     <string name="str_phone_number">Phone Number</string>
     <string name="str_check_agreement">Please check Agreement</string>
     <string name="str_fill_all_fields">Please fill all fields</string>
-    <string name="str_url_agreement">https://t.me/Bogibek_Matyaqubov</string>
+    <string name="str_url_agreement">https://matyaqubovdev.github.io/caravan-policy</string>
     <string name="str_url_get_info">https://t.me/Bogibek_Matyaqubov</string>
     <string name="str_gender">Gender</string>
     <string name="str_male">Male</string>
     <string name="str_female">Female</string>
+    <string name="str_all">All</string>
     <string name="str_guide">Guide</string>
     <string name="str_trip">Trip</string>
     <string name="trial_text">Bukhara is a very beautiful city in Uzbekistan. You must like there if you came. I give you that opportunity to discover Bukhara. In this trip you can customise the trip days where to visit. Add more like opportunites. Take me and discover Bukhara</string>
@@ -67,7 +68,7 @@
     <string name="str_send">Send</string>
     <string name="guide_s_trips">Guide\'s Trips</string>
     <string name="hire_guide">Hire Guide</string>
-    <string name="write_respond">Write Respond</string>
+    <string name="write_review">Write Review</string>
     <string name="str_english">English</string>
     <string name="str_uzbek">O\'zbekcha</string>
     <string name="str_choose_language">Choose Language</string>
@@ -84,7 +85,7 @@
     <string name="str_fill_your_information">Fill your information</string>
     <string name="str_fill_the_field_to_continue">Fill the field to continue</string>
     <string name="str_fullname">Fullname</string>
-    <string name="str_second_phone_number">Second phone number</string>
+    <string name="str_second_phone_number">Second phone number (optional)</string>
     <string name="str_enter_your_email">Enter your email</string>
     <string name="str_enter_your_birth_date_dd_mm_yyyy">Enter your birth date (dd.mm.yyyy)</string>
     <string name="str_next">Next</string>
@@ -92,7 +93,7 @@
     <string name="str_travel_locations">Travel locations</string>
     <string name="str_location">Location</string>
     <string name="str_short_information">Short information</string>
-    <string name="str_add_more">Add</string>
+    <string name="str_add_more">Add More</string>
     <string name="str_price">Price</string>
     <string name="str_amount">Amount</string>
     <string name="str_language">Language</string>
@@ -116,6 +117,23 @@
     <string name="str_upload">Upload</string>
     <string name="error">Error</string>
     <string name="went_wrong">Something went wrong. Please try again</string>
+    <string name="str_send_message">Please write review</string>
+    <string name="maximum_rating">Maximum Rating (0–5)</string>
+    <string name="minimum_rating">Minimum Rating (0–5)</string>
+    <string name="day">Day</string>
+    <string name="maximum_people">Maximum People</string>
+    <string name="minimum_people">Minimum People</string>
+    <string name="maximum_price">Maximum Price</string>
+    <string name="minimum_price">Minimum Price</string>
+    <string name="filter_your_search">Filter your Search</string>
+    <string name="warning">Warning</string>
+    <string name="check_gender">Please check your gender</string>
+    <string name="str_minimum_price">Minimum Price</string>
+    <string name="str_maximum_price">Maximum Price</string>
+    <string name="str_search">Search</string>
+    <string name="str_length">Length</string>
+    <string name="str_trip_days_1_10">Trip Days</string>
+    <string name="str_compleate_create">Your trip has been created</string>
 
     <string-array name="location">
         <item>TASHKENT</item>
@@ -136,18 +154,19 @@
         <item>BEGINNER</item>
         <item>ELEMENTARY</item>
         <item>INTERMEDIATE</item>
+        <item>ADVANCED</item>
         <item>NATIVE</item>
     </string-array>
 
     <string-array name="currencies">
         <item>USD</item>
         <item>UZS</item>
-        <item>EUR</item>
     </string-array>
 
     <string-array name="options">
         <item>DAY</item>
         <item>HOUR</item>
+        <item>PERSON</item>
         <item>TRIP</item>
     </string-array>
 

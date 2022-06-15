@@ -10,7 +10,7 @@ import com.caravan.caravan.databinding.ItemCreateTripBinding
 import com.caravan.caravan.databinding.PhotoAdderItemBinding
 import com.caravan.caravan.model.CreateTrip
 import com.caravan.caravan.ui.fragment.guideOption.CreateTrip2Fragment
-import com.caravan.caravan.utils.UpgradeGuideObject
+import com.caravan.caravan.utils.CreateTripObject
 
 class CreateTripAdapter(var fragment: CreateTrip2Fragment, var items:ArrayList<CreateTrip>):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -55,7 +55,7 @@ class CreateTripAdapter(var fragment: CreateTrip2Fragment, var items:ArrayList<C
             binding.apply {
 
                 Glide.with(fragment).load(trip.photo).into(ivTrip)
-                tvProvince.text = trip.location.province
+                tvProvince.text = trip.location.provence
                 tvDistrict.text = trip.location.district
                 tvDesc.text = trip.location.description
 
@@ -71,7 +71,7 @@ class CreateTripAdapter(var fragment: CreateTrip2Fragment, var items:ArrayList<C
 
         fun bind() {
             binding.apply {
-                if (UpgradeGuideObject.myTripList.size > 5){
+                if (CreateTripObject.myPhotosList.size > 5){
                     llAddImage.isVisible = false
 
                 }

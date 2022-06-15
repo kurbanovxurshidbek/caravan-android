@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -18,22 +17,21 @@ import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.activity.BaseActivity
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.*
+import com.caravan.caravan.utils.OkInterface
+import com.caravan.caravan.utils.OkWithCancelInterface
+import com.caravan.caravan.utils.UiStateObject
+import com.caravan.caravan.utils.viewBinding
 import com.caravan.caravan.viewmodel.main.account.AccountRepository
 import com.caravan.caravan.viewmodel.main.account.AccountViewModel
 import com.caravan.caravan.viewmodel.main.account.AccountViewModelFactory
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AccountFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AccountFragment : BaseFragment() {
 
     private val binding by viewBinding { FragmentAccountBinding.bind(it) }
     private lateinit var base: BaseActivity
     private lateinit var viewModel: AccountViewModel
     private lateinit var profile: Profile
+    private var id: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,12 +45,11 @@ class AccountFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         base = requireActivity() as BaseActivity
         setupViewModel()
-        val id = SharedPref(requireContext()).getString("profileId")
+        id = SharedPref(requireContext()).getString("profileId")
         if (id != null) {
-            viewModel.getProfile(id)
+            viewModel.getProfile(id!!)
         } else {
-            Dialog.showDialogWarning(
-                requireContext(),
+            showDialogWarning(
                 getString(R.string.error),
                 getString(R.string.went_wrong),
                 object : OkInterface {
@@ -81,15 +78,13 @@ class AccountFragment : BaseFragment() {
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Dialog.showDialogWarning(
-                            requireContext(),
+                        showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
                             object : OkInterface {
                                 override fun onClick() {
 
                                 }
-
                             }
                         )
                     }
@@ -97,6 +92,35 @@ class AccountFragment : BaseFragment() {
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.delete.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        SharedPref(requireContext()).saveBoolean("loginDone", false)
+                        base.callLoginActivity()
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+
+                                }
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -118,11 +142,10 @@ class AccountFragment : BaseFragment() {
                 goToEditActivity(false)
             }
             llGuideOption.setOnClickListener {
-                    goToGuideOptionActivity(isGuide())
+                goToGuideOptionActivity(isGuide())
             }
             llLogOut.setOnClickListener {
-                Dialog.showAlertDialog(
-                    requireContext(),
+                showAlertDialog(
                     getString(R.string.str_logout_message),
                     object : OkWithCancelInterface {
                         override fun onOkClick() {
@@ -132,24 +155,21 @@ class AccountFragment : BaseFragment() {
                         }
 
                         override fun onCancelClick() {
-                            //something
+                            return
                         }
 
                     })
             }
             llDeleteAccount.setOnClickListener {
-                Dialog.showAlertDialog(
-                    requireContext(),
+                showAlertDialog(
                     getString(R.string.str_delete_message),
                     object : OkWithCancelInterface {
                         override fun onOkClick() {
-                            // send request here
-                            SharedPref(requireContext()).saveBoolean("loginDone", false)
-                            base.callLoginActivity()
+                            viewModel.deleteProfile()
                         }
 
                         override fun onCancelClick() {
-
+                            return
                         }
 
                     })
@@ -162,11 +182,37 @@ class AccountFragment : BaseFragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
             this,
-            AccountViewModelFactory(AccountRepository(RetrofitHttp.createService(ApiService::class.java)))
+            AccountViewModelFactory(
+                AccountRepository(
+                    RetrofitHttp.createServiceWithAuth(
+                        SharedPref(requireContext()),
+                        ApiService::class.java
+                    )
+                )
+            )
         )[AccountViewModel::class.java]
     }
 
     private fun isGuide(): Boolean {
         return !profile.guideId.isNullOrBlank()
+    }
+
+
+    override fun onResume() {
+        if (id != null) {
+            viewModel.getProfile(id!!)
+        } else {
+            showDialogWarning(
+                getString(R.string.error),
+                getString(R.string.went_wrong),
+                object : OkInterface {
+                    override fun onClick() {
+
+                    }
+
+                }
+            )
+        }
+        super.onResume()
     }
 }
