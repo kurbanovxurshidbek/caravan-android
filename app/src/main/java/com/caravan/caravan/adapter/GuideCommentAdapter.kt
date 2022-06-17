@@ -5,17 +5,31 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.caravan.caravan.databinding.ItemGuideCommentBinding
 import com.caravan.caravan.model.Comment
-import com.caravan.caravan.ui.fragment.guideOption.FeedbackListFragment
 
-class GuideCommentAdapter(var context: FeedbackListFragment, var items: ArrayList<Comment>) :
-    RecyclerView.Adapter<GuideCommentAdapter.ViewHolder>() {
+class GuideCommentAdapter : RecyclerView.Adapter<GuideCommentAdapter.ViewHolder>() {
+
+    private var differCallback = object : DiffUtil.ItemCallback<Comment>() {
+        override fun areItemsTheSame(oldItem: Comment, newItem: Comment): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Comment, newItem: Comment): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+    var differ = AsyncListDiffer(this, differCallback)
+
     inner class ViewHolder(private val guideCommentBinding: ItemGuideCommentBinding) :
         RecyclerView.ViewHolder(guideCommentBinding.root) {
         fun onBind(comment: Comment) {
+
             Glide.with(guideCommentBinding.ivCommentProfile).load(comment.from.photo)
                 .into(guideCommentBinding.ivCommentProfile)
             guideCommentBinding.tvCommentFullname.text =
@@ -24,19 +38,26 @@ class GuideCommentAdapter(var context: FeedbackListFragment, var items: ArrayLis
             guideCommentBinding.ratingBarComment.rating = comment.rate.toFloat()
             guideCommentBinding.tvRatingCount.text = comment.rate.toString()
             if (comment.answerContent != null) {
-                guideCommentBinding.tvIsAnswered.text = colorMyText("Aswered", 0, 6, "#99000000")
+                guideCommentBinding.tvIsAnswered.text = colorMyText("Answered", 0, 6, "#99000000")
             } else {
                 guideCommentBinding.tvIsAnswered.text =
                     colorMyText("Not answered", 0, 11, "#167351")
             }
 
             guideCommentBinding.llComment.setOnClickListener {
-                context.navigateToFeedbackResponse(comment)
+                onItemClickListener?.invoke(comment)
             }
 
         }
 
     }
+
+    private var onItemClickListener: ((Comment) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (Comment) -> Unit) {
+        onItemClickListener = listener
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -50,11 +71,11 @@ class GuideCommentAdapter(var context: FeedbackListFragment, var items: ArrayLis
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.onBind(items[position])
+        holder.onBind(differ.currentList[position])
 
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = differ.currentList.size
 
     private fun colorMyText(
         inputText: String,
