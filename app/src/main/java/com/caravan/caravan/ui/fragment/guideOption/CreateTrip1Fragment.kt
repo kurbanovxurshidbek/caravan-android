@@ -88,13 +88,12 @@ class CreateTrip1Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        Log.d("@@@", "setUpObservers: ${it.data}")
+
                         SharedPref(requireContext()).saveString("tripId", it.data.id)
                         openNextFragment()
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Log.d("@@@", "setUpObservers: ${it.message}")
                         showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),

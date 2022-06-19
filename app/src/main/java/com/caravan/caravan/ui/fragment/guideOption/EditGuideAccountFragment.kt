@@ -98,7 +98,6 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        Log.d("@@@", "setUpObservers: ${it.data}")
                         guideProfile = it.data
                         setData(guideProfile)
                     }

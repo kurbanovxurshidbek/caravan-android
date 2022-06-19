@@ -1,13 +1,11 @@
-package com.caravan.caravan.viewmodel.details
+package com.caravan.caravan.viewmodel.details.trip
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.caravan.caravan.model.Comment
 import com.caravan.caravan.model.Trip
 import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.model.review.Review
 import com.caravan.caravan.model.review.ReviewsByPagination
-import com.caravan.caravan.utils.UiStateList
 import com.caravan.caravan.utils.UiStateObject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch

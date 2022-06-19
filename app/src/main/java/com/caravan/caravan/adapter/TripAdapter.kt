@@ -21,7 +21,7 @@ class TripAdapter(val context: Fragment, var items: ArrayList<Trip>) :
     inner class ViewHolder(private val itemTripsBinding: ItemTripsBinding) :
         RecyclerView.ViewHolder(itemTripsBinding.root) {
         fun bind(trip: Trip) {
-            Glide.with(context).load(trip.photos[0].url).into(itemTripsBinding.ivTripPhoto)
+            Glide.with(context).load(trip.photos[0].photo).into(itemTripsBinding.ivTripPhoto)
             itemTripsBinding.tvTripTitle.text = trip.name
             itemTripsBinding.ratingBarTrip.rating = trip.rate.toFloat()
             itemTripsBinding.tvTripCommentsCount.text = trip.reviews?.size.toString()
@@ -30,6 +30,7 @@ class TripAdapter(val context: Fragment, var items: ArrayList<Trip>) :
             itemView.setOnClickListener {
                 (context as BaseFragment).goToDetailsActivity(trip)
             }
+
         }
 
     }

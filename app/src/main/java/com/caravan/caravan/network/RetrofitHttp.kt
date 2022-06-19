@@ -11,15 +11,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 
-
 object RetrofitHttp {
 
     const val TAG: String = "RetrofitHttp"
 
-    const val IS_TESTER = true
+    const val IS_TESTER = false
 
-    private const val SERVER_DEVELOPMENT = "http://137.184.80.70:8080"
-    private const val SERVER_PRODUCTION = ""
+    private const val SERVER_DEVELOPMENT = "http://10.10.1.172:8080"
+    private const val SERVER_PRODUCTION = "http://137.184.80.70:8080"
 
     private fun server(): String {
         return if (IS_TESTER) {
@@ -91,8 +90,8 @@ object RetrofitHttp {
 
     fun <T> createServiceWithAuth(pref: SharedPref, service: Class<T>?): T {
         val newClient =
-            OkHttpClient.Builder().connectTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS).addInterceptor(Interceptor { chain ->
+            OkHttpClient.Builder().connectTimeout(100, TimeUnit.SECONDS)
+                .readTimeout(100, TimeUnit.SECONDS).addInterceptor(Interceptor { chain ->
                     val builder = chain.request().newBuilder()
                     builder.addHeader("Authorization", "Bearer " + pref.getToken())
                     builder.header("Content-Type", "application/json")

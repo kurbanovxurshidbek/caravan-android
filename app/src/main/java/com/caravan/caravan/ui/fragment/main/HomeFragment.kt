@@ -23,7 +23,6 @@ import com.caravan.caravan.utils.Extensions.toast
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
 
-
 class HomeFragment : BaseFragment() {
     private lateinit var homeBinding: FragmentHomeBinding
     private lateinit var handler: Handler
@@ -169,7 +168,8 @@ class HomeFragment : BaseFragment() {
                     4.5,
                     3,
                     arrayListOf(),
-                    null
+                    null,
+                    0
                 )
             )
         }
