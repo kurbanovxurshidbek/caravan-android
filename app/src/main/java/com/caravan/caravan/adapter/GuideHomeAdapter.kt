@@ -9,6 +9,7 @@ import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemGuideHomeBinding
 import com.caravan.caravan.model.GuideProfile
@@ -21,11 +22,11 @@ class GuideHomeAdapter(private val context: BaseFragment, private val list: List
     inner class ViewHolder(private val itemBinding: ItemGuideHomeBinding) : RecyclerView.ViewHolder(itemBinding.root){
 
         fun onBind(guide: GuideProfile){
-//            Glide.with(itemBinding.ivProfilePhoto).load(guide.profile.profilePhoto).into(itemBinding.ivProfilePhoto)
+            Glide.with(itemBinding.ivProfilePhoto).load(guide.profile.photo).into(itemBinding.ivProfilePhoto)
             itemBinding.tvName.text = guide.profile.name
             itemBinding.tvName.isSelected = true
             itemBinding.tvPrice.text = price(guide)
-//            itemBinding.tvProvince.text = provinces(guide)
+            itemBinding.tvProvince.text = provinces(guide)
 
             itemView.setOnClickListener {
                 if(context is HomeFragment){
@@ -55,7 +56,7 @@ class GuideHomeAdapter(private val context: BaseFragment, private val list: List
                 val endIndex = province.provence.length
                 colorMyText(text, 0, endIndex, R.color.main_color2)
             }else{
-                colorMyText(province.provence, 0, province.provence.length, R.color.main_color2)
+                colorMyText(province.provence, 0, province.provence.length, Color.parseColor("#167351"))
             }
         }
 

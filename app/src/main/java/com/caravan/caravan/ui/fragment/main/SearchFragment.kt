@@ -8,8 +8,10 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
+import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.compose.ui.text.toUpperCase
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigator
@@ -40,7 +42,7 @@ class SearchFragment : BaseFragment() {
     private lateinit var handler: Handler
 
 
-    private var gender: String = ""
+    private var gender: String? = ""
     var currenciesMinGuide: Array<String>? = null
     var optionsMinGuide: Array<String>? = null
     var currencyMinGuide: String = "UZS"
@@ -139,6 +141,14 @@ class SearchFragment : BaseFragment() {
             }
 
         })
+
+        binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                hideKeyboard()
+                TODO("Call Search Api")
+                true
+            } else false
+        }
     }
 
     override fun onPause() {
@@ -162,8 +172,8 @@ class SearchFragment : BaseFragment() {
     private fun setupViewPager() {
         val tabLayout = binding.searchFragmentTabLayout
         val viewPager = binding.searchFragmentViewPager
-        tabLayout.addTab(tabLayout.newTab().setText("Guide"))
-        tabLayout.addTab(tabLayout.newTab().setText("Trip"))
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.str_guide)))
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.str_trip)))
 
         val fragmentAdapter = SearchFragmentVPAdapter(childFragmentManager, lifecycle)
         viewPager.adapter = fragmentAdapter
@@ -206,7 +216,7 @@ class SearchFragment : BaseFragment() {
                     getString(R.string.str_male) -> {
                         checkboxMale.isChecked = true
                     }
-                    getString(R.string.str_all) -> {
+                    null -> {
                         checkboxMale.isChecked = true
                         checkboxFemale.isChecked = true
                     }
@@ -227,17 +237,17 @@ class SearchFragment : BaseFragment() {
                 }
 
                 when (filterGuide!!.minPrice!!.type) {
-                    "DAY" -> spinnerTypeMin.setSelection(0)
-                    "HOUR" -> spinnerTypeMin.setSelection(1)
-                    "PERSON" -> spinnerTypeMin.setSelection(2)
-                    "TRIP" -> spinnerTypeMin.setSelection(3)
+                    getString(R.string.day).toUpperCase() -> spinnerTypeMin.setSelection(0)
+                    getString(R.string.hour).toUpperCase() -> spinnerTypeMin.setSelection(1)
+                    getString(R.string.person).toUpperCase() -> spinnerTypeMin.setSelection(2)
+                    getString(R.string.str_trip).toUpperCase() -> spinnerTypeMin.setSelection(3)
                 }
 
                 when (filterGuide!!.maxPrice!!.type) {
-                    "DAY" -> spinnerTypeMax.setSelection(0)
-                    "HOUR" -> spinnerTypeMax.setSelection(1)
-                    "PERSON" -> spinnerTypeMax.setSelection(2)
-                    "TRIP" -> spinnerTypeMax.setSelection(3)
+                    getString(R.string.day).toUpperCase() -> spinnerTypeMax.setSelection(0)
+                    getString(R.string.hour).toUpperCase() -> spinnerTypeMax.setSelection(1)
+                    getString(R.string.person).toUpperCase() -> spinnerTypeMax.setSelection(2)
+                    getString(R.string.str_trip).toUpperCase() -> spinnerTypeMax.setSelection(3)
                 }
             }
         }
@@ -273,7 +283,7 @@ class SearchFragment : BaseFragment() {
                 } else if (checkboxFemale.isChecked) {
                     "Female"
                 } else {
-                    ""
+                    null
                 }
 
                 filterGuide = FilterGuide(
@@ -326,17 +336,17 @@ class SearchFragment : BaseFragment() {
                 }
 
                 when (filterTrip!!.minPrice!!.type) {
-                    "DAY" -> spinnerTypeMin.setSelection(0)
-                    "HOUR" -> spinnerTypeMin.setSelection(1)
-                    "PERSON" -> spinnerTypeMin.setSelection(2)
-                    "TRIP" -> spinnerTypeMin.setSelection(3)
+                    getString(R.string.day).toUpperCase() -> spinnerTypeMin.setSelection(0)
+                    getString(R.string.hour).toUpperCase() -> spinnerTypeMin.setSelection(1)
+                    getString(R.string.person).toUpperCase() -> spinnerTypeMin.setSelection(2)
+                    getString(R.string.str_trip).toUpperCase() -> spinnerTypeMin.setSelection(3)
                 }
 
                 when (filterTrip!!.maxPrice!!.type) {
-                    "DAY" -> spinnerTypeMax.setSelection(0)
-                    "HOUR" -> spinnerTypeMax.setSelection(1)
-                    "PERSON" -> spinnerTypeMax.setSelection(2)
-                    "TRIP" -> spinnerTypeMax.setSelection(3)
+                    getString(R.string.day).toUpperCase() -> spinnerTypeMax.setSelection(0)
+                    getString(R.string.hour).toUpperCase() -> spinnerTypeMax.setSelection(1)
+                    getString(R.string.person).toUpperCase() -> spinnerTypeMax.setSelection(2)
+                    getString(R.string.str_trip).toUpperCase() -> spinnerTypeMax.setSelection(3)
                 }
             }
         }
@@ -381,7 +391,7 @@ class SearchFragment : BaseFragment() {
                 }
 
                 val maxPeople: Int = if (maxPeople.text.isNullOrBlank()) {
-                    999
+                    99
                 } else {
                     maxPeople.text.toString().toInt()
                 }
@@ -416,7 +426,7 @@ class SearchFragment : BaseFragment() {
 
             checkboxMale.isChecked = true
             checkboxFemale.isChecked = true
-            gender = getString(R.string.str_all)
+            gender = null
 
             checkboxMale.setOnCheckedChangeListener { _, isChecked ->
 
@@ -427,7 +437,7 @@ class SearchFragment : BaseFragment() {
                 } else {
                     checkboxMale.isEnabled = true
                     checkboxFemale.isEnabled = true
-                    gender = getString(R.string.str_all)
+                    gender = null
                 }
 
             }
@@ -441,7 +451,7 @@ class SearchFragment : BaseFragment() {
                 } else {
                     checkboxFemale.isEnabled = true
                     checkboxMale.isEnabled = true
-                    gender = getString(R.string.str_all)
+                    gender = null
                 }
             }
 
@@ -452,7 +462,7 @@ class SearchFragment : BaseFragment() {
                 gender = getString(R.string.str_female)
             }
             if (checkboxMale.isChecked && checkboxFemale.isChecked) {
-                gender = getString(R.string.str_all)
+                gender = null
             }
         }
 
