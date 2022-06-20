@@ -335,7 +335,7 @@ class UploadImageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
         binding.btnUpload.setOnClickListener {
             if (pickedPhoto != null && desc != "") {
-                val item = CreateTrip(pickedPhoto.toString(), Location("1", province, district, desc))
+                val item = CreateTrip(photoId,pickedPhoto.toString(), Location("1", province, district, desc))
 
                 CreateTripObject.myPhotosList.add(item)
 

@@ -40,12 +40,12 @@
             android:layout_marginTop="20dp">
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="200dp">
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivTrip"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
                     android:visibility="gone"
                     android:adjustViewBounds="true"
                     app:shapeAppearanceOverlay="@style/corners"/>
@@ -60,7 +60,7 @@
                 <LinearLayout
                     android:id="@+id/ll_addPage"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:visibility="visible"
                     android:gravity="center"

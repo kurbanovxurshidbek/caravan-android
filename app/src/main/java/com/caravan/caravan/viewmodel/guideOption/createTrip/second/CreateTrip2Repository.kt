@@ -5,4 +5,6 @@ import com.caravan.caravan.network.ApiService
 
 class CreateTrip2Repository(private val apiService: ApiService) {
     suspend fun completeTrip(tripId:String, secondSend: SecondSend) = apiService.completeTrip(tripId,secondSend)
+
+    suspend fun deletePhoto(id: String) = apiService.deletePhoto(id)
 }

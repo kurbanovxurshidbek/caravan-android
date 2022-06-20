@@ -33,6 +33,7 @@ import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.utils.*
 import com.caravan.caravan.utils.CreateTripObject.myPhotoIds
 import com.caravan.caravan.utils.CreateTripObject.myPhotosList
+import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.viewmodel.guideOption.createTrip.second.CreateTrip2Repository
 import com.caravan.caravan.viewmodel.guideOption.createTrip.second.CreateTrip2ViewModel
 import com.caravan.caravan.viewmodel.guideOption.createTrip.second.CreateTrip2ViewModelFactory
@@ -113,6 +114,38 @@ class CreateTrip2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
+    private fun setUpObserversDeleteTripPhoto() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.deletePhoto.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        toast("Photo is deleted")
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+
+                            })
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+
+
+
     private fun finishTrip() {
 
         myPhotosList.clear()
@@ -133,7 +166,7 @@ class CreateTrip2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
 
         if (myPhotosList.size == 0) {
-            myPhotosList.add(CreateTrip("", Location("1", "", "", "")))
+            myPhotosList.add(CreateTrip("","", Location("1", "", "", "")))
         }
 
         refreshAdapterTrip(myPhotosList)
@@ -230,9 +263,16 @@ class CreateTrip2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun removeItem(index: Int) {
+    fun removeItem(index: Int,photoId:String) {
+        viewModel.deleteTripPhoto(photoId)
+        setUpObserversDeleteTripPhoto()
+
         myPhotosList.removeAt(index)
         adapterTripAdapter.notifyDataSetChanged()
+    }
+
+    private fun deleteTripPhoto(photoId:String){
+
     }
 
     private fun swipeToDeleteFacility() {
