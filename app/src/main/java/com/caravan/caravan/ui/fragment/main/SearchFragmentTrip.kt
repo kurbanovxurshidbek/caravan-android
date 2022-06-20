@@ -141,7 +141,8 @@ class SearchFragmentTrip : BaseFragment() {
                     4.5,
                     3,
                     arrayListOf(),
-                    null
+                    null,
+                    0
                 )
             )
         }

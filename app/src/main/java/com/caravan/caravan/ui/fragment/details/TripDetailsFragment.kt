@@ -34,9 +34,9 @@ import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
-import com.caravan.caravan.viewmodel.details.TripDetailsRepository
-import com.caravan.caravan.viewmodel.details.TripDetailsViewModel
-import com.caravan.caravan.viewmodel.details.TripDetailsViewModelFactory
+import com.caravan.caravan.viewmodel.details.trip.TripDetailsRepository
+import com.caravan.caravan.viewmodel.details.trip.TripDetailsViewModel
+import com.caravan.caravan.viewmodel.details.trip.TripDetailsViewModelFactory
 import com.stfalcon.imageviewer.StfalconImageViewer
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
@@ -112,8 +112,8 @@ class TripDetailsFragment : BaseFragment() {
 
     private fun setUpDate(data: Trip) {
         setViewPager(data.photos)
-        setTravelLocations(data.places)
-        setFacilities(data.facility)
+        setTravelLocations(data.locations)
+        setFacilities(data.facilities)
         setCommentsRv(data.reviews)
         setLeaveCommentsPart(data.attendancesProfileId, data.reviews)
 
@@ -159,7 +159,7 @@ class TripDetailsFragment : BaseFragment() {
                             etLeaveComment.text.toString(),
                             "GUIDE",
                             null,
-                            trip.guideProfile.id
+                            trip.guide.id
                         )
 
                     setUpObservesReview()
@@ -273,7 +273,7 @@ class TripDetailsFragment : BaseFragment() {
         ) { view, image ->
 
 
-            Glide.with(requireContext()).load(image.url).into(view)
+            Glide.with(requireContext()).load(image.photo).into(view)
         }.withHiddenStatusBar(false)
             .withDismissListener {
                 overlayViewBinding = OverlayViewBinding.bind(mView)

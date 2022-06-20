@@ -1,132 +1,204 @@
 package com.caravan.caravan.ui.fragment.guideOption
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import com.caravan.caravan.adapter.TripAdapter
+import androidx.core.widget.NestedScrollView
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.caravan.caravan.R
+import com.caravan.caravan.adapter.TripGuideAdapter
 import com.caravan.caravan.databinding.FragmentTripListBinding
 import com.caravan.caravan.manager.SharedPref
-import com.caravan.caravan.model.*
+import com.caravan.caravan.model.Trip
+import com.caravan.caravan.network.ApiService
+import com.caravan.caravan.network.RetrofitHttp
+import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Extensions.toast
+import com.caravan.caravan.utils.OkInterface
+import com.caravan.caravan.utils.OkWithCancelInterface
+import com.caravan.caravan.utils.UiStateObject
+import com.caravan.caravan.utils.viewBinding
+import com.caravan.caravan.viewmodel.guideOption.tripList.TripListRepository
+import com.caravan.caravan.viewmodel.guideOption.tripList.TripListViewModel
+import com.caravan.caravan.viewmodel.guideOption.tripList.TripListViewModelFactory
 
-class TripListFragment : Fragment() {
-
-    private lateinit var binding: FragmentTripListBinding
-    lateinit var tripAdapter: TripAdapter
-
+class TripListFragment : BaseFragment() {
+    private val binding by viewBinding { FragmentTripListBinding.bind(it) }
+    lateinit var tripAdapter: TripGuideAdapter
+    lateinit var viewModel: TripListViewModel
+    private var trips = ArrayList<Trip>()
+    lateinit var tripId: String
+    lateinit var guideId: String
+    var page = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentTripListBinding.inflate(inflater, container, false)
-        initViews()
-        return binding.root
+        return inflater.inflate(R.layout.fragment_trip_list, container, false)
     }
 
-    private fun initViews() {
-        binding.recyclerViewMyTrips.layoutManager = GridLayoutManager(activity, 1)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setUpViewModel()
+        setUpObservers()
+
+        val guideId = SharedPref(requireContext()).getString("guideId")
+
+        if (guideId != null)
+            initViews(guideId)
+        else
+            showDialogWarning(
+                getString(R.string.error),
+                getString(R.string.went_wrong),
+                object : OkInterface {
+                    override fun onClick() {
+                        requireActivity().finish()
+                    }
+
+                })
+    }
+
+    fun setUpViewModel() {
+        viewModel = ViewModelProvider(
+            this,
+            TripListViewModelFactory(
+                TripListRepository(
+                    RetrofitHttp.createServiceWithAuth(
+                        SharedPref(requireContext()),
+                        ApiService::class.java
+                    )
+                )
+            )
+        )[TripListViewModel::class.java]
+    }
+
+    private fun setUpObservers() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.tripList.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        Log.d("@@@", "TripRes: ${it.data}")
+
+                        if (it.data != null) {
+                            trips.addAll(trips.size, it.data.trips)
+                            refreshAdapterTrip(trips)
+                        } else {
+                            showDialogWarning(
+                                getString(R.string.error),
+                                getString(R.string.went_wrong),
+                                object : OkInterface {
+                                    override fun onClick() {
+                                        findNavController().popBackStack()
+                                    }
+
+                                })
+                        }
+
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        Log.d("@@@", "setUpObservers: ${it.message}")
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+
+                            })
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+    private fun setUpObserversDelete() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.deleteTrip.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        refreshAdapterTrip(trips)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        Log.d("@@@", "setUpObservers: ${it.message}")
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+
+                            })
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+
+
+    private fun initViews(guideId: String) {
+        viewModel.getMyTrips(guideId, page)
+
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        binding.apply {
+            nestedScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                if (nestedScroll.getChildAt(nestedScroll.childCount - 1) != null) {
+                    if (scrollY >= nestedScroll.getChildAt(nestedScroll.childCount - 1).measuredHeight - nestedScroll.measuredHeight &&
+                        scrollY > oldScrollY
+                    ) {
+                        page++
+                        viewModel.getMyTrips(guideId, page)
+                    }
+                }
+            })
+        }
+
+    }
+
+    fun deleteTrip(tripId: String) {
+        showAlertDialog("Are you sure you want to delete this trip?",
+            object : OkWithCancelInterface {
+                override fun onOkClick() {
+                    viewModel.deleteMyTrip(tripId)
+
+                    setUpObserversDelete()
+                }
+
+                override fun onCancelClick() {
+                    return
+                }
+
+            })
+
 
     }
 
     fun refreshAdapterTrip(list: ArrayList<Trip>) {
-        tripAdapter = TripAdapter(this, list)
-        binding.recyclerViewMyTrips.adapter = tripAdapter
-    }
-
-    fun loadTripsList(): ArrayList<Trip> {
-
-        val guide = GuideProfile(
-            "100001",
-            Profile(
-                "1001",
-                "Ogabek",
-                "Matyakubov",
-                "+998997492581",
-                "ogabekdev@gmail.com",
-                "GUIDE",
-                null,
-                "ACTIVE",
-                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg",
-                "MALE",
-                null,
-                "12.10.2022",
-                null,
-                "en",
-                arrayListOf(), SharedPref(requireContext()).getToken()
-            ),
-            "+998932037313",
-            "Ogabek Matyakubov",
-            true,
-            4.5,
-            Price(150.0.toLong(), "USD", "day"),
-            ArrayList<Language>().apply {
-                add(Language("1", "English", "Advanced"))
-                add(Language("2", "Uzbek", "Native"))
-            },
-            ArrayList<Location>().apply {
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-            },
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf()
-        )
-
-        val list = ArrayList<Trip>()
-        for (i in 0..10) {
-            list.add(
-                Trip(
-                    "1", "Khiva in 3 days",
-                    ArrayList<TourPhoto>().apply {
-                        add(
-                            TourPhoto(
-                                "1",
-                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
-                            )
-                        )
-                        add(
-                            TourPhoto(
-                                "1",
-                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
-                            )
-                        )
-                        add(
-                            TourPhoto(
-                                "1",
-                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
-                            )
-                        )
-                    },
-                    ArrayList<Facility>().apply {
-                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-                    },
-                    ArrayList<Location>().apply {
-                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                    },
-                    "Khiva in 3 days",
-                    Price(1200.0.toLong(), "USD", "trip"),
-                    5, 10,
-                    guide,
-                    "+998997492581",
-                    4.5,
-                    3,
-                    arrayListOf(),
-                    null
-                )
-            )
-        }
-        return list
+        tripAdapter = TripGuideAdapter(this, list)
+        binding.recyclerView.adapter = tripAdapter
+        tripAdapter.notifyDataSetChanged()
     }
 
 }

@@ -277,6 +277,7 @@ class EditProfileFragment : BaseFragment() {
                 datePicker[Calendar.YEAR] = pickedYear
                 datePicker[Calendar.MONTH] = pickedMonth
                 datePicker[Calendar.DAY_OF_MONTH] = pickedDay
+
                 val dateFormat = "dd.MM.yyyy"
                 val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
                 binding.tvBirthday.text = simpleDateFormat.format(datePicker.time)

@@ -100,7 +100,6 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        Log.d("@@@", "setUpObservers: ${it.data}")
                         SharedPref(requireContext()).saveString("guideId", it.data.id)
                         completeAction()
                     }

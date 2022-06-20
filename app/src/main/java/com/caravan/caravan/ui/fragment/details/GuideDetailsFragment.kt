@@ -35,9 +35,9 @@ import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
-import com.caravan.caravan.viewmodel.details.GuideDetailsRepository
-import com.caravan.caravan.viewmodel.details.GuideDetailsViewModel
-import com.caravan.caravan.viewmodel.details.GuideDetailsViewModelFactory
+import com.caravan.caravan.viewmodel.details.guide.GuideDetailsRepository
+import com.caravan.caravan.viewmodel.details.guide.GuideDetailsViewModel
+import com.caravan.caravan.viewmodel.details.guide.GuideDetailsViewModelFactory
 import com.stfalcon.imageviewer.StfalconImageViewer
 
 

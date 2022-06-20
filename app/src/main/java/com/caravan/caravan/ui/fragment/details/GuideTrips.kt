@@ -25,7 +25,5 @@ class GuideTrips : BaseFragment() {
     private fun initViews() {
         tripsBinding.rvGuidesTrips.layoutManager = LinearLayoutManager(requireContext())
 
-
-
     }
 }

@@ -1,4 +1,4 @@
-package com.caravan.caravan.viewmodel.details
+package com.caravan.caravan.viewmodel.details.guide
 
 import com.caravan.caravan.model.review.Review
 import com.caravan.caravan.network.ApiService
