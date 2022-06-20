@@ -120,6 +120,7 @@ class GuideDetailsFragment : BaseFragment() {
             tvGuideFullName.text = data.profile.name + " " + data.profile.surname
             tvGuideLanguages.text = setLanguages(data.languages)
             tvGuideDescription.text = data.biography
+            ratingBarGuide.rating = data.rate.toFloat()
         }
         setProfilePhoto(data.profile.photo!!)
         setTravelLocations(data.travelLocations)
