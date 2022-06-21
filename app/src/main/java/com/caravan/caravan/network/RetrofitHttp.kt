@@ -11,7 +11,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 
-
 object RetrofitHttp {
 
     const val TAG: String = "RetrofitHttp"

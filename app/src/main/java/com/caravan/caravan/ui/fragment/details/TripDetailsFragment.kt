@@ -1,6 +1,8 @@
 package com.caravan.caravan.ui.fragment.details
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -26,6 +28,7 @@ import com.caravan.caravan.databinding.FragmentTripDetailsBinding
 import com.caravan.caravan.databinding.OverlayViewBinding
 import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.*
+import com.caravan.caravan.model.hire.Hire
 import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.model.review.Review
 import com.caravan.caravan.network.ApiService
@@ -34,9 +37,9 @@ import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
-import com.caravan.caravan.viewmodel.details.TripDetailsRepository
-import com.caravan.caravan.viewmodel.details.TripDetailsViewModel
-import com.caravan.caravan.viewmodel.details.TripDetailsViewModelFactory
+import com.caravan.caravan.viewmodel.details.trip.TripDetailsRepository
+import com.caravan.caravan.viewmodel.details.trip.TripDetailsViewModel
+import com.caravan.caravan.viewmodel.details.trip.TripDetailsViewModelFactory
 import com.stfalcon.imageviewer.StfalconImageViewer
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
@@ -108,12 +111,42 @@ class TripDetailsFragment : BaseFragment() {
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.hire.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        val callIntent = Intent(Intent.ACTION_DIAL)
+                        callIntent.data = Uri.parse("tel:${trip.guide.profile.phoneNumber}")
+                        requireActivity().startActivity(callIntent)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
     }
 
     private fun setUpDate(data: Trip) {
         setViewPager(data.photos)
-        setTravelLocations(data.places)
-        setFacilities(data.facility)
+        setTravelLocations(data.locations)
+        setFacilities(data.facilities)
         setCommentsRv(data.reviews)
         setLeaveCommentsPart(data.attendancesProfileId, data.reviews)
 
@@ -148,6 +181,10 @@ class TripDetailsFragment : BaseFragment() {
                 .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment);
         }
 
+        fragmentTripDetailsBinding.btnApplyTrip.setOnClickListener {
+            viewModel.hire(Hire("TRIP", tripId))
+        }
+
         fragmentTripDetailsBinding.apply {
 
             btnSendComment.setOnClickListener {
@@ -159,7 +196,7 @@ class TripDetailsFragment : BaseFragment() {
                             etLeaveComment.text.toString(),
                             "GUIDE",
                             null,
-                            trip.guideProfile.id
+                            trip.guide.id
                         )
 
                     setUpObservesReview()
@@ -273,7 +310,7 @@ class TripDetailsFragment : BaseFragment() {
         ) { view, image ->
 
 
-            Glide.with(requireContext()).load(image.url).into(view)
+            Glide.with(requireContext()).load(image.photo).into(view)
         }.withHiddenStatusBar(false)
             .withDismissListener {
                 overlayViewBinding = OverlayViewBinding.bind(mView)

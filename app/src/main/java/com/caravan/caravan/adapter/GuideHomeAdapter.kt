@@ -12,31 +12,31 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemGuideHomeBinding
-import com.caravan.caravan.model.GuideProfile
+import com.caravan.caravan.model.home.HomeGuide
 import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.ui.fragment.main.HomeFragment
 
-class GuideHomeAdapter(private val context: BaseFragment, private val list: List<GuideProfile>)
+class GuideHomeAdapter(private val context: BaseFragment, private val list: List<HomeGuide>)
     : RecyclerView.Adapter<GuideHomeAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val itemBinding: ItemGuideHomeBinding) : RecyclerView.ViewHolder(itemBinding.root){
 
-        fun onBind(guide: GuideProfile){
-            Glide.with(itemBinding.ivProfilePhoto).load(guide.profile.photo).into(itemBinding.ivProfilePhoto)
-            itemBinding.tvName.text = guide.profile.name
+        fun onBind(guide: HomeGuide){
+            Glide.with(itemBinding.ivProfilePhoto).load(guide.profilePhoto).into(itemBinding.ivProfilePhoto)
+            itemBinding.tvName.text = guide.name
             itemBinding.tvName.isSelected = true
             itemBinding.tvPrice.text = price(guide)
             itemBinding.tvProvince.text = provinces(guide)
 
             itemView.setOnClickListener {
                 if(context is HomeFragment){
-                    context.goToDetailsActivity(list[adapterPosition])
+                    context.goToDetailsActivityFromHome(list[adapterPosition])
                 }
             }
         }
 
         @SuppressLint("ResourceAsColor")
-        private fun price(guide: GuideProfile) : Spannable {
+        private fun price(guide: HomeGuide) : Spannable {
             val text = "$${guide.price.cost.toInt()}"
             val endIndex = text.length
 
@@ -47,7 +47,7 @@ class GuideHomeAdapter(private val context: BaseFragment, private val list: List
             return outPutColoredText
         }
 
-        private fun provinces(guide: GuideProfile) : Spannable{
+        private fun provinces(guide: HomeGuide) : Spannable{
             val province = guide.travelLocations[0]
             val numberOfProvince = guide.travelLocations.size
 

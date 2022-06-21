@@ -1,13 +1,12 @@
-package com.caravan.caravan.viewmodel.details
+package com.caravan.caravan.viewmodel.details.trip
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.caravan.caravan.model.Comment
 import com.caravan.caravan.model.Trip
+import com.caravan.caravan.model.hire.Hire
 import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.model.review.Review
 import com.caravan.caravan.model.review.ReviewsByPagination
-import com.caravan.caravan.utils.UiStateList
 import com.caravan.caravan.utils.UiStateObject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -64,6 +63,26 @@ class TripDetailsViewModel(private val repository: TripDetailsRepository): ViewM
             }
         } catch (e: Exception) {
             _reviews.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")
+        }
+    }
+
+    private val _hire = MutableStateFlow<UiStateObject<ActionMessage>>(UiStateObject.EMPTY)
+    val hire = _hire
+
+    fun hire(hire: Hire) = viewModelScope.launch {
+        _hire.value = UiStateObject.LOADING
+
+        try {
+            val hire = repository.hire(hire)
+
+            if (!hire.isSuccessful) {
+                _hire.value = UiStateObject.ERROR(hire.message())
+            } else {
+                _hire.value = UiStateObject.SUCCESS(hire.body()!!)
+            }
+
+        } catch (e: Exception) {
+            _hire.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")
         }
     }
 

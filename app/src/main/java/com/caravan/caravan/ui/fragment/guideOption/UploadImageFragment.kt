@@ -92,7 +92,6 @@ class UploadImageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Log.d("@@@", "setUpObservers: ${it.message}")
                         showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
@@ -147,13 +146,45 @@ class UploadImageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        CreateTripObject.myPhotoIds.add(photoId)
-                        Log.d("@@@", "setUpObservers CreateTripObject: ${CreateTripObject.myPhotoIds}")
+                        CreateTripObject.myPhotoIds.add(it.data.id)
                         findNavController().popBackStack()
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Log.d("@@@", "setUpObservers: ${it.message}")
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+
+                            })
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+    private fun setUpObserversDeleteTripPhoto() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.deletePhoto.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+
+                        pickedPhoto = null
+                        binding.apply {
+                            llAddPage.visibility = View.VISIBLE
+                            ivTrip.visibility = View.GONE
+                            ivClear.visibility = View.GONE
+                        }
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
                         showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
@@ -239,10 +270,11 @@ class UploadImageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         binding.ivClear.visibility = View.VISIBLE
 
         binding.ivClear.setOnClickListener {
-            pickedPhoto = null
-            binding.llAddPage.visibility = View.VISIBLE
-            binding.ivTrip.visibility = View.GONE
-            binding.ivClear.visibility = View.GONE
+
+
+            viewModel.deleteTripPhoto(photoId)
+            setUpObserversDeleteTripPhoto()
+
         }
     }
 
@@ -303,7 +335,7 @@ class UploadImageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
         binding.btnUpload.setOnClickListener {
             if (pickedPhoto != null && desc != "") {
-                val item = CreateTrip(pickedPhoto.toString(), Location("1", province, district, desc))
+                val item = CreateTrip(photoId,pickedPhoto.toString(), Location("1", province, district, desc))
 
                 CreateTripObject.myPhotosList.add(item)
 

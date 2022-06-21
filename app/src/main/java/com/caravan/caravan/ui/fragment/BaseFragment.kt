@@ -15,6 +15,8 @@ import com.caravan.caravan.R
 import com.caravan.caravan.databinding.DialogLoadingBinding
 import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Trip
+import com.caravan.caravan.model.home.HomeGuide
+import com.caravan.caravan.model.home.HomeTrip
 import com.caravan.caravan.ui.activity.DetailsActivity
 import com.caravan.caravan.ui.activity.EditActivity
 import com.caravan.caravan.ui.activity.GuideOptionActivity
@@ -31,12 +33,23 @@ open class BaseFragment : Fragment(), AdapterView.OnItemSelectedListener {
         startActivity(intent)
     }
 
+    open fun goToDetailsActivityFromHome(trip: HomeTrip) {
+        val intent = Intent(requireContext(), DetailsActivity::class.java)
+        intent.putExtra("tripId", trip.id.toString())
+        startActivity(intent)
+    }
+
     open fun goToDetailsActivity(guide: GuideProfile) {
         val intent = Intent(requireContext(), DetailsActivity::class.java)
         intent.putExtra("guideId", guide.id)
         startActivity(intent)
     }
 
+    open fun goToDetailsActivityFromHome(guide: HomeGuide) {
+        val intent = Intent(requireContext(), DetailsActivity::class.java)
+        intent.putExtra("guideId", guide.id)
+        startActivity(intent)
+    }
 
     open fun goToEditActivity(isEdit: Boolean) {
         val intent = Intent(requireContext(), EditActivity::class.java)

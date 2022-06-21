@@ -26,7 +26,6 @@ import com.caravan.caravan.viewmodel.main.search.SearchTripViewModelFactory
 class SearchFragmentTrip : BaseFragment() {
     private lateinit var binding: FragmentSearchTripBinding
     private val sharedViewModel: SearchSharedVM by activityViewModels()
-    private lateinit var viewModel: SearchTripViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +54,7 @@ class SearchFragmentTrip : BaseFragment() {
         setUpObservers()
 
         binding.apply {
+            recyclerView.adapter = TripAdapter(this@SearchFragmentTrip, loadItemTrips())
             recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
@@ -64,39 +64,7 @@ class SearchFragmentTrip : BaseFragment() {
         }
 
         sharedViewModel.tripSearch.observe(viewLifecycleOwner) {
-            viewModel.searchTrip(1, it)
-            toast("keldi")
-        }
-    }
-
-    private fun setUpObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.trips.collect {
-                when (it) {
-                    is UiStateObject.LOADING -> {
-                        showLoading()
-                    }
-                    is UiStateObject.SUCCESS -> {
-                        dismissLoading()
-                        binding.recyclerView.adapter = TripAdapter(this@SearchFragmentTrip, it.data)
-                        Log.d("Search", "Success:${it.toString()}")
-                    }
-                    is UiStateObject.ERROR -> {
-                        dismissLoading()
-                        Log.d("Search", "ERROR: ${it}")
-//                        showDialogWarning(
-//                            getString(R.string.str_no_connection),
-//                            getString(R.string.str_try_again),
-//                            object : OkInterface {
-//                                override fun onClick() {
-//                                    requireActivity().finish()
-//                                    return
-//                                }
-//                            })
-                    }
-                    else -> Unit
-                }
-            }
+            toast(it.key)
         }
     }
 
@@ -153,58 +121,58 @@ class SearchFragmentTrip : BaseFragment() {
          )
 
 
-         for (i in 0..20) {
-             items.add(
-                 Trip(
-                     "1", "Khiva in 3 days",
-                     ArrayList<TourPhoto>().apply {
-                         add(
-                             TourPhoto(
-                                 "1",
-                                 Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                 "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
-                             )
-                         )
-                         add(
-                             TourPhoto(
-                                 "1",
-                                 Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                 "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
-                             )
-                         )
-                         add(
-                             TourPhoto(
-                                 "1",
-                                 Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                 "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
-                             )
-                         )
-                     },
-                     ArrayList<Facility>().apply {
-                         add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-                         add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-                         add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-                     },
-                     ArrayList<Location>().apply {
-                         add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                         add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                         add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                     },
-                     "Khiva in 3 days",
-                     Price(1200, "USD", "trip"),
-                     5, 10,
-                     guide,
-                     "+998997492581",
-                     4.5,
-                     3,
-                     arrayListOf(),
-                     null
-                 )
-             )
-         }
+        for (i in 0..20) {
+            items.add(
+                Trip(
+                    "1", "Khiva in 3 days",
+                    ArrayList<TourPhoto>().apply {
+                        add(
+                            TourPhoto(
+                                "1",
+                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
+                                "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
+                            )
+                        )
+                        add(
+                            TourPhoto(
+                                "1",
+                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
+                                "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
+                            )
+                        )
+                        add(
+                            TourPhoto(
+                                "1",
+                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
+                                "https://media-exp1.licdn.com/dms/image/C4E03AQEI7eVYthvUMg/profile-displayphoto-shrink_200_200/0/1642400437285?e=1655942400&v=beta&t=vINUHw6g376Z9RQ8eG-9WkoMeDxhUyasneiB9Yinl84"
+                            )
+                        )
+                    },
+                    ArrayList<Facility>().apply {
+                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
+                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
+                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
+                    },
+                    ArrayList<Location>().apply {
+                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
+                    },
+                    "Khiva in 3 days",
+                    Price(1200, "USD", "trip"),
+                    5, 10,
+                    guide,
+                    "+998997492581",
+                    4.5,
+                    3,
+                    arrayListOf(),
+                    null
+                )
+            )
+        }
 
-         return items
-     }*/
+        return items
+    }
 
 
 }

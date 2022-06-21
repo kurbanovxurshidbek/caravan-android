@@ -111,6 +111,7 @@
                                     android:fontFamily="@font/circular_std_bold"
                                     android:hint="@string/str_title"
                                     android:backgroundTint="@color/main_color"
+                                    android:textCursorDrawable="@drawable/cursor"
                                     android:textColor="#99000000"
                                     android:textColorHint="#99000000"
                                     android:textSize="18sp"
@@ -137,6 +138,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/circular_std_bold"
+                                android:textCursorDrawable="@drawable/cursor"
                                 android:hint="@string/str_description"
                                 android:backgroundTint="@color/main_color"
                                 android:textColor="#99000000"
@@ -194,8 +196,9 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:maxLength="1"
+                            android:maxLength="2"
                             android:fontFamily="@font/circular_std_bold"
+                            android:textCursorDrawable="@drawable/cursor"
                             android:hint="@string/str_amount"
                             android:inputType="number"
                             android:backgroundTint="@color/main_color"
@@ -207,7 +210,7 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_marginTop="2dp"
+                            android:layout_marginTop="3dp"
                             android:gravity="center_vertical"
                             android:orientation="vertical">
 
@@ -227,8 +230,8 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginTop="2dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginStart="5dp"
                             android:gravity="center_vertical"
                             android:orientation="vertical">
 
