@@ -13,29 +13,29 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.caravan.caravan.databinding.ItemTripsBinding
 import com.caravan.caravan.model.Trip
+import com.caravan.caravan.model.home.HomeTrip
 import com.caravan.caravan.ui.fragment.BaseFragment
 
-class TripAdapter(val context: Fragment, var items: ArrayList<Trip>) :
+class TripAdapter(val context: Fragment, var items: ArrayList<HomeTrip>) :
     RecyclerView.Adapter<TripAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val itemTripsBinding: ItemTripsBinding) :
         RecyclerView.ViewHolder(itemTripsBinding.root) {
-        fun bind(trip: Trip) {
-            Glide.with(context).load(trip.photos[0].photo).into(itemTripsBinding.ivTripPhoto)
+        fun bind(trip: HomeTrip) {
+            Glide.with(context).load(trip.photo).into(itemTripsBinding.ivTripPhoto)
             itemTripsBinding.tvTripTitle.text = trip.name
             itemTripsBinding.ratingBarTrip.rating = trip.rate.toFloat()
-            itemTripsBinding.tvTripCommentsCount.text = trip.reviews?.size.toString()
-            itemTripsBinding.tvTripCommentsCount.text = "(${if (trip.reviews.isNullOrEmpty()) "0" else trip.reviews.size})"
+            itemTripsBinding.tvTripCommentsCount.text = trip.reviewsCount.toString()
             itemTripsBinding.tvPrice.text = price(trip)
             itemView.setOnClickListener {
-                (context as BaseFragment).goToDetailsActivity(trip)
+                (context as BaseFragment).goToDetailsActivityFromHome(trip)
             }
 
         }
 
     }
 
-    private fun price(trip: Trip): Spannable {
+    private fun price(trip: HomeTrip): Spannable {
         val text = "$${trip.price.cost.toInt()}"
         val endIndex = text.length
 

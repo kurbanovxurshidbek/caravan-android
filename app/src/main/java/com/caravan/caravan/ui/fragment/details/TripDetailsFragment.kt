@@ -1,6 +1,8 @@
 package com.caravan.caravan.ui.fragment.details
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -26,6 +28,7 @@ import com.caravan.caravan.databinding.FragmentTripDetailsBinding
 import com.caravan.caravan.databinding.OverlayViewBinding
 import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.*
+import com.caravan.caravan.model.hire.Hire
 import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.model.review.Review
 import com.caravan.caravan.network.ApiService
@@ -108,6 +111,36 @@ class TripDetailsFragment : BaseFragment() {
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.hire.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        val callIntent = Intent(Intent.ACTION_DIAL)
+                        callIntent.data = Uri.parse("tel:${trip.guide.profile.phoneNumber}")
+                        requireActivity().startActivity(callIntent)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
     }
 
     private fun setUpDate(data: Trip) {
@@ -146,6 +179,10 @@ class TripDetailsFragment : BaseFragment() {
         fragmentTripDetailsBinding.guideProfile.setOnClickListener {
             Navigation.findNavController(requireActivity(), R.id.details_nav_fragment)
                 .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment);
+        }
+
+        fragmentTripDetailsBinding.btnApplyTrip.setOnClickListener {
+            viewModel.hire(Hire("TRIP", tripId))
         }
 
         fragmentTripDetailsBinding.apply {

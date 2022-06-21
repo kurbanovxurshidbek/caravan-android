@@ -27,6 +27,7 @@ import com.caravan.caravan.adapter.TravelLocationsAdapter
 import com.caravan.caravan.databinding.FragmentGuideDetailsBinding
 import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.*
+import com.caravan.caravan.model.hire.Hire
 import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.model.review.Review
 import com.caravan.caravan.network.ApiService
@@ -113,6 +114,36 @@ class GuideDetailsFragment : BaseFragment() {
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.hire.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        val callIntent = Intent(Intent.ACTION_DIAL)
+                        callIntent.data = Uri.parse("tel:${guideProfile?.profile?.phoneNumber}")
+                        requireActivity().startActivity(callIntent)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
     }
 
     private fun setData(data: GuideProfile) {
@@ -196,7 +227,7 @@ class GuideDetailsFragment : BaseFragment() {
             }
 
             btnApplyGuide.setOnClickListener {
-                // Call to server to apple trip
+                viewModel.hire(Hire("GUIDE", guideId))
             }
 
             btnSendComment.setOnClickListener {

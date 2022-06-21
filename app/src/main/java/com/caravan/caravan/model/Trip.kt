@@ -15,8 +15,8 @@ data class Trip(
     val rate: Double,
     val days: Int,
     val attendancesProfileId: ArrayList<String>?,
-    val reviews: ArrayList<Comment>? = null ,
-    val reviewsCount:Int
+    val reviews: ArrayList<Comment>? = null,
+    val reviewsCount: Int
 )
 
 data class Facility(
@@ -26,8 +26,8 @@ data class Facility(
 )
 
 data class CreateTrip(
-    val photo:String,
-    val location:Location
+    val photo: String,
+    val location: Location
 )
 
 data class TourPhoto(
@@ -37,9 +37,9 @@ data class TourPhoto(
 )
 
 data class TripRes(
-    val currentPageItems:Int,
-    val currentPageNumber:Int,
-    val totalItems:Int,
-    val totalPage:Int,
-    val trips:ArrayList<Trip>
+    val currentPageItems: Int,
+    val currentPageNumber: Int,
+    val totalItems: Int,
+    val totalPage: Int,
+    val trips: ArrayList<Trip>
 )
