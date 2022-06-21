@@ -1,6 +1,5 @@
 package com.caravan.caravan.network
 
-import com.caravan.caravan.model.Comment
 import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Profile
 import com.caravan.caravan.model.Trip
@@ -84,10 +83,14 @@ interface ApiService {
     suspend fun uploadPhoto(@Part image: MultipartBody.Part): Response<PhotoRespond>
 
     @PUT("/api/v1/trip/photo/{tripId}")
-    suspend fun completeTrip(@Path("tripId") tripId: String, @Body secondSend: SecondSend): Response<ActionMessage>
+    suspend fun completeTrip(
+        @Path("tripId") tripId: String,
+        @Body secondSend: SecondSend
+    ): Response<ActionMessage>
 
     @POST("/api/v1/trip/trip-upload")
     suspend fun uploadTripPhoto(@Body tripPhoto: TripUploadPhoto): Response<TripUploadPhoto>
+
     @Multipart
     @PUT("/api/v1/profile/photo")
     suspend fun uploadProfilePhoto(@Part image: MultipartBody.Part): Response<PhotoRespond>
@@ -100,23 +103,39 @@ interface ApiService {
     suspend fun postReview(@Body review: Review): Response<ActionMessage>
 
     @POST("/api/v1/review/answer")
-    suspend fun answerReview(@Body answer: Answer) : Response<ActionMessage>
+    suspend fun answerReview(@Body answer: Answer): Response<ActionMessage>
 
     @GET("/api/v1/review/trip-review/{tripId}")
-    suspend fun getTripComments(@Query("page") page: Int, @Path("tripId") tripId: String): Response<ReviewsByPagination>
+    suspend fun getTripComments(
+        @Query("page") page: Int,
+        @Path("tripId") tripId: String
+    ): Response<ReviewsByPagination>
 
     @GET("/api/v1/review/{guideId}/guide-fedback")
-    suspend fun getGuideComments(@Query("page") page: Int, @Path("guideId") guideId: String): Response<ReviewsByPagination>
+    suspend fun getGuideComments(
+        @Query("page") page: Int,
+        @Path("guideId") guideId: String
+    ): Response<ReviewsByPagination>
 
     @GET("/api/v1/review/all")
-    suspend fun getGuidesAllComments(@Query("page") page:Int): Response<ReviewsByPagination>
+    suspend fun getGuidesAllComments(@Query("page") page: Int): Response<ReviewsByPagination>
 
     // Search
     @GET("/api/v1/trip/filter")
-    suspend fun searchTrip(@Query("page") page: Int, @Body searchTripSend: SearchTripSend): Response<ArrayList<Trip>>
+    suspend fun searchTrip(
+        @Query("page") page: Int,
+        @Body searchTripSend: SearchTripSend
+    ): Response<ArrayList<Trip>>
 
+    @Headers("Content-Type: application/json")
     @GET("/api/v1/guide/search")
-    suspend fun searchGuide(@Query("page") page: Int, @Body searchGuideSend: SearchGuideSend): Response<ArrayList<GuideProfile>>
+    suspend fun searchGuide(
+        @Query("page") page: Int,
+        @Query("filterGuide") searchGuideSend: SearchGuideSend
+    ): Response<ArrayList<GuideProfile>>
+
+//    suspend fun searchGuide(@Query("page") page: Int): Response<ArrayList<GuideProfile>>
+
 
     // Home
     @GET("/api/v1/main")
