@@ -1,15 +1,12 @@
 package com.caravan.caravan.ui.fragment.guideOption
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -51,6 +48,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
     var locationProvince: Array<String>? = null
     var locationDistrict: List<String>? = null
     var currencies: Array<String>? = null
+    var languages: Array<String>? = null
     var options: Array<String>? = null
     lateinit var province: String
     lateinit var district: String
@@ -160,6 +158,13 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             recyclerViewLanguage.layoutManager = GridLayoutManager(requireContext(), 1)
 
             setSpinner()
+            addItems()
+
+            refreshAdapterLocation(myLocationList)
+            refreshAdapterLanguage(myLanguageList)
+
+            swipeToDeleteLocation()
+            swipeToDeleteLanguage()
 
             val secondNumber = args.secondNumber
 
@@ -168,11 +173,11 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
                 if (desc != "") {
                     val location = Location("1", province, district, desc)
 
-                    myLocationList.add(0,location)
+                    myLocationList.add(0, location)
                 }
-                if (languageSelected != "") {
+                if (!myLanguageList.isNotEmpty()) {
                     val language = Language("1", languageSelected, levelSelected)
-                    myLanguageList.add(0,language)
+                    myLanguageList.add(0, language)
                 }
 
 
@@ -195,14 +200,6 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
                 }
             }
 
-            addLocationItems()
-            addLanguageItems()
-
-            refreshAdapterLocation(myLocationList)
-            refreshAdapterLanguage(myLanguageList)
-
-            swipeToDeleteLocation()
-            swipeToDeleteLanguage()
 
         }
     }
@@ -213,7 +210,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         )
     }
 
-    private fun addLocationItems() {
+    private fun addItems() {
         binding.etLocationDesc.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -236,30 +233,13 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             }
 
         }
-    }
 
-    private fun addLanguageItems() {
-        binding.etLanguage.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun afterTextChanged(p0: Editable?) {
-                languageSelected = binding.etLanguage.text.toString()
-            }
-
-        })
 
         binding.tvAddLanguage.setOnClickListener {
-            if (languageSelected != "") {
-                val language = Language("1", languageSelected, levelSelected)
-                myLanguageList.add(language)
-                refreshAdapterLanguage(myLanguageList)
-                binding.etLanguage.text.clear()
-                hideKeyboard()
-            } else {
-                Toast.makeText(requireContext(), "Please, fill the field first", Toast.LENGTH_SHORT)
-                    .show()
-            }
-
+            val language = Language("1", languageSelected, levelSelected)
+            myLanguageList.add(language)
+            refreshAdapterLanguage(myLanguageList)
+            hideKeyboard()
         }
     }
 
@@ -312,6 +292,17 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
         binding.spinnerDay.adapter = adapter1
 
+
+        languages = resources.getStringArray(R.array.languages)
+        binding.spinnerLanguage.onItemSelectedListener = itemSelectedLanguages
+
+        val adapter4: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, languages!!)
+        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        binding.spinnerLanguage.adapter = adapter4
+
+
         levels = resources.getStringArray(R.array.level)
         binding.spinnerLevel.onItemSelectedListener = itemSelectedLangaugeLevel
 
@@ -337,7 +328,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
     }
 
-    fun spinnerDistrict() {
+    private fun spinnerDistrict() {
         binding.spinnerLocationTo.onItemSelectedListener = itemSelectedDistrict
 
         val adapter: ArrayAdapter<*> = ArrayAdapter<Any?>(
@@ -351,14 +342,23 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         binding.spinnerLocationTo.adapter = adapter
     }
 
-    val itemSelectedLangaugeLevel = object : AdapterView.OnItemSelectedListener {
-        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-            levelSelected = levels!![p2]
-        }
+    private val itemSelectedLangaugeLevel: AdapterView.OnItemSelectedListener =
+        object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                levelSelected = levels!![p2]
+            }
 
-        override fun onNothingSelected(p0: AdapterView<*>?) {}
-    }
-    val itemSelectedProvince = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
+        }
+    private val itemSelectedLanguages: AdapterView.OnItemSelectedListener =
+        object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                languageSelected = languages!![p2]
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
+        }
+    private val itemSelectedProvince = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
             province = locationProvince!![p2]
             viewModel.getDistrict(province)
@@ -367,14 +367,14 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
         override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
-    val itemSelectedDistrict = object : AdapterView.OnItemSelectedListener {
+    private val itemSelectedDistrict = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
             district = locationDistrict!![p2]
         }
 
         override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
-    val itemSelectedOption = object : AdapterView.OnItemSelectedListener {
+    private val itemSelectedOption = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
             option = options!![p2]
         }
@@ -394,7 +394,6 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         adapterLanguage = UpgradeGuideLanguageAdapter(requireContext(), items)
         binding.recyclerViewLanguage.adapter = adapterLanguage
     }
-
 
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {

@@ -153,6 +153,13 @@
         <item>JIZZAKH</item>
         <item>RESPUBLIC_OF_KARAKALPAKISTAN</item>
     </string-array>
+
+    <string-array name="languages">
+        <item>ENGLISH</item>
+        <item>UZBEK</item>
+        <item>RUSSIAN</item>
+    </string-array>
+
     <string-array name="level">
         <item>BEGINNER</item>
         <item>ELEMENTARY</item>

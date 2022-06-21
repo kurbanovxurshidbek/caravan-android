@@ -26,6 +26,7 @@ data class Facility(
 )
 
 data class CreateTrip(
+    val photoId: String,
     val photo: String,
     val location: Location
 )

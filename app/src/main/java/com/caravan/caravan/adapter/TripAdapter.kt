@@ -1,6 +1,5 @@
 package com.caravan.caravan.adapter
 
-
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
