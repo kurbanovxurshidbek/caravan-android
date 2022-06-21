@@ -3,6 +3,8 @@ package com.caravan.caravan.viewmodel.main.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.caravan.caravan.model.Trip
+import com.caravan.caravan.model.home.HomeTrip
+import com.caravan.caravan.model.search.SearchTripResponse
 import com.caravan.caravan.model.search.SearchTripSend
 import com.caravan.caravan.utils.UiStateObject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class SearchTripViewModel(private val repository: SearchTripRepository) : ViewModel() {
 
-    private val _trips = MutableStateFlow<UiStateObject<ArrayList<Trip>>>(UiStateObject.EMPTY)
+    private val _trips = MutableStateFlow<UiStateObject<SearchTripResponse>>(UiStateObject.EMPTY)
     val trips = _trips
 
     fun searchTrip(page: Int, searchTripSend: SearchTripSend) {

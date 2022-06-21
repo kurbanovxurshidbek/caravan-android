@@ -24,6 +24,7 @@ class TripPhotosAdapter(val context: BaseFragment, private val items: ArrayList<
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         holder.apply {
             Glide.with(context).load(items[position].photo).placeholder(R.drawable.slide2)
+                .error(R.drawable.slide2)
                 .into(imageView)
 
         }

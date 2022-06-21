@@ -3,13 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_create_trip2.xml" value="0.2" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_edit_profile.xml" value="0.23854166666666668" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_upgrade_guide1.xml" value="0.1160081053698075" />
-        <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_upgrade_guide2.xml" value="0.264" />
-        <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_upload_image.xml" value="0.2" />
-        <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/item_language.xml" value="0.25" />
-        <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/item_upgrade_guide_language.xml" value="0.25" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/drawable/cursor.xml" value="0.264" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/drawable/et_background.xml" value="0.117" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/drawable/ic_send_drawable.xml" value="0.264" />
@@ -33,12 +28,13 @@
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/fragment_language.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/fragment_message.xml" value="0.18489583333333334" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/fragment_search.xml" value="0.5" />
+        <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/fragment_search_guide.xml" value="0.31354166666666666" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/fragment_trip_details.xml" value="0.12194699463017496" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/fragment_trip_list.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/item_comment.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/item_create_trip.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/item_facilities.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/item_guide.xml" value="0.33" />
+        <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/item_guide.xml" value="0.67" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/item_guide_comment.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/item_guide_home.xml" value="0.9" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/item_slider.xml" value="0.3619791666666667" />

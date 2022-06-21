@@ -153,7 +153,7 @@ class GuideDetailsFragment : BaseFragment() {
             tvGuideDescription.text = data.biography
             ratingBarGuide.rating = data.rate.toFloat()
         }
-        setProfilePhoto(data.profile.photo!!)
+        setProfilePhoto(data.profile.photo)
         setTravelLocations(data.travelLocations)
         setCommentsRv(data.reviews)
         setLeaveCommentsPart(data.attendancesProfileId, data.reviews)
@@ -379,10 +379,11 @@ class GuideDetailsFragment : BaseFragment() {
         }
     }
 
-    private fun setProfilePhoto(photo: String) {
+    private fun setProfilePhoto(photo: String?) {
         Glide.with(guideDetailsBinding.root)
             .load(photo)
             .placeholder(R.drawable.guide)
+            .error(R.drawable.guide)
             .into(guideDetailsBinding.guideProfilePhoto)
     }
 

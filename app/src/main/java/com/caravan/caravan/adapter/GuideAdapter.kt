@@ -10,29 +10,28 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.caravan.caravan.databinding.ItemGuideBinding
-import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Language
+import com.caravan.caravan.model.home.HomeGuide
 import com.caravan.caravan.ui.fragment.BaseFragment
 
-class GuideAdapter(var context: BaseFragment, var items: ArrayList<GuideProfile>) :
+class GuideAdapter(var context: BaseFragment, var items: ArrayList<HomeGuide>) :
     RecyclerView.Adapter<GuideAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val itemGuideBinding: ItemGuideBinding) :
         RecyclerView.ViewHolder(itemGuideBinding.root) {
 
-        fun onBind(guideProfile: GuideProfile) {
+        fun onBind(guide: HomeGuide) {
 
-            Glide.with(itemGuideBinding.ivGuide).load(guideProfile.profile.photo)
+            Glide.with(itemGuideBinding.ivGuide).load(guide.profilePhoto)
                 .into(itemGuideBinding.ivGuide)
             itemGuideBinding.tvGuidesFullname.text =
-                guideProfile.profile.name + " " + guideProfile.profile.surname
-            itemGuideBinding.tvGuidesCities.text = provinces(guideProfile)
-            itemGuideBinding.tvGuidePrice.text = price(guideProfile)
-            itemGuideBinding.tvGuidesLanguages.text = getLanguages(guideProfile.languages)
-            itemGuideBinding.ratingBarGuide.rating = guideProfile.rate.toFloat()
-            itemGuideBinding.tvGuidesCommentsCount.text =
-                "(${guideProfile.reviews?.size.toString()})"
-            itemGuideBinding.tvGuidesCommentsCount.text = "(${guideProfile.reviews?.size.toString()})"
+                guide.name + " " + guide.surname
+            itemGuideBinding.tvGuidesCities.text = provinces(guide)
+            itemGuideBinding.tvGuidePrice.text = price(guide)
+//            itemGuideBinding.tvGuidesLanguages.text = getLanguages(guide.languages)
+            itemGuideBinding.ratingBarGuide.rating = guide.rate.toFloat()
+//            itemGuideBinding.tvGuidesCommentsCount.text = guide.reviewCount.toString()
+
 
             itemView.setOnClickListener {
                 context.goToDetailsActivity(items[adapterPosition])
@@ -50,7 +49,7 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<GuideProfile>
             return text
         }
 
-        private fun price(guide: GuideProfile): Spannable {
+        private fun price(guide: HomeGuide): Spannable {
             val text = "$${guide.price.cost.toInt()}"
             val endIndex = text.length
 
@@ -66,7 +65,7 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<GuideProfile>
             return outPutColoredText
         }
 
-        private fun provinces(guide: GuideProfile): Spannable {
+        private fun provinces(guide: HomeGuide): Spannable {
             var text = ""
             for (province in guide.travelLocations) {
                 text += "${province.district} "

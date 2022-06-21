@@ -2,7 +2,7 @@ package com.caravan.caravan.viewmodel.main.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.caravan.caravan.model.GuideProfile
+import com.caravan.caravan.model.search.SearchGuideResponse
 import com.caravan.caravan.model.search.SearchGuideSend
 import com.caravan.caravan.utils.UiStateObject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,10 +11,10 @@ import kotlinx.coroutines.launch
 class SearchGuideViewModel(private val repository: SearchGuideRepository) : ViewModel() {
 
     private val _guides =
-        MutableStateFlow<UiStateObject<ArrayList<GuideProfile>>>(UiStateObject.EMPTY)
+        MutableStateFlow<UiStateObject<SearchGuideResponse>>(UiStateObject.EMPTY)
     val guides = _guides
 
-    fun searchGuide(page: Int, searchGuideSend: SearchGuideSend) {
+    fun searchGuide(page: Int, searchGuideSend: SearchGuideSend) =
         viewModelScope.launch {
             _guides.value = UiStateObject.LOADING
             try {
@@ -27,6 +27,6 @@ class SearchGuideViewModel(private val repository: SearchGuideRepository) : View
                 _guides.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")
             }
         }
-    }
+
 
 }

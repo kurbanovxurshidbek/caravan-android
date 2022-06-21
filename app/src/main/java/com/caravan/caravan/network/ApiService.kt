@@ -1,8 +1,6 @@
 package com.caravan.caravan.network
 
-import com.caravan.caravan.model.GuideProfile
-import com.caravan.caravan.model.Profile
-import com.caravan.caravan.model.Trip
+import com.caravan.caravan.model.*
 import com.caravan.caravan.model.auth.LoginRespond
 import com.caravan.caravan.model.auth.LoginSend
 import com.caravan.caravan.model.auth.RegisterRespond
@@ -12,15 +10,15 @@ import com.caravan.caravan.model.create_trip.PhotoRespond
 import com.caravan.caravan.model.create_trip.SecondSend
 import com.caravan.caravan.model.create_trip.TripUploadPhoto
 import com.caravan.caravan.model.hire.Hire
-import com.caravan.caravan.model.home.HomeGuide
 import com.caravan.caravan.model.home.HomeRespond
 import com.caravan.caravan.model.home.HomeTrip
 import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.model.review.Answer
 import com.caravan.caravan.model.review.Review
 import com.caravan.caravan.model.review.ReviewsByPagination
-import com.caravan.caravan.model.search.SearchGuide
+import com.caravan.caravan.model.search.SearchGuideResponse
 import com.caravan.caravan.model.search.SearchGuideSend
+import com.caravan.caravan.model.search.SearchTripResponse
 import com.caravan.caravan.model.search.SearchTripSend
 import com.caravan.caravan.model.upgrade.UpgradeSend
 import okhttp3.MultipartBody
@@ -141,17 +139,17 @@ interface ApiService {
     suspend fun getGuidesAllComments(@Query("page") page: Int): Response<ReviewsByPagination>
 
     // Search
-    @POST("/api/v1/trip/filter")
+    @POST("/api/v1/trip/search")
     suspend fun searchTrip(
         @Query("page") page: Int,
         @Body searchTripSend: SearchTripSend
-    ): Response<ArrayList<HomeTrip>>
+    ): Response<SearchTripResponse>
 
     @POST("/api/v1/guide/search")
     suspend fun searchGuide(
         @Query("page") page: Int,
         @Body searchGuideSend: SearchGuideSend
-    ): Response<ArrayList<SearchGuide>>
+    ): Response<SearchGuideResponse>
 
     // Home
     @GET("/api/v1/main")

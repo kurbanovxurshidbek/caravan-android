@@ -9,12 +9,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.caravan.caravan.R
 import com.caravan.caravan.adapter.GuideAdapter
 import com.caravan.caravan.databinding.FragmentSearchGuideBinding
 import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
 import com.caravan.caravan.viewmodel.main.search.SearchGuideRepository
 import com.caravan.caravan.viewmodel.main.search.SearchGuideViewModel
@@ -76,21 +78,21 @@ class SearchFragmentGuide : BaseFragment() {
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
                         binding.recyclerView.adapter =
-                            GuideAdapter(this@SearchFragmentGuide, it.data)
+                            GuideAdapter(this@SearchFragmentGuide, it.data.guideList)
                         Log.d("Search", "Success:${it.toString()}")
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Log.d("Search", "ERROR: ${it}")
-//                        showDialogWarning(
-//                            getString(R.string.str_no_connection),
-//                            getString(R.string.str_try_again),
-//                            object : OkInterface {
-//                                override fun onClick() {
-//                                    requireActivity().finish()
-//                                    return
-//                                }
-//                            })
+                        Log.d("Search", "ERROR: ${it.message}")
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    requireActivity().finish()
+                                    return
+                                }
+                            })
                     }
                     else -> Unit
                 }
@@ -109,54 +111,4 @@ class SearchFragmentGuide : BaseFragment() {
             )
         )[SearchGuideViewModel::class.java]
     }
-
-    /* private fun loadItemGuides(): ArrayList<GuideProfile> {
-         val items = ArrayList<GuideProfile>()
-
-         for (i in 0..20) {
-             items.add(
-                 GuideProfile(
-                     "100001",
-                     Profile(
-                         "1001",
-                         "Ogabek",
-                         "Matyakubov",
-                         "+998997492581",
-                         "ogabekdev@gmail.com",
-                         "GUIDE",
-                         null,
-                         "ACTIVE",
-                         "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg",
-                         "MALE",
-                         null,
-                         "12.02.2022",
-                         null,
-                         "en",
-                         arrayListOf(),
-                         ""
-                     ),
-                     "+998932037313",
-                     "Ogabek Matyakubov",
-                     true,
-                     4.5,
-                     Price(150, "USD", "day"),
-                     ArrayList<Language>().apply {
-                         add(Language("1", "English", "Advanced"))
-                         add(Language("1", "Uzbek", "Native"))
-                     },
-                     ArrayList<Location>().apply {
-                         add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                         add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                         add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                     },
-                     arrayListOf(),
-                     arrayListOf(),
-                     arrayListOf()
-                 )
-             )
-         }
-
-         return items
-     }*/
-
 }

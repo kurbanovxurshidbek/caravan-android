@@ -8,6 +8,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,12 +47,10 @@ import com.zhpan.indicator.enums.IndicatorStyle
 
 class TripDetailsFragment : BaseFragment() {
     private lateinit var fragmentTripDetailsBinding: FragmentTripDetailsBinding
-    private var tripId: String = "null"
+    private var tripId: String = ""
     private lateinit var overlayViewBinding: OverlayViewBinding
-
     private lateinit var viewModel: TripDetailsViewModel
     private lateinit var trip: Trip
-
     private var page = 0
     private var allPages = 0
 
@@ -70,8 +69,8 @@ class TripDetailsFragment : BaseFragment() {
 
         setUpViewModel()
         setUpObserves()
-
         initViews()
+
         return fragmentTripDetailsBinding.root
     }
 
@@ -92,8 +91,10 @@ class TripDetailsFragment : BaseFragment() {
                         dismissLoading()
                         trip = it.data
                         setUpDate(it.data)
+                        Log.d("Trip", "SUCCESS1: ${trip.toString()}")
                     }
                     is UiStateObject.ERROR -> {
+                        Log.d("Trip", "ERROR: ${trip.toString()}")
                         fragmentTripDetailsBinding.apply {
                             llRoot.visibility = View.GONE
                         }
@@ -108,6 +109,7 @@ class TripDetailsFragment : BaseFragment() {
                             }
                         )
                     }
+                    else -> {}
                 }
             }
         }
@@ -145,13 +147,14 @@ class TripDetailsFragment : BaseFragment() {
 
     private fun setUpDate(data: Trip) {
         setViewPager(data.photos)
-        setTravelLocations(data.locations)
-        setFacilities(data.facilities)
-        setCommentsRv(data.reviews)
+//        setTravelLocations(data.locations)  bu kemayapti
+//        setFacilities(data.facilities)  bu ham kemayapti
+//        setCommentsRv(data.reviews) bu ham kemayapti
         setLeaveCommentsPart(data.attendancesProfileId, data.reviews)
 
-        fragmentTripDetailsBinding.tvTripPrice.text = setPrice(trip.price)
-        fragmentTripDetailsBinding.tvGuidePrice.text = setPrice(trip.price)
+//        fragmentTripDetailsBinding.tvTripPrice.text = setPrice(data.price)
+//        fragmentTripDetailsBinding.tvGuidePrice.text = setPrice(data.price)
+        Log.d("Trip", "setUpDate: ${data.toString()}")
 
     }
 
@@ -168,7 +171,6 @@ class TripDetailsFragment : BaseFragment() {
     }
 
     private fun initViews() {
-
         viewModel.getTrip(tripId)
 
         overlayViewBinding = OverlayViewBinding.bind(
@@ -234,6 +236,7 @@ class TripDetailsFragment : BaseFragment() {
                                 }
                             })
                     }
+                    else -> {}
                 }
             }
         }
@@ -368,22 +371,25 @@ class TripDetailsFragment : BaseFragment() {
         }
     }
 
-    private fun setViewPager(photos: ArrayList<TourPhoto>) {
-        fragmentTripDetailsBinding.apply {
-            viewPager2.apply {
-                adapter = TripPhotosAdapter(
-                    this@TripDetailsFragment,
-                    photos
-                )
-                setIndicator()
-                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                    override fun onPageSelected(position: Int) {
-                        super.onPageSelected(position)
+    private fun setViewPager(photos: ArrayList<TourPhoto>?) {
+        photos?.let {
+            fragmentTripDetailsBinding.apply {
+                viewPager2.apply {
+                    adapter = TripPhotosAdapter(
+                        this@TripDetailsFragment,
+                        photos
+                    )
+                    setIndicator()
+                    registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                        override fun onPageSelected(position: Int) {
+                            super.onPageSelected(position)
 
-                    }
-                })
+                        }
+                    })
+                }
             }
         }
+
     }
 
     private fun setCommentsRv(reviews: ArrayList<Comment>?) {
@@ -403,9 +409,11 @@ class TripDetailsFragment : BaseFragment() {
         })
     }
 
-    private fun setTravelLocations(places: ArrayList<Location>) {
-        fragmentTripDetailsBinding.apply {
-            travelLocationsRV.adapter = TravelLocationsAdapter(places)
+    private fun setTravelLocations(places: ArrayList<Location>?) {
+        places?.let {
+            fragmentTripDetailsBinding.apply {
+                travelLocationsRV.adapter = TravelLocationsAdapter(places)
+            }
         }
     }
 
