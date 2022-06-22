@@ -41,7 +41,7 @@ class SearchFragmentTrip : BaseFragment() {
 
     private fun initViews() {
         binding.apply {
-            recyclerView.adapter = TripAdapter(this@SearchFragmentTrip, loadItemTrips())
+            recyclerView.adapter = TripAdapter(this@SearchFragmentTrip, arrayListOf())
             recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
