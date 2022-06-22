@@ -270,8 +270,6 @@ class UploadImageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         binding.ivClear.visibility = View.VISIBLE
 
         binding.ivClear.setOnClickListener {
-
-
             viewModel.deleteTripPhoto(photoId)
             setUpObserversDeleteTripPhoto()
 

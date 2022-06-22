@@ -45,7 +45,7 @@
                     android:id="@+id/ivTrip"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
+                    android:scaleType="centerCrop"
                     android:visibility="gone"
                     android:adjustViewBounds="true"
                     app:shapeAppearanceOverlay="@style/corners"/>
