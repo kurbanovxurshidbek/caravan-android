@@ -64,6 +64,7 @@ class SearchFragmentGuide : BaseFragment() {
         }
 
         sharedViewModel.guideSearch.observe(viewLifecycleOwner) {
+            Log.d("SearchFragmentGuide", "SearchGuideSend:${it.toString()}")
             viewModel.searchGuide(1, it)
         }
     }
@@ -79,11 +80,11 @@ class SearchFragmentGuide : BaseFragment() {
                         dismissLoading()
                         binding.recyclerView.adapter =
                             GuideAdapter(this@SearchFragmentGuide, it.data.guideList)
-                        Log.d("Search", "Success:${it.toString()}")
+                        Log.d("SearchFragmentGuide", "Success:${it.toString()}")
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Log.d("Search", "ERROR: ${it.message}")
+                        Log.d("SearchFragmentGuide", "ERROR: ${it.message}")
                         showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),

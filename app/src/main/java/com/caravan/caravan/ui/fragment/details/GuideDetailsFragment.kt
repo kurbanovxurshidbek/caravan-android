@@ -11,8 +11,10 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
@@ -95,6 +97,7 @@ class GuideDetailsFragment : BaseFragment() {
                         dismissLoading()
                         guideProfile = it.data
                         setData(it.data)
+                        Log.d("GuideDetailsFragment", "SUCCESS: ${it.data.toString()}")
                     }
                     is UiStateObject.ERROR -> {
                         guideDetailsBinding.apply {
@@ -115,6 +118,7 @@ class GuideDetailsFragment : BaseFragment() {
             }
         }
 
+
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.hire.collect {
                 when (it) {
@@ -123,6 +127,8 @@ class GuideDetailsFragment : BaseFragment() {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
+
+                        viewModelStore.clear()
                         val callIntent = Intent(Intent.ACTION_DIAL)
                         callIntent.data = Uri.parse("tel:${guideProfile?.profile?.phoneNumber}")
                         requireActivity().startActivity(callIntent)
@@ -146,6 +152,12 @@ class GuideDetailsFragment : BaseFragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        setUpViewModel()
+        setUpObserves()
+    }
+
     private fun setData(data: GuideProfile) {
         guideDetailsBinding.apply {
             tvGuideFullName.text = data.profile.name + " " + data.profile.surname
@@ -160,12 +172,16 @@ class GuideDetailsFragment : BaseFragment() {
         guideDetailsBinding.tvGuidePrice.text = setPrice(data.price)
     }
 
-    private fun setLanguages(languages: java.util.ArrayList<Language>): String {
+    private fun setLanguages(languages: ArrayList<Language>): String {
         var text = ""
-        for (i in languages) {
-            text += i.name + ", "
+        if (languages.isNotEmpty()) {
+            for (i in languages) {
+                text += i.name + ", "
+            }
+            text = text.substring(0, text.length - 2)
+        } else {
+            guideDetailsBinding.tvGuideLanguages.visibility = GONE
         }
-        text = text.substring(0, text.length - 2)
         return text
     }
 
@@ -380,11 +396,14 @@ class GuideDetailsFragment : BaseFragment() {
     }
 
     private fun setProfilePhoto(photo: String?) {
-        Glide.with(guideDetailsBinding.root)
-            .load(photo)
-            .placeholder(R.drawable.guide)
-            .error(R.drawable.guide)
-            .into(guideDetailsBinding.guideProfilePhoto)
+        photo?.let {
+            Glide.with(guideDetailsBinding.root)
+                .load(photo)
+                .placeholder(R.drawable.guide)
+                .error(R.drawable.guide)
+                .into(guideDetailsBinding.guideProfilePhoto)
+        }
+
     }
 
     private fun setCommentsRv(reviews: ArrayList<Comment>?) {

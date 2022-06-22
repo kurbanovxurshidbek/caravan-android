@@ -9,20 +9,22 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemGuideBinding
 import com.caravan.caravan.model.Language
-import com.caravan.caravan.model.home.HomeGuide
+import com.caravan.caravan.model.search.SearchGuide
 import com.caravan.caravan.ui.fragment.BaseFragment
 
-class GuideAdapter(var context: BaseFragment, var items: ArrayList<HomeGuide>) :
+class GuideAdapter(var context: BaseFragment, var items: ArrayList<SearchGuide>) :
     RecyclerView.Adapter<GuideAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val itemGuideBinding: ItemGuideBinding) :
         RecyclerView.ViewHolder(itemGuideBinding.root) {
 
-        fun onBind(guide: HomeGuide) {
+        fun onBind(guide: SearchGuide) {
 
             Glide.with(itemGuideBinding.ivGuide).load(guide.profilePhoto)
+                .placeholder(R.drawable.loading)
                 .into(itemGuideBinding.ivGuide)
             itemGuideBinding.tvGuidesFullname.text =
                 guide.name + " " + guide.surname
@@ -41,15 +43,15 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<HomeGuide>) :
 
         private fun getLanguages(languages: ArrayList<Language>): String {
             var text = ""
-            for (language in 0..languages.size-2) {
+            for (language in 0..languages.size - 2) {
                 text += "${languages[language].name} "
-                text+=","
+                text += ","
             }
-            text+= languages[languages.size-1].name
+            text += languages[languages.size - 1].name
             return text
         }
 
-        private fun price(guide: HomeGuide): Spannable {
+        private fun price(guide: SearchGuide): Spannable {
             val text = "$${guide.price.cost.toInt()}"
             val endIndex = text.length
 
@@ -65,7 +67,7 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<HomeGuide>) :
             return outPutColoredText
         }
 
-        private fun provinces(guide: HomeGuide): Spannable {
+        private fun provinces(guide: SearchGuide): Spannable {
             var text = ""
             for (province in guide.travelLocations) {
                 text += "${province.district} "

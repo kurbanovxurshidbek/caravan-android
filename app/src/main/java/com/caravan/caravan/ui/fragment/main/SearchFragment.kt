@@ -288,6 +288,8 @@ class SearchFragment : BaseFragment() {
                     maxRating,
                     gender
                 )
+
+                sharedViewModel.setGuideSearch(SearchGuideSend(binding.etSearch.text.toString(), filterGuide))
                 dialog.hide()
             }
 
