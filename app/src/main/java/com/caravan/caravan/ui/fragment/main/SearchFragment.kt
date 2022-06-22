@@ -11,11 +11,7 @@ import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.compose.ui.text.toUpperCase
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.FragmentNavigator
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.SearchFragmentVPAdapter
@@ -28,8 +24,7 @@ import com.caravan.caravan.model.search.FilterTrip
 import com.caravan.caravan.model.search.SearchGuideSend
 import com.caravan.caravan.model.search.SearchTripSend
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.Extensions.toast
-import com.caravan.caravan.viewmodel.main.home.SearchSharedVM
+import com.caravan.caravan.viewmodel.main.search.SearchSharedVM
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 
@@ -293,6 +288,8 @@ class SearchFragment : BaseFragment() {
                     maxRating,
                     gender
                 )
+
+                sharedViewModel.setGuideSearch(SearchGuideSend(binding.etSearch.text.toString(), filterGuide))
                 dialog.hide()
             }
 

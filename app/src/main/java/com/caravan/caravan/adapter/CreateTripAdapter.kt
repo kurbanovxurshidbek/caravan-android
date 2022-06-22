@@ -60,7 +60,7 @@ class CreateTripAdapter(var fragment: CreateTrip2Fragment, var items:ArrayList<C
                 tvDesc.text = trip.location.description
 
                 ivClear.setOnClickListener {
-                    fragment.removeItem(adapterPosition,trip.photoId)
+                    fragment.removeItem(items.size - adapterPosition - 1,trip.photoId)
                     notifyDataSetChanged()
                 }
             }

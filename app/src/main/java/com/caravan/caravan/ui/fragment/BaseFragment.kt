@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +12,10 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.DialogLoadingBinding
-import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Trip
 import com.caravan.caravan.model.home.HomeGuide
 import com.caravan.caravan.model.home.HomeTrip
+import com.caravan.caravan.model.search.SearchGuide
 import com.caravan.caravan.ui.activity.DetailsActivity
 import com.caravan.caravan.ui.activity.EditActivity
 import com.caravan.caravan.ui.activity.GuideOptionActivity
@@ -39,7 +38,7 @@ open class BaseFragment : Fragment(), AdapterView.OnItemSelectedListener {
         startActivity(intent)
     }
 
-    open fun goToDetailsActivity(guide: GuideProfile) {
+    open fun goToDetailsActivity(guide: SearchGuide) {
         val intent = Intent(requireContext(), DetailsActivity::class.java)
         intent.putExtra("guideId", guide.id)
         startActivity(intent)
@@ -99,7 +98,7 @@ open class BaseFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     open fun showLoading() {
         if (loadingDialog == null) {
-            loadingDialog = android.app.Dialog(requireContext())
+            loadingDialog = Dialog(requireContext())
             val loadingBinding = DialogLoadingBinding.inflate(LayoutInflater.from(requireContext()))
             loadingDialog?.setContentView(loadingBinding.root)
             loadingDialog?.setCancelable(false)
