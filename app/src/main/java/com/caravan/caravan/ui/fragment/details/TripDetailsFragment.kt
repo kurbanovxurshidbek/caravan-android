@@ -69,6 +69,7 @@ class TripDetailsFragment : BaseFragment() {
 
         setUpViewModel()
         setUpObserves()
+
         initViews()
 
         return fragmentTripDetailsBinding.root
@@ -91,7 +92,7 @@ class TripDetailsFragment : BaseFragment() {
                         dismissLoading()
                         trip = it.data
                         setUpDate(it.data)
-                        Log.d("Trip", "SUCCESS1: ${trip.toString()}")
+                        Log.d("TripDetailsFragment", "SUCCESS1: ${trip.toString()}")
                     }
                     is UiStateObject.ERROR -> {
                         Log.d("Trip", "ERROR: ${trip.toString()}")
@@ -146,15 +147,16 @@ class TripDetailsFragment : BaseFragment() {
     }
 
     private fun setUpDate(data: Trip) {
+        Log.d("TripDetailsFragment", "setUpDate: ${data.toString()}")
+
         setViewPager(data.photos)
 //        setTravelLocations(data.locations)  bu kemayapti
 //        setFacilities(data.facilities)  bu ham kemayapti
-//        setCommentsRv(data.reviews) bu ham kemayapti
+        setCommentsRv(data.reviews)
         setLeaveCommentsPart(data.attendancesProfileId, data.reviews)
 
-//        fragmentTripDetailsBinding.tvTripPrice.text = setPrice(data.price)
-//        fragmentTripDetailsBinding.tvGuidePrice.text = setPrice(data.price)
-        Log.d("Trip", "setUpDate: ${data.toString()}")
+        fragmentTripDetailsBinding.tvTripPrice.text = setPrice(data.price)
+        fragmentTripDetailsBinding.tvGuidePrice.text = setPrice(data.price)
 
     }
 
@@ -303,7 +305,7 @@ class TripDetailsFragment : BaseFragment() {
             .inflate(R.layout.overlay_view, LinearLayout(requireContext()), false)
 
         overlayViewBinding.name.text =
-            trip.photos[position].location.provence + ", " + trip.photos[position].location.district
+            trip.photos[position].location.provence.plus(", ").plus(trip.photos[position].location.district)
         overlayViewBinding.tvDescription.text =
             trip.photos[position].location.description
 
@@ -323,7 +325,7 @@ class TripDetailsFragment : BaseFragment() {
                 overlayViewBinding.root
             ).withImageChangeListener {
                 overlayViewBinding.name.text =
-                    trip.photos[it].location.district + ", " + trip.photos[it].location.district
+                    trip.photos[it].location.district.plus(", ").plus(trip.photos[it].location.district)
                 overlayViewBinding.tvDescription.text =
                     trip.photos[it].location.description
             }

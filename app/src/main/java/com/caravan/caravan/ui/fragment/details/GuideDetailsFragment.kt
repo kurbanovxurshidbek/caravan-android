@@ -160,7 +160,7 @@ class GuideDetailsFragment : BaseFragment() {
 
     private fun setData(data: GuideProfile) {
         guideDetailsBinding.apply {
-            tvGuideFullName.text = data.profile.name + " " + data.profile.surname
+            tvGuideFullName.text = data.profile.name.plus(" ").plus(data.profile.surname)
             tvGuideLanguages.text = setLanguages(data.languages)
             tvGuideDescription.text = data.biography
             ratingBarGuide.rating = data.rate.toFloat()
@@ -226,20 +226,21 @@ class GuideDetailsFragment : BaseFragment() {
                     RelativeLayout(requireContext())
                 )
 
+                guideProfile?.profile?.photo?.let {
+                    StfalconImageViewer.Builder<String?>(
+                        requireContext(),
+                        arrayOf(guideProfile?.profile?.photo)
+                    ) { view, _ ->
+                        Glide.with(guideDetailsBinding.root).load(guideProfile?.profile?.photo)
+                            .into(view)
+                    }.withHiddenStatusBar(false)
+                        .withDismissListener {
 
-                StfalconImageViewer.Builder<String?>(
-                    requireContext(),
-                    arrayOf(guideProfile?.profile?.photo)
-                ) { view, _ ->
-                    Glide.with(guideDetailsBinding.root).load(guideProfile?.profile?.photo)
-                        .into(view)
-                }.withHiddenStatusBar(false)
-                    .withDismissListener {
+                        }
+                        .withOverlayView(myView)
+                        .show()
 
-                    }
-                    .withOverlayView(myView)
-                    .show()
-
+                }
             }
 
             btnApplyGuide.setOnClickListener {
@@ -396,13 +397,11 @@ class GuideDetailsFragment : BaseFragment() {
     }
 
     private fun setProfilePhoto(photo: String?) {
-        photo?.let {
-            Glide.with(guideDetailsBinding.root)
-                .load(photo)
-                .placeholder(R.drawable.guide)
-                .error(R.drawable.guide)
-                .into(guideDetailsBinding.guideProfilePhoto)
-        }
+        Glide.with(guideDetailsBinding.root)
+            .load(photo)
+            .placeholder(R.drawable.loading)
+            .error(R.drawable.user)
+            .into(guideDetailsBinding.guideProfilePhoto)
 
     }
 

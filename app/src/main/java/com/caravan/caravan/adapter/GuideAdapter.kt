@@ -5,6 +5,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -22,17 +23,26 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<SearchGuide>)
         RecyclerView.ViewHolder(itemGuideBinding.root) {
 
         fun onBind(guide: SearchGuide) {
+            Log.d("GuideAdapter", "onBind: ${guide.toString()}")
 
             Glide.with(itemGuideBinding.ivGuide).load(guide.profilePhoto)
-                .placeholder(R.drawable.loading)
+                .placeholder(R.drawable.user)
                 .into(itemGuideBinding.ivGuide)
+
+//            guide.profilePhoto.let {
+//                Glide.with(itemGuideBinding.ivGuide).load(guide.profilePhoto)
+//                    .placeholder(R.drawable.loading)
+//                    .into(itemGuideBinding.ivGuide)
+//            }
+
             itemGuideBinding.tvGuidesFullname.text =
-                guide.name + " " + guide.surname
+                guide.name.plus(" ").plus(guide.surname)
             itemGuideBinding.tvGuidesCities.text = provinces(guide)
             itemGuideBinding.tvGuidePrice.text = price(guide)
-//            itemGuideBinding.tvGuidesLanguages.text = getLanguages(guide.languages)
+            itemGuideBinding.tvGuidesLanguages.text = getLanguages(guide.languages)
             itemGuideBinding.ratingBarGuide.rating = guide.rate.toFloat()
-//            itemGuideBinding.tvGuidesCommentsCount.text = guide.reviewCount.toString()
+            itemGuideBinding.tvGuidesCommentsCount.text =
+                "(".plus(guide.reviewCount.toString()).plus(")")
 
 
             itemView.setOnClickListener {
@@ -41,13 +51,15 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<SearchGuide>)
 
         }
 
-        private fun getLanguages(languages: ArrayList<Language>): String {
+        private fun getLanguages(languages: ArrayList<Language>?): String {
             var text = ""
-            for (language in 0..languages.size - 2) {
-                text += "${languages[language].name} "
-                text += ","
+            languages?.let {
+                for (language in 0..languages.size - 2) {
+                    text += "${languages[language].name} "
+                    text += ","
+                }
+                text += languages[languages.size - 1].name
             }
-            text += languages[languages.size - 1].name
             return text
         }
 

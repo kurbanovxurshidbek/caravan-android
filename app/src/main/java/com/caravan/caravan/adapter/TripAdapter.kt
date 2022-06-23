@@ -10,8 +10,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemTripsBinding
-import com.caravan.caravan.model.Trip
 import com.caravan.caravan.model.home.HomeTrip
 import com.caravan.caravan.ui.fragment.BaseFragment
 
@@ -20,16 +20,20 @@ class TripAdapter(val context: Fragment, var items: ArrayList<HomeTrip>) :
 
     inner class ViewHolder(private val itemTripsBinding: ItemTripsBinding) :
         RecyclerView.ViewHolder(itemTripsBinding.root) {
+
         fun bind(trip: HomeTrip) {
-            Glide.with(context).load(trip.photo).into(itemTripsBinding.ivTripPhoto)
+
+            Glide.with(context).load(trip.photo)
+                .placeholder(R.drawable.trip0)
+                .into(itemTripsBinding.ivTripPhoto)
+
             itemTripsBinding.tvTripTitle.text = trip.name
             itemTripsBinding.ratingBarTrip.rating = trip.rate.toFloat()
-            itemTripsBinding.tvTripCommentsCount.text = trip.reviewsCount.toString()
+            itemTripsBinding.tvTripCommentsCount.text = "(".plus(trip.reviewsCount.toString()).plus(")")
             itemTripsBinding.tvPrice.text = price(trip)
             itemView.setOnClickListener {
                 (context as BaseFragment).goToDetailsActivityFromHome(trip)
             }
-
         }
 
     }
