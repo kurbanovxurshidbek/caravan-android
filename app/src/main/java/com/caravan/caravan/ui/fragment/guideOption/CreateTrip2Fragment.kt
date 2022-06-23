@@ -247,7 +247,6 @@ class CreateTrip2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                 viewModel.completeTrip(tripId, secondSend)
                 setUpObservers()
 
-
             } else {
                 Toast.makeText(
                     requireContext(),
@@ -269,10 +268,6 @@ class CreateTrip2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
         myPhotosList.removeAt(index)
         adapterTripAdapter.notifyDataSetChanged()
-    }
-
-    private fun deleteTripPhoto(photoId:String){
-
     }
 
     private fun swipeToDeleteFacility() {

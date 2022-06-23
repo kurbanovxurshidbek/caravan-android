@@ -270,40 +270,45 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <EditText
-                            android:id="@+id/etLanguage"
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
                             android:layout_weight="1"
-                            android:fontFamily="@font/circular_std_bold"
-                            android:hint="@string/str_language"
-                            android:inputType="textCapCharacters"
-                            android:textColor="#99000000"
-                            android:backgroundTint="@color/main_color"
-                            android:textCursorDrawable="@drawable/cursor"
-                            android:textColorHint="#99000000"
-                            android:textSize="18sp"
-                            android:textStyle="normal" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginTop="1.5dp"
                             android:orientation="vertical">
 
                             <Spinner
-                                android:id="@+id/spinnerLevel"
-                                android:layout_width="wrap_content"
+                                android:id="@+id/spinnerLanguage"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/background_spinner"
-                                android:paddingEnd="20dp" />
+                                />
 
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:layout_marginTop="2dp"
-                                android:background="@color/main_color"/>
+                                android:background="@color/main_color" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <Spinner
+                                android:id="@+id/spinnerLevel"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/background_spinner" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="2dp"
+                                android:background="@color/main_color" />
                         </LinearLayout>
 
 

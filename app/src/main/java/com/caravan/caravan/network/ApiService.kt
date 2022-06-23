@@ -72,7 +72,6 @@ interface ApiService {
     @PUT("/api/v1/guide/status")
     suspend fun changeGuideStatus(): Response<Boolean>
 
-
     //// Trip
     @POST("/api/v1/trip")
     suspend fun createTrip(@Body firstSend: FirstSend): Response<FirstSend> // Trip Id
