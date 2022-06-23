@@ -184,7 +184,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:maxLength="2"
+                        android:maxLength="6"
                         android:fontFamily="@font/circular_std_bold"
                         android:hint="@string/str_amount"
                         android:inputType="number"

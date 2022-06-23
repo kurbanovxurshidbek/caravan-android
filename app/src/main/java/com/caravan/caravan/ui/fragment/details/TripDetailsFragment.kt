@@ -152,11 +152,12 @@ class TripDetailsFragment : BaseFragment() {
         setViewPager(data.photos)
 //        setTravelLocations(data.locations)  bu kemayapti
 //        setFacilities(data.facilities)  bu ham kemayapti
-        setCommentsRv(data.reviews)
+//        setCommentsRv(data.reviews) bu ham kemayapti
         setLeaveCommentsPart(data.attendancesProfileId, data.reviews)
 
-        fragmentTripDetailsBinding.tvTripPrice.text = setPrice(data.price)
-        fragmentTripDetailsBinding.tvGuidePrice.text = setPrice(data.price)
+//        fragmentTripDetailsBinding.tvTripPrice.text = setPrice(data.price)
+//        fragmentTripDetailsBinding.tvGuidePrice.text = setPrice(data.price)
+        Log.d("Trip", "setUpDate: ${data.toString()}")
 
     }
 
