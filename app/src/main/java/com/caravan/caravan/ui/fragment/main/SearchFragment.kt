@@ -1,4 +1,5 @@
 package com.caravan.caravan.ui.fragment.main
+
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -140,7 +141,29 @@ class SearchFragment : BaseFragment() {
         binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 hideKeyboard()
-                TODO("Call Search Api")
+                try {
+                    handler.removeCallbacks(runnable)
+                } catch (e: Exception) {
+
+                }
+
+                if (isGuide) {
+                    sharedViewModel.setGuideSearch(
+                        SearchGuideSend(
+                            binding.etSearch.text.toString(),
+                            filterGuide
+                        )
+                    )
+                } else {
+                    sharedViewModel.setTripSearch(
+                        SearchTripSend(
+                            binding.etSearch.text.toString(),
+                            filterTrip
+                        )
+                    )
+                }
+
+
                 true
             } else false
         }
@@ -274,9 +297,11 @@ class SearchFragment : BaseFragment() {
                 }
 
                 gender = if (checkboxMale.isChecked) {
-                    "Male"
+//                    getString(R.string.str_male)
+                    "MALE"
                 } else if (checkboxFemale.isChecked) {
-                    "Female"
+//                    getString(R.string.str_female)
+                    "FEMALE"
                 } else {
                     null
                 }
@@ -289,7 +314,12 @@ class SearchFragment : BaseFragment() {
                     gender
                 )
 
-                sharedViewModel.setGuideSearch(SearchGuideSend(binding.etSearch.text.toString(), filterGuide))
+                sharedViewModel.setGuideSearch(
+                    SearchGuideSend(
+                        binding.etSearch.text.toString(),
+                        filterGuide
+                    )
+                )
                 dialog.hide()
             }
 
@@ -401,6 +431,13 @@ class SearchFragment : BaseFragment() {
                     minPeople,
                     maxPeople
                 )
+
+                sharedViewModel.setTripSearch(
+                    SearchTripSend(
+                        binding.etSearch.text.toString(),
+                        filterTrip
+                    )
+                )
                 dialog.hide()
             }
 
@@ -430,7 +467,7 @@ class SearchFragment : BaseFragment() {
                 if (!isChecked) {
                     checkboxFemale.isChecked = true
                     checkboxFemale.isEnabled = false
-                    gender = getString(R.string.str_male)
+                    gender = "MALE"
                 } else {
                     checkboxMale.isEnabled = true
                     checkboxFemale.isEnabled = true

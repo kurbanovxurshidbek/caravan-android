@@ -1,6 +1,7 @@
 package com.caravan.caravan.ui.activity
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.caravan.caravan.R
@@ -15,6 +16,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         //Initialize the bottom navigation view
         //create bottom navigation view object

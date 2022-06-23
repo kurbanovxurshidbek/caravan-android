@@ -100,15 +100,15 @@ class SearchFragmentTrip : BaseFragment() {
                     is UiStateObject.ERROR -> {
                         dismissLoading()
                         Log.d("Search", "ERROR: ${it.message}")
-//                        showDialogWarning(
-//                            getString(R.string.str_no_connection),
-//                            getString(R.string.str_try_again),
-//                            object : OkInterface {
-//                                override fun onClick() {
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
 //                                    requireActivity().finish()
-//                                    return
-//                                }
-//                            })
+                                    return
+                                }
+                            })
                     }
                     else -> Unit
                 }
