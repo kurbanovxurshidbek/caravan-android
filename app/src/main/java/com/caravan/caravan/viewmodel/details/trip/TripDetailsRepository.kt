@@ -8,6 +8,8 @@ class TripDetailsRepository(private val apiService: ApiService) {
 
     suspend fun getTrip(tripId: String) = apiService.getTrip(tripId)
 
+    suspend fun getGuideTrips(guideId: String, page: Int) = apiService.getMyTrips(guideId, page)
+
     suspend fun postReview(review: Review) = apiService.postReview(review)
 
     suspend fun getReviews(page: Int, tripId: String) = apiService.getTripComments(page, tripId)

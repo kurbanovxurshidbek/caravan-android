@@ -215,8 +215,10 @@ class GuideDetailsFragment : BaseFragment() {
             }
 
             guideTrips.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("guideId", guideId)
                 Navigation.findNavController(requireActivity(), R.id.details_nav_fragment)
-                    .navigate(R.id.action_guideDetailsFragment_to_guideTrips)
+                    .navigate(R.id.action_guideDetailsFragment_to_guideTrips, bundle)
             }
 
             guideProfilePhoto.setOnClickListener {

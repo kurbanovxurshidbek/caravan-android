@@ -3,6 +3,7 @@ package com.caravan.caravan.viewmodel.details.trip
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.caravan.caravan.model.Trip
+import com.caravan.caravan.model.TripRes
 import com.caravan.caravan.model.hire.Hire
 import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.model.review.Review
@@ -85,5 +86,24 @@ class TripDetailsViewModel(private val repository: TripDetailsRepository): ViewM
             _hire.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")
         }
     }
+
+    private val _trips = MutableStateFlow<UiStateObject<TripRes>>(UiStateObject.EMPTY)
+    val trips = _trips
+
+    fun getGuideTrips(guideId: String, page: Int) = viewModelScope.launch {
+        _trips.value = UiStateObject.LOADING
+
+        try {
+            val trips = repository.getGuideTrips(guideId, page)
+            if (!trips.isSuccessful) {
+                _trips.value = UiStateObject.ERROR(trips.message())
+            } else {
+                _trips.value = UiStateObject.SUCCESS(trips.body()!!)
+            }
+        } catch (e: Exception) {
+            _trips.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")
+        }
+    }
+
 
 }

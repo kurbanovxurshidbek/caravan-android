@@ -149,7 +149,7 @@ class TripDetailsFragment : BaseFragment() {
         fragmentTripDetailsBinding.apply {
             tvTripTitle.text = data.name
             tvTripDescription.text = data.description
-            tvPeopleAmount.text = getString(R.string.str_min) + ":${data.minPeople} ${getString(R.string.str_people)}, " + getString(R.string.str_max) + ":${data.maxPeople} ${getString(R.string.str_people)}"
+            tvPeopleAmount.text = getString(R.string.str_min).plus(": ${data.minPeople} ${getString(R.string.str_people)}, ").plus(getString(R.string.str_max)).plus(":${data.maxPeople} ${getString(R.string.str_people)}")
             ratingBarTrip.rating = data.rate.toFloat()
         }
 
@@ -169,8 +169,8 @@ class TripDetailsFragment : BaseFragment() {
 
     private fun setGuide(guide: SearchGuide) {
         fragmentTripDetailsBinding.apply {
-            Glide.with(ivGuide).load(guide.profilePhoto).into(ivGuide)
-            tvGuidesFullname.text = guide.name + " " + guide.surname
+            Glide.with(ivGuide).load(guide.profilePhoto).placeholder(R.drawable.user).into(ivGuide)
+            tvGuidesFullname.text = guide.name.plus(" ").plus(guide.surname)
             ratingBarGuide.rating = guide.rate.toFloat()
             tvGuidesCommentsCount.text = guide.reviewCount.toString()
             tvGuidesCities.text = setProvince(guide.travelLocations)

@@ -15,15 +15,15 @@ import com.caravan.caravan.databinding.ItemTripsBinding
 import com.caravan.caravan.model.home.HomeTrip
 import com.caravan.caravan.ui.fragment.BaseFragment
 
-class TripAdapter(val context: Fragment, var items: ArrayList<HomeTrip>) :
-    RecyclerView.Adapter<TripAdapter.ViewHolder>() {
+class GuideTripsAdapter(val context: Fragment, var items: ArrayList<HomeTrip>) :
+    RecyclerView.Adapter<GuideTripsAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val itemTripsBinding: ItemTripsBinding) :
         RecyclerView.ViewHolder(itemTripsBinding.root) {
 
         fun bind(trip: HomeTrip) {
 
-            Glide.with(context).load(trip.photo)
+            Glide.with(context).load(trip.photos[0].photo)
                 .placeholder(R.drawable.trip0)
                 .into(itemTripsBinding.ivTripPhoto)
 
@@ -31,7 +31,6 @@ class TripAdapter(val context: Fragment, var items: ArrayList<HomeTrip>) :
             itemTripsBinding.ratingBarTrip.rating = trip.rate.toFloat()
             itemTripsBinding.tvTripCommentsCount.text =
                 "(".plus(trip.reviewsCount.toString()).plus(")")
-
             try {
                 itemTripsBinding.tvPrice.text = price(trip)
             } catch (e: Exception) {
@@ -45,7 +44,6 @@ class TripAdapter(val context: Fragment, var items: ArrayList<HomeTrip>) :
     }
 
     private fun price(trip: HomeTrip): Spannable {
-
         val text = "$${trip.price.cost.toInt()}"
         val endIndex = text.length
 
@@ -61,7 +59,10 @@ class TripAdapter(val context: Fragment, var items: ArrayList<HomeTrip>) :
         return outPutColoredText
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TripAdapter.ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): GuideTripsAdapter.ViewHolder {
         return ViewHolder(
             ItemTripsBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -74,7 +75,7 @@ class TripAdapter(val context: Fragment, var items: ArrayList<HomeTrip>) :
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: TripAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GuideTripsAdapter.ViewHolder, position: Int) {
         holder.bind(items[position])
     }
 }

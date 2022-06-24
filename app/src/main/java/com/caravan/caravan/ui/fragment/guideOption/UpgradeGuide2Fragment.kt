@@ -204,7 +204,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
         }
     }
 
-    fun completeAction() {
+    private fun completeAction() {
         findNavController().navigate(
             R.id.action_upgradeGuide2Fragment_to_guideGuideOptionFragment
         )
