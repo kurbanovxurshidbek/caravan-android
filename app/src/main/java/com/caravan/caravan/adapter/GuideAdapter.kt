@@ -42,13 +42,16 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<SearchGuide>)
 
         }
 
-        private fun getLanguages(languages: ArrayList<Language>): String {
+        private fun getLanguages(languages: ArrayList<Language>?): String {
             var text = ""
-            for (language in 0..languages.size - 2) {
-                text += "${languages[language].name} "
-                text += ","
+            languages?.let {
+                for (language in 0..languages.size - 2) {
+                    text += "${languages[language].name} "
+                    text += ","
+                }
+                text += languages[languages.size - 1].name
             }
-            text += languages[languages.size - 1].name
+
             return text
         }
 
