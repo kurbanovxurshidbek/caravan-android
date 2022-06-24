@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +26,7 @@ import com.caravan.caravan.model.Facility
 import com.caravan.caravan.model.Location
 import com.caravan.caravan.model.Price
 import com.caravan.caravan.model.create_trip.SecondSend
+import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
@@ -94,7 +94,7 @@ class CreateTrip2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
 
-                        finishTrip()
+                        finishTrip(it.data)
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
@@ -146,20 +146,33 @@ class CreateTrip2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
 
 
-    private fun finishTrip() {
+    private fun finishTrip(data: ActionMessage) {
 
-        myPhotosList.clear()
-        myPhotoIds.clear()
+        if (data.status) {
+            myPhotosList.clear()
+            myPhotoIds.clear()
 
-        showDialogMessage(
-            "Done",//getString(R.string.str_done),
-            "Trip is created!",//getString(R.string.str_compleate_create),
-            object : OkInterface {
-                override fun onClick() {
-                    requireActivity().finish()
-                }
+            showDialogMessage(
+                getString(R.string.str_done),
+                getString(R.string.str_compleate_create),
+                object : OkInterface {
+                    override fun onClick() {
+                        requireActivity().finish()
+                    }
 
-            })
+                })
+        } else {
+            showDialogMessage(
+                data.title!!,
+                data.message!!,
+                object : OkInterface {
+                    override fun onClick() {
+                        requireActivity().finish()
+                    }
+
+                })
+        }
+
     }
 
     private fun initViews() {

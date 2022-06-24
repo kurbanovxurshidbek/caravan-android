@@ -228,11 +228,11 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
                 if (desc != "") {
                     val location = Location("1", province, district, desc)
 
-                    myLocationList.add(0,location)
+                    myLocationList.add(0, location)
                 }
-                if (language != "") {
+                if (language != "" && myLanguageList.isEmpty()) {
                     val language = Language("1", language, level)
-                    myLanguageList.add(0,language)
+                    myLanguageList.add(0, language)
                 }
 
 

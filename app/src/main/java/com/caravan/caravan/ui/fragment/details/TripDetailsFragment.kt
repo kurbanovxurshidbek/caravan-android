@@ -122,7 +122,7 @@ class TripDetailsFragment : BaseFragment() {
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
                         val callIntent = Intent(Intent.ACTION_DIAL)
-                        callIntent.data = Uri.parse("tel:${trip.guide.phoneNumber}")
+                        callIntent.data = Uri.parse("tel:${trip.guide.phone}")
                         requireActivity().startActivity(callIntent)
                     }
                     is UiStateObject.ERROR -> {
