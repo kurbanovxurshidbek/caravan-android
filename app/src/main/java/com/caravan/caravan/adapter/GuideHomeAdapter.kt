@@ -54,15 +54,15 @@ class GuideHomeAdapter(private val context: BaseFragment, private val list: List
             return if(numberOfProvince > 1){
                 val text = "${province.provence} and ${numberOfProvince - 1} more"
                 val endIndex = province.provence.length
-                colorMyText(text, 0, endIndex, Color.parseColor("#167351"))
+                colorMyText(text, 0, endIndex)
             }else{
-                colorMyText(province.provence, 0, province.provence.length, Color.parseColor("#167351"))
+                colorMyText(province.provence, 0, province.provence.length)
             }
         }
 
-        private fun colorMyText(inputText:String, startIndex :Int, endIndex:Int, textColor:Int):Spannable{
+        private fun colorMyText(inputText:String, startIndex :Int, endIndex:Int):Spannable{
             val outPutColoredText: Spannable = SpannableString(inputText)
-            outPutColoredText.setSpan(ForegroundColorSpan(textColor), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            outPutColoredText.setSpan(ForegroundColorSpan(Color.parseColor("#167351")), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             return outPutColoredText
         }
     }
