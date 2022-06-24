@@ -59,6 +59,8 @@ class SearchFragment : BaseFragment() {
     private var filterTrip: FilterTrip? = null
     private var filterGuide: FilterGuide? = null
 
+    private var filterOn: Boolean = false
+
     private val sharedViewModel: SearchSharedVM by activityViewModels()
     private lateinit var runnable: Runnable
 
@@ -271,67 +273,68 @@ class SearchFragment : BaseFragment() {
         }
 
         dialogGuideBinding.apply {
-            applyFilter.setOnClickListener {
-                val minPrice = if (minPrice.text.isNullOrBlank()) {
-                    0L
-                } else {
-                    minPrice.text.toString().toLong()
-                }
+            dialogGuideBinding.apply {
+                applyFilter.setOnClickListener {
 
-                val maxPrice = if (maxPrice.text.isNullOrBlank()) {
-                    1000000000L
-                } else {
-                    maxPrice.text.toString().toLong()
-                }
+                    val minPrice = if (minPrice.text.isNullOrBlank()) {
+                        0L
+                    } else {
+                        minPrice.text.toString().toLong()
+                    }
 
-                val minRating = if (minRating.text.isNullOrBlank()) {
-                    0
-                } else {
-                    minRating.text.toString().toInt()
-                }
+                    val maxPrice = if (maxPrice.text.isNullOrBlank()) {
+                        1000000000L
+                    } else {
+                        maxPrice.text.toString().toLong()
+                    }
 
-                val maxRating = if (maxRating.text.isNullOrBlank()) {
-                    5
-                } else {
-                    maxRating.text.toString().toInt()
-                }
+                    val minRating = if (minRating.text.isNullOrBlank()) {
+                        0
+                    } else {
+                        minRating.text.toString().toInt()
+                    }
 
-                gender = if (checkboxMale.isChecked) {
-//                    getString(R.string.str_male)
-                    "MALE"
-                } else if (checkboxFemale.isChecked) {
-//                    getString(R.string.str_female)
-                    "FEMALE"
-                } else {
-                    null
-                }
+                    val maxRating = if (maxRating.text.isNullOrBlank()) {
+                        5
+                    } else {
+                        maxRating.text.toString().toInt()
+                    }
 
-                filterGuide = FilterGuide(
-                    Price(minPrice, currencyMinGuide, optionMinGuide),
-                    Price(maxPrice, currencyMaxGuide, optionMaxGuide),
-                    minRating,
-                    maxRating,
-                    gender
-                )
+                    gender = if (checkboxMale.isChecked) {
+                        "MALE"
+                    } else if (checkboxFemale.isChecked) {
+                        "FEMALE"
+                    } else {
+                        null
+                    }
 
-                sharedViewModel.setGuideSearch(
-                    SearchGuideSend(
-                        binding.etSearch.text.toString(),
-                        filterGuide
+                    filterGuide = FilterGuide(
+                        Price(minPrice, currencyMinGuide, optionMinGuide),
+                        Price(maxPrice, currencyMaxGuide, optionMaxGuide),
+                        minRating,
+                        maxRating,
+                        gender
                     )
-                )
-                dialog.hide()
+
+                    sharedViewModel.setGuideSearch(
+                        SearchGuideSend(
+                            binding.etSearch.text.toString(),
+                            filterGuide
+                        )
+                    )
+                    dialog.hide()
+                }
+
             }
 
+            dialog.window!!.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            dialog.window!!.attributes.windowAnimations = R.style.DialogAnimation
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.window!!.setGravity(Gravity.BOTTOM)
         }
-
-        dialog.window!!.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        dialog.window!!.attributes.windowAnimations = R.style.DialogAnimation
-        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window!!.setGravity(Gravity.BOTTOM)
 
     }
 
