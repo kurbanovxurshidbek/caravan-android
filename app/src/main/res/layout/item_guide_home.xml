@@ -18,6 +18,7 @@
             android:layout_gravity="center|top"
             android:elevation="5dp"
             android:scaleType="centerCrop"
+            android:src="@drawable/user"
             app:shapeAppearanceOverlay="@style/circle_border" />
 
     </LinearLayout>

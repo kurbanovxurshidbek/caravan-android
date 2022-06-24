@@ -22,7 +22,7 @@ class GuideHomeAdapter(private val context: BaseFragment, private val list: List
     inner class ViewHolder(private val itemBinding: ItemGuideHomeBinding) : RecyclerView.ViewHolder(itemBinding.root){
 
         fun onBind(guide: HomeGuide){
-            Glide.with(itemBinding.ivProfilePhoto).load(guide.profilePhoto).into(itemBinding.ivProfilePhoto)
+            Glide.with(context).load(guide.profilePhoto).placeholder(R.drawable.user).into(itemBinding.ivProfilePhoto)
             itemBinding.tvName.text = guide.name
             itemBinding.tvName.isSelected = true
             itemBinding.tvPrice.text = price(guide)
@@ -54,7 +54,7 @@ class GuideHomeAdapter(private val context: BaseFragment, private val list: List
             return if(numberOfProvince > 1){
                 val text = "${province.provence} and ${numberOfProvince - 1} more"
                 val endIndex = province.provence.length
-                colorMyText(text, 0, endIndex, R.color.main_color2)
+                colorMyText(text, 0, endIndex, Color.parseColor("#167351"))
             }else{
                 colorMyText(province.provence, 0, province.provence.length, Color.parseColor("#167351"))
             }
