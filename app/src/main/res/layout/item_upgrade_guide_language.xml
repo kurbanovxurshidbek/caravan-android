@@ -31,19 +31,19 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="10dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tvLanguage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/circular_std_bold"
                     android:textAllCaps="true"
+                    android:textColor="@color/black"
                     android:singleLine="true"
-                    android:textSize="18sp"
-                    android:textColor="#99000000"
-                    android:textStyle="normal" />
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    app:drawableEndCompat="@drawable/ic_arrow_down" />
 
                 <View
                     android:layout_width="match_parent"
@@ -60,11 +60,11 @@
 
                 <TextView
                     android:id="@+id/tvLevel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:singleLine="true"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:paddingHorizontal="5dp"
                     android:textStyle="normal"
                     app:drawableEndCompat="@drawable/ic_arrow_down" />

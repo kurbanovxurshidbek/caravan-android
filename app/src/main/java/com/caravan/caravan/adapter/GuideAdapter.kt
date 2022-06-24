@@ -24,15 +24,16 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<SearchGuide>)
         fun onBind(guide: SearchGuide) {
 
             Glide.with(itemGuideBinding.ivGuide).load(guide.profilePhoto)
-                .placeholder(R.drawable.loading)
+                .placeholder(R.drawable.user)
                 .into(itemGuideBinding.ivGuide)
             itemGuideBinding.tvGuidesFullname.text =
-                guide.name + " " + guide.surname
+                guide.name.plus(" ").plus(guide.surname)
             itemGuideBinding.tvGuidesCities.text = provinces(guide)
             itemGuideBinding.tvGuidePrice.text = price(guide)
             itemGuideBinding.tvGuidesLanguages.text = getLanguages(guide.languages)
             itemGuideBinding.ratingBarGuide.rating = guide.rate.toFloat()
-            itemGuideBinding.tvGuidesCommentsCount.text = guide.reviewCount.toString()
+            itemGuideBinding.tvGuidesCommentsCount.text =
+                "(".plus(guide.reviewCount.toString()).plus(")")
 
 
             itemView.setOnClickListener {

@@ -92,7 +92,6 @@ class TripDetailsFragment : BaseFragment() {
                         dismissLoading()
                         trip = it.data
                         setUpDate(it.data)
-                        Log.d("Trip", "SUCCESS1: ${trip.toString()}")
                     }
                     is UiStateObject.ERROR -> {
                         fragmentTripDetailsBinding.apply {
@@ -375,7 +374,7 @@ class TripDetailsFragment : BaseFragment() {
             .inflate(R.layout.overlay_view, LinearLayout(requireContext()), false)
 
         overlayViewBinding.name.text =
-            trip.photos[position].location.provence + ", " + trip.photos[position].location.district
+            trip.photos[position].location.provence.plus(", ").plus(trip.photos[position].location.district)
         overlayViewBinding.tvDescription.text =
             trip.photos[position].location.description
 
@@ -395,7 +394,7 @@ class TripDetailsFragment : BaseFragment() {
                 overlayViewBinding.root
             ).withImageChangeListener {
                 overlayViewBinding.name.text =
-                    trip.photos[it].location.district + ", " + trip.photos[it].location.district
+                    trip.photos[it].location.district.plus(", ").plus(trip.photos[it].location.district)
                 overlayViewBinding.tvDescription.text =
                     trip.photos[it].location.description
             }
