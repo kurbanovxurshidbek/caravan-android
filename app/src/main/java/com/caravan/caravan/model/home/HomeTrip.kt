@@ -1,6 +1,8 @@
 package com.caravan.caravan.model.home
 
 import com.caravan.caravan.model.Price
+import com.caravan.caravan.model.TourPhoto
+import com.caravan.caravan.model.create_trip.PhotoRespond
 
 data class HomeTrip(
     val id: String,
@@ -8,5 +10,6 @@ data class HomeTrip(
     val photo: String,
     val price: Price,
     val rate: Double,
-    val reviewsCount: Int
+    val reviewsCount: Int,
+    val photos: ArrayList<TourPhoto>
 )

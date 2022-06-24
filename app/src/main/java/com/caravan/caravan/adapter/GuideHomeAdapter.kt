@@ -26,7 +26,7 @@ class GuideHomeAdapter(private val context: BaseFragment, private val list: List
             itemBinding.tvName.text = guide.name
             itemBinding.tvName.isSelected = true
             itemBinding.tvPrice.text = price(guide)
-            itemBinding.tvProvince.text = provinces(guide)
+//            itemBinding.tvProvince.text = provinces(guide)
 
             itemView.setOnClickListener {
                 if(context is HomeFragment){

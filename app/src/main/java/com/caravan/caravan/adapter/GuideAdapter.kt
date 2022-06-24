@@ -44,14 +44,14 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<SearchGuide>)
 
         private fun getLanguages(languages: ArrayList<Language>?): String {
             var text = ""
-            languages?.let {
-                for (language in 0..languages.size - 2) {
-                    text += "${languages[language].name} "
-                    text += ","
+            try {
+                for (language in languages!!) {
+                    text += "${language.name}, "
                 }
-                text += languages[languages.size - 1].name
+                return text.substring(0, text.length - 2)
+            } catch (e: Exception) {
+                text = ""
             }
-
             return text
         }
 
@@ -73,9 +73,18 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<SearchGuide>)
 
         private fun provinces(guide: SearchGuide): Spannable {
             var text = ""
-            for (province in guide.travelLocations) {
-                text += "${province.district} "
+            try {
+                for (province in guide.travelLocations) {
+                    if (!text.contains(province.district)) {
+                        text += province.district.plus(", ")
+                    }
+                }
+                text = text.substring(0, text.length - 2)
+                return colorMyText(text, 0, text.length, "#167351")
+            } catch (e: Exception) {
+                text = ""
             }
+
             return colorMyText(text, 0, text.length, "#167351")
         }
 

@@ -4,10 +4,6 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
@@ -35,8 +31,6 @@ class SearchFragment : BaseFragment() {
     private var isGuide: Boolean = true
     private lateinit var dialogGuideBinding: BottomDialogGuideBinding
     lateinit var dialogTripBinding: BottomDialogTripBinding
-    private lateinit var handler: Handler
-
 
     private var gender: String? = ""
     var currenciesMinGuide: Array<String>? = null
@@ -59,10 +53,7 @@ class SearchFragment : BaseFragment() {
     private var filterTrip: FilterTrip? = null
     private var filterGuide: FilterGuide? = null
 
-    private var filterOn: Boolean = false
-
     private val sharedViewModel: SearchSharedVM by activityViewModels()
-    private lateinit var runnable: Runnable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,93 +90,30 @@ class SearchFragment : BaseFragment() {
             }
         }
 
-        binding.etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-
-                try {
-                    handler.removeCallbacks(runnable)
-                } catch (e: Exception) {
-
-                }
-
-                runnable = Runnable {
-                    if (isGuide) {
-                        sharedViewModel.setGuideSearch(
-                            SearchGuideSend(
-                                p0.toString(),
-                                filterGuide
-                            )
-                        )
-
-                    } else {
-                        sharedViewModel.setTripSearch(SearchTripSend(p0.toString(), filterTrip))
-                    }
-                }
-
-                try {
-                    handler = Handler(Looper.myLooper()!!)
-                    handler.postDelayed(runnable, 1500)
-                } catch (exception: Exception) {
-
-                }
-            }
-
-        })
-
         binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 hideKeyboard()
-                try {
-                    handler.removeCallbacks(runnable)
-                } catch (e: Exception) {
-
-                }
-
-                if (isGuide) {
-                    sharedViewModel.setGuideSearch(
-                        SearchGuideSend(
-                            binding.etSearch.text.toString(),
-                            filterGuide
-                        )
-                    )
-                } else {
-                    sharedViewModel.setTripSearch(
-                        SearchTripSend(
-                            binding.etSearch.text.toString(),
-                            filterTrip
-                        )
-                    )
-                }
-
-
+                search()
                 true
             } else false
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        try {
-            handler.removeCallbacks(runnable)
-        } catch (e: Exception) {
-
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        try {
-            handler.removeCallbacks(runnable)
-        } catch (e: Exception) {
-
+    private fun search() {
+        if (isGuide) {
+            sharedViewModel.setGuideSearch(
+                SearchGuideSend(
+                    binding.etSearch.text.toString(),
+                    filterGuide
+                )
+            )
+        } else {
+            sharedViewModel.setTripSearch(
+                SearchTripSend(
+                    binding.etSearch.text.toString(),
+                    filterTrip
+                )
+            )
         }
     }
 
@@ -210,6 +138,7 @@ class SearchFragment : BaseFragment() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewPager.currentItem = tab.position
                 isGuide = tab.position == 0
+                search()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
