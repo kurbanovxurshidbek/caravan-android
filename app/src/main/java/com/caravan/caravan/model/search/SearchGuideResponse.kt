@@ -20,7 +20,8 @@ data class SearchGuide(
 	val price: Price,
 	val travelLocations: ArrayList<Location>,
 	val reviewCount: Int,
-	val languages: ArrayList<Language>
+	val languages: ArrayList<Language>,
+	val phoneNumber: String? = null
 )
 
 

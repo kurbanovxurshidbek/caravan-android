@@ -166,7 +166,7 @@ class UpgradeGuide2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener
             swipeToDeleteLocation()
             swipeToDeleteLanguage()
 
-            val secondNumber = args.secondNumber
+            val secondNumber = if (checkPhoneValid(args.secondNumber)) args.secondNumber else null
 
             btnDone.setOnClickListener {
 

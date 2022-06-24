@@ -15,6 +15,7 @@ import com.caravan.caravan.adapter.TripGuideAdapter
 import com.caravan.caravan.databinding.FragmentTripListBinding
 import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.Trip
+import com.caravan.caravan.model.home.HomeTrip
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
@@ -31,7 +32,7 @@ class TripListFragment : BaseFragment() {
     private val binding by viewBinding { FragmentTripListBinding.bind(it) }
     lateinit var tripAdapter: TripGuideAdapter
     lateinit var viewModel: TripListViewModel
-    private var trips = ArrayList<Trip>()
+    private var trips = ArrayList<HomeTrip>()
     lateinit var tripId: String
     lateinit var guideId: String
     var page = 1
@@ -195,7 +196,7 @@ class TripListFragment : BaseFragment() {
 
     }
 
-    fun refreshAdapterTrip(list: ArrayList<Trip>) {
+    fun refreshAdapterTrip(list: ArrayList<HomeTrip>) {
         tripAdapter = TripGuideAdapter(this, list)
         binding.recyclerView.adapter = tripAdapter
         tripAdapter.notifyDataSetChanged()

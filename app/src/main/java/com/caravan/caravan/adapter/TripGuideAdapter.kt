@@ -7,20 +7,19 @@ import com.bumptech.glide.Glide
 import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemTripGuideBinding
 import com.caravan.caravan.model.Trip
+import com.caravan.caravan.model.home.HomeTrip
 import com.caravan.caravan.ui.fragment.guideOption.TripListFragment
 
-class TripGuideAdapter(var fragment:Fragment,var items: ArrayList<Trip>) :
+class TripGuideAdapter(var fragment:Fragment,var items: ArrayList<HomeTrip>) :
     RecyclerView.Adapter<TripGuideAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val itemTripGuideBinding: ItemTripGuideBinding) :
         RecyclerView.ViewHolder(itemTripGuideBinding.root) {
-        fun onBind(trip: Trip) {
+        fun onBind(trip: HomeTrip) {
 
             itemTripGuideBinding.apply {
 
-                trip.photos.forEach {
-                    Glide.with(ivTripPhoto).load(it.photo).into(ivTripPhoto)
-                }
+                Glide.with(ivTripPhoto).load(trip.photo).into(ivTripPhoto)
 
                 tvTripTitle.text = trip.name
                 ratingBarTrip.rating = trip.rate.toFloat()

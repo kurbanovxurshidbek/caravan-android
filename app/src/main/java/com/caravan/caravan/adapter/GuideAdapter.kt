@@ -30,9 +30,9 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<SearchGuide>)
                 guide.name + " " + guide.surname
             itemGuideBinding.tvGuidesCities.text = provinces(guide)
             itemGuideBinding.tvGuidePrice.text = price(guide)
-//            itemGuideBinding.tvGuidesLanguages.text = getLanguages(guide.languages)
+            itemGuideBinding.tvGuidesLanguages.text = getLanguages(guide.languages)
             itemGuideBinding.ratingBarGuide.rating = guide.rate.toFloat()
-//            itemGuideBinding.tvGuidesCommentsCount.text = guide.reviewCount.toString()
+            itemGuideBinding.tvGuidesCommentsCount.text = guide.reviewCount.toString()
 
 
             itemView.setOnClickListener {

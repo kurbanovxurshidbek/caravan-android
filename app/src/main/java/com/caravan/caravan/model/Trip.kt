@@ -1,5 +1,8 @@
 package com.caravan.caravan.model
 
+import com.caravan.caravan.model.home.HomeTrip
+import com.caravan.caravan.model.search.SearchGuide
+
 data class Trip(
     val id: String,
     val name: String,
@@ -10,13 +13,17 @@ data class Trip(
     val price: Price,
     val minPeople: Int,
     val maxPeople: Int,
-    val guide: GuideProfile,
+    val guide: SearchGuide,
     val phoneNumber: String,
     val rate: Double,
     val days: Int,
-    val attendancesProfileId: ArrayList<String>?,
+    val attendances: ArrayList<ProfileId>?,
     val reviews: ArrayList<Comment>? = null,
-    val reviewsCount: Int
+    val reviewsCount: Int = 0
+)
+
+data class ProfileId (
+    val profileId: String
 )
 
 data class Facility(
@@ -42,5 +49,5 @@ data class TripRes(
     val currentPageNumber: Int,
     val totalItems: Int,
     val totalPage: Int,
-    val trips: ArrayList<Trip>
+    val trips: ArrayList<HomeTrip>
 )

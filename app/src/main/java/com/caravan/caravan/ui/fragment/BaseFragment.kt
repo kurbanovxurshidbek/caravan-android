@@ -23,6 +23,8 @@ import com.caravan.caravan.ui.activity.MainActivity
 import com.caravan.caravan.utils.*
 import com.caravan.caravan.utils.Extensions.setTransparentWindow
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 open class BaseFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
@@ -150,6 +152,17 @@ open class BaseFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     interface SearchFragmentAndChildFragments{
         fun isScrolling()
+    }
+
+    open fun checkEmailValid(email: String): Boolean {
+        val expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$"
+        val pattern: Pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE)
+        val matcher: Matcher = pattern.matcher(email)
+        return matcher.matches()
+    }
+
+    open fun checkPhoneValid(number: String): Boolean {
+        return number.matches(Regex("[+]998[0-9]{9}")) || number.matches(Regex("[+]7[0-9]{10}"))
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {}

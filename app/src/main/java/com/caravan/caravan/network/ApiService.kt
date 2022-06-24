@@ -92,7 +92,6 @@ interface ApiService {
     @GET("api/v1/trip/trip-photo/{tripId}")
     suspend fun getTripPhoto(@Path("tripId") tripId: String) : Response<ArrayList<TourPhoto>>
 
-    // Customise for file
     @Multipart
     @POST("/api/v1/attach/upload")
     suspend fun uploadPhoto(@Part image: MultipartBody.Part): Response<PhotoRespond>

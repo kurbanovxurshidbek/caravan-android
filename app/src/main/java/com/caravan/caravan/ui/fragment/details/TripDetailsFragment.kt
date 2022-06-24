@@ -32,6 +32,7 @@ import com.caravan.caravan.model.*
 import com.caravan.caravan.model.hire.Hire
 import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.model.review.Review
+import com.caravan.caravan.model.search.SearchGuide
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
@@ -94,7 +95,6 @@ class TripDetailsFragment : BaseFragment() {
                         Log.d("Trip", "SUCCESS1: ${trip.toString()}")
                     }
                     is UiStateObject.ERROR -> {
-                        Log.d("Trip", "ERROR: ${trip.toString()}")
                         fragmentTripDetailsBinding.apply {
                             llRoot.visibility = View.GONE
                         }
@@ -123,7 +123,7 @@ class TripDetailsFragment : BaseFragment() {
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
                         val callIntent = Intent(Intent.ACTION_DIAL)
-                        callIntent.data = Uri.parse("tel:${trip.guide.profile.phoneNumber}")
+                        callIntent.data = Uri.parse("tel:${trip.guide.phoneNumber}")
                         requireActivity().startActivity(callIntent)
                     }
                     is UiStateObject.ERROR -> {
@@ -146,16 +146,88 @@ class TripDetailsFragment : BaseFragment() {
     }
 
     private fun setUpDate(data: Trip) {
+
+        fragmentTripDetailsBinding.apply {
+            tvTripTitle.text = data.name
+            tvTripDescription.text = data.description
+            tvPeopleAmount.text = getString(R.string.str_min) + ":${data.minPeople} ${getString(R.string.str_people)}, " + getString(R.string.str_max) + ":${data.maxPeople} ${getString(R.string.str_people)}"
+            ratingBarTrip.rating = data.rate.toFloat()
+        }
+
         setViewPager(data.photos)
         setTravelLocations(data.locations)
         setFacilities(data.facilities)
         setCommentsRv(data.reviews)
-        setLeaveCommentsPart(data.attendancesProfileId, data.reviews)
+        setLeaveCommentsPart(data.attendances, data.reviews)
+
+        setGuide(data.guide)
 
         fragmentTripDetailsBinding.tvTripPrice.text = setPrice(data.price)
         fragmentTripDetailsBinding.tvGuidePrice.text = setPrice(data.price)
         Log.d("Trip", "setUpDate: ${data.toString()}")
 
+    }
+
+    private fun setGuide(guide: SearchGuide) {
+        fragmentTripDetailsBinding.apply {
+            Glide.with(ivGuide).load(guide.profilePhoto).into(ivGuide)
+            tvGuidesFullname.text = guide.name + " " + guide.surname
+            ratingBarGuide.rating = guide.rate.toFloat()
+            tvGuidesCommentsCount.text = guide.reviewCount.toString()
+            tvGuidesCities.text = setProvince(guide.travelLocations)
+            tvGuidePrice.text = setGuidePrice(guide.price)
+            tvGuidesLanguages.text = setLanguages(guide.languages)
+        }
+    }
+
+    private fun setLanguages(languages: ArrayList<Language>): String {
+        var text = ""
+        for (language in 0..languages.size - 2) {
+            text += "${languages[language].name} "
+            text += ","
+        }
+        text += languages[languages.size - 1].name
+        return text
+    }
+
+    private fun setGuidePrice(price: Price): Spannable {
+        val text = "$${price.cost.toInt()}"
+        val endIndex = text.length
+
+        val outPutColoredText: Spannable = SpannableString("$text/${price.type}")
+        outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
+        outPutColoredText.setSpan(
+            ForegroundColorSpan(Color.parseColor("#167351")),
+            0,
+            endIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        return outPutColoredText
+    }
+
+    private fun setProvince(locations: ArrayList<Location>): Spannable {
+        var text = ""
+        for (province in locations) {
+            text += "${province.district} "
+        }
+        return colorMyText(text, 0, text.length, "#167351")
+    }
+
+    private fun colorMyText(
+        inputText: String,
+        startIndex: Int,
+        endIndex: Int,
+        textColor: String
+    ): Spannable {
+        val outPutColoredText: Spannable = SpannableString(inputText)
+        outPutColoredText.setSpan(
+            Color.parseColor(textColor),
+            startIndex,
+            endIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        return outPutColoredText
     }
 
     private fun setUpViewModel() {
@@ -347,9 +419,10 @@ class TripDetailsFragment : BaseFragment() {
         return outPutColoredText
     }
 
-    private fun setLeaveCommentsPart(ids: ArrayList<String>?, reviews: ArrayList<Comment>?) {
+    private fun setLeaveCommentsPart(ids: ArrayList<ProfileId>?, reviews: ArrayList<Comment>?) {
         val profileId = SharedPref(requireContext()).getString("profileId")
-        if (ids != null && ids.contains(profileId!!)) {
+
+        if (ids != null && ids.contains(ProfileId(profileId!!))) {
 
             if (!reviews.isNullOrEmpty()) {
                 var isHave = false
