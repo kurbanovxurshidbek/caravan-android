@@ -260,7 +260,7 @@ class EditProfileFragment : BaseFragment() {
             profile.surname = etSurname.text.toString()
             profile.phoneNumber = etPhoneNumber.text.toString()
             profile.gender = gender!!
-            profile.email = etEmail.text.toString()
+            profile.email = if (checkEmailValid(etEmail.text.toString())) etEmail.text.toString() else null
             profile.birthDate = tvBirthday.text.toString()
 
         }
@@ -277,6 +277,7 @@ class EditProfileFragment : BaseFragment() {
                 datePicker[Calendar.YEAR] = pickedYear
                 datePicker[Calendar.MONTH] = pickedMonth
                 datePicker[Calendar.DAY_OF_MONTH] = pickedDay
+
                 val dateFormat = "dd.MM.yyyy"
                 val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
                 binding.tvBirthday.text = simpleDateFormat.format(datePicker.time)

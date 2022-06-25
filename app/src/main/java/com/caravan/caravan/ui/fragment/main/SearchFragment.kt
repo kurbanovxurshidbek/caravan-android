@@ -1,19 +1,14 @@
 package com.caravan.caravan.ui.fragment.main
+
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.*
+import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.FragmentNavigator
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.SearchFragmentVPAdapter
@@ -26,8 +21,7 @@ import com.caravan.caravan.model.search.FilterTrip
 import com.caravan.caravan.model.search.SearchGuideSend
 import com.caravan.caravan.model.search.SearchTripSend
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.Extensions.toast
-import com.caravan.caravan.viewmodel.main.home.SearchSharedVM
+import com.caravan.caravan.viewmodel.main.search.SearchSharedVM
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 
@@ -37,10 +31,8 @@ class SearchFragment : BaseFragment() {
     private var isGuide: Boolean = true
     private lateinit var dialogGuideBinding: BottomDialogGuideBinding
     lateinit var dialogTripBinding: BottomDialogTripBinding
-    private lateinit var handler: Handler
 
-
-    private var gender: String = ""
+    private var gender: String? = ""
     var currenciesMinGuide: Array<String>? = null
     var optionsMinGuide: Array<String>? = null
     var currencyMinGuide: String = "UZS"
@@ -62,7 +54,6 @@ class SearchFragment : BaseFragment() {
     private var filterGuide: FilterGuide? = null
 
     private val sharedViewModel: SearchSharedVM by activityViewModels()
-    private lateinit var runnable: Runnable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,71 +90,38 @@ class SearchFragment : BaseFragment() {
             }
         }
 
-        binding.etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-
-                try {
-                    handler.removeCallbacks(runnable)
-                } catch (e: Exception) {
-
-                }
-
-                runnable = Runnable {
-                    if (isGuide) {
-                        sharedViewModel.setGuideSearch(
-                            SearchGuideSend(
-                                p0.toString(),
-                                filterGuide
-                            )
-                        )
-
-                    } else {
-                        sharedViewModel.setTripSearch(SearchTripSend(p0.toString(), filterTrip))
-                    }
-                }
-
-                try {
-                    handler = Handler(Looper.myLooper()!!)
-                    handler.postDelayed(runnable, 1500)
-                } catch (exception: Exception) {
-
-                }
-            }
-
-        })
-    }
-
-    override fun onPause() {
-        super.onPause()
-        try {
-            handler.removeCallbacks(runnable)
-        } catch (e: Exception) {
-
+        binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                hideKeyboard()
+                search()
+                true
+            } else false
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        try {
-            handler.removeCallbacks(runnable)
-        } catch (e: Exception) {
-
+    private fun search() {
+        if (isGuide) {
+            sharedViewModel.setGuideSearch(
+                SearchGuideSend(
+                    binding.etSearch.text.toString(),
+                    filterGuide
+                )
+            )
+        } else {
+            sharedViewModel.setTripSearch(
+                SearchTripSend(
+                    binding.etSearch.text.toString(),
+                    filterTrip
+                )
+            )
         }
     }
 
     private fun setupViewPager() {
         val tabLayout = binding.searchFragmentTabLayout
         val viewPager = binding.searchFragmentViewPager
-        tabLayout.addTab(tabLayout.newTab().setText("Guide"))
-        tabLayout.addTab(tabLayout.newTab().setText("Trip"))
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.str_guide)))
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.str_trip)))
 
         val fragmentAdapter = SearchFragmentVPAdapter(childFragmentManager, lifecycle)
         viewPager.adapter = fragmentAdapter
@@ -180,6 +138,7 @@ class SearchFragment : BaseFragment() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewPager.currentItem = tab.position
                 isGuide = tab.position == 0
+                search()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
@@ -206,7 +165,7 @@ class SearchFragment : BaseFragment() {
                     getString(R.string.str_male) -> {
                         checkboxMale.isChecked = true
                     }
-                    getString(R.string.str_all) -> {
+                    null -> {
                         checkboxMale.isChecked = true
                         checkboxFemale.isChecked = true
                     }
@@ -227,74 +186,84 @@ class SearchFragment : BaseFragment() {
                 }
 
                 when (filterGuide!!.minPrice!!.type) {
-                    "DAY" -> spinnerTypeMin.setSelection(0)
-                    "HOUR" -> spinnerTypeMin.setSelection(1)
-                    "PERSON" -> spinnerTypeMin.setSelection(2)
-                    "TRIP" -> spinnerTypeMin.setSelection(3)
+                    getString(R.string.day).toUpperCase() -> spinnerTypeMin.setSelection(0)
+                    getString(R.string.hour).toUpperCase() -> spinnerTypeMin.setSelection(1)
+                    getString(R.string.person).toUpperCase() -> spinnerTypeMin.setSelection(2)
+                    getString(R.string.str_trip).toUpperCase() -> spinnerTypeMin.setSelection(3)
                 }
 
                 when (filterGuide!!.maxPrice!!.type) {
-                    "DAY" -> spinnerTypeMax.setSelection(0)
-                    "HOUR" -> spinnerTypeMax.setSelection(1)
-                    "PERSON" -> spinnerTypeMax.setSelection(2)
-                    "TRIP" -> spinnerTypeMax.setSelection(3)
+                    getString(R.string.day).toUpperCase() -> spinnerTypeMax.setSelection(0)
+                    getString(R.string.hour).toUpperCase() -> spinnerTypeMax.setSelection(1)
+                    getString(R.string.person).toUpperCase() -> spinnerTypeMax.setSelection(2)
+                    getString(R.string.str_trip).toUpperCase() -> spinnerTypeMax.setSelection(3)
                 }
             }
         }
 
         dialogGuideBinding.apply {
-            applyFilter.setOnClickListener {
-                val minPrice = if (minPrice.text.isNullOrBlank()) {
-                    0L
-                } else {
-                    minPrice.text.toString().toLong()
+            dialogGuideBinding.apply {
+                applyFilter.setOnClickListener {
+
+                    val minPrice = if (minPrice.text.isNullOrBlank()) {
+                        0L
+                    } else {
+                        minPrice.text.toString().toLong()
+                    }
+
+                    val maxPrice = if (maxPrice.text.isNullOrBlank()) {
+                        1000000000L
+                    } else {
+                        maxPrice.text.toString().toLong()
+                    }
+
+                    val minRating = if (minRating.text.isNullOrBlank()) {
+                        0
+                    } else {
+                        minRating.text.toString().toInt()
+                    }
+
+                    val maxRating = if (maxRating.text.isNullOrBlank()) {
+                        5
+                    } else {
+                        maxRating.text.toString().toInt()
+                    }
+
+                    gender = if (checkboxMale.isChecked) {
+                        "MALE"
+                    } else if (checkboxFemale.isChecked) {
+                        "FEMALE"
+                    } else {
+                        null
+                    }
+
+                    filterGuide = FilterGuide(
+                        Price(minPrice, currencyMinGuide, optionMinGuide),
+                        Price(maxPrice, currencyMaxGuide, optionMaxGuide),
+                        minRating,
+                        maxRating,
+                        gender
+                    )
+
+                    sharedViewModel.setGuideSearch(
+                        SearchGuideSend(
+                            binding.etSearch.text.toString(),
+                            filterGuide
+                        )
+                    )
+                    dialog.hide()
                 }
 
-                val maxPrice = if (maxPrice.text.isNullOrBlank()) {
-                    1000000000L
-                } else {
-                    maxPrice.text.toString().toLong()
-                }
-
-                val minRating = if (minRating.text.isNullOrBlank()) {
-                    0
-                } else {
-                    minRating.text.toString().toInt()
-                }
-
-                val maxRating = if (maxRating.text.isNullOrBlank()) {
-                    5
-                } else {
-                    maxRating.text.toString().toInt()
-                }
-
-                gender = if (checkboxMale.isChecked) {
-                    "Male"
-                } else if (checkboxFemale.isChecked) {
-                    "Female"
-                } else {
-                    ""
-                }
-
-                filterGuide = FilterGuide(
-                    Price(minPrice, currencyMinGuide, optionMinGuide),
-                    Price(maxPrice, currencyMaxGuide, optionMaxGuide),
-                    minRating,
-                    maxRating,
-                    gender
-                )
-                dialog.hide()
             }
 
+            dialog.window!!.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            dialog.window!!.attributes.windowAnimations = R.style.DialogAnimation
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.window!!.setGravity(Gravity.BOTTOM)
         }
-
-        dialog.window!!.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        dialog.window!!.attributes.windowAnimations = R.style.DialogAnimation
-        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window!!.setGravity(Gravity.BOTTOM)
 
     }
 
@@ -326,17 +295,17 @@ class SearchFragment : BaseFragment() {
                 }
 
                 when (filterTrip!!.minPrice!!.type) {
-                    "DAY" -> spinnerTypeMin.setSelection(0)
-                    "HOUR" -> spinnerTypeMin.setSelection(1)
-                    "PERSON" -> spinnerTypeMin.setSelection(2)
-                    "TRIP" -> spinnerTypeMin.setSelection(3)
+                    getString(R.string.day).toUpperCase() -> spinnerTypeMin.setSelection(0)
+                    getString(R.string.hour).toUpperCase() -> spinnerTypeMin.setSelection(1)
+                    getString(R.string.person).toUpperCase() -> spinnerTypeMin.setSelection(2)
+                    getString(R.string.str_trip).toUpperCase() -> spinnerTypeMin.setSelection(3)
                 }
 
                 when (filterTrip!!.maxPrice!!.type) {
-                    "DAY" -> spinnerTypeMax.setSelection(0)
-                    "HOUR" -> spinnerTypeMax.setSelection(1)
-                    "PERSON" -> spinnerTypeMax.setSelection(2)
-                    "TRIP" -> spinnerTypeMax.setSelection(3)
+                    getString(R.string.day).toUpperCase() -> spinnerTypeMax.setSelection(0)
+                    getString(R.string.hour).toUpperCase() -> spinnerTypeMax.setSelection(1)
+                    getString(R.string.person).toUpperCase() -> spinnerTypeMax.setSelection(2)
+                    getString(R.string.str_trip).toUpperCase() -> spinnerTypeMax.setSelection(3)
                 }
             }
         }
@@ -381,7 +350,7 @@ class SearchFragment : BaseFragment() {
                 }
 
                 val maxPeople: Int = if (maxPeople.text.isNullOrBlank()) {
-                    999
+                    99
                 } else {
                     maxPeople.text.toString().toInt()
                 }
@@ -393,6 +362,13 @@ class SearchFragment : BaseFragment() {
                     day,
                     minPeople,
                     maxPeople
+                )
+
+                sharedViewModel.setTripSearch(
+                    SearchTripSend(
+                        binding.etSearch.text.toString(),
+                        filterTrip
+                    )
                 )
                 dialog.hide()
             }
@@ -416,18 +392,18 @@ class SearchFragment : BaseFragment() {
 
             checkboxMale.isChecked = true
             checkboxFemale.isChecked = true
-            gender = getString(R.string.str_all)
+            gender = null
 
             checkboxMale.setOnCheckedChangeListener { _, isChecked ->
 
                 if (!isChecked) {
                     checkboxFemale.isChecked = true
                     checkboxFemale.isEnabled = false
-                    gender = getString(R.string.str_male)
+                    gender = "MALE"
                 } else {
                     checkboxMale.isEnabled = true
                     checkboxFemale.isEnabled = true
-                    gender = getString(R.string.str_all)
+                    gender = null
                 }
 
             }
@@ -441,7 +417,7 @@ class SearchFragment : BaseFragment() {
                 } else {
                     checkboxFemale.isEnabled = true
                     checkboxMale.isEnabled = true
-                    gender = getString(R.string.str_all)
+                    gender = null
                 }
             }
 
@@ -452,7 +428,7 @@ class SearchFragment : BaseFragment() {
                 gender = getString(R.string.str_female)
             }
             if (checkboxMale.isChecked && checkboxFemale.isChecked) {
-                gender = getString(R.string.str_all)
+                gender = null
             }
         }
 

@@ -195,6 +195,7 @@ class GuideGuideOptionFragment : BaseFragment() {
     }
 
     private fun isDelete(data: ActionMessage) {
+        SharedPref(requireContext()).saveString("guideId", null)
         if (data.status) {
            requireActivity().onBackPressed()
         }

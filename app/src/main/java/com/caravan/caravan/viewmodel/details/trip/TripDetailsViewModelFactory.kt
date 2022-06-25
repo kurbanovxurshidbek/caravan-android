@@ -1,4 +1,4 @@
-package com.caravan.caravan.viewmodel.details
+package com.caravan.caravan.viewmodel.details.trip
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

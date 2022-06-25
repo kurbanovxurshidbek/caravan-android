@@ -134,6 +134,11 @@
     <string name="str_length">Length</string>
     <string name="str_trip_days_1_10">Trip Days</string>
     <string name="str_compleate_create">Your trip has been created</string>
+    <string name="hour">Hour</string>
+    <string name="person">Person</string>
+    <string name="describe_your_trip">Describe your Trip</string>
+    <string name="search_some_places">Search some places…</string>
+    <string name="no_trips_available">No Trips Available!</string>
 
     <string-array name="location">
         <item>TASHKENT</item>
@@ -150,6 +155,13 @@
         <item>JIZZAKH</item>
         <item>RESPUBLIC_OF_KARAKALPAKISTAN</item>
     </string-array>
+
+    <string-array name="languages">
+        <item>ENGLISH</item>
+        <item>UZBEK</item>
+        <item>RUSSIAN</item>
+    </string-array>
+
     <string-array name="level">
         <item>BEGINNER</item>
         <item>ELEMENTARY</item>

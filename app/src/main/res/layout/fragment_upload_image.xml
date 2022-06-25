@@ -44,7 +44,7 @@
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivTrip"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:scaleType="centerCrop"
                     android:visibility="gone"
                     android:adjustViewBounds="true"
@@ -148,6 +148,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/str_short_information"
                 android:layout_marginTop="20dp"
+                android:textCursorDrawable="@drawable/cursor"
                 android:textColor="@color/black_60"
                 android:textColorHint="#99000000"
                 android:backgroundTint="@color/main_color"

@@ -47,7 +47,7 @@ class CreateTrip1Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     var myLocationList = ArrayList<Location>()
     lateinit var province: String
     lateinit var district: String
-    lateinit var desc: String
+    private var desc: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,13 +88,12 @@ class CreateTrip1Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        Log.d("@@@", "setUpObservers: ${it.data}")
+
                         SharedPref(requireContext()).saveString("tripId", it.data.id)
                         openNextFragment()
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Log.d("@@@", "setUpObservers: ${it.message}")
                         showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
@@ -147,7 +146,7 @@ class CreateTrip1Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
         binding.btnNext.setOnClickListener {
 
-            if (desc != ""){
+            if (desc != "" && myLocationList.isEmpty()){
                 myLocationList.add(0,Location("1",province,district,desc))
             }
 

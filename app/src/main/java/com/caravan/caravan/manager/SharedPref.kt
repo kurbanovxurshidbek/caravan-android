@@ -5,7 +5,7 @@ import android.content.Context
 class SharedPref(context: Context) {
     private val pref = context.getSharedPreferences("caravan", Context.MODE_PRIVATE)
 
-    fun saveString(key: String, value: String) {
+    fun saveString(key: String, value: String?) {
         val editor = pref.edit()
         editor.putString(key, value)
         editor.apply()

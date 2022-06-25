@@ -11,8 +11,10 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
@@ -26,10 +28,8 @@ import com.caravan.caravan.adapter.CommentsAdapter
 import com.caravan.caravan.adapter.TravelLocationsAdapter
 import com.caravan.caravan.databinding.FragmentGuideDetailsBinding
 import com.caravan.caravan.manager.SharedPref
-import com.caravan.caravan.model.Comment
-import com.caravan.caravan.model.GuideProfile
-import com.caravan.caravan.model.Location
-import com.caravan.caravan.model.Price
+import com.caravan.caravan.model.*
+import com.caravan.caravan.model.hire.Hire
 import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.model.review.Review
 import com.caravan.caravan.network.ApiService
@@ -38,9 +38,9 @@ import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
-import com.caravan.caravan.viewmodel.details.GuideDetailsRepository
-import com.caravan.caravan.viewmodel.details.GuideDetailsViewModel
-import com.caravan.caravan.viewmodel.details.GuideDetailsViewModelFactory
+import com.caravan.caravan.viewmodel.details.guide.GuideDetailsRepository
+import com.caravan.caravan.viewmodel.details.guide.GuideDetailsViewModel
+import com.caravan.caravan.viewmodel.details.guide.GuideDetailsViewModelFactory
 import com.stfalcon.imageviewer.StfalconImageViewer
 
 
@@ -97,6 +97,7 @@ class GuideDetailsFragment : BaseFragment() {
                         dismissLoading()
                         guideProfile = it.data
                         setData(it.data)
+                        Log.d("GuideDetailsFragment", "SUCCESS: ${it.data.toString()}")
                     }
                     is UiStateObject.ERROR -> {
                         guideDetailsBinding.apply {
@@ -116,14 +117,72 @@ class GuideDetailsFragment : BaseFragment() {
                 }
             }
         }
+
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.hire.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+
+                        viewModelStore.clear()
+                        val callIntent = Intent(Intent.ACTION_DIAL)
+                        callIntent.data = Uri.parse("tel:${guideProfile?.profile?.phoneNumber}")
+                        requireActivity().startActivity(callIntent)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setUpViewModel()
+        setUpObserves()
     }
 
     private fun setData(data: GuideProfile) {
-        setProfilePhoto(data.profile.photo!!)
+        guideDetailsBinding.apply {
+            tvGuideFullName.text = data.profile.name.plus(" ").plus(data.profile.surname)
+            tvGuideLanguages.text = setLanguages(data.languages)
+            tvGuideDescription.text = data.biography
+            ratingBarGuide.rating = data.rate.toFloat()
+        }
+        setProfilePhoto(data.profile.photo)
         setTravelLocations(data.travelLocations)
         setCommentsRv(data.reviews)
         setLeaveCommentsPart(data.attendancesProfileId, data.reviews)
         guideDetailsBinding.tvGuidePrice.text = setPrice(data.price)
+    }
+
+    private fun setLanguages(languages: ArrayList<Language>): String {
+        var text = ""
+        if (languages.isNotEmpty()) {
+            for (i in languages) {
+                text += i.name + ", "
+            }
+            text = text.substring(0, text.length - 2)
+        } else {
+            guideDetailsBinding.tvGuideLanguages.visibility = GONE
+        }
+        return text
     }
 
     private fun setUpViewModel() {
@@ -156,8 +215,10 @@ class GuideDetailsFragment : BaseFragment() {
             }
 
             guideTrips.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("guideId", guideId)
                 Navigation.findNavController(requireActivity(), R.id.details_nav_fragment)
-                    .navigate(R.id.action_guideDetailsFragment_to_guideTrips)
+                    .navigate(R.id.action_guideDetailsFragment_to_guideTrips, bundle)
             }
 
             guideProfilePhoto.setOnClickListener {
@@ -167,24 +228,25 @@ class GuideDetailsFragment : BaseFragment() {
                     RelativeLayout(requireContext())
                 )
 
+                guideProfile?.profile?.photo?.let {
+                    StfalconImageViewer.Builder<String?>(
+                        requireContext(),
+                        arrayOf(guideProfile?.profile?.photo)
+                    ) { view, _ ->
+                        Glide.with(guideDetailsBinding.root).load(guideProfile?.profile?.photo)
+                            .into(view)
+                    }.withHiddenStatusBar(false)
+                        .withDismissListener {
 
-                StfalconImageViewer.Builder<String?>(
-                    requireContext(),
-                    arrayOf(guideProfile?.profile?.photo)
-                ) { view, _ ->
-                    Glide.with(guideDetailsBinding.root).load(guideProfile?.profile?.photo)
-                        .into(view)
-                }.withHiddenStatusBar(false)
-                    .withDismissListener {
+                        }
+                        .withOverlayView(myView)
+                        .show()
 
-                    }
-                    .withOverlayView(myView)
-                    .show()
-
+                }
             }
 
             btnApplyGuide.setOnClickListener {
-                // Call to server to apple trip
+                viewModel.hire(Hire("GUIDE", guideId))
             }
 
             btnSendComment.setOnClickListener {
@@ -336,11 +398,13 @@ class GuideDetailsFragment : BaseFragment() {
         }
     }
 
-    private fun setProfilePhoto(photo: String) {
+    private fun setProfilePhoto(photo: String?) {
         Glide.with(guideDetailsBinding.root)
             .load(photo)
-            .placeholder(R.drawable.guide)
+            .placeholder(R.drawable.loading)
+            .error(R.drawable.user)
             .into(guideDetailsBinding.guideProfilePhoto)
+
     }
 
     private fun setCommentsRv(reviews: ArrayList<Comment>?) {

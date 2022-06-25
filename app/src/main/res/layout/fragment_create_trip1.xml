@@ -313,7 +313,7 @@
                 android:layout_marginTop="35dp"
                 android:fontFamily="@font/circular_std_bold"
                 android:gravity="center"
-                android:text="@string/str_describe_yourself"
+                android:text="@string/describe_your_trip"
                 android:textColor="#167351"
                 android:textSize="18sp"
                 android:textStyle="normal" />

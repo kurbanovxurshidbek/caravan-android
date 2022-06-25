@@ -9,30 +9,32 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemGuideBinding
-import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Language
+import com.caravan.caravan.model.search.SearchGuide
 import com.caravan.caravan.ui.fragment.BaseFragment
 
-class GuideAdapter(var context: BaseFragment, var items: ArrayList<GuideProfile>) :
+class GuideAdapter(var context: BaseFragment, var items: ArrayList<SearchGuide>) :
     RecyclerView.Adapter<GuideAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val itemGuideBinding: ItemGuideBinding) :
         RecyclerView.ViewHolder(itemGuideBinding.root) {
 
-        fun onBind(guideProfile: GuideProfile) {
+        fun onBind(guide: SearchGuide) {
 
-            Glide.with(itemGuideBinding.ivGuide).load(guideProfile.profile.photo)
+            Glide.with(itemGuideBinding.ivGuide).load(guide.profilePhoto)
+                .placeholder(R.drawable.user)
                 .into(itemGuideBinding.ivGuide)
             itemGuideBinding.tvGuidesFullname.text =
-                guideProfile.profile.name + " " + guideProfile.profile.surname
-            itemGuideBinding.tvGuidesCities.text = provinces(guideProfile)
-            itemGuideBinding.tvGuidePrice.text = price(guideProfile)
-            itemGuideBinding.tvGuidesLanguages.text = getLanguages(guideProfile.languages)
-            itemGuideBinding.ratingBarGuide.rating = guideProfile.rate.toFloat()
+                guide.name.plus(" ").plus(guide.surname)
+            itemGuideBinding.tvGuidesCities.text = provinces(guide)
+            itemGuideBinding.tvGuidePrice.text = price(guide)
+            itemGuideBinding.tvGuidesLanguages.text = getLanguages(guide.languages)
+            itemGuideBinding.ratingBarGuide.rating = guide.rate.toFloat()
             itemGuideBinding.tvGuidesCommentsCount.text =
-                "(${guideProfile.reviews?.size.toString()})"
-            itemGuideBinding.tvGuidesCommentsCount.text = "(${guideProfile.reviews?.size.toString()})"
+                "(".plus(guide.reviewCount.toString()).plus(")")
+
 
             itemView.setOnClickListener {
                 context.goToDetailsActivity(items[adapterPosition])
@@ -40,17 +42,20 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<GuideProfile>
 
         }
 
-        private fun getLanguages(languages: ArrayList<Language>): String {
+        private fun getLanguages(languages: ArrayList<Language>?): String {
             var text = ""
-            for (language in 0..languages.size-2) {
-                text += "${languages[language].name} "
-                text+=","
+            try {
+                for (language in languages!!) {
+                    text += "${language.name}, "
+                }
+                return text.substring(0, text.length - 2)
+            } catch (e: Exception) {
+                text = ""
             }
-            text+= languages[languages.size-1].name
             return text
         }
 
-        private fun price(guide: GuideProfile): Spannable {
+        private fun price(guide: SearchGuide): Spannable {
             val text = "$${guide.price.cost.toInt()}"
             val endIndex = text.length
 
@@ -66,11 +71,20 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<GuideProfile>
             return outPutColoredText
         }
 
-        private fun provinces(guide: GuideProfile): Spannable {
+        private fun provinces(guide: SearchGuide): Spannable {
             var text = ""
-            for (province in guide.travelLocations) {
-                text += "${province.district} "
+            try {
+                for (province in guide.travelLocations) {
+                    if (!text.contains(province.district)) {
+                        text += province.district.plus(", ")
+                    }
+                }
+                text = text.substring(0, text.length - 2)
+                return colorMyText(text, 0, text.length, "#167351")
+            } catch (e: Exception) {
+                text = ""
             }
+
             return colorMyText(text, 0, text.length, "#167351")
         }
 

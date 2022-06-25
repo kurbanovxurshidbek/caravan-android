@@ -26,4 +26,25 @@ class CreateTrip2ViewModel(private val repository: CreateTrip2Repository) : View
             _complete.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")
         }
     }
+
+
+
+    private val _deletePhoto =MutableStateFlow<UiStateObject<Boolean>>(UiStateObject.EMPTY)
+    val deletePhoto = _deletePhoto
+
+    fun deleteTripPhoto(id: String) = viewModelScope.launch {
+        _deletePhoto.value = UiStateObject.LOADING
+
+        try {
+            val response = repository.deletePhoto(id)
+            if (!response.isSuccessful){
+                _deletePhoto.value = UiStateObject.ERROR(response.message())
+            }else{
+                _deletePhoto.value = UiStateObject.SUCCESS(response.body()!!)
+            }
+
+        }catch (e: Exception) {
+            _deletePhoto.value = UiStateObject.ERROR(e.localizedMessage ?: "No Connection")
+        }
+    }
 }

@@ -3,18 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.details.GuideTrips">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginStart="8dp"
             android:fontFamily="@font/circular_std_bold"
             android:text="@string/guide_s_trips"
@@ -22,10 +23,23 @@
             android:textSize="32sp" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginStart="4dp"
             android:id="@+id/rvGuidesTrips"
             android:layout_width="match_parent"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_height="match_parent" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/noTripAvailable"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/circular_std_bold"
+        android:textSize="28sp"
+        android:text="@string/no_trips_available"/>
 
 </FrameLayout>

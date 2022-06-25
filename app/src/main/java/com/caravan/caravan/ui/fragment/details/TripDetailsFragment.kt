@@ -1,11 +1,14 @@
 package com.caravan.caravan.ui.fragment.details
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,29 +29,30 @@ import com.caravan.caravan.databinding.FragmentTripDetailsBinding
 import com.caravan.caravan.databinding.OverlayViewBinding
 import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.*
+import com.caravan.caravan.model.hire.Hire
 import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.model.review.Review
+import com.caravan.caravan.model.search.SearchGuide
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
-import com.caravan.caravan.viewmodel.details.TripDetailsRepository
-import com.caravan.caravan.viewmodel.details.TripDetailsViewModel
-import com.caravan.caravan.viewmodel.details.TripDetailsViewModelFactory
+import com.caravan.caravan.viewmodel.details.trip.TripDetailsRepository
+import com.caravan.caravan.viewmodel.details.trip.TripDetailsViewModel
+import com.caravan.caravan.viewmodel.details.trip.TripDetailsViewModelFactory
 import com.stfalcon.imageviewer.StfalconImageViewer
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
 
 class TripDetailsFragment : BaseFragment() {
     private lateinit var fragmentTripDetailsBinding: FragmentTripDetailsBinding
-    private var tripId: String = "null"
+    private var tripId: String = ""
+    private var guideId: String = ""
     private lateinit var overlayViewBinding: OverlayViewBinding
-
     private lateinit var viewModel: TripDetailsViewModel
     private lateinit var trip: Trip
-
     private var page = 0
     private var allPages = 0
 
@@ -67,8 +71,8 @@ class TripDetailsFragment : BaseFragment() {
 
         setUpViewModel()
         setUpObserves()
-
         initViews()
+
         return fragmentTripDetailsBinding.root
     }
 
@@ -88,6 +92,7 @@ class TripDetailsFragment : BaseFragment() {
                         }
                         dismissLoading()
                         trip = it.data
+                        guideId = it.data.guide.id
                         setUpDate(it.data)
                     }
                     is UiStateObject.ERROR -> {
@@ -105,21 +110,125 @@ class TripDetailsFragment : BaseFragment() {
                             }
                         )
                     }
+                    else -> {}
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.hire.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        val callIntent = Intent(Intent.ACTION_DIAL)
+                        callIntent.data = Uri.parse("tel:${trip.guide.phone}")
+                        requireActivity().startActivity(callIntent)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+                            }
+                        )
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
     }
 
     private fun setUpDate(data: Trip) {
+
+        fragmentTripDetailsBinding.apply {
+            tvTripTitle.text = data.name
+            tvTripDescription.text = data.description
+            tvPeopleAmount.text = getString(R.string.str_min).plus(": ${data.minPeople} ${getString(R.string.str_people)}, ").plus(getString(R.string.str_max)).plus(":${data.maxPeople} ${getString(R.string.str_people)}")
+            ratingBarTrip.rating = data.rate.toFloat()
+        }
+
         setViewPager(data.photos)
-        setTravelLocations(data.places)
-        setFacilities(data.facility)
+        setTravelLocations(data.locations)
+        setFacilities(data.facilities)
         setCommentsRv(data.reviews)
-        setLeaveCommentsPart(data.attendancesProfileId, data.reviews)
+        setLeaveCommentsPart(data.attendances, data.reviews)
 
-        fragmentTripDetailsBinding.tvTripPrice.text = setPrice(trip.price)
-        fragmentTripDetailsBinding.tvGuidePrice.text = setPrice(trip.price)
+        setGuide(data.guide)
 
+        fragmentTripDetailsBinding.tvTripPrice.text = setPrice(data.price)
+        fragmentTripDetailsBinding.tvGuidePrice.text = setPrice(data.price)
+        Log.d("Trip", "setUpDate: ${data.toString()}")
+
+    }
+
+    private fun setGuide(guide: SearchGuide) {
+        fragmentTripDetailsBinding.apply {
+            Glide.with(ivGuide).load(guide.profilePhoto).placeholder(R.drawable.user).into(ivGuide)
+            tvGuidesFullname.text = guide.name.plus(" ").plus(guide.surname)
+            ratingBarGuide.rating = guide.rate.toFloat()
+            tvGuidesCommentsCount.text = guide.reviewCount.toString()
+            tvGuidesCities.text = setProvince(guide.travelLocations)
+            tvGuidePrice.text = setGuidePrice(guide.price)
+            tvGuidesLanguages.text = setLanguages(guide.languages)
+        }
+    }
+
+    private fun setLanguages(languages: ArrayList<Language>): String {
+        var text = ""
+        for (language in 0..languages.size - 2) {
+            text += "${languages[language].name} "
+            text += ","
+        }
+        text += languages[languages.size - 1].name
+        return text
+    }
+
+    private fun setGuidePrice(price: Price): Spannable {
+        val text = "$${price.cost.toInt()}"
+        val endIndex = text.length
+
+        val outPutColoredText: Spannable = SpannableString("$text/${price.type}")
+        outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
+        outPutColoredText.setSpan(
+            ForegroundColorSpan(Color.parseColor("#167351")),
+            0,
+            endIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        return outPutColoredText
+    }
+
+    private fun setProvince(locations: ArrayList<Location>): Spannable {
+        var text = ""
+        for (province in locations) {
+            text += "${province.district} "
+        }
+        return colorMyText(text, 0, text.length, "#167351")
+    }
+
+    private fun colorMyText(
+        inputText: String,
+        startIndex: Int,
+        endIndex: Int,
+        textColor: String
+    ): Spannable {
+        val outPutColoredText: Spannable = SpannableString(inputText)
+        outPutColoredText.setSpan(
+            Color.parseColor(textColor),
+            startIndex,
+            endIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        return outPutColoredText
     }
 
     private fun setUpViewModel() {
@@ -135,7 +244,6 @@ class TripDetailsFragment : BaseFragment() {
     }
 
     private fun initViews() {
-
         viewModel.getTrip(tripId)
 
         overlayViewBinding = OverlayViewBinding.bind(
@@ -144,8 +252,14 @@ class TripDetailsFragment : BaseFragment() {
         )
 
         fragmentTripDetailsBinding.guideProfile.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("guideId", guideId)
             Navigation.findNavController(requireActivity(), R.id.details_nav_fragment)
-                .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment);
+                .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment, bundle);
+        }
+
+        fragmentTripDetailsBinding.btnApplyTrip.setOnClickListener {
+            viewModel.hire(Hire("TRIP", tripId))
         }
 
         fragmentTripDetailsBinding.apply {
@@ -159,7 +273,7 @@ class TripDetailsFragment : BaseFragment() {
                             etLeaveComment.text.toString(),
                             "GUIDE",
                             null,
-                            trip.guideProfile.id
+                            trip.guide.id
                         )
 
                     setUpObservesReview()
@@ -197,6 +311,7 @@ class TripDetailsFragment : BaseFragment() {
                                 }
                             })
                     }
+                    else -> {}
                 }
             }
         }
@@ -263,7 +378,7 @@ class TripDetailsFragment : BaseFragment() {
             .inflate(R.layout.overlay_view, LinearLayout(requireContext()), false)
 
         overlayViewBinding.name.text =
-            trip.photos[position].location.provence + ", " + trip.photos[position].location.district
+            trip.photos[position].location.provence.plus(", ").plus(trip.photos[position].location.district)
         overlayViewBinding.tvDescription.text =
             trip.photos[position].location.description
 
@@ -273,7 +388,7 @@ class TripDetailsFragment : BaseFragment() {
         ) { view, image ->
 
 
-            Glide.with(requireContext()).load(image.url).into(view)
+            Glide.with(requireContext()).load(image.photo).into(view)
         }.withHiddenStatusBar(false)
             .withDismissListener {
                 overlayViewBinding = OverlayViewBinding.bind(mView)
@@ -283,7 +398,7 @@ class TripDetailsFragment : BaseFragment() {
                 overlayViewBinding.root
             ).withImageChangeListener {
                 overlayViewBinding.name.text =
-                    trip.photos[it].location.district + ", " + trip.photos[it].location.district
+                    trip.photos[it].location.district.plus(", ").plus(trip.photos[it].location.district)
                 overlayViewBinding.tvDescription.text =
                     trip.photos[it].location.description
             }
@@ -307,9 +422,10 @@ class TripDetailsFragment : BaseFragment() {
         return outPutColoredText
     }
 
-    private fun setLeaveCommentsPart(ids: ArrayList<String>?, reviews: ArrayList<Comment>?) {
+    private fun setLeaveCommentsPart(ids: ArrayList<ProfileId>?, reviews: ArrayList<Comment>?) {
         val profileId = SharedPref(requireContext()).getString("profileId")
-        if (ids != null && ids.contains(profileId!!)) {
+
+        if (ids != null && ids.contains(ProfileId(profileId!!))) {
 
             if (!reviews.isNullOrEmpty()) {
                 var isHave = false
@@ -331,22 +447,25 @@ class TripDetailsFragment : BaseFragment() {
         }
     }
 
-    private fun setViewPager(photos: ArrayList<TourPhoto>) {
-        fragmentTripDetailsBinding.apply {
-            viewPager2.apply {
-                adapter = TripPhotosAdapter(
-                    this@TripDetailsFragment,
-                    photos
-                )
-                setIndicator()
-                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                    override fun onPageSelected(position: Int) {
-                        super.onPageSelected(position)
+    private fun setViewPager(photos: ArrayList<TourPhoto>?) {
+        photos?.let {
+            fragmentTripDetailsBinding.apply {
+                viewPager2.apply {
+                    adapter = TripPhotosAdapter(
+                        this@TripDetailsFragment,
+                        photos
+                    )
+                    setIndicator()
+                    registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                        override fun onPageSelected(position: Int) {
+                            super.onPageSelected(position)
 
-                    }
-                })
+                        }
+                    })
+                }
             }
         }
+
     }
 
     private fun setCommentsRv(reviews: ArrayList<Comment>?) {
@@ -366,9 +485,11 @@ class TripDetailsFragment : BaseFragment() {
         })
     }
 
-    private fun setTravelLocations(places: ArrayList<Location>) {
-        fragmentTripDetailsBinding.apply {
-            travelLocationsRV.adapter = TravelLocationsAdapter(places)
+    private fun setTravelLocations(places: ArrayList<Location>?) {
+        places?.let {
+            fragmentTripDetailsBinding.apply {
+                travelLocationsRV.adapter = TravelLocationsAdapter(places)
+            }
         }
     }
 

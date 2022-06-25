@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.GuideHomeAdapter
@@ -17,9 +19,17 @@ import com.caravan.caravan.adapter.TripAdapter
 import com.caravan.caravan.databinding.FragmentHomeBinding
 import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.*
+import com.caravan.caravan.model.home.HomeRespond
+import com.caravan.caravan.network.ApiService
+import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.activity.GuideOptionActivity
 import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.utils.Extensions.toast
+import com.caravan.caravan.utils.OkInterface
+import com.caravan.caravan.utils.UiStateObject
+import com.caravan.caravan.viewmodel.main.home.HomeRepository
+import com.caravan.caravan.viewmodel.main.home.HomeViewModel
+import com.caravan.caravan.viewmodel.main.home.HomeViewModelFactory
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
 
@@ -28,14 +38,78 @@ class HomeFragment : BaseFragment() {
     private lateinit var homeBinding: FragmentHomeBinding
     private lateinit var handler: Handler
 
+    private lateinit var viewModel: HomeViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         homeBinding =
             FragmentHomeBinding.bind(inflater.inflate(R.layout.fragment_home, container, false))
+
+        setUpViewModel()
+        setUpObservers()
+
+        viewModel.home()
+
         initViews()
         return homeBinding.root
+    }
+
+    private fun setUpObservers() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.home.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        setUpHome(it.data)
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    requireActivity().finish()
+                                    return
+                                }
+                            })
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+    private fun setUpHome(data: HomeRespond) {
+        if (data.status) {
+            homeBinding.apply {
+                homeGuideRecyclerView.adapter = GuideHomeAdapter(this@HomeFragment, data.topGuides)
+                homeTripRecyclerView.adapter = TripAdapter(this@HomeFragment, data.topTrips)
+            }
+        } else {
+            showDialogWarning(data.title!!, data.message!!, object: OkInterface{
+                override fun onClick() {
+                    requireActivity().finish()
+                }
+            })
+        }
+    }
+
+    private fun setUpViewModel() {
+        viewModel = ViewModelProvider(
+            this, HomeViewModelFactory(
+                HomeRepository(
+                    RetrofitHttp.createServiceWithAuth(
+                        SharedPref(requireContext()), ApiService::class.java
+                    )
+                )
+            )
+        )[HomeViewModel::class.java]
     }
 
     private fun initViews() {
@@ -65,8 +139,6 @@ class HomeFragment : BaseFragment() {
         }
 
         homeBinding.apply {
-            homeGuideRecyclerView.adapter = GuideHomeAdapter(this@HomeFragment, homeGuideList())
-            homeTripRecyclerView.adapter = TripAdapter(this@HomeFragment, homeTripList())
 
             ivBurger.setOnClickListener {
                 if (SharedPref(requireContext()).getString("guideId") != null)
@@ -80,142 +152,6 @@ class HomeFragment : BaseFragment() {
             }
         }
 
-    }
-
-
-    private fun homeTripList(): ArrayList<Trip> {
-        val list = ArrayList<Trip>()
-
-        val guide = GuideProfile(
-            "100001",
-            Profile(
-                "1001",
-                "Ogabek",
-                "Matyakubov",
-                "+998997492581",
-                "ogabekdev@gmail.com",
-                "GUIDE",
-                null,
-                "ACTIVE",
-                "https://wanderingwheatleys.com/wp-content/uploads/2019/04/khiva-uzbekistan-things-to-do-see-islam-khoja-minaret-3-480x600.jpg",
-                "MALE",
-                null,
-                "12.10.2022",
-                null,
-                "en",
-                arrayListOf(), SharedPref(requireContext()).getToken()
-            ),
-            "+998932037313",
-            "Ogabek Matyakubov",
-            true,
-            4.5,
-            Price(150, "USD", "day"),
-            ArrayList<Language>().apply {
-                add(Language("1", "English", "Advanced"))
-                add(Language("2", "Uzbek", "Native"))
-            },
-            ArrayList<Location>().apply {
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-            },
-            arrayListOf(),
-            arrayListOf(),
-            arrayListOf()
-        )
-
-        for (i in 0..10) {
-            list.add(
-                Trip(
-                    "1", "Khiva in 3 days",
-                    ArrayList<TourPhoto>().apply {
-                        add(
-                            TourPhoto(
-                                "1",
-                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "https://images.unsplash.com/photo-1605199423916-b725a00b324b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1940&q=80"
-                            )
-                        )
-                        add(
-                            TourPhoto(
-                                "1",
-                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "https://images.unsplash.com/photo-1605199423916-b725a00b324b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1940&q=80"
-                            )
-                        )
-                        add(
-                            TourPhoto(
-                                "1",
-                                Location("1", "Khorezm", "Khiva", "Ichan Qala"),
-                                "https://images.unsplash.com/photo-1605199423916-b725a00b324b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1940&q=80"
-                            )
-                        )
-                    },
-                    ArrayList<Facility>().apply {
-                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-                        add(Facility("1", "Moshina", "Moshina bilan taminliman"))
-                    },
-                    ArrayList<Location>().apply {
-                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                        add(Location("1", "Khorezm", "Khiva", "Ichan Qala"))
-                    },
-                    "Khiva in 3 days",
-                    Price(1200, "USD", "trip"),
-                    5, 10,
-                    guide,
-                    "+998997492581",
-                    4.5,
-                    3,
-                    arrayListOf(),
-                    null
-                )
-            )
-        }
-        return list
-    }
-
-    private fun homeGuideList(): List<GuideProfile> {
-        val list = ArrayList<GuideProfile>()
-        for (i in 0..10) {
-            list.add(
-                GuideProfile(
-                    "100axxcasuwbsdcladcbaofvamcoiadnc",
-                    Profile(
-                        "skjdnsdnfoiasnmasxkasxa",
-                        "Asasin df  asj  sd a skj ask s dj as;j aik cakk caai; casj",
-                        "Sobirov",
-                        "",
-                        null,
-                        "GUIDE",
-                        null,
-                        "ACTIVE",
-                        "https://images.unsplash.com/photo-1605199423916-b725a00b324b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1940&q=80",
-                        "Male",
-                        null,
-                        "12.02.2022",
-                        null,
-                        "UZBEK",
-                        arrayListOf(
-                            Device("", "", 'A')
-                        ), SharedPref(requireContext()).getToken()
-                    ),
-                    "",
-                    "",
-                    false,
-                    3.5,
-                    Price(235, "USD", "day"),
-                    arrayListOf(),
-                    arrayListOf(),
-                    arrayListOf(),
-                    arrayListOf(),
-                    arrayListOf()
-                )
-            )
-        }
-
-        return list
     }
 
     private fun setIndicator() {
