@@ -24,7 +24,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:orientation="vertical">
 
             <TextView
@@ -32,7 +32,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/circular_std_bold"
-                android:text="Saidbek Abdullayev"
                 android:textColor="#181818"
                 android:textSize="18sp" />
 
@@ -43,7 +42,6 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/circular_std_bold"
                 android:lines="1"
-                android:text="Samarqand, Khiva, Kokand, Toshkent"
                 android:textColor="#167351"
                 android:textSize="12sp" />
 
@@ -61,7 +59,6 @@
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/circular_std_bold"
                     android:lines="1"
-                    android:text="$100 / day"
                     android:textSize="14sp" />
 
 
@@ -75,7 +72,6 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/circular_std_bold"
                     android:lines="1"
-                    android:text="English, Uzbek, Russian"
                     android:textColor="#99000000"
                     android:textSize="12sp" />
 
@@ -98,7 +94,6 @@
                     android:max="5"
                     android:progressBackgroundTint="#90000000"
                     android:progressTint="@color/main_color"
-                    android:rating="3.5"
                     android:secondaryProgressTint="@color/main_color" />
 
                 <TextView
@@ -107,7 +102,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/circular_std_bold"
-                    android:text="(340)"
                     android:textColor="#99000000"
                     android:textSize="12sp" />
 

@@ -68,8 +68,9 @@
         <entry key="app/src/main/res/layout/fragment_trip_details.xml" value="0.17933417085427136" />
         <entry key="app/src/main/res/layout/fragment_upgrade_guide1.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/fragment_upgrade_guide2.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/fragment_upload_image.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/item_comment.xml" value="0.29739583333333336" />
-        <entry key="app/src/main/res/layout/item_create_trip.xml" value="0.13055555555555556" />
+        <entry key="app/src/main/res/layout/item_create_trip.xml" value="0.4282484266493056" />
         <entry key="app/src/main/res/layout/item_facilities.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/item_guide.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/item_guide_comment.xml" value="0.29739583333333336" />
