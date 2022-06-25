@@ -49,6 +49,7 @@ import com.zhpan.indicator.enums.IndicatorStyle
 class TripDetailsFragment : BaseFragment() {
     private lateinit var fragmentTripDetailsBinding: FragmentTripDetailsBinding
     private var tripId: String = ""
+    private var guideId: String = ""
     private lateinit var overlayViewBinding: OverlayViewBinding
     private lateinit var viewModel: TripDetailsViewModel
     private lateinit var trip: Trip
@@ -91,6 +92,7 @@ class TripDetailsFragment : BaseFragment() {
                         }
                         dismissLoading()
                         trip = it.data
+                        guideId = it.data.guide.id
                         setUpDate(it.data)
                     }
                     is UiStateObject.ERROR -> {
@@ -250,8 +252,10 @@ class TripDetailsFragment : BaseFragment() {
         )
 
         fragmentTripDetailsBinding.guideProfile.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("guideId", guideId)
             Navigation.findNavController(requireActivity(), R.id.details_nav_fragment)
-                .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment);
+                .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment, bundle);
         }
 
         fragmentTripDetailsBinding.btnApplyTrip.setOnClickListener {
