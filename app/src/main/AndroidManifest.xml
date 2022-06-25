@@ -28,7 +28,7 @@
             android:name=".ui.activity.DetailsActivity"
             android:exported="true"
             android:theme="@style/Theme.DetailsPage"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".ui.activity.LoginActivity"

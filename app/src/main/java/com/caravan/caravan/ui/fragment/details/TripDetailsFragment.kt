@@ -262,14 +262,14 @@ class TripDetailsFragment : BaseFragment() {
 
             btnSendComment.setOnClickListener {
                 if (etLeaveComment.text.isNotEmpty()) {
-                    val rate = ratingBarGuide.rating
+                    val rate = rateTheTrip.rating
                     val review =
                         Review(
                             rate.toInt(),
                             etLeaveComment.text.toString(),
-                            "GUIDE",
-                            null,
-                            trip.guide.id
+                            "TRIP",
+                            tripId,
+                            null
                         )
 
                     setUpObservesReview()
@@ -312,6 +312,9 @@ class TripDetailsFragment : BaseFragment() {
             }
         }
 
+    }
+
+    private fun setUpObserversReviews() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.reviews.collect {
                 when (it) {
@@ -345,7 +348,6 @@ class TripDetailsFragment : BaseFragment() {
                 }
             }
         }
-
     }
 
     private fun updateComments(data: ArrayList<Comment>) {
@@ -357,6 +359,7 @@ class TripDetailsFragment : BaseFragment() {
         if (!data.status) {
             showDialogWarning(data.title!!, data.message!!, object : OkInterface {
                 override fun onClick() {
+                    setUpObserversReviews()
                     viewModel.getReviews(page, tripId)
                 }
             })

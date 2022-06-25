@@ -138,7 +138,6 @@
     <string name="person">Person</string>
     <string name="search_some_places">Search some places...</string>
     <string name="describe_your_trip">Describe your Trip</string>
-    <string name="search_some_places">Search some places…</string>
     <string name="no_trips_available">No Trips Available!</string>
 
     <string-array name="location">
