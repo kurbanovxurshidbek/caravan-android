@@ -61,7 +61,6 @@ class CreateTrip1Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
         setUpViewModel()
 
-
         initViews()
     }
 
