@@ -16,6 +16,7 @@ import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
 import com.caravan.caravan.viewmodel.main.search.SearchGuideRepository
@@ -66,6 +67,19 @@ class SearchFragmentGuide : BaseFragment() {
         sharedViewModel.guideSearch.observe(viewLifecycleOwner) {
             Log.d("SearchFragmentGuide", "SearchGuideSend:${it.toString()}")
             viewModel.searchGuide(1, it)
+        }
+
+        binding.apply {
+            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView1: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (!recyclerView1.canScrollVertically(RecyclerView.VERTICAL) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+
+                        toast("Bottom reached!")
+                    }
+                }
+
+            })
         }
     }
 

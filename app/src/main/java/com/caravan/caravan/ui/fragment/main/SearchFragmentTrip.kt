@@ -70,6 +70,19 @@ class SearchFragmentTrip : BaseFragment() {
         sharedViewModel.tripSearch.observe(viewLifecycleOwner) {
             viewModel.searchTrip(1, it)
         }
+
+        binding.apply {
+            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView1: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (!recyclerView1.canScrollVertically(RecyclerView.VERTICAL) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+
+                        toast(recyclerView1.adapter?.itemCount.toString())
+                    }
+                }
+
+            })
+        }
     }
 
     private fun setUpViewModel() {
