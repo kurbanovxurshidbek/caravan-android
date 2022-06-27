@@ -6,6 +6,6 @@ data class ReviewsByPagination(
     val comments: ArrayList<Comment>,
     val currentPageNumber: Int,
     val currentPageItems: Int,
-    val totalPages: Int,
+    val totalPage: Int,
     val totalItems: Int
 )
