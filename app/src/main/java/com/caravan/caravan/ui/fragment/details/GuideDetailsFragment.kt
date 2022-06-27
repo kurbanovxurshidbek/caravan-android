@@ -13,7 +13,6 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
@@ -307,14 +306,15 @@ class GuideDetailsFragment : BaseFragment() {
         if (!data.status) {
             showDialogWarning(data.title!!, data.message!!, object : OkInterface {
                 override fun onClick() {
-                    setUpObservesReviews()
-                    viewModel.getReviews(page, guideId)
                 }
             })
         } else {
             guideDetailsBinding.apply {
                 etLeaveComment.setText("")
                 leaveCommentPart.visibility = View.GONE
+                setUpObservesReviews()
+                viewModel.getReviews(page, guideId)
+
             }
         }
     }
@@ -328,7 +328,7 @@ class GuideDetailsFragment : BaseFragment() {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        allPages = it.data.totalPages
+                        allPages = it.data.totalPage
                         page = it.data.currentPageNumber
 
                         if (page + 1 <= allPages) {

@@ -14,11 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import androidx.compose.ui.text.substring
-import androidx.compose.ui.text.toLowerCase
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -47,8 +47,7 @@ import com.caravan.caravan.viewmodel.details.trip.TripDetailsViewModelFactory
 import com.stfalcon.imageviewer.StfalconImageViewer
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
-import java.util.*
-import kotlin.collections.ArrayList
+import kotlin.concurrent.timerTask
 
 class TripDetailsFragment : BaseFragment() {
     private lateinit var fragmentTripDetailsBinding: FragmentTripDetailsBinding
@@ -57,14 +56,19 @@ class TripDetailsFragment : BaseFragment() {
     private lateinit var overlayViewBinding: OverlayViewBinding
     private lateinit var viewModel: TripDetailsViewModel
     private lateinit var trip: Trip
-    private var page = 0
-    private var allPages = 0
+    private var page = 1
+    private var allPages = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             tripId = it.getString("tripId", null)
         }
+
+        setUpViewModel()
+
+        viewModel.getTrip(tripId)
+
     }
 
     override fun onCreateView(
@@ -72,10 +76,6 @@ class TripDetailsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         fragmentTripDetailsBinding = FragmentTripDetailsBinding.inflate(layoutInflater)
-
-        setUpViewModel()
-        setUpObserves()
-        initViews()
 
         return fragmentTripDetailsBinding.root
     }
@@ -247,7 +247,6 @@ class TripDetailsFragment : BaseFragment() {
     }
 
     private fun initViews() {
-        viewModel.getTrip(tripId)
 
         overlayViewBinding = OverlayViewBinding.bind(
             LayoutInflater.from(requireContext())
@@ -260,6 +259,8 @@ class TripDetailsFragment : BaseFragment() {
             Navigation.findNavController(requireActivity(), R.id.details_nav_fragment)
                 .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment, bundle);
         }
+
+        fragmentTripDetailsBinding.fragmentTripCommentsRV.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
 
         fragmentTripDetailsBinding.btnApplyTrip.setOnClickListener {
             viewModel.hire(Hire("TRIP", tripId))
@@ -278,8 +279,6 @@ class TripDetailsFragment : BaseFragment() {
                             tripId,
                             null
                         )
-
-                    setUpObservesReview()
 
                     viewModel.postReview(review)
 
@@ -321,6 +320,14 @@ class TripDetailsFragment : BaseFragment() {
 
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUpObserves()
+        setUpObservesReview()
+        setUpObserversReviews()
+        initViews()
+    }
+
     private fun setUpObserversReviews() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.reviews.collect {
@@ -330,8 +337,7 @@ class TripDetailsFragment : BaseFragment() {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        allPages = it.data.totalPages
-                        page = it.data.currentPageNumber
+                        allPages = it.data.totalPage
 
                         if (page + 1 <= allPages) {
                             page++
@@ -358,23 +364,26 @@ class TripDetailsFragment : BaseFragment() {
     }
 
     private fun updateComments(data: ArrayList<Comment>) {
-        fragmentTripDetailsBinding.fragmentTripCommentsRV.adapter = CommentsAdapter(data)
-        fragmentTripDetailsBinding.fragmentTripCommentsRV.adapter?.notifyDataSetChanged()
+        fragmentTripDetailsBinding.apply {
+            fragmentTripCommentsRV.adapter = CommentsAdapter(data)
+            fragmentTripCommentsRV.adapter?.notifyDataSetChanged()
+        }
     }
 
     private fun setStatus(data: ActionMessage) {
         if (!data.status) {
             showDialogWarning(data.title!!, data.message!!, object : OkInterface {
                 override fun onClick() {
-                    setUpObserversReviews()
-                    viewModel.getReviews(page, tripId)
+
                 }
             })
         } else {
+            Log.d("TAG", "setStatus: $data")
             fragmentTripDetailsBinding.apply {
                 etLeaveComment.setText("")
                 leaveCommentPart.visibility = View.GONE
             }
+            viewModel.getReviews(page, tripId)
         }
     }
 
@@ -479,16 +488,17 @@ class TripDetailsFragment : BaseFragment() {
             CommentsAdapter(it)
         }
 
-        fragmentTripDetailsBinding.fragmentTripCommentsRV.addOnScrollListener(object :
-            RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    viewModel.getReviews(page, tripId)
+        fragmentTripDetailsBinding.apply {
+            nestedScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                if (nestedScroll.getChildAt(nestedScroll.childCount - 1) != null) {
+                    if (scrollY >= nestedScroll.getChildAt(nestedScroll.childCount - 1).measuredHeight - nestedScroll.measuredHeight &&
+                        scrollY > oldScrollY
+                    ) {
+                        viewModel.getReviews(page, tripId)
+                    }
                 }
-            }
-        })
+            })
+        }
     }
 
     private fun setTravelLocations(places: ArrayList<Location>?) {

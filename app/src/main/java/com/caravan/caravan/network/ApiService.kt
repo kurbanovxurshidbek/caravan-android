@@ -123,8 +123,8 @@ interface ApiService {
 
     @GET("/api/v1/review/trip-review/{tripId}")
     suspend fun getTripComments(
-        @Query("page") page: Int,
-        @Path("tripId") tripId: String
+        @Path("tripId") tripId: String,
+        @Query("page") page: Int
     ): Response<ReviewsByPagination>
 
     @GET("/api/v1/review/{guideId}/guide-fedback")

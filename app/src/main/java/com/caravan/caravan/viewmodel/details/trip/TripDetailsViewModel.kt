@@ -11,9 +11,9 @@ import com.caravan.caravan.model.review.ReviewsByPagination
 import com.caravan.caravan.utils.UiStateObject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import java.lang.Exception
+import retrofit2.HttpException
 
-class TripDetailsViewModel(private val repository: TripDetailsRepository): ViewModel() {
+class TripDetailsViewModel(private val repository: TripDetailsRepository) : ViewModel() {
 
     private val _trip = MutableStateFlow<UiStateObject<Trip>>(UiStateObject.EMPTY)
     val trip = _trip
