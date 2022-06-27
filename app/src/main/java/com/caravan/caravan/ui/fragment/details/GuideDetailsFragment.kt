@@ -15,7 +15,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.RelativeLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -165,10 +164,18 @@ class GuideDetailsFragment : BaseFragment() {
     private fun setLanguages(languages: ArrayList<Language>): String {
         var text = ""
         for (language in 0..languages.size - 2) {
-            text += "${languages[language].name.substring(0, 1)}${languages[language].name.lowercase().substring(1)}"
+            text += "${
+                languages[language].name.substring(
+                    0,
+                    1
+                )
+            }${languages[language].name.lowercase().substring(1)}"
             text += ","
         }
-        text += languages[languages.size - 1].name.substring(0, 1) + languages[languages.size-1].name.lowercase().substring(1)
+        text += languages[languages.size - 1].name.substring(
+            0,
+            1
+        ) + languages[languages.size - 1].name.lowercase().substring(1)
         return text
     }
 
@@ -209,12 +216,6 @@ class GuideDetailsFragment : BaseFragment() {
             }
 
             guideProfilePhoto.setOnClickListener {
-                val myView = View.inflate(
-                    requireContext(),
-                    R.layout.overlay_view,
-                    RelativeLayout(requireContext())
-                )
-
                 guideProfile?.profile?.photo?.let {
                     StfalconImageViewer.Builder<String?>(
                         requireContext(),
@@ -224,10 +225,7 @@ class GuideDetailsFragment : BaseFragment() {
                             .into(view)
                     }.withHiddenStatusBar(false)
                         .withDismissListener {
-
-                        }
-                        .withOverlayView(myView)
-                        .show()
+                        }.show()
 
                 }
             }
@@ -398,7 +396,7 @@ class GuideDetailsFragment : BaseFragment() {
     private fun setProfilePhoto(photo: String?) {
         Glide.with(guideDetailsBinding.root)
             .load(photo)
-            .placeholder(R.drawable.loading)
+            .placeholder(R.drawable.user)
             .error(R.drawable.user)
             .into(guideDetailsBinding.guideProfilePhoto)
 
