@@ -290,6 +290,12 @@ class TripDetailsFragment : BaseFragment() {
 
         }
 
+        fragmentTripDetailsBinding.llCallToGuide.setOnClickListener {
+            val callIntent = Intent(Intent.ACTION_DIAL)
+            callIntent.data = Uri.parse("tel:${trip.guide.phone}")
+            requireActivity().startActivity(callIntent)
+        }
+
     }
 
     private fun setUpObservesReview() {

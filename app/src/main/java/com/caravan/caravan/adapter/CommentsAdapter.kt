@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemCommentBinding
 import com.caravan.caravan.model.Comment
 
@@ -20,9 +21,10 @@ class CommentsAdapter(var items: ArrayList<Comment>) :
         RecyclerView.ViewHolder(commentBinding.root) {
         fun onBind(comment: Comment) {
             Glide.with(commentBinding.ivCommentsUserProfile).load(comment.from.photo)
+                .placeholder(R.drawable.user)
                 .into(commentBinding.ivCommentsUserProfile)
             commentBinding.tvCommentsUserFullname.text =
-                comment.from.name + " " + comment.from.surname
+                comment.from.name.plus(" ").plus(" ").plus(comment.from.surname)
             commentBinding.tvCommentsUserLocaldate.text = comment.reviewTime.substring(0, 10)
             commentBinding.ratingBarCommentUser.rating = comment.rate.toFloat()
             commentBinding.tvCommentsUserRate.text = "(${comment.rate.toString().toInt()})"
@@ -32,9 +34,10 @@ class CommentsAdapter(var items: ArrayList<Comment>) :
             if (comment.answerContent != null) {
                 commentBinding.llAnswerPage.visibility = View.GONE
                 Glide.with(commentBinding.ivCommentsGuideProfile).load(comment.guide?.photo)
+                    .placeholder(R.drawable.user)
                     .into(commentBinding.ivCommentsGuideProfile)
                 commentBinding.tvCommentsGuideFullname.text =
-                    comment.guide?.name + " " + comment.guide?.surname
+                    comment.guide?.name.plus(" ").plus(comment.guide?.surname)
                 commentBinding.tvCommentsGuideLocaldate.text = comment.answerTime?.substring(0, 10)
                 commentBinding.tvCommentsGuideAnswer.text = comment.answerContent
             } else {
