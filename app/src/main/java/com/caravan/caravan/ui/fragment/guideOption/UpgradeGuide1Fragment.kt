@@ -210,6 +210,7 @@ class UpgradeGuide1Fragment : BaseFragment() {
             date,
             year, month, day
         )
+        datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
         datePickerDialog.window?.setBackgroundDrawable(ColorDrawable(0))
         datePickerDialog.show()
     }
