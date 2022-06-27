@@ -269,7 +269,7 @@ class EditProfileFragment : BaseFragment() {
             profile.gender = gender!!
             profile.email =
                 if (checkEmailValid(etEmail.text.toString())) etEmail.text.toString() else null
-            profile.birthDate = tvBirthday.text.toString()
+            profile.birthDate = if (tvBirthday.text.toString() == getString(R.string.str_choose_birthday)) null else tvBirthday.text.toString()
 
         }
         if (pickedPhoto == null)

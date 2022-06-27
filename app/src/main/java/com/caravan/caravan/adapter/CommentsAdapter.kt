@@ -47,21 +47,12 @@ class CommentsAdapter(var items: ArrayList<Comment>) :
         }
     }
 
-    private fun colorMyText(
-        inputText: String,
-        startIndex: Int,
-        endIndex: Int,
-        textColor: Int
-    ): Spannable {
-        val outPutColoredText: Spannable = SpannableString(inputText)
-        outPutColoredText.setSpan(
-            ForegroundColorSpan(textColor),
-            startIndex,
-            endIndex,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        return outPutColoredText
+    fun updateList(comments: ArrayList<Comment>) {
+        items.addAll(comments)
+        notifyDataSetChanged()
     }
+
+    fun getList() = items
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(

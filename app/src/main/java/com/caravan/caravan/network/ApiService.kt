@@ -72,7 +72,7 @@ interface ApiService {
     @PUT("/api/v1/guide/status")
     suspend fun changeGuideStatus(): Response<Boolean>
 
-    //// Trip
+    // Trip
     @POST("/api/v1/trip")
     suspend fun createTrip(@Body firstSend: FirstSend): Response<FirstSend> // Trip Id
 
@@ -127,10 +127,10 @@ interface ApiService {
         @Query("page") page: Int
     ): Response<ReviewsByPagination>
 
-    @GET("/api/v1/review/{guideId}/guide-fedback")
+    @GET("/api/v1/review/{guideId}/guide-feedback")
     suspend fun getGuideComments(
-        @Query("page") page: Int,
-        @Path("guideId") guideId: String
+        @Path("guideId") guideId: String,
+        @Query("page") page: Int
     ): Response<ReviewsByPagination>
 
     @GET("/api/v1/review/all")

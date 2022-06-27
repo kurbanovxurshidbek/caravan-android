@@ -67,18 +67,18 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
 
     // ViewModel
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc01'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc02'
     // ViewModel utilities for Compose
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0-rc01'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0-rc02'
     // LiveData
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-rc01'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-rc02'
     // Lifecycles only (without ViewModel or LiveData)
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc01'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc02'
 
     // Saved state module for ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.0-rc01")
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.0-rc02'
 
-    implementation "androidx.lifecycle:lifecycle-common-java8:2.5.0-rc01"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.5.0-rc02"
 
     //sliderVIewIndicator
     implementation 'com.github.zhpanvip:viewpagerindicator:1.2.1'

@@ -249,7 +249,7 @@ class CreateTrip2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
             }
 
 
-            if (amount != "" && myPhotosList.size >= 2 && myFacilityList.isNotEmpty()) {
+            if (amount != "" && myPhotosList.size >= 3 && myFacilityList.isNotEmpty()) {
 
                 val secondSend = SecondSend(
                     myPhotoIds,

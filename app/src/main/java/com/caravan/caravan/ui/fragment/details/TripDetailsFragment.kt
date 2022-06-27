@@ -59,6 +59,10 @@ class TripDetailsFragment : BaseFragment() {
     private var page = 1
     private var allPages = 1
 
+    private var isComment = false
+
+    private val comments: ArrayList<Comment> = ArrayList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -98,6 +102,7 @@ class TripDetailsFragment : BaseFragment() {
                         trip = it.data
                         guideId = it.data.guide.id
                         setUpDate(it.data)
+                        viewModel.getReviews(1, tripId)
                     }
                     is UiStateObject.ERROR -> {
                         fragmentTripDetailsBinding.apply {
@@ -152,6 +157,8 @@ class TripDetailsFragment : BaseFragment() {
 
     private fun setUpDate(data: Trip) {
 
+        isComment = data.isComment
+
         fragmentTripDetailsBinding.apply {
             tvTripTitle.text = data.name
             tvTripDescription.text = data.description
@@ -162,8 +169,6 @@ class TripDetailsFragment : BaseFragment() {
         setViewPager(data.photos)
         setTravelLocations(data.locations)
         setFacilities(data.facilities)
-        setCommentsRv(data.reviews)
-        setLeaveCommentsPart(data.attendances, data.reviews)
 
         setGuide(data.guide)
 
@@ -218,12 +223,7 @@ class TripDetailsFragment : BaseFragment() {
         return colorMyText(text, 0, text.length, "#167351")
     }
 
-    private fun colorMyText(
-        inputText: String,
-        startIndex: Int,
-        endIndex: Int,
-        textColor: String
-    ): Spannable {
+    private fun colorMyText(inputText: String, startIndex: Int, endIndex: Int, textColor: String): Spannable {
         val outPutColoredText: Spannable = SpannableString(inputText)
         outPutColoredText.setSpan(
             Color.parseColor(textColor),
@@ -345,11 +345,9 @@ class TripDetailsFragment : BaseFragment() {
                         dismissLoading()
                         allPages = it.data.totalPage
 
-                        if (page + 1 <= allPages) {
-                            page++
-                        }
-
-                        updateComments(it.data.comments)
+                        comments.addAll(it.data.comments)
+                        setCommentsRv(comments)
+                        setLeaveCommentsPart(trip.attendances, isComment)
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
@@ -369,13 +367,6 @@ class TripDetailsFragment : BaseFragment() {
         }
     }
 
-    private fun updateComments(data: ArrayList<Comment>) {
-        fragmentTripDetailsBinding.apply {
-            fragmentTripCommentsRV.adapter = CommentsAdapter(data)
-            fragmentTripCommentsRV.adapter?.notifyDataSetChanged()
-        }
-    }
-
     private fun setStatus(data: ActionMessage) {
         if (!data.status) {
             showDialogWarning(data.title!!, data.message!!, object : OkInterface {
@@ -384,12 +375,11 @@ class TripDetailsFragment : BaseFragment() {
                 }
             })
         } else {
-            Log.d("TAG", "setStatus: $data")
             fragmentTripDetailsBinding.apply {
                 etLeaveComment.setText("")
                 leaveCommentPart.visibility = View.GONE
             }
-            viewModel.getReviews(page, tripId)
+            viewModel.getReviews(1, tripId)
         }
     }
 
@@ -426,7 +416,6 @@ class TripDetailsFragment : BaseFragment() {
             .show()
     }
 
-
     private fun setPrice(price: Price): Spannable {
         val text = "${price.currency} ${price.cost.toInt()}"
         val endIndex = text.length
@@ -443,26 +432,15 @@ class TripDetailsFragment : BaseFragment() {
         return outPutColoredText
     }
 
-    private fun setLeaveCommentsPart(ids: ArrayList<ProfileId>?, reviews: ArrayList<Comment>?) {
+    private fun setLeaveCommentsPart(ids: ArrayList<ProfileId>?, isComment: Boolean) {
         val profileId = SharedPref(requireContext()).getString("profileId")
 
-        if (ids != null && ids.contains(ProfileId(profileId!!))) {
-
-            if (!reviews.isNullOrEmpty()) {
-                var isHave = false
-                for (i in reviews) {
-                    if (i.from.id == profileId) {
-                        isHave = true
-                        break
-                    }
-                }
-                if (isHave)
-                    fragmentTripDetailsBinding.leaveCommentPart.visibility = View.GONE
-                else
-                    fragmentTripDetailsBinding.leaveCommentPart.visibility = View.VISIBLE
-            } else {
+        if (ids != null && ids.contains(ProfileId(profileId!!)) && trip.guide.id != SharedPref(requireContext()).getString("guideId")) {
+            if (isComment)
+                fragmentTripDetailsBinding.leaveCommentPart.visibility = View.GONE
+            else
                 fragmentTripDetailsBinding.leaveCommentPart.visibility = View.VISIBLE
-            }
+
         } else {
             fragmentTripDetailsBinding.leaveCommentPart.visibility = View.GONE
         }
@@ -490,17 +468,26 @@ class TripDetailsFragment : BaseFragment() {
     }
 
     private fun setCommentsRv(reviews: ArrayList<Comment>?) {
-        fragmentTripDetailsBinding.fragmentTripCommentsRV.adapter = reviews?.let {
-            CommentsAdapter(it)
-        }
-
         fragmentTripDetailsBinding.apply {
+
+            if (fragmentTripCommentsRV.adapter == null) {
+                fragmentTripCommentsRV.adapter = reviews?.let {
+                    CommentsAdapter(it)
+                }
+            } else {
+                if (!reviews.isNullOrEmpty()){
+                    (fragmentTripCommentsRV.adapter as CommentsAdapter).items = reviews
+                    fragmentTripCommentsRV.adapter!!.notifyDataSetChanged()
+                }
+            }
+
             nestedScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
                 if (nestedScroll.getChildAt(nestedScroll.childCount - 1) != null) {
                     if (scrollY >= nestedScroll.getChildAt(nestedScroll.childCount - 1).measuredHeight - nestedScroll.measuredHeight &&
                         scrollY > oldScrollY
                     ) {
-                        viewModel.getReviews(page, tripId)
+                        if (page + 1 <= allPages)
+                            viewModel.getReviews(++page, tripId)
                     }
                 }
             })

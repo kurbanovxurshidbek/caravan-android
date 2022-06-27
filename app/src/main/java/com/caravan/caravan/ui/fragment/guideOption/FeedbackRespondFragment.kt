@@ -49,7 +49,7 @@ class FeedbackRespondFragment : BaseFragment() {
             Glide.with(requireActivity()).load(comment.trip.photos[0].photo).into(binding.llItemTrips.ivTripPhoto)
             binding.llItemTrips.tvTripTitle.text = comment.trip.name
             binding.llItemTrips.ratingBarTrip.rating = comment.trip.rate.toFloat()
-            binding.llItemTrips.tvTripCommentsCount.text = "(${if (comment.trip.reviews.isNullOrEmpty()) "0" else comment.trip.reviews.size})"
+            binding.llItemTrips.tvTripCommentsCount.text = "(${comment.trip.reviewsCount})"
             binding.llItemTrips.tvPrice.text = price(comment.trip)
         }else{
             binding.llItemTrips.root.visibility =  View.GONE
