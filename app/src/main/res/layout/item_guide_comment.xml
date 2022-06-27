@@ -34,7 +34,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/circular_std_bold"
-                android:text="Gulchapchap Chakkixonova"
                 android:textColor="#181818"
                 android:textSize="18sp" />
 
@@ -45,7 +44,6 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/circular_std_bold"
                 android:lines="1"
-                android:text="Yorvordila lekin gap yo`q"
                 android:textColor="#99000000"
                 android:textSize="12sp" />
 
@@ -64,8 +62,7 @@
                     android:max="5"
                     android:secondaryProgressTint="@color/main_color"
                     android:progressBackgroundTint="#90000000"
-                    android:progressTint="@color/main_color"
-                    android:rating="3.5" />
+                    android:progressTint="@color/main_color" />
 
 
 
@@ -74,7 +71,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/circular_std_bold"
-                    android:text="5"
                     android:textColor="#99000000"
                     android:textSize="12sp" />
 
@@ -92,8 +88,7 @@
                 android:textColor="@color/main_color"
                 android:fontFamily="@font/circular_std_bold"
                 android:lines="1"
-                android:text="Not answered"
-                android:textSize="12dp" />
+                android:textSize="12sp" />
 
 
 

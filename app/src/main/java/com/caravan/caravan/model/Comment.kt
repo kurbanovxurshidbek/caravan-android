@@ -10,10 +10,17 @@ data class Comment(
     val rate: Int,
     val reviewTime: String,
     val reviewContent: String,
-    val from: Profile,
+    val from: CommentProfile,
     val commentType: String = "TRIP", // GUIDE
     val trip: Trip? = null,
-    val guide: GuideProfile?,
+    val guide: CommentProfile?,
     val answerTime: String? = null,
     val answerContent: String? = null
 ): Serializable
+
+data class CommentProfile(
+    val id: String,
+    val name: String,
+    val surname: String,
+    val photo: String
+)

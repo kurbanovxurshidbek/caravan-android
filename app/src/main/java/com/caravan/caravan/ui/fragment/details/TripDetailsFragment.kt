@@ -14,6 +14,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import androidx.compose.ui.text.substring
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -45,10 +47,13 @@ import com.caravan.caravan.viewmodel.details.trip.TripDetailsViewModelFactory
 import com.stfalcon.imageviewer.StfalconImageViewer
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TripDetailsFragment : BaseFragment() {
     private lateinit var fragmentTripDetailsBinding: FragmentTripDetailsBinding
     private var tripId: String = ""
+    private var guideId: String = ""
     private lateinit var overlayViewBinding: OverlayViewBinding
     private lateinit var viewModel: TripDetailsViewModel
     private lateinit var trip: Trip
@@ -91,6 +96,7 @@ class TripDetailsFragment : BaseFragment() {
                         }
                         dismissLoading()
                         trip = it.data
+                        guideId = it.data.guide.id
                         setUpDate(it.data)
                     }
                     is UiStateObject.ERROR -> {
@@ -163,7 +169,6 @@ class TripDetailsFragment : BaseFragment() {
 
         fragmentTripDetailsBinding.tvTripPrice.text = setPrice(data.price)
         fragmentTripDetailsBinding.tvGuidePrice.text = setPrice(data.price)
-        Log.d("Trip", "setUpDate: ${data.toString()}")
 
     }
 
@@ -172,7 +177,7 @@ class TripDetailsFragment : BaseFragment() {
             Glide.with(ivGuide).load(guide.profilePhoto).placeholder(R.drawable.user).into(ivGuide)
             tvGuidesFullname.text = guide.name.plus(" ").plus(guide.surname)
             ratingBarGuide.rating = guide.rate.toFloat()
-            tvGuidesCommentsCount.text = guide.reviewCount.toString()
+            tvGuidesCommentsCount.text = "(" + guide.reviewCount.toString() + ")"
             tvGuidesCities.text = setProvince(guide.travelLocations)
             tvGuidePrice.text = setGuidePrice(guide.price)
             tvGuidesLanguages.text = setLanguages(guide.languages)
@@ -182,15 +187,15 @@ class TripDetailsFragment : BaseFragment() {
     private fun setLanguages(languages: ArrayList<Language>): String {
         var text = ""
         for (language in 0..languages.size - 2) {
-            text += "${languages[language].name} "
+            text += "${languages[language].name.substring(0, 1)}${languages[language].name.lowercase().substring(1)}"
             text += ","
         }
-        text += languages[languages.size - 1].name
+        text += languages[languages.size - 1].name.substring(0, 1) + languages[languages.size-1].name.lowercase().substring(1)
         return text
     }
 
     private fun setGuidePrice(price: Price): Spannable {
-        val text = "$${price.cost.toInt()}"
+        val text = "${price.currency} ${price.cost.toInt()}"
         val endIndex = text.length
 
         val outPutColoredText: Spannable = SpannableString("$text/${price.type}")
@@ -250,8 +255,10 @@ class TripDetailsFragment : BaseFragment() {
         )
 
         fragmentTripDetailsBinding.guideProfile.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("guideId", guideId)
             Navigation.findNavController(requireActivity(), R.id.details_nav_fragment)
-                .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment);
+                .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment, bundle);
         }
 
         fragmentTripDetailsBinding.btnApplyTrip.setOnClickListener {
@@ -262,14 +269,14 @@ class TripDetailsFragment : BaseFragment() {
 
             btnSendComment.setOnClickListener {
                 if (etLeaveComment.text.isNotEmpty()) {
-                    val rate = ratingBarGuide.rating
+                    val rate = rateTheTrip.rating
                     val review =
                         Review(
                             rate.toInt(),
                             etLeaveComment.text.toString(),
-                            "GUIDE",
-                            null,
-                            trip.guide.id
+                            "TRIP",
+                            tripId,
+                            null
                         )
 
                     setUpObservesReview()
@@ -307,11 +314,14 @@ class TripDetailsFragment : BaseFragment() {
                                 }
                             })
                     }
-                    else -> {}
+                    else -> Unit
                 }
             }
         }
 
+    }
+
+    private fun setUpObserversReviews() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.reviews.collect {
                 when (it) {
@@ -345,7 +355,6 @@ class TripDetailsFragment : BaseFragment() {
                 }
             }
         }
-
     }
 
     private fun updateComments(data: ArrayList<Comment>) {
@@ -357,6 +366,7 @@ class TripDetailsFragment : BaseFragment() {
         if (!data.status) {
             showDialogWarning(data.title!!, data.message!!, object : OkInterface {
                 override fun onClick() {
+                    setUpObserversReviews()
                     viewModel.getReviews(page, tripId)
                 }
             })
@@ -403,10 +413,10 @@ class TripDetailsFragment : BaseFragment() {
 
 
     private fun setPrice(price: Price): Spannable {
-        val text = "$${price.cost.toInt()}"
+        val text = "${price.currency} ${price.cost.toInt()}"
         val endIndex = text.length
 
-        val outPutColoredText: Spannable = SpannableString("$text/${trip.price.type}")
+        val outPutColoredText: Spannable = SpannableString("$text/${trip.price.type.lowercase()}")
         outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
         outPutColoredText.setSpan(
             ForegroundColorSpan(Color.parseColor("#167351")),

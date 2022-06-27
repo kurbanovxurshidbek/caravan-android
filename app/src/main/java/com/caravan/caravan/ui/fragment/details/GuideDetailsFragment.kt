@@ -11,7 +11,6 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -96,8 +95,8 @@ class GuideDetailsFragment : BaseFragment() {
                         }
                         dismissLoading()
                         guideProfile = it.data
+                        guideId = it.data.id
                         setData(it.data)
-                        Log.d("GuideDetailsFragment", "SUCCESS: ${it.data.toString()}")
                     }
                     is UiStateObject.ERROR -> {
                         guideDetailsBinding.apply {
@@ -109,7 +108,7 @@ class GuideDetailsFragment : BaseFragment() {
                             getString(R.string.str_try_again),
                             object : OkInterface {
                                 override fun onClick() {
-                                    requireActivity().finish()
+                                    requireActivity().onBackPressed()
                                 }
                             })
                     }
@@ -127,8 +126,6 @@ class GuideDetailsFragment : BaseFragment() {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-
-                        viewModelStore.clear()
                         val callIntent = Intent(Intent.ACTION_DIAL)
                         callIntent.data = Uri.parse("tel:${guideProfile?.profile?.phoneNumber}")
                         requireActivity().startActivity(callIntent)
@@ -152,12 +149,6 @@ class GuideDetailsFragment : BaseFragment() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        setUpViewModel()
-        setUpObserves()
-    }
-
     private fun setData(data: GuideProfile) {
         guideDetailsBinding.apply {
             tvGuideFullName.text = data.profile.name.plus(" ").plus(data.profile.surname)
@@ -168,20 +159,17 @@ class GuideDetailsFragment : BaseFragment() {
         setProfilePhoto(data.profile.photo)
         setTravelLocations(data.travelLocations)
         setCommentsRv(data.reviews)
-        setLeaveCommentsPart(data.attendancesProfileId, data.reviews)
+        setLeaveCommentsPart(data.attendances, data.reviews)
         guideDetailsBinding.tvGuidePrice.text = setPrice(data.price)
     }
 
     private fun setLanguages(languages: ArrayList<Language>): String {
         var text = ""
-        if (languages.isNotEmpty()) {
-            for (i in languages) {
-                text += i.name + ", "
-            }
-            text = text.substring(0, text.length - 2)
-        } else {
-            guideDetailsBinding.tvGuideLanguages.visibility = GONE
+        for (language in 0..languages.size - 2) {
+            text += "${languages[language].name.substring(0, 1)}${languages[language].name.lowercase().substring(1)}"
+            text += ","
         }
+        text += languages[languages.size - 1].name.substring(0, 1) + languages[languages.size-1].name.lowercase().substring(1)
         return text
     }
 
@@ -251,9 +239,15 @@ class GuideDetailsFragment : BaseFragment() {
 
             btnSendComment.setOnClickListener {
                 if (etLeaveComment.text.isNotEmpty()) {
-                    val rate = ratingBarGuide.rating
+                    val rate = rateTheGuide.rating
                     val review =
-                        Review(rate.toInt(), etLeaveComment.text.toString(), "GUIDE", null, guideId)
+                        Review(
+                            rate.toInt(),
+                            etLeaveComment.text.toString(),
+                            "GUIDE",
+                            null,
+                            guideId
+                        )
 
                     setUpObservesReview()
 
@@ -276,7 +270,7 @@ class GuideDetailsFragment : BaseFragment() {
 
     private fun setUpObservesReview() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.postReview.collect {
+            viewModel.review.collect {
                 when (it) {
                     is UiStateObject.LOADING -> {
                         showLoading()
@@ -302,6 +296,30 @@ class GuideDetailsFragment : BaseFragment() {
             }
         }
 
+    }
+
+    private fun updateComments(data: ArrayList<Comment>) {
+        guideDetailsBinding.fragmentTripCommentsRV.adapter = CommentsAdapter(data)
+        guideDetailsBinding.fragmentTripCommentsRV.adapter?.notifyDataSetChanged()
+    }
+
+    private fun setStatus(data: ActionMessage) {
+        if (!data.status) {
+            showDialogWarning(data.title!!, data.message!!, object : OkInterface {
+                override fun onClick() {
+                    setUpObservesReviews()
+                    viewModel.getReviews(page, guideId)
+                }
+            })
+        } else {
+            guideDetailsBinding.apply {
+                etLeaveComment.setText("")
+                leaveCommentPart.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun setUpObservesReviews() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.reviews.collect {
                 when (it) {
@@ -335,34 +353,13 @@ class GuideDetailsFragment : BaseFragment() {
                 }
             }
         }
-
-    }
-
-    private fun updateComments(data: ArrayList<Comment>) {
-        guideDetailsBinding.fragmentTripCommentsRV.adapter = CommentsAdapter(data)
-        guideDetailsBinding.fragmentTripCommentsRV.adapter?.notifyDataSetChanged()
-    }
-
-    private fun setStatus(data: ActionMessage) {
-        if (!data.status) {
-            showDialogWarning(data.title!!, data.message!!, object : OkInterface {
-                override fun onClick() {
-                    viewModel.getReviews(0, guideId)
-                }
-            })
-        } else {
-            guideDetailsBinding.apply {
-                etLeaveComment.setText("")
-                leaveCommentPart.visibility = View.GONE
-            }
-        }
     }
 
     private fun setPrice(price: Price): Spannable {
-        val text = "$${price.cost.toInt()}"
+        val text = "${price.currency} ${price.cost.toInt()}"
         val endIndex = text.length
 
-        val outPutColoredText: Spannable = SpannableString("$text/${price.type}")
+        val outPutColoredText: Spannable = SpannableString("$text/${price.type.lowercase()}")
         outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
         outPutColoredText.setSpan(
             ForegroundColorSpan(Color.parseColor("#167351")),
@@ -374,9 +371,9 @@ class GuideDetailsFragment : BaseFragment() {
         return outPutColoredText
     }
 
-    private fun setLeaveCommentsPart(ids: ArrayList<String>?, reviews: ArrayList<Comment>?) {
+    private fun setLeaveCommentsPart(ids: ArrayList<ProfileId>?, reviews: ArrayList<Comment>?) {
         val profileId = SharedPref(requireContext()).getString("profileId")
-        if (ids != null && ids.contains(profileId!!)) {
+        if (ids != null && ids.contains(ProfileId(profileId!!))) {
 
             if (!reviews.isNullOrEmpty()) {
                 var isHave = true

@@ -26,7 +26,7 @@ class GuideHomeAdapter(private val context: BaseFragment, private val list: List
             itemBinding.tvName.text = guide.name
             itemBinding.tvName.isSelected = true
             itemBinding.tvPrice.text = price(guide)
-//            itemBinding.tvProvince.text = provinces(guide)
+            itemBinding.tvProvince.text = provinces(guide)
 
             itemView.setOnClickListener {
                 if(context is HomeFragment){
@@ -37,10 +37,11 @@ class GuideHomeAdapter(private val context: BaseFragment, private val list: List
 
         @SuppressLint("ResourceAsColor")
         private fun price(guide: HomeGuide) : Spannable {
-            val text = "$${guide.price.cost.toInt()}"
+
+            val text = "${guide.price.currency} ${guide.price.cost.toInt()}"
             val endIndex = text.length
 
-            val outPutColoredText: Spannable = SpannableString("$text/${guide.price.type}")
+            val outPutColoredText: Spannable = SpannableString("$text/${guide.price.type.lowercase()}")
             outPutColoredText.setSpan(RelativeSizeSpan(1.2f),0, endIndex, 0)
             outPutColoredText.setSpan(ForegroundColorSpan(Color.parseColor("#167351")), 0, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 

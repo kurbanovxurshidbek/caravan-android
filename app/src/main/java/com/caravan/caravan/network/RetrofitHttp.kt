@@ -15,9 +15,9 @@ object RetrofitHttp {
 
     const val TAG: String = "RetrofitHttp"
 
-    private const val IS_TESTER = true
+    private const val IS_TESTER = false
 
-    private const val SERVER_DEVELOPMENT = "http://10.10.2.80:8080"
+    private const val SERVER_DEVELOPMENT = "http://10.10.3.55:8080"
     private const val SERVER_PRODUCTION = "http://137.184.80.70:8080"
 
     private fun server(): String {
@@ -74,8 +74,8 @@ object RetrofitHttp {
     @JvmStatic
     fun <T> createService(service: Class<T>?): T {
         val newClient =
-            OkHttpClient.Builder().connectTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS).addInterceptor(Interceptor { chain ->
+            OkHttpClient.Builder().connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS).addInterceptor(Interceptor { chain ->
                     val builder = chain.request().newBuilder()
                     builder.header("Content-Type", "application/json")
                     chain.proceed(builder.build())
@@ -90,8 +90,8 @@ object RetrofitHttp {
 
     fun <T> createServiceWithAuth(pref: SharedPref, service: Class<T>?): T {
         val newClient =
-            OkHttpClient.Builder().connectTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS).addInterceptor(Interceptor { chain ->
+            OkHttpClient.Builder().connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS).addInterceptor(Interceptor { chain ->
                     val builder = chain.request().newBuilder()
                     builder.addHeader("Authorization", "Bearer " + pref.getToken())
                     builder.header("Content-Type", "application/json")

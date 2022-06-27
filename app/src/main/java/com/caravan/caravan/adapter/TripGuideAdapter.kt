@@ -33,7 +33,6 @@ class TripGuideAdapter(var fragment:Fragment,var items: ArrayList<HomeTrip>) :
             }
 
             itemTripGuideBinding.ivDeleteTrip.setOnClickListener {
-                // item delete function must be here
                 (fragment as TripListFragment).deleteTrip(trip.id)
                 items.removeAt(adapterPosition)
             }
