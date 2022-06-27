@@ -4,12 +4,15 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="vertical">
+        android:background="#2C000000"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="24dp">
 
         <TextView
             android:id="@+id/name"
