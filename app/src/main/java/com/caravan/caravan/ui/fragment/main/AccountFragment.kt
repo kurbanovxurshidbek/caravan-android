@@ -47,7 +47,7 @@ class AccountFragment : BaseFragment() {
         setupViewModel()
         id = SharedPref(requireContext()).getString("profileId")
         if (id != null) {
-            viewModel.getProfile(id!!)
+            //viewModel.getProfile(id!!)
         } else {
             showDialogWarning(
                 getString(R.string.error),

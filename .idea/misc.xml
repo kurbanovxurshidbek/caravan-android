@@ -53,7 +53,8 @@
         <entry key="app/src/main/res/layout/fragment_create_trip1.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/fragment_create_trip2.xml" value="0.16530797101449277" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.2574074074074074" />
-        <entry key="app/src/main/res/layout/fragment_feedback_list.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/fragment_feedback_list.xml" value="0.17341977309562398" />
+        <entry key="app/src/main/res/layout/fragment_feedback_respond.xml" value="0.22291666666666668" />
         <entry key="app/src/main/res/layout/fragment_guide_details.xml" value="0.23556105610561057" />
         <entry key="app/src/main/res/layout/fragment_guide_guide_option.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/fragment_guide_trips.xml" value="0.29739583333333336" />
@@ -62,6 +63,7 @@
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.2740740740740741" />
         <entry key="app/src/main/res/layout/fragment_search_guide.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/fragment_trip_details.xml" value="0.17933417085427136" />
+        <entry key="app/src/main/res/layout/fragment_turist_guide_option.xml" value="0.22291666666666668" />
         <entry key="app/src/main/res/layout/fragment_upgrade_guide1.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/fragment_upgrade_guide2.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/item_comment.xml" value="0.29739583333333336" />

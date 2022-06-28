@@ -9,8 +9,7 @@ import kotlinx.coroutines.launch
 
 class GuideOptionViewModel(private val repository: GuideOptionRepository) : ViewModel() {
 
-    private val _deletedGuideProfile =
-        MutableStateFlow<UiStateObject<ActionMessage>>(UiStateObject.EMPTY)
+    private val _deletedGuideProfile = MutableStateFlow<UiStateObject<ActionMessage>>(UiStateObject.EMPTY)
     val deletedGuideProfile = _deletedGuideProfile
 
     fun deleteGuideProfile() = viewModelScope.launch {

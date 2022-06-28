@@ -2,7 +2,6 @@ package com.caravan.caravan.network
 
 import com.caravan.caravan.BuildConfig
 import com.caravan.caravan.manager.SharedPref
-import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,7 +17,7 @@ object RetrofitHttp {
 
     private const val IS_TESTER = false
 
-    private const val SERVER_DEVELOPMENT = "http://10.10.2.180:8080"
+    private const val SERVER_DEVELOPMENT = "http://10.10.3.33:8080"
     private const val SERVER_PRODUCTION = "http://137.184.80.70:8080"
 
     private fun server(): String {
@@ -91,8 +90,8 @@ object RetrofitHttp {
 
     fun <T> createServiceWithAuth(pref: SharedPref, service: Class<T>?): T {
         val newClient =
-            OkHttpClient.Builder().connectTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS).addInterceptor(Interceptor { chain ->
+            OkHttpClient.Builder().connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS).addInterceptor(Interceptor { chain ->
                     val builder = chain.request().newBuilder()
                     builder.addHeader("Authorization", "Bearer " + pref.getToken())
                     builder.header("Content-Type", "application/json")

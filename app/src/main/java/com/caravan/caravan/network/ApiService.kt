@@ -105,7 +105,7 @@ interface ApiService {
     @GET("/api/v1/review/trip-review/{tripId}")
     suspend fun getTripComments(@Query("page") page: Int, @Path("tripId") tripId: String): Response<ReviewsByPagination>
 
-    @GET("/api/v1/review/{guideId}/guide-fedback")
+    @GET("/api/v1/review/{guideId}/guide-feedback")
     suspend fun getGuideComments(@Query("page") page: Int, @Path("guideId") guideId: String): Response<ReviewsByPagination>
 
     @GET("/api/v1/review/all")

@@ -209,13 +209,12 @@ class TripDetailsFragment : BaseFragment() {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        allPages = it.data.totalPages
+                        allPages = it.data.totalPage
                         page = it.data.currentPageNumber
 
                         if (page + 1 <= allPages) {
                             page++
                         }
-
                         updateComments(it.data.comments)
                     }
                     is UiStateObject.ERROR -> {

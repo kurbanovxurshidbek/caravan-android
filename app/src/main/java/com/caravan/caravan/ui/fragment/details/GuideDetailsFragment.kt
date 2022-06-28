@@ -259,7 +259,7 @@ class GuideDetailsFragment : BaseFragment() {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        allPages = it.data.totalPages
+                        allPages = it.data.totalPage
                         page = it.data.currentPageNumber
 
                         if (page + 1 <= allPages) {

@@ -1,10 +1,12 @@
 package com.caravan.caravan.ui.fragment.guideOption
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -27,14 +29,7 @@ class FeedbackListFragment : BaseFragment() {
     private val binding by viewBinding { FragmentFeedbackListBinding.bind(it) }
     private lateinit var viewModel: FeedBackListViewModel
     private var comments = ArrayList<Comment>()
-    private var adapter = GuideCommentAdapter()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setupViewModel()
-        setupObservers()
-    }
-
+    private val adapter by lazy { GuideCommentAdapter() }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,6 +37,7 @@ class FeedbackListFragment : BaseFragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_feedback_list, container, false)
     }
+
 
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -52,9 +48,8 @@ class FeedbackListFragment : BaseFragment() {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        adapter.differ.submitList(it.data.comments)
-
-
+                        comments.addAll(it.data.comments)
+                        adapter.submitList(comments.toList())
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
@@ -78,16 +73,31 @@ class FeedbackListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupViewModel()
+        setupObservers()
         initViews()
     }
 
     private fun initViews() {
+        viewModel.getReviews()
+        binding.apply {
+            rvFeedbacks.adapter = adapter
+            nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                if (scrollY >= v.getChildAt(v.childCount - 1).measuredHeight - v.measuredHeight &&
+                    scrollY > oldScrollY
+                ) {
+                    viewModel.getReviews()
+                }
+            })
+        }
 
 
-        adapter.setOnItemClickListener{ comment ->
+
+        adapter.setOnItemClickListener { comment ->
+            Log.d("setOnItemClickListener", "$comment")
             val bundle = bundleOf("comment" to comment)
             binding.root.findNavController()
-                .navigate(R.id.action_feedbackListFragment2_to_feedbackRespondFragment2, bundle)
+                .navigate(R.id.action_feedbackListFragment_to_feedbackRespondFragment, bundle)
 //        Navigation.findNavController(binding.root).navigate(R.id.action_feedbackListFragment2_to_feedbackRespondFragment2, bundle)
 
         }

@@ -5,16 +5,18 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.caravan.caravan.databinding.ItemGuideCommentBinding
 import com.caravan.caravan.model.Comment
 
-class GuideCommentAdapter : RecyclerView.Adapter<GuideCommentAdapter.ViewHolder>() {
+class GuideCommentAdapter :
+    ListAdapter<Comment, GuideCommentAdapter.ViewHolder>(CommentDiffCallback()) {
 
-    private var differCallback = object : DiffUtil.ItemCallback<Comment>() {
+
+    class CommentDiffCallback : DiffUtil.ItemCallback<Comment>() {
         override fun areItemsTheSame(oldItem: Comment, newItem: Comment): Boolean {
             return oldItem.id == newItem.id
         }
@@ -22,9 +24,8 @@ class GuideCommentAdapter : RecyclerView.Adapter<GuideCommentAdapter.ViewHolder>
         override fun areContentsTheSame(oldItem: Comment, newItem: Comment): Boolean {
             return oldItem == newItem
         }
-    }
 
-    var differ = AsyncListDiffer(this, differCallback)
+    }
 
     inner class ViewHolder(private val guideCommentBinding: ItemGuideCommentBinding) :
         RecyclerView.ViewHolder(guideCommentBinding.root) {
@@ -45,6 +46,8 @@ class GuideCommentAdapter : RecyclerView.Adapter<GuideCommentAdapter.ViewHolder>
             }
 
             guideCommentBinding.llComment.setOnClickListener {
+                if (comment.from.token == null) comment.from.token = ""
+                if (comment.guide?.profile?.token == null) comment.guide?.profile?.token = ""
                 onItemClickListener?.invoke(comment)
             }
 
@@ -58,7 +61,6 @@ class GuideCommentAdapter : RecyclerView.Adapter<GuideCommentAdapter.ViewHolder>
         onItemClickListener = listener
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             ItemGuideCommentBinding.inflate(
@@ -71,11 +73,11 @@ class GuideCommentAdapter : RecyclerView.Adapter<GuideCommentAdapter.ViewHolder>
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.onBind(differ.currentList[position])
+        holder.onBind(getItem(position))
 
     }
 
-    override fun getItemCount(): Int = differ.currentList.size
+
 
     private fun colorMyText(
         inputText: String,
