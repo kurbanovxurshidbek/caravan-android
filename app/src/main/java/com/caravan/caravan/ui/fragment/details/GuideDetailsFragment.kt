@@ -14,10 +14,9 @@ import android.text.style.RelativeSizeSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.RelativeLayout
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -52,8 +51,11 @@ class GuideDetailsFragment : BaseFragment() {
 
     private lateinit var viewModel: GuideDetailsViewModel
 
-    private var page = 0
-    private var allPages = 0
+    private var page = 1
+    private var allPages = 1
+
+    private var isComment = false
+    private val comments: ArrayList<Comment> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +64,10 @@ class GuideDetailsFragment : BaseFragment() {
             guideId = it.getString("guideId").toString()
         }
 
+        setUpViewModel()
+
+        viewModel.getGuideProfile(guideId)
+
     }
 
     override fun onCreateView(
@@ -69,13 +75,6 @@ class GuideDetailsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         guideDetailsBinding = FragmentGuideDetailsBinding.inflate(layoutInflater)
-
-        setUpViewModel()
-        setUpObserves()
-
-        viewModel.getGuideProfile(guideId)
-
-        initViews()
 
         return guideDetailsBinding.root
     }
@@ -96,8 +95,9 @@ class GuideDetailsFragment : BaseFragment() {
                         }
                         dismissLoading()
                         guideProfile = it.data
+                        guideId = it.data.id
                         setData(it.data)
-                        Log.d("GuideDetailsFragment", "SUCCESS: ${it.data.toString()}")
+                        viewModel.getReviews(1, guideId)
                     }
                     is UiStateObject.ERROR -> {
                         guideDetailsBinding.apply {
@@ -109,7 +109,7 @@ class GuideDetailsFragment : BaseFragment() {
                             getString(R.string.str_try_again),
                             object : OkInterface {
                                 override fun onClick() {
-                                    requireActivity().finish()
+                                    requireActivity().onBackPressed()
                                 }
                             })
                     }
@@ -127,8 +127,6 @@ class GuideDetailsFragment : BaseFragment() {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-
-                        viewModelStore.clear()
                         val callIntent = Intent(Intent.ACTION_DIAL)
                         callIntent.data = Uri.parse("tel:${guideProfile?.profile?.phoneNumber}")
                         requireActivity().startActivity(callIntent)
@@ -152,13 +150,8 @@ class GuideDetailsFragment : BaseFragment() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        setUpViewModel()
-        setUpObserves()
-    }
-
     private fun setData(data: GuideProfile) {
+        isComment = data.isComment
         guideDetailsBinding.apply {
             tvGuideFullName.text = data.profile.name.plus(" ").plus(data.profile.surname)
             tvGuideLanguages.text = setLanguages(data.languages)
@@ -167,21 +160,24 @@ class GuideDetailsFragment : BaseFragment() {
         }
         setProfilePhoto(data.profile.photo)
         setTravelLocations(data.travelLocations)
-        setCommentsRv(data.reviews)
-        setLeaveCommentsPart(data.attendancesProfileId, data.reviews)
         guideDetailsBinding.tvGuidePrice.text = setPrice(data.price)
     }
 
     private fun setLanguages(languages: ArrayList<Language>): String {
         var text = ""
-        if (languages.isNotEmpty()) {
-            for (i in languages) {
-                text += i.name + ", "
-            }
-            text = text.substring(0, text.length - 2)
-        } else {
-            guideDetailsBinding.tvGuideLanguages.visibility = GONE
+        for (language in 0..languages.size - 2) {
+            text += "${
+                languages[language].name.substring(
+                    0,
+                    1
+                )
+            }${languages[language].name.lowercase().substring(1)}"
+            text += ","
         }
+        text += languages[languages.size - 1].name.substring(
+            0,
+            1
+        ) + languages[languages.size - 1].name.lowercase().substring(1)
         return text
     }
 
@@ -202,7 +198,7 @@ class GuideDetailsFragment : BaseFragment() {
 
         guideDetailsBinding.apply {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                guideFragmentNestedSV.setOnScrollChangeListener { v, _, _, _, _ ->
+                nestedScroll.setOnScrollChangeListener { v, _, _, _, _ ->
                     if (etLeaveComment.isFocused) {
                         val outRect = Rect()
                         etLeaveComment.getGlobalVisibleRect(outRect)
@@ -222,12 +218,6 @@ class GuideDetailsFragment : BaseFragment() {
             }
 
             guideProfilePhoto.setOnClickListener {
-                val myView = View.inflate(
-                    requireContext(),
-                    R.layout.overlay_view,
-                    RelativeLayout(requireContext())
-                )
-
                 guideProfile?.profile?.photo?.let {
                     StfalconImageViewer.Builder<String?>(
                         requireContext(),
@@ -237,10 +227,7 @@ class GuideDetailsFragment : BaseFragment() {
                             .into(view)
                     }.withHiddenStatusBar(false)
                         .withDismissListener {
-
-                        }
-                        .withOverlayView(myView)
-                        .show()
+                        }.show()
 
                 }
             }
@@ -251,11 +238,15 @@ class GuideDetailsFragment : BaseFragment() {
 
             btnSendComment.setOnClickListener {
                 if (etLeaveComment.text.isNotEmpty()) {
-                    val rate = ratingBarGuide.rating
+                    val rate = rateTheGuide.rating
                     val review =
-                        Review(rate.toInt(), etLeaveComment.text.toString(), "GUIDE", null, guideId)
-
-                    setUpObservesReview()
+                        Review(
+                            rate.toInt(),
+                            etLeaveComment.text.toString(),
+                            "GUIDE",
+                            null,
+                            guideId
+                        )
 
                     viewModel.postReview(review)
 
@@ -274,9 +265,19 @@ class GuideDetailsFragment : BaseFragment() {
 
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setUpObserves()
+        setUpObservesReview()
+        setUpObservesReviews()
+        initViews()
+
+    }
+
     private fun setUpObservesReview() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.postReview.collect {
+            viewModel.review.collect {
                 when (it) {
                     is UiStateObject.LOADING -> {
                         showLoading()
@@ -302,6 +303,26 @@ class GuideDetailsFragment : BaseFragment() {
             }
         }
 
+    }
+
+    private fun setStatus(data: ActionMessage) {
+        if (!data.status) {
+            showDialogWarning(data.title!!, data.message!!, object : OkInterface {
+                override fun onClick() {
+                }
+            })
+        } else {
+            guideDetailsBinding.apply {
+                etLeaveComment.setText("")
+                leaveCommentPart.visibility = View.GONE
+
+                viewModel.getReviews(1, guideId)
+
+            }
+        }
+    }
+
+    private fun setUpObservesReviews() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.reviews.collect {
                 when (it) {
@@ -310,14 +331,14 @@ class GuideDetailsFragment : BaseFragment() {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        allPages = it.data.totalPages
-                        page = it.data.currentPageNumber
+                        allPages = it.data.totalPage
 
-                        if (page + 1 <= allPages) {
-                            page++
-                        }
+                        comments.addAll(it.data.comments)
 
-                        updateComments(it.data.comments)
+                        Log.d("TAG", "setUpObservesReviews: Gladi nichcha marta")
+
+                        setCommentsRv(comments)
+                        setLeaveCommentsPart(guideProfile?.attendances, isComment)
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
@@ -335,34 +356,13 @@ class GuideDetailsFragment : BaseFragment() {
                 }
             }
         }
-
-    }
-
-    private fun updateComments(data: ArrayList<Comment>) {
-        guideDetailsBinding.fragmentTripCommentsRV.adapter = CommentsAdapter(data)
-        guideDetailsBinding.fragmentTripCommentsRV.adapter?.notifyDataSetChanged()
-    }
-
-    private fun setStatus(data: ActionMessage) {
-        if (!data.status) {
-            showDialogWarning(data.title!!, data.message!!, object : OkInterface {
-                override fun onClick() {
-                    viewModel.getReviews(0, guideId)
-                }
-            })
-        } else {
-            guideDetailsBinding.apply {
-                etLeaveComment.setText("")
-                leaveCommentPart.visibility = View.GONE
-            }
-        }
     }
 
     private fun setPrice(price: Price): Spannable {
-        val text = "$${price.cost.toInt()}"
+        val text = "${price.currency} ${price.cost.toInt()}"
         val endIndex = text.length
 
-        val outPutColoredText: Spannable = SpannableString("$text/${price.type}")
+        val outPutColoredText: Spannable = SpannableString("$text/${price.type.lowercase()}")
         outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
         outPutColoredText.setSpan(
             ForegroundColorSpan(Color.parseColor("#167351")),
@@ -374,25 +374,15 @@ class GuideDetailsFragment : BaseFragment() {
         return outPutColoredText
     }
 
-    private fun setLeaveCommentsPart(ids: ArrayList<String>?, reviews: ArrayList<Comment>?) {
+    private fun setLeaveCommentsPart(ids: ArrayList<ProfileId>?, isComment: Boolean) {
         val profileId = SharedPref(requireContext()).getString("profileId")
-        if (ids != null && ids.contains(profileId!!)) {
 
-            if (!reviews.isNullOrEmpty()) {
-                var isHave = true
-                for (i in reviews) {
-                    if (i.from.id == profileId) {
-                        isHave = true
-                        break
-                    }
-                }
-                if (isHave)
-                    guideDetailsBinding.leaveCommentPart.visibility = View.GONE
-                else
-                    guideDetailsBinding.leaveCommentPart.visibility = View.VISIBLE
-            } else {
+        if (ids != null && ids.contains(ProfileId(profileId!!)) && guideProfile?.id != SharedPref(requireContext()).getString("guideId")) {
+            if (isComment)
+                guideDetailsBinding.leaveCommentPart.visibility = View.GONE
+            else
                 guideDetailsBinding.leaveCommentPart.visibility = View.VISIBLE
-            }
+
         } else {
             guideDetailsBinding.leaveCommentPart.visibility = View.GONE
         }
@@ -401,27 +391,37 @@ class GuideDetailsFragment : BaseFragment() {
     private fun setProfilePhoto(photo: String?) {
         Glide.with(guideDetailsBinding.root)
             .load(photo)
-            .placeholder(R.drawable.loading)
+            .placeholder(R.drawable.user)
             .error(R.drawable.user)
             .into(guideDetailsBinding.guideProfilePhoto)
 
     }
 
     private fun setCommentsRv(reviews: ArrayList<Comment>?) {
-        guideDetailsBinding.fragmentTripCommentsRV.adapter = reviews?.let {
-            CommentsAdapter(it)
-        }
+        guideDetailsBinding.apply {
 
-        guideDetailsBinding.fragmentTripCommentsRV.addOnScrollListener(object :
-            RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    viewModel.getReviews(page, guideId)
+            if (fragmentTripCommentsRV.adapter == null) {
+                fragmentTripCommentsRV.adapter = reviews?.let {
+                    CommentsAdapter(it)
+                }
+            } else {
+                if (!reviews.isNullOrEmpty()){
+                    (fragmentTripCommentsRV.adapter as CommentsAdapter).items = reviews
+                    fragmentTripCommentsRV.adapter!!.notifyDataSetChanged()
                 }
             }
-        })
+
+            nestedScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                if (nestedScroll.getChildAt(nestedScroll.childCount - 1) != null) {
+                    if (scrollY >= nestedScroll.getChildAt(nestedScroll.childCount - 1).measuredHeight - nestedScroll.measuredHeight &&
+                        scrollY > oldScrollY
+                    ) {
+                        if (page + 1 <= allPages)
+                            viewModel.getReviews(++page, guideId)
+                    }
+                }
+            })
+        }
     }
 
     private fun setTravelLocations(travelLocations: ArrayList<Location>) {

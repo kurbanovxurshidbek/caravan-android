@@ -31,7 +31,7 @@ class GuideDetailsViewModel(private val repository: GuideDetailsRepository) : Vi
     }
 
     private val _postReview = MutableStateFlow<UiStateObject<ActionMessage>>(UiStateObject.EMPTY)
-    val postReview = _postReview
+    val review = _postReview
 
     fun postReview(review: Review) = viewModelScope.launch {
         _postReview.value = UiStateObject.LOADING

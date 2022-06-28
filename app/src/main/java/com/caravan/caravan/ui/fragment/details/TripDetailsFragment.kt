@@ -14,9 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -45,6 +47,7 @@ import com.caravan.caravan.viewmodel.details.trip.TripDetailsViewModelFactory
 import com.stfalcon.imageviewer.StfalconImageViewer
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
+import kotlin.concurrent.timerTask
 
 class TripDetailsFragment : BaseFragment() {
     private lateinit var fragmentTripDetailsBinding: FragmentTripDetailsBinding
@@ -53,14 +56,23 @@ class TripDetailsFragment : BaseFragment() {
     private lateinit var overlayViewBinding: OverlayViewBinding
     private lateinit var viewModel: TripDetailsViewModel
     private lateinit var trip: Trip
-    private var page = 0
-    private var allPages = 0
+    private var page = 1
+    private var allPages = 1
+
+    private var isComment = false
+
+    private val comments: ArrayList<Comment> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             tripId = it.getString("tripId", null)
         }
+
+        setUpViewModel()
+
+        viewModel.getTrip(tripId)
+
     }
 
     override fun onCreateView(
@@ -68,10 +80,6 @@ class TripDetailsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         fragmentTripDetailsBinding = FragmentTripDetailsBinding.inflate(layoutInflater)
-
-        setUpViewModel()
-        setUpObserves()
-        initViews()
 
         return fragmentTripDetailsBinding.root
     }
@@ -94,6 +102,7 @@ class TripDetailsFragment : BaseFragment() {
                         trip = it.data
                         guideId = it.data.guide.id
                         setUpDate(it.data)
+                        viewModel.getReviews(1, tripId)
                     }
                     is UiStateObject.ERROR -> {
                         fragmentTripDetailsBinding.apply {
@@ -148,6 +157,8 @@ class TripDetailsFragment : BaseFragment() {
 
     private fun setUpDate(data: Trip) {
 
+        isComment = data.isComment
+
         fragmentTripDetailsBinding.apply {
             tvTripTitle.text = data.name
             tvTripDescription.text = data.description
@@ -158,14 +169,11 @@ class TripDetailsFragment : BaseFragment() {
         setViewPager(data.photos)
         setTravelLocations(data.locations)
         setFacilities(data.facilities)
-        setCommentsRv(data.reviews)
-        setLeaveCommentsPart(data.attendances, data.reviews)
 
         setGuide(data.guide)
 
         fragmentTripDetailsBinding.tvTripPrice.text = setPrice(data.price)
         fragmentTripDetailsBinding.tvGuidePrice.text = setPrice(data.price)
-        Log.d("Trip", "setUpDate: ${data.toString()}")
 
     }
 
@@ -174,7 +182,7 @@ class TripDetailsFragment : BaseFragment() {
             Glide.with(ivGuide).load(guide.profilePhoto).placeholder(R.drawable.user).into(ivGuide)
             tvGuidesFullname.text = guide.name.plus(" ").plus(guide.surname)
             ratingBarGuide.rating = guide.rate.toFloat()
-            tvGuidesCommentsCount.text = guide.reviewCount.toString()
+            tvGuidesCommentsCount.text = "(" + guide.reviewCount.toString() + ")"
             tvGuidesCities.text = setProvince(guide.travelLocations)
             tvGuidePrice.text = setGuidePrice(guide.price)
             tvGuidesLanguages.text = setLanguages(guide.languages)
@@ -184,15 +192,15 @@ class TripDetailsFragment : BaseFragment() {
     private fun setLanguages(languages: ArrayList<Language>): String {
         var text = ""
         for (language in 0..languages.size - 2) {
-            text += "${languages[language].name} "
+            text += "${languages[language].name.substring(0, 1)}${languages[language].name.lowercase().substring(1)}"
             text += ","
         }
-        text += languages[languages.size - 1].name
+        text += languages[languages.size - 1].name.substring(0, 1) + languages[languages.size-1].name.lowercase().substring(1)
         return text
     }
 
     private fun setGuidePrice(price: Price): Spannable {
-        val text = "$${price.cost.toInt()}"
+        val text = "${price.currency} ${price.cost.toInt()}"
         val endIndex = text.length
 
         val outPutColoredText: Spannable = SpannableString("$text/${price.type}")
@@ -215,12 +223,7 @@ class TripDetailsFragment : BaseFragment() {
         return colorMyText(text, 0, text.length, "#167351")
     }
 
-    private fun colorMyText(
-        inputText: String,
-        startIndex: Int,
-        endIndex: Int,
-        textColor: String
-    ): Spannable {
+    private fun colorMyText(inputText: String, startIndex: Int, endIndex: Int, textColor: String): Spannable {
         val outPutColoredText: Spannable = SpannableString(inputText)
         outPutColoredText.setSpan(
             Color.parseColor(textColor),
@@ -244,7 +247,6 @@ class TripDetailsFragment : BaseFragment() {
     }
 
     private fun initViews() {
-        viewModel.getTrip(tripId)
 
         overlayViewBinding = OverlayViewBinding.bind(
             LayoutInflater.from(requireContext())
@@ -258,6 +260,8 @@ class TripDetailsFragment : BaseFragment() {
                 .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment, bundle);
         }
 
+        fragmentTripDetailsBinding.fragmentTripCommentsRV.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
+
         fragmentTripDetailsBinding.btnApplyTrip.setOnClickListener {
             viewModel.hire(Hire("TRIP", tripId))
         }
@@ -266,17 +270,15 @@ class TripDetailsFragment : BaseFragment() {
 
             btnSendComment.setOnClickListener {
                 if (etLeaveComment.text.isNotEmpty()) {
-                    val rate = ratingBarGuide.rating
+                    val rate = rateTheTrip.rating
                     val review =
                         Review(
                             rate.toInt(),
                             etLeaveComment.text.toString(),
-                            "GUIDE",
-                            null,
-                            trip.guide.id
+                            "TRIP",
+                            tripId,
+                            null
                         )
-
-                    setUpObservesReview()
 
                     viewModel.postReview(review)
 
@@ -285,6 +287,12 @@ class TripDetailsFragment : BaseFragment() {
                 }
             }
 
+        }
+
+        fragmentTripDetailsBinding.llCallToGuide.setOnClickListener {
+            val callIntent = Intent(Intent.ACTION_DIAL)
+            callIntent.data = Uri.parse("tel:${trip.guide.phone}")
+            requireActivity().startActivity(callIntent)
         }
 
     }
@@ -311,11 +319,22 @@ class TripDetailsFragment : BaseFragment() {
                                 }
                             })
                     }
-                    else -> {}
+                    else -> Unit
                 }
             }
         }
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUpObserves()
+        setUpObservesReview()
+        setUpObserversReviews()
+        initViews()
+    }
+
+    private fun setUpObserversReviews() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.reviews.collect {
                 when (it) {
@@ -324,14 +343,11 @@ class TripDetailsFragment : BaseFragment() {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        allPages = it.data.totalPages
-                        page = it.data.currentPageNumber
+                        allPages = it.data.totalPage
 
-                        if (page + 1 <= allPages) {
-                            page++
-                        }
-
-                        updateComments(it.data.comments)
+                        comments.addAll(it.data.comments)
+                        setCommentsRv(comments)
+                        setLeaveCommentsPart(trip.attendances, isComment)
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
@@ -349,19 +365,13 @@ class TripDetailsFragment : BaseFragment() {
                 }
             }
         }
-
-    }
-
-    private fun updateComments(data: ArrayList<Comment>) {
-        fragmentTripDetailsBinding.fragmentTripCommentsRV.adapter = CommentsAdapter(data)
-        fragmentTripDetailsBinding.fragmentTripCommentsRV.adapter?.notifyDataSetChanged()
     }
 
     private fun setStatus(data: ActionMessage) {
         if (!data.status) {
             showDialogWarning(data.title!!, data.message!!, object : OkInterface {
                 override fun onClick() {
-                    viewModel.getReviews(page, tripId)
+
                 }
             })
         } else {
@@ -369,6 +379,7 @@ class TripDetailsFragment : BaseFragment() {
                 etLeaveComment.setText("")
                 leaveCommentPart.visibility = View.GONE
             }
+            viewModel.getReviews(1, tripId)
         }
     }
 
@@ -405,12 +416,11 @@ class TripDetailsFragment : BaseFragment() {
             .show()
     }
 
-
     private fun setPrice(price: Price): Spannable {
-        val text = "$${price.cost.toInt()}"
+        val text = "${price.currency} ${price.cost.toInt()}"
         val endIndex = text.length
 
-        val outPutColoredText: Spannable = SpannableString("$text/${trip.price.type}")
+        val outPutColoredText: Spannable = SpannableString("$text/${trip.price.type.lowercase()}")
         outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
         outPutColoredText.setSpan(
             ForegroundColorSpan(Color.parseColor("#167351")),
@@ -422,26 +432,15 @@ class TripDetailsFragment : BaseFragment() {
         return outPutColoredText
     }
 
-    private fun setLeaveCommentsPart(ids: ArrayList<ProfileId>?, reviews: ArrayList<Comment>?) {
+    private fun setLeaveCommentsPart(ids: ArrayList<ProfileId>?, isComment: Boolean) {
         val profileId = SharedPref(requireContext()).getString("profileId")
 
-        if (ids != null && ids.contains(ProfileId(profileId!!))) {
-
-            if (!reviews.isNullOrEmpty()) {
-                var isHave = false
-                for (i in reviews) {
-                    if (i.from.id == profileId) {
-                        isHave = true
-                        break
-                    }
-                }
-                if (isHave)
-                    fragmentTripDetailsBinding.leaveCommentPart.visibility = View.GONE
-                else
-                    fragmentTripDetailsBinding.leaveCommentPart.visibility = View.VISIBLE
-            } else {
+        if (ids != null && ids.contains(ProfileId(profileId!!)) && trip.guide.id != SharedPref(requireContext()).getString("guideId")) {
+            if (isComment)
+                fragmentTripDetailsBinding.leaveCommentPart.visibility = View.GONE
+            else
                 fragmentTripDetailsBinding.leaveCommentPart.visibility = View.VISIBLE
-            }
+
         } else {
             fragmentTripDetailsBinding.leaveCommentPart.visibility = View.GONE
         }
@@ -469,20 +468,30 @@ class TripDetailsFragment : BaseFragment() {
     }
 
     private fun setCommentsRv(reviews: ArrayList<Comment>?) {
-        fragmentTripDetailsBinding.fragmentTripCommentsRV.adapter = reviews?.let {
-            CommentsAdapter(it)
-        }
+        fragmentTripDetailsBinding.apply {
 
-        fragmentTripDetailsBinding.fragmentTripCommentsRV.addOnScrollListener(object :
-            RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    viewModel.getReviews(page, tripId)
+            if (fragmentTripCommentsRV.adapter == null) {
+                fragmentTripCommentsRV.adapter = reviews?.let {
+                    CommentsAdapter(it)
+                }
+            } else {
+                if (!reviews.isNullOrEmpty()){
+                    (fragmentTripCommentsRV.adapter as CommentsAdapter).items = reviews
+                    fragmentTripCommentsRV.adapter!!.notifyDataSetChanged()
                 }
             }
-        })
+
+            nestedScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                if (nestedScroll.getChildAt(nestedScroll.childCount - 1) != null) {
+                    if (scrollY >= nestedScroll.getChildAt(nestedScroll.childCount - 1).measuredHeight - nestedScroll.measuredHeight &&
+                        scrollY > oldScrollY
+                    ) {
+                        if (page + 1 <= allPages)
+                            viewModel.getReviews(++page, tripId)
+                    }
+                }
+            })
+        }
     }
 
     private fun setTravelLocations(places: ArrayList<Location>?) {

@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import com.caravan.caravan.model.Profile
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
+import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
 import com.caravan.caravan.utils.viewBinding
@@ -29,6 +31,11 @@ import com.caravan.caravan.viewmodel.editProfile.editProfile.EditViewModel
 import com.caravan.caravan.viewmodel.editProfile.editProfile.EditViewModelFactory
 import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.default
+import id.zelory.compressor.constraint.destination
+import id.zelory.compressor.constraint.size
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -260,8 +267,9 @@ class EditProfileFragment : BaseFragment() {
             profile.surname = etSurname.text.toString()
             profile.phoneNumber = etPhoneNumber.text.toString()
             profile.gender = gender!!
-            profile.email = if (checkEmailValid(etEmail.text.toString())) etEmail.text.toString() else null
-            profile.birthDate = tvBirthday.text.toString()
+            profile.email =
+                if (checkEmailValid(etEmail.text.toString())) etEmail.text.toString() else null
+            profile.birthDate = if (tvBirthday.text.toString() == getString(R.string.str_choose_birthday)) null else tvBirthday.text.toString()
 
         }
         if (pickedPhoto == null)
@@ -335,15 +343,19 @@ class EditProfileFragment : BaseFragment() {
     private val photoLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
+
                 allPhotos =
                     it.data?.getParcelableArrayListExtra(FishBun.INTENT_PATH) ?: arrayListOf()
                 pickedPhoto = allPhotos[0]
+
                 uploadUserPhoto()
             }
         }
 
     private fun uploadUserPhoto() {
         if (pickedPhoto == null) return
+
+
         val ins = requireActivity().contentResolver.openInputStream(pickedPhoto!!)
         val file = File.createTempFile(
             "file",
@@ -352,16 +364,29 @@ class EditProfileFragment : BaseFragment() {
         )
 
         val fileOutputStream = FileOutputStream(file)
+        var compressedImageFile: File
 
         ins?.copyTo(fileOutputStream)
         ins?.close()
         fileOutputStream.close()
-        val reqFile: RequestBody = RequestBody.create("image/jpg".toMediaTypeOrNull(), file)
-        body = MultipartBody.Part.createFormData("file", file.name, reqFile)
 
+        try {
+            lifecycleScope.launch {
+                compressedImageFile = Compressor.compress(requireContext(), file) {
+                    default()
+                    destination(file)
+                    size(2_097_152)
+                }
+                val reqFile: RequestBody =
+                    RequestBody.create("image/jpg".toMediaTypeOrNull(), compressedImageFile)
+                body = MultipartBody.Part.createFormData("file", file.name, reqFile)
+                pickedPhoto = Uri.fromFile(compressedImageFile)
+                binding.ivGuide.setImageURI(pickedPhoto)
+            }
+        } catch (e: Exception) {
+            toast("Oops! Try again!")
+        }
 
-
-        binding.ivGuide.setImageURI(pickedPhoto)
     }
 
     private fun setupViewModel() {

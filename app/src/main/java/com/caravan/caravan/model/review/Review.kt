@@ -7,5 +7,5 @@ data class Review(
     val content: String,
     val type: String = "TRIP", // GUIDE
     val tripId: String? = null,
-    val guideId: String?,
+    val guideId: String?
 ): Serializable

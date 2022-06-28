@@ -18,8 +18,8 @@ data class Trip(
     val rate: Double,
     val days: Int,
     val attendances: ArrayList<ProfileId>?,
-    val reviews: ArrayList<Comment>? = null,
-    val reviewsCount: Int = 0
+    val reviewsCount: Int = 0,
+    val isComment: Boolean
 )
 
 data class ProfileId (

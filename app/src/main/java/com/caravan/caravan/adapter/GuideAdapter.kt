@@ -56,10 +56,10 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<SearchGuide>)
         }
 
         private fun price(guide: SearchGuide): Spannable {
-            val text = "$${guide.price.cost.toInt()}"
+            val text = "${guide.price.currency} ${guide.price.cost.toInt()}"
             val endIndex = text.length
 
-            val outPutColoredText: Spannable = SpannableString("$text/${guide.price.type}")
+            val outPutColoredText: Spannable = SpannableString("$text/${guide.price.type.lowercase()}")
             outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
             outPutColoredText.setSpan(
                 ForegroundColorSpan(Color.parseColor("#167351")),

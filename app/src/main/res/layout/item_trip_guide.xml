@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -47,9 +48,9 @@
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/circular_std_bold"
-                    android:text="Samarkand trips in 5 days "
                     android:textColor="#000000"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:ignore="NestedWeights" />
 
                 <LinearLayout
                     android:id="@+id/llRatingBar"
@@ -69,15 +70,13 @@
                         android:max="5"
                         android:secondaryProgressTint="@color/main_color"
                         android:progressBackgroundTint="#90000000"
-                        android:progressTint="@color/main_color"
-                        android:rating="3.5" />
+                        android:progressTint="@color/main_color" />
 
                     <TextView
                         android:id="@+id/tvTripCommentsCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/circular_std_bold"
-                        android:text="(340)"
                         android:textColor="#99000000"
                         android:textSize="12sp" />
 
