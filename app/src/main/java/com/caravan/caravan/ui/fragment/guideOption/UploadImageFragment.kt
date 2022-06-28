@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +31,10 @@ import com.caravan.caravan.viewmodel.guideOption.createTrip.upload.UploadImageVi
 import com.caravan.caravan.viewmodel.guideOption.createTrip.upload.UploadImageViewModelFactory
 import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.default
+import id.zelory.compressor.constraint.destination
+import id.zelory.compressor.constraint.size
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -92,7 +95,6 @@ class UploadImageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Log.d("@@@", "setUpObservers: ${it.message}")
                         showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
@@ -108,6 +110,7 @@ class UploadImageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
             }
         }
     }
+
     private fun setUpObserversDistrict() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.district.collect {
@@ -138,6 +141,7 @@ class UploadImageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
             }
         }
     }
+
     private fun setUpObserversTripPhoto() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.tripPhoto.collect {
@@ -147,13 +151,46 @@ class UploadImageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        CreateTripObject.myPhotoIds.add(photoId)
-                        Log.d("@@@", "setUpObservers CreateTripObject: ${CreateTripObject.myPhotoIds}")
+                        CreateTripObject.myPhotoIds.add(it.data.id)
                         findNavController().popBackStack()
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Log.d("@@@", "setUpObservers: ${it.message}")
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
+
+                            })
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+    private fun setUpObserversDeleteTripPhoto() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.deletePhoto.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+
+                        pickedPhoto = null
+                        binding.apply {
+                            llAddPage.visibility = View.VISIBLE
+                            ivTrip.visibility = View.GONE
+                            ivClear.visibility = View.GONE
+                        }
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
                         showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
@@ -177,7 +214,7 @@ class UploadImageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         sendDetails()
     }
 
-    fun setPhoto() {
+    private fun setPhoto() {
         binding.llAddPage.setOnClickListener {
             pickPhoto()
         }
@@ -202,7 +239,6 @@ class UploadImageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                 allPhotos =
                     it.data?.getParcelableArrayListExtra(FishBun.INTENT_PATH) ?: arrayListOf()
                 pickedPhoto = allPhotos[0]
-
                 uploadUserPhoto()
 
             }
@@ -220,17 +256,29 @@ class UploadImageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         )
 
         val fileOutputStream = FileOutputStream(file)
+        var compressedImageFile: File
 
         ins?.copyTo(fileOutputStream)
         ins?.close()
         fileOutputStream.close()
-        val reqFile: RequestBody = RequestBody.create("image/jpg".toMediaTypeOrNull(), file)
-        body = MultipartBody.Part.createFormData("file", file.name, reqFile)
 
-        viewModel.uploadPhoto(body)
+        lifecycleScope.launchWhenResumed {
+            compressedImageFile = Compressor.compress(requireContext(), file) {
+                default()
+                destination(file)
+                size(2_097_152)
+            }
+            val reqFile: RequestBody =
+                RequestBody.create("image/jpg".toMediaTypeOrNull(), compressedImageFile)
+            body = MultipartBody.Part.createFormData("file", file.name, reqFile)
+
+            pickedPhoto = Uri.fromFile(compressedImageFile)
+            viewModel.uploadPhoto(body)
+        }
 
         setUpObservers()
     }
+
     fun sendPhoto() {
 
         binding.ivTrip.setImageURI(pickedPhoto)
@@ -239,10 +287,9 @@ class UploadImageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         binding.ivClear.visibility = View.VISIBLE
 
         binding.ivClear.setOnClickListener {
-            pickedPhoto = null
-            binding.llAddPage.visibility = View.VISIBLE
-            binding.ivTrip.visibility = View.GONE
-            binding.ivClear.visibility = View.GONE
+            viewModel.deleteTripPhoto(photoId)
+            setUpObserversDeleteTripPhoto()
+
         }
     }
 
@@ -261,6 +308,7 @@ class UploadImageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         binding.spinnerLocationProvince.adapter = adapter
 
     }
+
     fun spinnerDistrict() {
         binding.spinnerLocationDistrict.onItemSelectedListener = itemSelectedDistrict
 
@@ -303,11 +351,16 @@ class UploadImageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
         binding.btnUpload.setOnClickListener {
             if (pickedPhoto != null && desc != "") {
-                val item = CreateTrip(pickedPhoto.toString(), Location("1", province, district, desc))
+                val item = CreateTrip(
+                    photoId,
+                    pickedPhoto.toString(),
+                    Location("1", province, district, desc)
+                )
 
                 CreateTripObject.myPhotosList.add(item)
 
-                val tripPhoto = TripUploadPhoto("1",photoId,
+                val tripPhoto = TripUploadPhoto(
+                    "1", photoId,
                     Location("1", province, district, desc)
                 )
 

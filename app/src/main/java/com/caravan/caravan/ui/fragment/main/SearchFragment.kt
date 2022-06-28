@@ -1,21 +1,14 @@
 package com.caravan.caravan.ui.fragment.main
+
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.compose.ui.text.toUpperCase
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.FragmentNavigator
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.caravan.caravan.R
 import com.caravan.caravan.adapter.SearchFragmentVPAdapter
@@ -28,8 +21,7 @@ import com.caravan.caravan.model.search.FilterTrip
 import com.caravan.caravan.model.search.SearchGuideSend
 import com.caravan.caravan.model.search.SearchTripSend
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.Extensions.toast
-import com.caravan.caravan.viewmodel.main.home.SearchSharedVM
+import com.caravan.caravan.viewmodel.main.search.SearchSharedVM
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 
@@ -39,8 +31,6 @@ class SearchFragment : BaseFragment() {
     private var isGuide: Boolean = true
     private lateinit var dialogGuideBinding: BottomDialogGuideBinding
     lateinit var dialogTripBinding: BottomDialogTripBinding
-    private lateinit var handler: Handler
-
 
     private var gender: String? = ""
     var currenciesMinGuide: Array<String>? = null
@@ -64,7 +54,6 @@ class SearchFragment : BaseFragment() {
     private var filterGuide: FilterGuide? = null
 
     private val sharedViewModel: SearchSharedVM by activityViewModels()
-    private lateinit var runnable: Runnable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,71 +90,30 @@ class SearchFragment : BaseFragment() {
             }
         }
 
-        binding.etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-
-                try {
-                    handler.removeCallbacks(runnable)
-                } catch (e: Exception) {
-
-                }
-
-                runnable = Runnable {
-                    if (isGuide) {
-                        sharedViewModel.setGuideSearch(
-                            SearchGuideSend(
-                                p0.toString(),
-                                filterGuide
-                            )
-                        )
-
-                    } else {
-                        sharedViewModel.setTripSearch(SearchTripSend(p0.toString(), filterTrip))
-                    }
-                }
-
-                try {
-                    handler = Handler(Looper.myLooper()!!)
-                    handler.postDelayed(runnable, 1500)
-                } catch (exception: Exception) {
-
-                }
-            }
-
-        })
-
         binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 hideKeyboard()
-                TODO("Call Search Api")
+                search()
                 true
             } else false
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        try {
-            handler.removeCallbacks(runnable)
-        } catch (e: Exception) {
-
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        try {
-            handler.removeCallbacks(runnable)
-        } catch (e: Exception) {
-
+    private fun search() {
+        if (isGuide) {
+            sharedViewModel.setGuideSearch(
+                SearchGuideSend(
+                    binding.etSearch.text.toString(),
+                    filterGuide
+                )
+            )
+        } else {
+            sharedViewModel.setTripSearch(
+                SearchTripSend(
+                    binding.etSearch.text.toString(),
+                    filterTrip
+                )
+            )
         }
     }
 
@@ -190,6 +138,7 @@ class SearchFragment : BaseFragment() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewPager.currentItem = tab.position
                 isGuide = tab.position == 0
+                search()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
@@ -253,58 +202,68 @@ class SearchFragment : BaseFragment() {
         }
 
         dialogGuideBinding.apply {
-            applyFilter.setOnClickListener {
-                val minPrice = if (minPrice.text.isNullOrBlank()) {
-                    0L
-                } else {
-                    minPrice.text.toString().toLong()
+            dialogGuideBinding.apply {
+                applyFilter.setOnClickListener {
+
+                    val minPrice = if (minPrice.text.isNullOrBlank()) {
+                        0L
+                    } else {
+                        minPrice.text.toString().toLong()
+                    }
+
+                    val maxPrice = if (maxPrice.text.isNullOrBlank()) {
+                        1000000000L
+                    } else {
+                        maxPrice.text.toString().toLong()
+                    }
+
+                    val minRating = if (minRating.text.isNullOrBlank()) {
+                        0
+                    } else {
+                        minRating.text.toString().toInt()
+                    }
+
+                    val maxRating = if (maxRating.text.isNullOrBlank()) {
+                        5
+                    } else {
+                        maxRating.text.toString().toInt()
+                    }
+
+                    gender = if (checkboxMale.isChecked) {
+                        "MALE"
+                    } else if (checkboxFemale.isChecked) {
+                        "FEMALE"
+                    } else {
+                        null
+                    }
+
+                    filterGuide = FilterGuide(
+                        Price(minPrice, currencyMinGuide, optionMinGuide),
+                        Price(maxPrice, currencyMaxGuide, optionMaxGuide),
+                        minRating,
+                        maxRating,
+                        gender
+                    )
+
+                    sharedViewModel.setGuideSearch(
+                        SearchGuideSend(
+                            binding.etSearch.text.toString(),
+                            filterGuide
+                        )
+                    )
+                    dialog.hide()
                 }
 
-                val maxPrice = if (maxPrice.text.isNullOrBlank()) {
-                    1000000000L
-                } else {
-                    maxPrice.text.toString().toLong()
-                }
-
-                val minRating = if (minRating.text.isNullOrBlank()) {
-                    0
-                } else {
-                    minRating.text.toString().toInt()
-                }
-
-                val maxRating = if (maxRating.text.isNullOrBlank()) {
-                    5
-                } else {
-                    maxRating.text.toString().toInt()
-                }
-
-                gender = if (checkboxMale.isChecked) {
-                    "Male"
-                } else if (checkboxFemale.isChecked) {
-                    "Female"
-                } else {
-                    null
-                }
-
-                filterGuide = FilterGuide(
-                    Price(minPrice, currencyMinGuide, optionMinGuide),
-                    Price(maxPrice, currencyMaxGuide, optionMaxGuide),
-                    minRating,
-                    maxRating,
-                    gender
-                )
-                dialog.hide()
             }
 
+            dialog.window!!.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            dialog.window!!.attributes.windowAnimations = R.style.DialogAnimation
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.window!!.setGravity(Gravity.BOTTOM)
         }
-
-        dialog.window!!.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        dialog.window!!.attributes.windowAnimations = R.style.DialogAnimation
-        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window!!.setGravity(Gravity.BOTTOM)
 
     }
 
@@ -404,6 +363,13 @@ class SearchFragment : BaseFragment() {
                     minPeople,
                     maxPeople
                 )
+
+                sharedViewModel.setTripSearch(
+                    SearchTripSend(
+                        binding.etSearch.text.toString(),
+                        filterTrip
+                    )
+                )
                 dialog.hide()
             }
 
@@ -433,7 +399,7 @@ class SearchFragment : BaseFragment() {
                 if (!isChecked) {
                     checkboxFemale.isChecked = true
                     checkboxFemale.isEnabled = false
-                    gender = getString(R.string.str_male)
+                    gender = "MALE"
                 } else {
                     checkboxMale.isEnabled = true
                     checkboxFemale.isEnabled = true

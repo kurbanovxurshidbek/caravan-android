@@ -12,9 +12,9 @@ data class GuideProfile(
     val price: Price,
     val languages: ArrayList<Language>,
     val travelLocations: ArrayList<Location>,
-    val reviews: ArrayList<Comment>?,
-    val attendancesProfileId: ArrayList<String>?,
-    val trips: ArrayList<Trip>?
+    val attendances: ArrayList<ProfileId>?,
+    val trips: ArrayList<Trip>?,
+    val isComment: Boolean
 ) : Serializable
 
 data class Language(

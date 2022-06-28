@@ -22,7 +22,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/circular_std_bold"
-            android:text="Transport"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -32,7 +31,6 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/circular_std_bold"
             android:textSize="14sp"
-            android:text="I Provide a Car"
             android:textColor="@color/main_color" />
     </LinearLayout>
 

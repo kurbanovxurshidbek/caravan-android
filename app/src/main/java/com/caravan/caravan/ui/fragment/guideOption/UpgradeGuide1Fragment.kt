@@ -157,13 +157,14 @@ class UpgradeGuide1Fragment : BaseFragment() {
         }
 
         binding.btnNext.setOnClickListener {
+            val email = if (checkEmailValid(binding.etEmail.text.toString())) binding.etEmail.text.toString() else null
             if (binding.tvBirthday.text != getString(R.string.str_choose_birthday) && binding.etEmail.text.isNotEmpty()) {
                 user = Profile(
                     profile.id,
                     profile.name,
                     profile.surname,
                     profile.phoneNumber,
-                    binding.etEmail.text.toString(),
+                    email,
                     profile.role,
                     null,
                     profile.status,
@@ -209,6 +210,7 @@ class UpgradeGuide1Fragment : BaseFragment() {
             date,
             year, month, day
         )
+        datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
         datePickerDialog.window?.setBackgroundDrawable(ColorDrawable(0))
         datePickerDialog.show()
     }

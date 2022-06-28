@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import com.caravan.caravan.R
 import com.caravan.caravan.manager.SharedPref
 import com.google.android.gms.tasks.OnCompleteListener
@@ -16,6 +17,8 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        
         initViews()
     }
 

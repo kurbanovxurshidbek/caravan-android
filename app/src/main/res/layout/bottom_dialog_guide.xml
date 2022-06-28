@@ -7,246 +7,266 @@
     android:orientation="vertical"
     android:paddingHorizontal="20dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:fontFamily="@font/circular_std_bold"
-        android:text="@string/filter_your_search"
-        android:textColor="#167351"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:orientation="horizontal">
+        android:layout_marginTop="40dp">
 
-        <EditText
-            android:id="@+id/minPrice"
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/main_color"
+            android:layout_gravity="center_vertical"
             android:fontFamily="@font/circular_std_bold"
-            android:hint="@string/str_minimum_price"
-            android:inputType="number"
-            android:textColorHint="#60000000"
-            android:textSize="18sp"
-            android:textCursorDrawable="@drawable/cursor" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="3dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <Spinner
-                android:id="@+id/spinnerCurrencyMin"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_spinner" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/main_color" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="3dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <Spinner
-                android:id="@+id/spinnerTypeMin"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_spinner" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/main_color" />
-        </LinearLayout>
+            android:text="@string/filter_your_search"
+            android:textColor="#167351"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/filterField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/maxPrice"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/main_color"
-            android:fontFamily="@font/circular_std_bold"
-            android:hint="@string/str_maximum_price"
-            android:textCursorDrawable="@drawable/cursor"
-            android:inputType="number"
-            android:textColorHint="#60000000"
-            android:textSize="18sp"
-            />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="3dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <Spinner
-                android:id="@+id/spinnerCurrencyMax"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_spinner" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/main_color" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="3dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <Spinner
-                android:id="@+id/spinnerTypeMax"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_spinner" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/main_color" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <EditText
-        android:id="@+id/minRating"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:backgroundTint="@color/main_color"
-        android:digits="012345"
-        android:drawableEnd="@drawable/ic_star"
-        android:fontFamily="@font/circular_std_bold"
-        android:hint="@string/minimum_rating"
-        android:inputType="number"
-        android:maxLength="1"
-        android:maxLines="1"
-        android:paddingStart="5dp"
-        android:paddingEnd="10dp"
-        android:textColorHint="#60000000"
-        android:textCursorDrawable="@drawable/cursor"
-        />
-
-    <EditText
-        android:id="@+id/maxRating"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:backgroundTint="@color/main_color"
-        android:digits="012345"
-        android:drawableEnd="@drawable/ic_star"
-        android:fontFamily="@font/circular_std_bold"
-        android:hint="@string/maximum_rating"
-        android:inputType="number"
-        android:maxLength="1"
-        android:paddingStart="5dp"
-        android:paddingEnd="10dp"
-        android:textColorHint="#60000000"
-        android:textCursorDrawable="@drawable/cursor"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:orientation="vertical">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:fontFamily="@font/circular_std_bold"
-                android:gravity="center_vertical"
-                android:paddingStart="5dp"
-                android:text="@string/str_gender"
-                android:textColor="#60000000"
-                android:textSize="18sp"
-                android:textStyle="normal" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingEnd="3dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/minPrice"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/main_color"
                     android:fontFamily="@font/circular_std_bold"
-                    android:text="@string/str_male"
-                    android:textColor="#ABABAB"
-                    android:textSize="16sp"
-                    android:textStyle="normal" />
+                    android:hint="@string/str_minimum_price"
+                    android:inputType="number"
+                    android:textColorHint="#60000000"
+                    android:textCursorDrawable="@drawable/cursor"
+                    android:textSize="18sp" />
 
-                <CheckBox
-                    android:id="@+id/checkboxMale"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/main_color" />
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/circular_std_bold"
-                    android:text="@string/str_female"
-                    android:textColor="#ABABAB"
-                    android:textSize="16sp"
-                    android:textStyle="normal" />
+                    <Spinner
+                        android:id="@+id/spinnerCurrencyMin"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_spinner" />
 
-                <CheckBox
-                    android:id="@+id/checkboxFemale"
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/main_color" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/main_color" />
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <Spinner
+                        android:id="@+id/spinnerTypeMin"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_spinner" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/main_color" />
+                </LinearLayout>
+
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/maxPrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/main_color"
+                    android:fontFamily="@font/circular_std_bold"
+                    android:hint="@string/str_maximum_price"
+                    android:inputType="number"
+                    android:textColorHint="#60000000"
+                    android:textCursorDrawable="@drawable/cursor"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <Spinner
+                        android:id="@+id/spinnerCurrencyMax"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_spinner" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/main_color" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <Spinner
+                        android:id="@+id/spinnerTypeMax"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_spinner" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/main_color" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/minRating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:backgroundTint="@color/main_color"
+                android:digits="012345"
+                android:drawableEnd="@drawable/ic_star"
+                android:fontFamily="@font/circular_std_bold"
+                android:hint="@string/minimum_rating"
+                android:inputType="number"
+                android:maxLength="1"
+                android:maxLines="1"
+                android:paddingStart="5dp"
+                android:paddingEnd="10dp"
+                android:textColorHint="#60000000"
+                android:textCursorDrawable="@drawable/cursor" />
+
+            <EditText
+                android:id="@+id/maxRating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:backgroundTint="@color/main_color"
+                android:digits="012345"
+                android:drawableEnd="@drawable/ic_star"
+                android:fontFamily="@font/circular_std_bold"
+                android:hint="@string/maximum_rating"
+                android:inputType="number"
+                android:maxLength="1"
+                android:paddingStart="5dp"
+                android:paddingEnd="10dp"
+                android:textColorHint="#60000000"
+                android:textCursorDrawable="@drawable/cursor" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/circular_std_bold"
+                        android:gravity="center_vertical"
+                        android:paddingStart="5dp"
+                        android:text="@string/str_gender"
+                        android:textColor="#60000000"
+                        android:textSize="18sp"
+                        android:textStyle="normal" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingEnd="3dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/circular_std_bold"
+                            android:text="@string/str_male"
+                            android:textColor="#ABABAB"
+                            android:textSize="16sp"
+                            android:textStyle="normal" />
+
+                        <CheckBox
+                            android:id="@+id/checkboxMale"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:buttonTint="@color/main_color" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/circular_std_bold"
+                            android:text="@string/str_female"
+                            android:textColor="#ABABAB"
+                            android:textSize="16sp"
+                            android:textStyle="normal" />
+
+                        <CheckBox
+                            android:id="@+id/checkboxFemale"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:buttonTint="@color/main_color" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#87000000" />
+
+            </LinearLayout>
+
         </LinearLayout>
+    </FrameLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#87000000" />
-
-    </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/applyFilter"

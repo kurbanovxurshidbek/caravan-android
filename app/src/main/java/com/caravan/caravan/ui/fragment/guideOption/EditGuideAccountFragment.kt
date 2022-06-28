@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,8 +44,9 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
     lateinit var guideProfile: GuideProfile
     private var myLocationList = ArrayList<Location>()
     private var myLanguageList = ArrayList<Language>()
-    var languages: Array<String>? = null
+    var levels: Array<String>? = null
     var currencies: Array<String>? = null
+    var languages: Array<String>? = null
     var options: Array<String>? = null
     var level: String = ""
     var language: String = ""
@@ -98,7 +98,6 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        Log.d("@@@", "setUpObservers: ${it.data}")
                         guideProfile = it.data
                         setData(guideProfile)
                     }
@@ -229,11 +228,11 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
                 if (desc != "") {
                     val location = Location("1", province, district, desc)
 
-                    myLocationList.add(0,location)
+                    myLocationList.add(0, location)
                 }
-                if (language != "") {
+                if (language != "" && myLanguageList.isEmpty()) {
                     val language = Language("1", language, level)
-                    myLanguageList.add(0,language)
+                    myLanguageList.add(0, language)
                 }
 
 
@@ -248,9 +247,9 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
                         Price(etAmount.text.toString().toLong(), currency, option),
                         myLanguageList,
                         myLocationList,
-                        guideProfile.reviews,
-                        guideProfile.attendancesProfileId,
-                        guideProfile.trips
+                        guideProfile.attendances,
+                        guideProfile.trips,
+                        guideProfile.isComment
                     )
 
                     viewModel.updateGuideProfile(guide)
@@ -287,21 +286,12 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
     }
 
     private fun addLanguageItems() {
-        binding.etLanguage.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun afterTextChanged(p0: Editable?) {
-                language = binding.etLanguage.text.toString()
-            }
-
-        })
 
         binding.tvAddLanguage.setOnClickListener {
             if (language != "") {
                 val language = Language("1", language, level)
                 myLanguageList.add(language)
                 refreshAdapterLanguage(myLanguageList)
-                binding.etLanguage.text.clear()
             } else {
                 Toast.makeText(requireContext(), "Please, fill the field first", Toast.LENGTH_SHORT)
                     .show()
@@ -359,11 +349,21 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
 
         binding.spinnerType.adapter = adapter1
 
-        languages = resources.getStringArray(R.array.level)
+        languages = resources.getStringArray(R.array.languages)
+        binding.spinnerLanguage.onItemSelectedListener = itemSelectedLanguages
+
+        val adapter4: ArrayAdapter<*> =
+            ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, languages!!)
+        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        binding.spinnerLanguage.adapter = adapter4
+
+
+        levels = resources.getStringArray(R.array.level)
         binding.spinnerLevel.onItemSelectedListener = itemSelectedLangaugeLevel
 
         val adapter2: ArrayAdapter<*> =
-            ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, languages!!)
+            ArrayAdapter<Any?>(requireContext(), android.R.layout.simple_spinner_item, levels!!)
 
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -397,9 +397,17 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
         binding.spinnerLocationTo.adapter = adapter
     }
 
+    private val itemSelectedLanguages: AdapterView.OnItemSelectedListener =
+        object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                language = languages!![p2]
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
+        }
     val itemSelectedLangaugeLevel = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-            level = languages!![p2]
+            level = levels!![p2]
         }
 
         override fun onNothingSelected(p0: AdapterView<*>?) {}

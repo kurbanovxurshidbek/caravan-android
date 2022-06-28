@@ -130,7 +130,6 @@ class LoginActivity : BaseActivity() {
         binding.etPhone.requestFocus()
         binding.etOTP.setAnimationEnable(true)
         binding.btnGetCode.setOnClickListener {
-//            callMainActivity(null, true, null) ///...................................... should be deleted!
 
             if (binding.btnGetCode.text == getString(R.string.str_confirm)) {
                 if (binding.etOTP.text.toString().length == 4) checkOtp()

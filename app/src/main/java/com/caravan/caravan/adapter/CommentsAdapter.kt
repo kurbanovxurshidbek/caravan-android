@@ -5,10 +5,12 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.caravan.caravan.R
 import com.caravan.caravan.databinding.ItemCommentBinding
 import com.caravan.caravan.model.Comment
 
@@ -17,43 +19,40 @@ class CommentsAdapter(var items: ArrayList<Comment>) :
 
     inner class ViewHolder(private val commentBinding: ItemCommentBinding) :
         RecyclerView.ViewHolder(commentBinding.root) {
-        @RequiresApi(Build.VERSION_CODES.O)
         fun onBind(comment: Comment) {
             Glide.with(commentBinding.ivCommentsUserProfile).load(comment.from.photo)
+                .placeholder(R.drawable.user)
                 .into(commentBinding.ivCommentsUserProfile)
-            commentBinding.tvCommentsUserFullname.text = comment.from.name+ " " + comment.from.surname
-            commentBinding.tvCommentsUserLocaldate.text = comment.reviewTime.toString()
+            commentBinding.tvCommentsUserFullname.text =
+                comment.from.name.plus(" ").plus(" ").plus(comment.from.surname)
+            commentBinding.tvCommentsUserLocaldate.text = comment.reviewTime.substring(0, 10)
             commentBinding.ratingBarCommentUser.rating = comment.rate.toFloat()
-            commentBinding.tvCommentsUserRate.text =   "(${comment.rate.toString().toInt()})"
-            commentBinding.tvCommentsQuestion.text=  comment.reviewContent
+            commentBinding.tvCommentsUserRate.text = "(${comment.rate.toString().toInt()})"
+            commentBinding.tvCommentsContent.text = comment.reviewContent
 
             // Guide`s answer here
-            if (comment.answerContent != null){
-                Glide.with(commentBinding.ivCommentsGuideProfile).load(comment.guide?.profile?.photo)
+            if (comment.answerContent != null) {
+                commentBinding.llAnswerPage.visibility = View.GONE
+                Glide.with(commentBinding.ivCommentsGuideProfile).load(comment.guide?.photo)
+                    .placeholder(R.drawable.user)
                     .into(commentBinding.ivCommentsGuideProfile)
-                commentBinding.tvCommentsGuideFullname.text =comment.guide?.profile?.name+ " "+ comment.guide?.profile?.surname
-                commentBinding.tvCommentsGuideLocaldate.text = comment.answerTime.toString()
+                commentBinding.tvCommentsGuideFullname.text =
+                    comment.guide?.name.plus(" ").plus(comment.guide?.surname)
+                commentBinding.tvCommentsGuideLocaldate.text = comment.answerTime?.substring(0, 10)
                 commentBinding.tvCommentsGuideAnswer.text = comment.answerContent
+            } else {
+                commentBinding.llAnswerPage.visibility = View.GONE
             }
 
         }
     }
 
-    private fun colorMyText(
-        inputText: String,
-        startIndex: Int,
-        endIndex: Int,
-        textColor: Int
-    ): Spannable {
-        val outPutColoredText: Spannable = SpannableString(inputText)
-        outPutColoredText.setSpan(
-            ForegroundColorSpan(textColor),
-            startIndex,
-            endIndex,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        return outPutColoredText
+    fun updateList(comments: ArrayList<Comment>) {
+        items.addAll(comments)
+        notifyDataSetChanged()
     }
+
+    fun getList() = items
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(

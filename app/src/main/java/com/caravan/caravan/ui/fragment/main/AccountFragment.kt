@@ -3,6 +3,7 @@ package com.caravan.caravan.ui.fragment.main
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -129,6 +130,7 @@ class AccountFragment : BaseFragment() {
             Glide.with(ivGuide).load(profile.photo).error(R.drawable.default_profile).into(ivGuide)
             tvGuidesFullName.text = "${profile.name} ${profile.surname}"
             tvGuidePhone.text = profile.phoneNumber
+            Log.d("TOKEN", "TOKEN========${profile.token}")
         }
     }
 

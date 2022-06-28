@@ -43,7 +43,7 @@ dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
@@ -71,18 +71,18 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
 
     // ViewModel
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc01'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc02'
     // ViewModel utilities for Compose
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0-rc01'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0-rc02'
     // LiveData
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-rc01'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-rc02'
     // Lifecycles only (without ViewModel or LiveData)
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc01'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc02'
 
     // Saved state module for ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.0-rc01")
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.0-rc02'
 
-    implementation "androidx.lifecycle:lifecycle-common-java8:2.5.0-rc01"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.5.0-rc02"
 
     //sliderVIewIndicator
     implementation 'com.github.zhpanvip:viewpagerindicator:1.2.1'
@@ -112,5 +112,8 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging'
+
+    //photo compressor
+    implementation 'id.zelory:compressor:3.0.1'
 
 }

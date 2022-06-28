@@ -22,7 +22,6 @@
                 android:id="@+id/ivCommentsUserProfile"
                 android:layout_height="50dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/commentguide"
                 app:shapeAppearanceOverlay="@style/circle" />
 
             <LinearLayout
@@ -39,11 +38,10 @@
 
                     <TextView
                         android:id="@+id/tvCommentsUserFullname"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/circular_std_bold"
-                        android:text="Malika Abdurimova"
                         android:textColor="@color/color_name"
                         android:textSize="16sp" />
 
@@ -51,10 +49,9 @@
                         android:id="@+id/tvCommentsUserLocaldate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end|right|center_vertical"
-                        android:layout_marginRight="20dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="20dp"
                         android:fontFamily="@font/circular_std_bold"
-                        android:text="30.05.2003"
                         android:textColor="#99000000"
                         android:textSize="12sp" />
 
@@ -77,14 +74,14 @@
                         android:secondaryProgressTint="@color/main_color"
                         android:progressBackgroundTint="#90000000"
                         android:progressTint="@color/main_color"
-                        android:rating="3.5" />
+                        android:rating="0" />
 
                     <TextView
                         android:id="@+id/tvCommentsUserRate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/circular_std_bold"
-                        android:text="(5)"
+                        android:text="(0)"
                         android:textColor="#99000000"
                         android:textSize="12sp" />
 
@@ -105,11 +102,10 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tvCommentsQuestion"
+                android:id="@+id/tvCommentsContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/circular_std_bold"
-                android:text="Bukhara is a very beautiful city in Uzbekistan. You must like there if you came. I give you that opportunity to discover Bukhara. In this trip you can customise the trip days where to visit.  Add more like opportunites. Take me and discover Bukhara"
                 android:textSize="14sp" />
 
 
@@ -119,7 +115,8 @@
     </LinearLayout>
 
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <LinearLayout
+        android:id="@+id/llAnswerPage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -151,7 +148,6 @@
                     android:id="@+id/ivCommentsGuideProfile"
                     android:layout_height="50dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/guide"
                     app:shapeAppearanceOverlay="@style/circle" />
 
                 <LinearLayout
@@ -172,7 +168,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/circular_std_bold"
-                            android:text="Saidbek Abdullayev"
                             android:textColor="@color/color_name"
                             android:textSize="16sp" />
 
@@ -183,7 +178,6 @@
                             android:layout_gravity="end|right|center_vertical"
                             android:layout_marginRight="20dp"
                             android:fontFamily="@font/circular_std_bold"
-                            android:text="30.05.2003"
                             android:textColor="#99000000"
                             android:textSize="12sp" />
 
@@ -225,7 +219,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/circular_std_bold"
-                    android:text="Bukhara is a very beautiful city in Uzbekistan. You must like there if you came. I give you that opportunity to discover Bukhara. In this trip you can customise the trip days where to visit.  Add more like opportunites. Take me and discover Bukhara"
                     android:textSize="14sp" />
 
 
@@ -236,7 +229,7 @@
         </LinearLayout>
 
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </LinearLayout>
 
 
 </LinearLayout>

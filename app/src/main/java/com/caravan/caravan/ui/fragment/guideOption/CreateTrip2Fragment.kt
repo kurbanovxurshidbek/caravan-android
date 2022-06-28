@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,12 +26,14 @@ import com.caravan.caravan.model.Facility
 import com.caravan.caravan.model.Location
 import com.caravan.caravan.model.Price
 import com.caravan.caravan.model.create_trip.SecondSend
+import com.caravan.caravan.model.more.ActionMessage
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
 import com.caravan.caravan.utils.*
 import com.caravan.caravan.utils.CreateTripObject.myPhotoIds
 import com.caravan.caravan.utils.CreateTripObject.myPhotosList
+import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.viewmodel.guideOption.createTrip.second.CreateTrip2Repository
 import com.caravan.caravan.viewmodel.guideOption.createTrip.second.CreateTrip2ViewModel
 import com.caravan.caravan.viewmodel.guideOption.createTrip.second.CreateTrip2ViewModelFactory
@@ -93,11 +94,10 @@ class CreateTrip2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
 
-                        finishTrip()
+                        finishTrip(it.data)
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
-                        Log.d("@@@", "setUpObservers: ${it.message}")
                         showDialogWarning(
                             getString(R.string.str_no_connection),
                             getString(R.string.str_try_again),
@@ -114,27 +114,72 @@ class CreateTrip2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
-    private fun finishTrip() {
+    private fun setUpObserversDeleteTripPhoto() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.deletePhoto.collect {
+                when (it) {
+                    is UiStateObject.LOADING -> {
+                        showLoading()
+                    }
+                    is UiStateObject.SUCCESS -> {
+                        dismissLoading()
+                        toast("Photo is deleted")
+                    }
+                    is UiStateObject.ERROR -> {
+                        dismissLoading()
+                        showDialogWarning(
+                            getString(R.string.str_no_connection),
+                            getString(R.string.str_try_again),
+                            object : OkInterface {
+                                override fun onClick() {
+                                    return
+                                }
 
-        myPhotosList.clear()
-        myPhotoIds.clear()
-
-        showDialogMessage(
-            "Done",//getString(R.string.str_done),
-            "Trip is created!",//getString(R.string.str_compleate_create),
-            object : OkInterface {
-                override fun onClick() {
-                    requireActivity().finish()
+                            })
+                    }
+                    else -> Unit
                 }
+            }
+        }
+    }
 
-            })
+
+
+
+    private fun finishTrip(data: ActionMessage) {
+
+        if (data.status) {
+            myPhotosList.clear()
+            myPhotoIds.clear()
+
+            showDialogMessage(
+                getString(R.string.str_done),
+                getString(R.string.str_compleate_create),
+                object : OkInterface {
+                    override fun onClick() {
+                        requireActivity().finish()
+                    }
+
+                })
+        } else {
+            showDialogMessage(
+                data.title!!,
+                data.message!!,
+                object : OkInterface {
+                    override fun onClick() {
+                        requireActivity().finish()
+                    }
+
+                })
+        }
+
     }
 
     private fun initViews() {
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
 
         if (myPhotosList.size == 0) {
-            myPhotosList.add(CreateTrip("", Location("1", "", "", "")))
+            myPhotosList.add(CreateTrip("","", Location("1", "", "", "")))
         }
 
         refreshAdapterTrip(myPhotosList)
@@ -204,7 +249,7 @@ class CreateTrip2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
             }
 
 
-            if (amount != "" && myPhotosList.size >= 2 && myFacilityList.isNotEmpty()) {
+            if (amount != "" && myPhotosList.size >= 3 && myFacilityList.isNotEmpty()) {
 
                 val secondSend = SecondSend(
                     myPhotoIds,
@@ -214,7 +259,6 @@ class CreateTrip2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
                 viewModel.completeTrip(tripId, secondSend)
                 setUpObservers()
-
 
             } else {
                 Toast.makeText(
@@ -231,7 +275,10 @@ class CreateTrip2Fragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun removeItem(index: Int) {
+    fun removeItem(index: Int,photoId:String) {
+        viewModel.deleteTripPhoto(photoId)
+        setUpObserversDeleteTripPhoto()
+
         myPhotosList.removeAt(index)
         adapterTripAdapter.notifyDataSetChanged()
     }
