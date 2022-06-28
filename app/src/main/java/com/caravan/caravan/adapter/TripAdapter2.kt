@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
@@ -16,8 +17,19 @@ import com.caravan.caravan.databinding.ItemTripsBinding
 import com.caravan.caravan.model.home.HomeTrip
 import com.caravan.caravan.ui.fragment.BaseFragment
 
-class TripAdapter(val context: Fragment, var items: ArrayList<HomeTrip>) :
-    RecyclerView.Adapter<TripAdapter.ViewHolder>() {
+class TripAdapter2(val context: Fragment, var items: ArrayList<HomeTrip>) :
+    ListAdapter<HomeTrip, TripAdapter2.ViewHolder>(DiffCallback()) {
+
+    private class DiffCallback : DiffUtil.ItemCallback<HomeTrip>() {
+        override fun areItemsTheSame(oldItem: HomeTrip, newItem: HomeTrip): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: HomeTrip, newItem: HomeTrip): Boolean {
+            return oldItem == newItem
+        }
+    }
+
 
     inner class ViewHolder(private val itemTripsBinding: ItemTripsBinding) :
         RecyclerView.ViewHolder(itemTripsBinding.root) {
@@ -62,7 +74,7 @@ class TripAdapter(val context: Fragment, var items: ArrayList<HomeTrip>) :
         return outPutColoredText
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TripAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TripAdapter2.ViewHolder {
         return ViewHolder(
             ItemTripsBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -73,26 +85,10 @@ class TripAdapter(val context: Fragment, var items: ArrayList<HomeTrip>) :
 
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = currentList.size
 
-    override fun onBindViewHolder(holder: TripAdapter.ViewHolder, position: Int) {
-        holder.bind(items[position])
-    }
-
-    class DiffUtilCallback(
-        private val oldList: ArrayList<HomeTrip>,
-        private val newList: ArrayList<HomeTrip>
-    ) : DiffUtil.Callback() {
-        override fun getOldListSize(): Int = oldList.size
-
-        override fun getNewListSize(): Int = newList.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            newList[newItemPosition].id == oldList[oldItemPosition].id
-
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            newList[newItemPosition].id == oldList[oldItemPosition].id
+    override fun onBindViewHolder(holder: TripAdapter2.ViewHolder, position: Int) {
+        holder.bind(currentList[position])
     }
 }
 
