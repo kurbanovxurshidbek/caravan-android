@@ -101,12 +101,12 @@ class FeedbackRespondFragment : BaseFragment() {
     private fun setViews(comment: Comment) {
         if (comment.trip != null) {
             binding.llItemTrips.root.visibility = View.VISIBLE
-            Glide.with(requireActivity()).load(comment.trip.photos[0].url)
+            Glide.with(requireActivity()).load(comment.trip.photos[0].photo)
                 .into(binding.llItemTrips.ivTripPhoto)
             binding.llItemTrips.tvTripTitle.text = comment.trip.name
             binding.llItemTrips.ratingBarTrip.rating = comment.trip.rate.toFloat()
             binding.llItemTrips.tvTripCommentsCount.text =
-                "(${if (comment.trip.reviews.isNullOrEmpty()) "0" else comment.trip.reviews.size})"
+                "(${comment.trip.reviewsCount})"
             binding.llItemTrips.tvPrice.text = price(comment.trip)
         } else {
             binding.llItemTrips.root.visibility = View.GONE

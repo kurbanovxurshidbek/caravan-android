@@ -46,8 +46,6 @@ class GuideCommentAdapter :
             }
 
             guideCommentBinding.llComment.setOnClickListener {
-                if (comment.from.token == null) comment.from.token = ""
-                if (comment.guide?.profile?.token == null) comment.guide?.profile?.token = ""
                 onItemClickListener?.invoke(comment)
             }
 
