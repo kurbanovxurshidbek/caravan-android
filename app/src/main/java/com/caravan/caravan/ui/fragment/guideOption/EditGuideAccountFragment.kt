@@ -247,9 +247,9 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
                         Price(etAmount.text.toString().toLong(), currency, option),
                         myLanguageList,
                         myLocationList,
-                        guideProfile.reviews,
                         guideProfile.attendances,
-                        guideProfile.trips
+                        guideProfile.trips,
+                        guideProfile.isComment
                     )
 
                     viewModel.updateGuideProfile(guide)

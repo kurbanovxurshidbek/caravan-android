@@ -10,7 +10,7 @@ class GuideDetailsRepository(private val apiService: ApiService) {
 
     suspend fun postReview(review: Review) = apiService.postReview(review)
 
-    suspend fun getReviews(page: Int, guideId: String) = apiService.getGuideComments(page, guideId)
+    suspend fun getReviews(page: Int, guideId: String) = apiService.getGuideComments(guideId, page)
 
     suspend fun hire(hire: Hire) = apiService.attend(hire)
 

@@ -2,7 +2,6 @@ package com.caravan.caravan.network
 
 import com.caravan.caravan.BuildConfig
 import com.caravan.caravan.manager.SharedPref
-import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
