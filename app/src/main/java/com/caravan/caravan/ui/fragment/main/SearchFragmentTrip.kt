@@ -10,14 +10,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.caravan.caravan.R
-import com.caravan.caravan.adapter.GuideAdapter
-import com.caravan.caravan.adapter.TripAdapter
+import com.caravan.caravan.adapter.TripAdapter2
 import com.caravan.caravan.databinding.FragmentSearchTripBinding
 import com.caravan.caravan.manager.SharedPref
+import com.caravan.caravan.model.home.HomeTrip
+import com.caravan.caravan.model.search.SearchTripSend
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
 import com.caravan.caravan.viewmodel.main.search.SearchSharedVM
@@ -30,6 +30,12 @@ class SearchFragmentTrip : BaseFragment() {
     private lateinit var binding: FragmentSearchTripBinding
     private val sharedViewModel: SearchSharedVM by activityViewModels()
 
+    private var currentPage: Int = 1
+    private var totalPage: Int = 0
+    private var trips: ArrayList<HomeTrip> = ArrayList()
+    private lateinit var adapter: TripAdapter2
+    private lateinit var searchTripSend: SearchTripSend
+
     private lateinit var viewModel: SearchTripViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,11 +43,6 @@ class SearchFragmentTrip : BaseFragment() {
         arguments?.let {
 
         }
-    }
-
-    companion object {
-        fun newInstance() =
-            SearchFragmentTrip()
     }
 
     override fun onCreateView(
@@ -59,6 +60,9 @@ class SearchFragmentTrip : BaseFragment() {
         setUpObservers()
 
         binding.apply {
+            adapter = TripAdapter2(this@SearchFragmentTrip, trips)
+            recyclerView.adapter = adapter
+
             recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
@@ -68,7 +72,11 @@ class SearchFragmentTrip : BaseFragment() {
         }
 
         sharedViewModel.tripSearch.observe(viewLifecycleOwner) {
-            viewModel.searchTrip(1, it)
+            searchTripSend = it
+            currentPage = 1
+            totalPage = 1
+            trips = ArrayList()
+            viewModel.searchTrip(currentPage, it)
         }
 
         binding.apply {
@@ -76,8 +84,9 @@ class SearchFragmentTrip : BaseFragment() {
                 override fun onScrollStateChanged(recyclerView1: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                     if (!recyclerView1.canScrollVertically(RecyclerView.VERTICAL) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-
-                        toast(recyclerView1.adapter?.itemCount.toString())
+                        if (currentPage < totalPage) {
+                            viewModel.searchTrip(++currentPage, searchTripSend)
+                        }
                     }
                 }
 
@@ -106,9 +115,11 @@ class SearchFragmentTrip : BaseFragment() {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        binding.recyclerView.adapter =
-                            TripAdapter(this@SearchFragmentTrip, it.data.trips)
                         Log.d("Search", "Success:${it.toString()}")
+                        trips.addAll(it.data.trips)
+                        totalPage = it.data.totalPage
+                        adapter.submitList(trips)
+
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
@@ -127,5 +138,13 @@ class SearchFragmentTrip : BaseFragment() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+//        page = 1
+//        trips = ArrayList()
+//        adapter = TripAdapter(this, trips)
+//        toast("page = 1")
     }
 }

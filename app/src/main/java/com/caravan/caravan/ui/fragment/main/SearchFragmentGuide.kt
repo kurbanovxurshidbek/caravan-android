@@ -10,13 +10,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.caravan.caravan.R
-import com.caravan.caravan.adapter.GuideAdapter
+import com.caravan.caravan.adapter.GuideAdapter2
 import com.caravan.caravan.databinding.FragmentSearchGuideBinding
 import com.caravan.caravan.manager.SharedPref
+import com.caravan.caravan.model.search.SearchGuide
+import com.caravan.caravan.model.search.SearchGuideSend
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
-import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
 import com.caravan.caravan.utils.UiStateObject
 import com.caravan.caravan.viewmodel.main.search.SearchGuideRepository
@@ -29,16 +30,17 @@ class SearchFragmentGuide : BaseFragment() {
     private val sharedViewModel: SearchSharedVM by activityViewModels()
     private lateinit var viewModel: SearchGuideViewModel
 
+    private var currentPage: Int = 1
+    private var totalPage: Int = 1
+    private var guides: ArrayList<SearchGuide> = ArrayList()
+    private lateinit var adapter: GuideAdapter2
+    private lateinit var searchGuideSend: SearchGuideSend
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
 
         }
-    }
-
-    companion object {
-        fun newInstance() =
-            SearchFragmentGuide()
     }
 
     override fun onCreateView(
@@ -56,6 +58,9 @@ class SearchFragmentGuide : BaseFragment() {
         setUpObservers()
 
         binding.apply {
+            adapter = GuideAdapter2(this@SearchFragmentGuide, guides)
+            recyclerView.adapter = adapter
+
             recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
@@ -65,8 +70,11 @@ class SearchFragmentGuide : BaseFragment() {
         }
 
         sharedViewModel.guideSearch.observe(viewLifecycleOwner) {
-            Log.d("SearchFragmentGuide", "SearchGuideSend:${it.toString()}")
-            viewModel.searchGuide(1, it)
+            searchGuideSend = it
+            currentPage = 1
+            totalPage = 1
+            guides = ArrayList()
+            viewModel.searchGuide(currentPage, it)
         }
 
         binding.apply {
@@ -74,8 +82,9 @@ class SearchFragmentGuide : BaseFragment() {
                 override fun onScrollStateChanged(recyclerView1: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                     if (!recyclerView1.canScrollVertically(RecyclerView.VERTICAL) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-
-                        toast("Bottom reached!")
+                        if(currentPage < totalPage){
+                            viewModel.searchGuide(++currentPage, searchGuideSend)
+                        }
                     }
                 }
 
@@ -92,9 +101,10 @@ class SearchFragmentGuide : BaseFragment() {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        binding.recyclerView.adapter =
-                            GuideAdapter(this@SearchFragmentGuide, it.data.guideList)
                         Log.d("SearchFragmentGuide", "Success:${it.toString()}")
+                        guides.addAll(it.data.guideList)
+                        totalPage = it.data.totalPage!!
+                        adapter.submitList(guides)
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
