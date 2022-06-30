@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-android-extensions'
 }
 
 apply plugin: 'com.google.gms.google-services'
@@ -112,5 +113,8 @@ dependencies {
 
     //photo compressor
     implementation 'id.zelory:compressor:3.0.1'
+
+    // Paging 3 for Pagination
+    implementation 'androidx.paging:paging-runtime:3.1.1'
 
 }
