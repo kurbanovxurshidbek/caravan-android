@@ -3,6 +3,7 @@ package com.caravan.caravan.adapter
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil

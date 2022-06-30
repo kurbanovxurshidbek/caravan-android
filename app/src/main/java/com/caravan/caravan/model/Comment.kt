@@ -1,5 +1,6 @@
 package com.caravan.caravan.model
 
+import com.caravan.caravan.model.home.HomeTrip
 import java.io.Serializable
 
 data class Comment(
@@ -9,8 +10,8 @@ data class Comment(
     val reviewContent: String,
     val from: CommentProfile,
     val commentType: String = "TRIP", // GUIDE
-    val trip: Trip? = null,
-    val guide: CommentProfile?,
+    val trip: HomeTrip? = null,
+    val guide: CommentProfile? = null,
     val answerTime: String? = null,
     val answerContent: String? = null
 ) : Serializable
@@ -19,5 +20,5 @@ data class CommentProfile(
     val id: String,
     val name: String,
     val surname: String,
-    val photo: String
+    val photo: String? = null
 )

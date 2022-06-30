@@ -18,6 +18,7 @@ import com.caravan.caravan.databinding.FragmentFeedbackRespondBinding
 import com.caravan.caravan.manager.SharedPref
 import com.caravan.caravan.model.Comment
 import com.caravan.caravan.model.Trip
+import com.caravan.caravan.model.home.HomeTrip
 import com.caravan.caravan.model.review.Answer
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
@@ -101,8 +102,7 @@ class FeedbackRespondFragment : BaseFragment() {
     private fun setViews(comment: Comment) {
         if (comment.trip != null) {
             binding.llItemTrips.root.visibility = View.VISIBLE
-            Glide.with(requireActivity()).load(comment.trip.photos[0].photo)
-                .into(binding.llItemTrips.ivTripPhoto)
+            Glide.with(requireActivity()).load(comment.trip.photo).into(binding.llItemTrips.ivTripPhoto)
             binding.llItemTrips.tvTripTitle.text = comment.trip.name
             binding.llItemTrips.ratingBarTrip.rating = comment.trip.rate.toFloat()
             binding.llItemTrips.tvTripCommentsCount.text =
@@ -126,24 +126,11 @@ class FeedbackRespondFragment : BaseFragment() {
             binding.btnSend.setOnClickListener {
                 val answer = Answer(binding.etResponse.text.toString().trim(), comment.id)
                 viewModel.answerReview(answer)
-
             }
 
         } else {
             showAnswerPage()
             hideWriteResponsePage()
-
-            binding.llEditAnswer.setOnClickListener {
-                binding.etResponse.setText(comment.answerContent)
-                hideAnswerPage()
-                showWriteResponsePage()
-            }
-
-            binding.llDeleteAnswer.setOnClickListener {
-                // Delete Api
-                hideAnswerPage()
-                showWriteResponsePage()
-            }
         }
 
     }
@@ -160,7 +147,7 @@ class FeedbackRespondFragment : BaseFragment() {
     }
 
     @SuppressLint("ResourceAsColor")
-    private fun price(trip: Trip): Spannable {
+    private fun price(trip: HomeTrip): Spannable {
         val text = "$${trip.price.cost.toInt()}"
         val endIndex = text.length
 

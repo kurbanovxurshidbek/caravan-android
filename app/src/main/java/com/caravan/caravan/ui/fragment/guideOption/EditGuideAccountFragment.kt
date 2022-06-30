@@ -26,6 +26,7 @@ import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Language
 import com.caravan.caravan.model.Location
 import com.caravan.caravan.model.Price
+import com.caravan.caravan.model.upgrade.UpgradeSend
 import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.ui.fragment.BaseFragment
@@ -237,19 +238,13 @@ class EditGuideAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListe
 
 
                 if (etBiography.text.isNotEmpty() && etAmount.text.isNotEmpty() && myLanguageList.isNotEmpty() && myLocationList.isNotEmpty()) {
-                    val guide = GuideProfile(
+                    val guide = UpgradeSend(
                         guideProfile.id,
-                        guideProfile.profile,
                         guideProfile.phoneNumber,
                         etBiography.text.toString(),
-                        guideProfile.isHiring,
-                        guideProfile.rate,
                         Price(etAmount.text.toString().toLong(), currency, option),
                         myLanguageList,
-                        myLocationList,
-                        guideProfile.attendances,
-                        guideProfile.trips,
-                        guideProfile.isComment
+                        myLocationList
                     )
 
                     viewModel.updateGuideProfile(guide)

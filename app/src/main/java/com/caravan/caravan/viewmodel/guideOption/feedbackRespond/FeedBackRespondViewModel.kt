@@ -28,21 +28,6 @@ class FeedBackRespondViewModel(private val repository: FeedbackRespondRepository
         }
     }
 
-//    private val _ = MutableStateFlow<UiStateObject<ActionMessage>>(UiStateObject.EMPTY)
-//    val answer = _answer
-//
-//    fun answerReview(answer: Answer) = viewModelScope.launch {
-//        _answer.value = UiStateObject.LOADING
-//        try {
-//            val response = repository.answerReview(answer)
-//            if (!response.isSuccessful)
-//                _answer.value = UiStateObject.ERROR(response.errorBody().toString())
-//            else {
-//                _answer.value = UiStateObject.SUCCESS(response.body()!!)
-//            }
-//        } catch (e: Exception) {
-//            _answer.value = UiStateObject.ERROR(e.localizedMessage ?: "No connection")
-//        }
-//    }
+
 
 }

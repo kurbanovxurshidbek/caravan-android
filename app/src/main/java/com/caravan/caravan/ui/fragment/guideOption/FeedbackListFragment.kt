@@ -24,20 +24,28 @@ import com.caravan.caravan.utils.viewBinding
 import com.caravan.caravan.viewmodel.guideOption.comment.FeedBackListViewModel
 import com.caravan.caravan.viewmodel.guideOption.comment.FeedbackListRepository
 import com.caravan.caravan.viewmodel.guideOption.comment.FeedbackListViewModelFactory
+import kotlin.math.log
 
 class FeedbackListFragment : BaseFragment() {
     private val binding by viewBinding { FragmentFeedbackListBinding.bind(it) }
     private lateinit var viewModel: FeedBackListViewModel
     private var comments = ArrayList<Comment>()
     private val adapter by lazy { GuideCommentAdapter() }
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_feedback_list, container, false)
+
+    private var page = 1
+    private var allPages = 1;
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view =  inflater.inflate(R.layout.fragment_feedback_list, container, false)
+
+        return view
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setupViewModel()
+        viewModel.getReviews(1)
+    }
 
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -48,6 +56,8 @@ class FeedbackListFragment : BaseFragment() {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
+                        comments.clear()
+                        allPages = it.data.totalPage
                         comments.addAll(it.data.comments)
                         adapter.submitList(comments.toList())
                     }
@@ -58,7 +68,7 @@ class FeedbackListFragment : BaseFragment() {
                             getString(R.string.str_try_again),
                             object : OkInterface {
                                 override fun onClick() {
-
+                                    requireActivity().onBackPressed()
                                 }
 
                             }
@@ -73,20 +83,19 @@ class FeedbackListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupViewModel()
         setupObservers()
         initViews()
     }
 
     private fun initViews() {
-        viewModel.getReviews()
         binding.apply {
             rvFeedbacks.adapter = adapter
-            nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
                 if (scrollY >= v.getChildAt(v.childCount - 1).measuredHeight - v.measuredHeight &&
                     scrollY > oldScrollY
                 ) {
-                    viewModel.getReviews()
+                    if (page + 1 <= allPages)
+                        viewModel.getReviews(++page)
                 }
             })
         }
@@ -94,11 +103,12 @@ class FeedbackListFragment : BaseFragment() {
 
 
         adapter.setOnItemClickListener { comment ->
-            Log.d("setOnItemClickListener", "$comment")
             val bundle = bundleOf("comment" to comment)
+
+            Log.d("TAG", "initViews: $bundle")
+            Log.d("TAG", "initViews: $comment")
             binding.root.findNavController()
                 .navigate(R.id.action_feedbackListFragment_to_feedbackRespondFragment, bundle)
-//        Navigation.findNavController(binding.root).navigate(R.id.action_feedbackListFragment2_to_feedbackRespondFragment2, bundle)
 
         }
     }
