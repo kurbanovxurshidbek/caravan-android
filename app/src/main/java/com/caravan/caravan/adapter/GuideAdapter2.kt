@@ -7,6 +7,8 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
@@ -15,8 +17,18 @@ import com.caravan.caravan.model.Language
 import com.caravan.caravan.model.search.SearchGuide
 import com.caravan.caravan.ui.fragment.BaseFragment
 
-class GuideAdapter(var context: BaseFragment, var items: ArrayList<SearchGuide>) :
-    RecyclerView.Adapter<GuideAdapter.ViewHolder>() {
+class GuideAdapter2(var context: BaseFragment, var items: ArrayList<SearchGuide>) :
+    ListAdapter<SearchGuide, GuideAdapter2.ViewHolder>(DiffCallback()) {
+
+    private class DiffCallback : DiffUtil.ItemCallback<SearchGuide>() {
+        override fun areItemsTheSame(oldItem: SearchGuide, newItem: SearchGuide): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: SearchGuide, newItem: SearchGuide): Boolean {
+            return oldItem == newItem
+        }
+    }
 
     inner class ViewHolder(private val itemGuideBinding: ItemGuideBinding) :
         RecyclerView.ViewHolder(itemGuideBinding.root) {
@@ -59,7 +71,8 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<SearchGuide>)
             val text = "${guide.price.currency} ${guide.price.cost.toInt()}"
             val endIndex = text.length
 
-            val outPutColoredText: Spannable = SpannableString("$text/${guide.price.type.lowercase()}")
+            val outPutColoredText: Spannable =
+                SpannableString("$text/${guide.price.type.lowercase()}")
             outPutColoredText.setSpan(RelativeSizeSpan(1.2f), 0, endIndex, 0)
             outPutColoredText.setSpan(
                 ForegroundColorSpan(Color.parseColor("#167351")),
@@ -117,9 +130,9 @@ class GuideAdapter(var context: BaseFragment, var items: ArrayList<SearchGuide>)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.onBind(items[position])
+        holder.onBind(currentList[position])
 
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = currentList.size
 }

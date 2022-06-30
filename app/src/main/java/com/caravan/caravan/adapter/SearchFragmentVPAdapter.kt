@@ -18,7 +18,7 @@ class SearchFragmentVPAdapter(fragmentManager: FragmentManager, lifeCycle: Lifec
 
         return when (position) {
             0 -> SearchFragmentGuide()
-            else -> SearchFragmentTrip.newInstance()
+            else -> SearchFragmentTrip()
         }
 
     }
