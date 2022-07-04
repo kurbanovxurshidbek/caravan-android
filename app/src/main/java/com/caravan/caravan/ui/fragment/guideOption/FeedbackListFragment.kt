@@ -76,6 +76,11 @@ class FeedbackListFragment : BaseFragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getCommentsList()
+    }
+
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(

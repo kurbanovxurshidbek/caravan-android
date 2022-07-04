@@ -12,7 +12,7 @@ class PagingSource(private val repository: FeedbackListRepository): PagingSource
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Comment> {
         return try {
-            var page:Int = params.key ?: 1
+            val page:Int = params.key ?: 1
             val response = repository.getAllComments(page)
             if (response.body()!!.totalPage >= page) {
                 LoadResult.Page(data = response.body()!!.comments, prevKey = null, nextKey = page + 1)

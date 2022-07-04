@@ -129,6 +129,9 @@ class FeedbackRespondFragment : BaseFragment() {
             }
 
         } else {
+            binding.apply {
+                tvAnswer.text = answer("Answer : ${comment.answerContent}")
+            }
             showAnswerPage()
             hideWriteResponsePage()
         }

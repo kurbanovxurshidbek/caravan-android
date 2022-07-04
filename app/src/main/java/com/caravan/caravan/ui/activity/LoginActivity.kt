@@ -21,6 +21,7 @@ import com.caravan.caravan.network.ApiService
 import com.caravan.caravan.network.RetrofitHttp
 import com.caravan.caravan.utils.Extensions.toast
 import com.caravan.caravan.utils.OkInterface
+import com.caravan.caravan.utils.Symmetric.encrypt
 import com.caravan.caravan.utils.UiStateObject
 import com.caravan.caravan.viewmodel.auth.LoginRepository
 import com.caravan.caravan.viewmodel.auth.LoginViewModel
@@ -161,26 +162,32 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun checkOtp() {
-        val login = LoginSend(
-            binding.etPhone.text.toString(),
-            binding.etOTP.text.toString().toInt(),
-            getDeviceInfo(this),
-            SharedPref(this).getString("appLanguage") ?: "en"
-        )
+        val encrypt = encrypt(binding.etPhone.text.toString())
+        if (!encrypt.isNullOrEmpty()) {
+            val login = LoginSend(
+                encrypt,
+                binding.etOTP.text.toString().toInt(),
+                getDeviceInfo(this),
+                SharedPref(this).getString("appLanguage") ?: "en"
+            )
 
-        viewModel.checkSMS(login)
+            viewModel.checkSMS(login)
+        }
 
     }
 
     private fun getOtpCode() {
-        val login = LoginSend(
-            binding.etPhone.text.toString(),
-            0,
-            null,
-            SharedPref(this).getString("appLanguage") ?: "en"
-        )
+        val encrypt = encrypt(binding.etPhone.text.toString())
+        if (!encrypt.isNullOrEmpty()) {
+            val login = LoginSend(
+                encrypt,
+                0,
+                null,
+                SharedPref(this).getString("appLanguage") ?: "en"
+            )
 
-        viewModel.sendSMS(login)
+            viewModel.sendSMS(login)
+        }
 
     }
 
