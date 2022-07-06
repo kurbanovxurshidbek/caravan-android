@@ -50,7 +50,7 @@ class HomeFragment : BaseFragment() {
         setUpViewModel()
         setUpObservers()
 
-//        viewModel.home()
+        viewModel.home()
 
         initViews()
         return homeBinding.root
