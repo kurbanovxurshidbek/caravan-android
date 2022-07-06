@@ -112,7 +112,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging'
 
     //photo compressor
-    implementation 'id.zelory:compressor:3.0.1'
+    implementation "id.zelory:compressor:3.0.1"
 
     // Paging 3 for Pagination
     implementation 'androidx.paging:paging-runtime:3.1.1'
