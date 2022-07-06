@@ -22,15 +22,13 @@
             android:textColor="#000000"
             android:textSize="32sp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvFeedbacks"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:nestedScrollingEnabled="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_guide_comment" />
-
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFeedbacks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_guide_comment" />
 
 
     </LinearLayout>

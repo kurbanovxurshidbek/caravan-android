@@ -9,17 +9,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="6dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginHorizontal="8sp"
             android:fontFamily="@font/circular_std_bold"
             android:text="@string/guide_s_trips"
-            android:textColor="@color/black"
+            android:textColor="#000000"
             android:textSize="32sp" />
 
         <androidx.recyclerview.widget.RecyclerView

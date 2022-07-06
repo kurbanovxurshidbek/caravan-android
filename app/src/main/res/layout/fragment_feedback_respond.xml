@@ -155,58 +155,6 @@
             android:layout_marginHorizontal="8dp"
             android:text="Answer : Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi. Oka Raxmat sayohat zo’r o’tdi." />
 
-        <LinearLayout
-            android:id="@+id/llEditAnswer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
-            android:layout_marginTop="30dp">
-
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8sp"
-                android:src="@drawable/ic_edit" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_20"
-                android:layout_weight="1"
-                android:fontFamily="@font/circular_std_bold"
-                android:text="Edit your Answer"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llDeleteAnswer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
-            android:layout_marginTop="10dp">
-
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8sp"
-                android:src="@drawable/ic_delete" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_20"
-                android:layout_weight="1"
-                android:fontFamily="@font/circular_std_bold"
-                android:text="Delete your Answer"
-                android:textColor="#80FF0000"
-
-                android:textSize="16sp" />
-
-        </LinearLayout>
 
     </LinearLayout>
 
