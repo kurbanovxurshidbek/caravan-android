@@ -89,7 +89,7 @@
     <string name="str_enter_your_email">Enter your email</string>
     <string name="str_enter_your_birth_date_dd_mm_yyyy">Enter your birth date (dd.mm.yyyy)</string>
     <string name="str_next">Next</string>
-    <string name="str_fill_your_guide">Fill your Guide</string>
+    <string name="str_fill_your_guide">Fill in the information about the guide</string>
     <string name="str_travel_locations">Travel locations</string>
     <string name="str_location">Location</string>
     <string name="str_short_information">Short information</string>
@@ -100,7 +100,7 @@
     <string name="str_describe_yourself">Describe yourself</string>
     <string name="str_write_more_information_about_yourself">Write more information about yourself</string>
     <string name="str_done">Done</string>
-    <string name="str_fill_your_trip">Fill your Trip</string>
+    <string name="str_fill_your_trip">Fill in the information about the Trip</string>
     <string name="str_name">Name</string>
     <string name="str_trip_s_name">Trip\'s name</string>
     <string name="str_locations">Locations</string>
@@ -113,7 +113,7 @@
     <string name="str_description">Description</string>
     <string name="str_add_image">Add Image</string>
     <string name="str_upload_photo">Upload Photo</string>
-    <string name="str_fill_the_location_of_that_picture">Fill the location of that picture</string>
+    <string name="str_fill_the_location_of_that_picture">Fill in information about photo</string>
     <string name="str_upload">Upload</string>
     <string name="error">Error</string>
     <string name="went_wrong">Something went wrong. Please try again</string>
@@ -138,7 +138,7 @@
     <string name="person">Person</string>
     <string name="describe_your_trip">Describe your Trip</string>
     <string name="no_trips_available">No Trips Available!</string>
-    <string name="search_some_places">Search some places</string>
+    <string name="search_some_places">Search places</string>
 
     <string-array name="location">
         <item>TASHKENT</item>
