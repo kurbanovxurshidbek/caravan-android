@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Caravan</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Salom bo’sh fragment</string>
+    <string name="no_thanks">Yo’q, Rahmat</string>
+    <string name="yes_sure">Ha, Albatta</string>
+    <string name="ok">Yaxshi</string>
+    <string name="get_started">Boshlandi</string>
+    <string name="str_continue">Davom etish</string>
+    <string name="intro_text_1">Navbatdagi sayohat \nuchun ko’tarinki kayfiyat bag’ishlash</string>
+    <string name="intro_desc_1">Biz dam olishingiz mumkin bo’lgan joylar bo’yicha eng yaxshi maslahatlarimizni baham ko’rishdan mamnunmiz. Shuningdek siz eng yaxshi shahar sayohatlarini ham topishingiz mumkin!</string>
+    <string name="intro_text_2">Sayohat uchun \neng munosib maskanni tanlang</string>
+    <string name="intro_desc_2">Biz go’zallik, joziba va sarguzashtlarga to’la ajoyib dunyoda yashayapmiz.</string>
+    <string name="intro_text_3"><![CDATA[Sumkangizni oling \nva Caravan bilan sayohat qiling]]></string>
+    <string name="intro_desc_3">Ming chaqirimlik sayohat ham bitta qadam bilan boshlanadi</string>
+    <string name="top_guides_in_uzbekistan">O’zbekistondagi eng yaxshi Gidlar</string>
+    <string name="trending_trips">Eng ommalashgan sayohatlar</string>
+    <string name="have_been_searched_by_many_people_so_far">Hozirgacha ko’p odamlar tomonidan qidirilgan</string>
+
+    <!--    for login-->
+    <string name="str_enter_email">Emailingizni kiriting</string>
+    <string name="str_choose_birthday">Tug’ilgan sanangizni tanlang</string>
+    <string name="str_enter_phone">Telefon raqamingizni kiriting</string>
+    <string name="str_verify_phone">Telefon raqamingizni tasdiqlang</string>
+    <string name="str_fill_number">Fill the field to continue</string>
+    <string name="str_get_code">Get Code</string>
+    <string name="str_agreement">Men foydalanish shartlariga roziman</string>
+    <string name="str_confirm">Tasdiqlash</string>
+    <string name="str_resend_code">Kodni qayta jo’natish</string>
+    <string name="str_fill_information">Ma’lumotlarni to’ldiring</string>
+    <string name="str_enter_name">Ismingizni kiriting</string>
+    <string name="str_choose_gender">Jinsingizni tanlang</string>
+    <string name="str_gender_male">ERKAK</string>
+    <string name="str_gender_female">AYOL</string>
+    <string name="str_save">Saqlash</string>
+    <string name="str_lowwer_male">Erkak</string>
+    <string name="str_lowwer_female">Ayol</string>
+    <string name="str_enter_surname">Familiyangizni kiriting</string>
+    <string name="str_enter_code">Iltimos, kodni kiriiting</string>
+    <string name="str_phone_number">Telefon raqami</string>
+    <string name="str_check_agreement">Iltimos, rozilikni tekshiring</string>
+    <string name="str_fill_all_fields">Iltimos, avval barcha bandlarni to’ldiring</string>
+    <string name="str_url_agreement">https://matyaqubovdev.github.io/caravan-policy</string>
+    <string name="str_url_get_info">https://t.me/Bogibek_Matyaqubov</string>
+    <string name="str_gender">Jins</string>
+    <string name="str_male">Erkak</string>
+    <string name="str_female">Ayol</string>
+    <string name="str_all">Barchasi</string>
+    <string name="str_guide">Gid</string>
+    <string name="str_trip">Sayohat</string>
+    <string name="trial_text">Buxoro O’zbekistonning eng go’zal shaharlaridan biri. Agar u yerga tashrif buyursangiz, albatta sizga u joy yoqadi. Men sizga Buxoroni kashf qilish imkoniyatini taqdim qilaman. Ushbu sayohatda siz tashrif buyuradigan sayohat kunlarini o’zingizga molashingiz mumkin. Ko’proq o’xshash imkoniyatlar qo’shing. Men bilan Buxoroni kashf qiling</string>
+    <string name="travel_locations">Sayohat maskanlari</string>
+    <string name="facilities">Imtiyozlar</string>
+    <string name="guide_s_profile_and_contact_details">Gidning profili &amp; Kontakt ma’lumotlari</string>
+    <string name="apply_trip">Sayohatga qo’shilish</string>
+    <string name="chat_with_guide">Gid bilan suhbatlashish</string>
+    <string name="call_to_guide">Gidga qo’ng’iroq qilish</string>
+    <string name="reviews">Sharhlar</string>
+    <string name="str_delete_account">Akkauntni o’chirish</string>
+    <string name="str_my_feedbacks">Mening fikr-mulohazalarim</string>
+    <string name="str_logout_message">Chiqishga ishonchingiz komilmi?</string>
+    <string name="str_delete_message">Akkauntingizni o’chirishga ishonchingiz komilmi?</string>
+    <string name="tap_to_change_profile_photo">Profildagi rasmni almashtirish uchun bosing</string>
+    <string name="str_guides_trips">Gidning sayohatlari</string>
+    <string name="str_save_message">Sizning ma’lumotlaringiz Akkauntingizga saqlandi. Siz uni istalgan vaqtda o’zgartirishingiz mumkin.</string>
+    <string name="str_saved">Saqlandi</string>
+
+    <string name="str_send">Jo’natish</string>
+    <string name="guide_s_trips">Gidning sayohatlari</string>
+    <string name="hire_guide">Gidni yollash</string>
+    <string name="write_review">Sharh yozish</string>
+    <string name="str_english">Ingliz tili</string>
+    <string name="str_uzbek">O’zbek tili</string>
+    <string name="str_choose_language">Til tanlash</string>
+    <string name="str_isHiring">Sayyohlarni olishga tayyormisiz?</string>
+    <string name="str_edit_guide_profile">Gid profilni sozlash</string>
+    <string name="str_register_as_a_guide">Gid bo’lib ro’yxatdan o’tish</string>
+    <string name="str_my_trips">Mening sayohatlarim</string>
+    <string name="str_get_more_information_about_guide">Gid haqida ko’proq ma’lumot olish</string>
+    <string name="str_no_connection">Aloqa yo’q</string>
+    <string name="str_try_again">Server bilan aloqa yo’q. iltimos keyinroq harakat qilib ko’ring.</string>
+    <string name="str_guide_option">Gid Sozlamalari</string>
+    <string name="str_is_hiring">Yollash</string>
+    <string name="str_delete_guide_mode">Gid rejimini o’chirish</string>
+    <string name="str_fill_your_information">Ma’lumotlaringizni to’ldiring</string>
+    <string name="str_fill_the_field_to_continue">Davom etish uchun bandni to’ldiring</string>
+    <string name="str_fullname">To’liq ism-sharif</string>
+    <string name="str_second_phone_number">Ikkinchi telefon raqam (ixtiyoriy)</string>
+    <string name="str_enter_your_email">Emailingizni kiriting</string>
+    <string name="str_enter_your_birth_date_dd_mm_yyyy">Tug’ilgan sanangizni kiriting (dd.mm.yyyy)</string>
+    <string name="str_next">Keyingi</string>
+    <string name="str_fill_your_guide">Gid haqidagi ma’lumotlarni kiriting</string>
+    <string name="str_travel_locations">Sayohat maskanlari</string>
+    <string name="str_location">Manzil</string>
+    <string name="str_short_information">Qisqa ma’lumot</string>
+    <string name="str_add_more">Yana qo’shish</string>
+    <string name="str_price">Narx</string>
+    <string name="str_amount">Miqdor</string>
+    <string name="str_language">Til</string>
+    <string name="str_describe_yourself">O’zingiz haqingizda</string>
+    <string name="str_write_more_information_about_yourself">O’zingiz haqingizda batafsil yozing</string>
+    <string name="str_done">Bajarildi</string>
+    <string name="str_fill_your_trip">Sayohat sozlamalarini to’ldiring</string>
+    <string name="str_name">Ism</string>
+    <string name="str_trip_s_name">Sayohat nomi</string>
+    <string name="str_locations">Manzillar</string>
+    <string name="str_people">Odamlar</string>
+    <string name="str_min">Min</string>
+    <string name="str_max">Maks</string>
+    <string name="str_upload_photos_min_2_max_5">Rasm yuklang (Min: 2, Max: 5)</string>
+    <string name="str_facility">Imtiyoz</string>
+    <string name="str_title">Sarlavha</string>
+    <string name="str_description">Tavsif</string>
+    <string name="str_add_image">Rasm qo’shish</string>
+    <string name="str_upload_photo">Rasm yuklash</string>
+    <string name="str_fill_the_location_of_that_picture">Rasm haqida ma’lumot kiriting</string>
+    <string name="str_upload">Yuklash</string>
+    <string name="error">Xatolik</string>
+    <string name="went_wrong">Nimadir noto’g’ri bajarildi. Iltimos, yana bir bor urinib ko’ring</string>
+    <string name="str_send_message">Iltimos sharh yozing</string>
+    <string name="maximum_rating">Maksimal reyting (0–5)</string>
+    <string name="minimum_rating">Minimal reyting (0–5)</string>
+    <string name="day">Day</string>
+    <string name="maximum_people">Maksimal odamlar</string>
+    <string name="minimum_people">Minimal odamlar</string>
+    <string name="maximum_price">Maksimal Narx</string>
+    <string name="minimum_price">Minimal Narx</string>
+    <string name="filter_your_search">Qidiruvni filtrlang</string>
+    <string name="warning">Ogohlantirish</string>
+    <string name="check_gender">Iltimos, jinsingizni tekshiring</string>
+    <string name="str_minimum_price">Maksimal Narx</string>
+    <string name="str_maximum_price">Minimal Narx</string>
+    <string name="str_search">Qidirish</string>
+    <string name="str_length">Davomiyligi</string>
+    <string name="str_trip_days_1_10">Sayohat kunlari</string>
+    <string name="str_compleate_create">Sizning sayohatingiz yasaldi</string>
+    <string name="hour">Soat</string>
+    <string name="person">Odam</string>
+    <string name="describe_your_trip">Sayohatni tasvirlang</string>
+    <string name="no_trips_available">Sayohatlar mavjud emas!</string>
+    <string name="search_some_places">Manzil qidirish</string>
+
+    <string-array name="location">
+        <item>TASHKENT</item>
+        <item>SAMARKAND</item>
+        <item>KHOREZM</item>
+        <item>BUKHARA</item>
+        <item>NAMANGAN</item>
+        <item>FERGANA</item>
+        <item>ANDIJAN</item>
+        <item>SIRDARYA</item>
+        <item>KASHKADARYA</item>
+        <item>SURKHANDARYA</item>
+        <item>NAVOIY</item>
+        <item>JIZZAKH</item>
+        <item>RESPUBLIC_OF_KARAKALPAKISTAN</item>
+    </string-array>
+
+    <string-array name="languages">
+        <item>ENGLISH</item>
+        <item>UZBEK</item>
+        <item>RUSSIAN</item>
+    </string-array>
+
+    <string-array name="level">
+        <item>BEGINNER</item>
+        <item>ELEMENTARY</item>
+        <item>INTERMEDIATE</item>
+        <item>ADVANCED</item>
+        <item>NATIVE</item>
+    </string-array>
+
+    <string-array name="currencies">
+        <item>USD</item>
+        <item>UZS</item>
+    </string-array>
+
+    <string-array name="options">
+        <item>DAY</item>
+        <item>HOUR</item>
+        <item>PERSON</item>
+        <item>TRIP</item>
+    </string-array>
+
+
+</resources>

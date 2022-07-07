@@ -61,7 +61,7 @@ interface ApiService {
     suspend fun getGuideProfile(@Path("guideId") guideId: String): Response<GuideProfile>
 
     @PUT("/api/v1/guide")
-    suspend fun updateGuideProfile(@Body guideProfile: GuideProfile): Response<ActionMessage>
+    suspend fun updateGuideProfile(@Body guideProfile: UpgradeSend): Response<ActionMessage>
 
     @DELETE("/api/v1/guide")
     suspend fun deleteGuideProfile(): Response<ActionMessage>

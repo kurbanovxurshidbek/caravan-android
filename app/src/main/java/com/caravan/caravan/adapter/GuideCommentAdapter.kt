@@ -3,8 +3,10 @@ package com.caravan.caravan.adapter
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +15,7 @@ import com.caravan.caravan.databinding.ItemGuideCommentBinding
 import com.caravan.caravan.model.Comment
 
 class GuideCommentAdapter :
-    ListAdapter<Comment, GuideCommentAdapter.ViewHolder>(CommentDiffCallback()) {
+    PagingDataAdapter<Comment, GuideCommentAdapter.ViewHolder>(CommentDiffCallback()) {
 
 
     class CommentDiffCallback : DiffUtil.ItemCallback<Comment>() {
@@ -29,24 +31,26 @@ class GuideCommentAdapter :
 
     inner class ViewHolder(private val guideCommentBinding: ItemGuideCommentBinding) :
         RecyclerView.ViewHolder(guideCommentBinding.root) {
-        fun onBind(comment: Comment) {
+        fun onBind(comment: Comment?) {
 
-            Glide.with(guideCommentBinding.ivCommentProfile).load(comment.from.photo)
-                .into(guideCommentBinding.ivCommentProfile)
-            guideCommentBinding.tvCommentFullname.text =
-                comment.from.name + " " + comment.from.surname
-            guideCommentBinding.tvCommentForGuide.text = comment.reviewContent
-            guideCommentBinding.ratingBarComment.rating = comment.rate.toFloat()
-            guideCommentBinding.tvRatingCount.text = comment.rate.toString()
-            if (comment.answerContent != null) {
-                guideCommentBinding.tvIsAnswered.text = colorMyText("Answered", 0, 6, "#99000000")
-            } else {
-                guideCommentBinding.tvIsAnswered.text =
-                    colorMyText("Not answered", 0, 11, "#167351")
-            }
+            comment?.let {
+                Glide.with(guideCommentBinding.ivCommentProfile).load(comment.from.photo)
+                    .into(guideCommentBinding.ivCommentProfile)
+                guideCommentBinding.tvCommentFullname.text =
+                    comment.from.name + " " + comment.from.surname
+                guideCommentBinding.tvCommentForGuide.text = comment.reviewContent
+                guideCommentBinding.ratingBarComment.rating = comment.rate.toFloat()
+                guideCommentBinding.tvRatingCount.text = comment.rate.toString()
+                if (comment.answerContent != null) {
+                    guideCommentBinding.tvIsAnswered.text = colorMyText("Answered", 0, 6, "#99000000")
+                } else {
+                    guideCommentBinding.tvIsAnswered.text =
+                        colorMyText("Not answered", 0, 11, "#167351")
+                }
 
-            guideCommentBinding.llComment.setOnClickListener {
-                onItemClickListener?.invoke(comment)
+                guideCommentBinding.llComment.setOnClickListener {
+                    onItemClickListener?.invoke(comment)
+                }
             }
 
         }

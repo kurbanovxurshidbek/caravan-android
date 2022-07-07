@@ -32,7 +32,7 @@ class CommentsAdapter(var items: ArrayList<Comment>) :
 
             // Guide`s answer here
             if (comment.answerContent != null) {
-                commentBinding.llAnswerPage.visibility = View.GONE
+                commentBinding.llAnswerPage.visibility = View.VISIBLE
                 Glide.with(commentBinding.ivCommentsGuideProfile).load(comment.guide?.photo)
                     .placeholder(R.drawable.user)
                     .into(commentBinding.ivCommentsGuideProfile)

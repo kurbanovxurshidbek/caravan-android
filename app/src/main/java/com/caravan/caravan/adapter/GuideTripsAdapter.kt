@@ -23,7 +23,7 @@ class GuideTripsAdapter(val context: Fragment, var items: ArrayList<HomeTrip>) :
 
         fun bind(trip: HomeTrip) {
 
-            Glide.with(context).load(trip.photos[0].photo)
+            Glide.with(context).load(trip.photo)
                 .placeholder(R.drawable.trip0)
                 .into(itemTripsBinding.ivTripPhoto)
 

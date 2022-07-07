@@ -61,7 +61,7 @@ class TripDetailsFragment : BaseFragment() {
 
     private var isComment = false
 
-    private val comments: ArrayList<Comment> = ArrayList()
+    private var comments: ArrayList<Comment> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -260,7 +260,7 @@ class TripDetailsFragment : BaseFragment() {
                 .navigate(R.id.action_tripDetailsFragment_to_guideDetailsFragment, bundle);
         }
 
-        fragmentTripDetailsBinding.fragmentTripCommentsRV.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
+        fragmentTripDetailsBinding.fragmentTripCommentsRV.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         fragmentTripDetailsBinding.btnApplyTrip.setOnClickListener {
             viewModel.hire(Hire("TRIP", tripId))

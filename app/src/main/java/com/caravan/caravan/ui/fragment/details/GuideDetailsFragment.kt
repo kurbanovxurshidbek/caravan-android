@@ -20,6 +20,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.caravan.caravan.R
@@ -197,6 +198,9 @@ class GuideDetailsFragment : BaseFragment() {
     private fun initViews() {
 
         guideDetailsBinding.apply {
+
+            fragmentTripCommentsRV.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 nestedScroll.setOnScrollChangeListener { v, _, _, _, _ ->
                     if (etLeaveComment.isFocused) {

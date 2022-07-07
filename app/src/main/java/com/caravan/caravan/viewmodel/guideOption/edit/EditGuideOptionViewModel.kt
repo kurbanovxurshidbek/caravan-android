@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.caravan.caravan.model.GuideProfile
 import com.caravan.caravan.model.Profile
 import com.caravan.caravan.model.more.ActionMessage
+import com.caravan.caravan.model.upgrade.UpgradeSend
 import com.caravan.caravan.utils.UiStateList
 import com.caravan.caravan.utils.UiStateObject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +35,7 @@ class EditGuideOptionViewModel(private val repository: EditGuideOptionRepository
     private val _update = MutableStateFlow<UiStateObject<ActionMessage>>(UiStateObject.EMPTY)
     val update = _update
 
-    fun updateGuideProfile(guideProfile: GuideProfile) = viewModelScope.launch{
+    fun updateGuideProfile(guideProfile: UpgradeSend) = viewModelScope.launch{
         _update.value = UiStateObject.LOADING
 
         try {
