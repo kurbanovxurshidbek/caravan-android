@@ -139,6 +139,8 @@
     <string name="describe_your_trip">Describe your Trip</string>
     <string name="no_trips_available">No Trips Available!</string>
     <string name="search_some_places">Search places</string>
+    <string name="str_incorrect_code">Incorrect Code</string>
+    <string name="str_try_code">The code you entered is incorrect. Please try again</string>
 
     <string-array name="location">
         <item>TASHKENT</item>

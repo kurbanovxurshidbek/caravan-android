@@ -139,6 +139,8 @@
     <string name="describe_your_trip">Опишите свою поездку</string>
     <string name="no_trips_available">Поездки недоступны!</string>
     <string name="search_some_places">Поиск мест</string>
+    <string name="str_incorrect_code">Неверный код</string>
+    <string name="str_try_code">Введенный вами код неверен. Пожалуйста, попробуйте еще раз</string>
 
     <string-array name="location">
         <item>TASHKENT</item>

@@ -140,6 +140,8 @@
     <string name="describe_your_trip">Sayohatni tasvirlang</string>
     <string name="no_trips_available">Sayohatlar mavjud emas!</string>
     <string name="search_some_places">Manzil qidirish</string>
+    <string name="str_incorrect_code">Noto\'g\'ri kod</string>
+    <string name="str_try_code">Siz kiritgan kod noto\'g\'ri. Iltimos, yana bir bor urinib ko\'ring</string>
 
     <string-array name="location">
         <item>TASHKENT</item>
