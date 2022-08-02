@@ -4,6 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_edit_profile.xml" value="0.23854166666666668" />
+        <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_feedback_list.xml" value="0.25" />
+        <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_feedback_respond.xml" value="0.25" />
+        <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_trip_list.xml" value="0.2286803239637923" />
         <entry key="..\:/PDP/Android BootCamp/Test/Caravan/app/src/main/res/layout/fragment_upgrade_guide1.xml" value="0.1160081053698075" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/drawable/cursor.xml" value="0.264" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/drawable/et_background.xml" value="0.117" />

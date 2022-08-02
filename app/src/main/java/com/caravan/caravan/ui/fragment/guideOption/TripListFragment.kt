@@ -91,19 +91,12 @@ class TripListFragment : BaseFragment() {
                         dismissLoading()
                         Log.d("@@@", "TripRes: ${it.data}")
 
-                        if (it.data != null) {
+                        if (it.data.trips.isNotEmpty()) {
                             trips.addAll(trips.size, it.data.trips)
                             refreshAdapterTrip(trips)
+                            binding.animationView.visibility = View.GONE
                         } else {
-                            showDialogWarning(
-                                getString(R.string.error),
-                                getString(R.string.went_wrong),
-                                object : OkInterface {
-                                    override fun onClick() {
-                                        findNavController().popBackStack()
-                                    }
-
-                                })
+                            binding.animationView.visibility = View.VISIBLE
                         }
 
                     }

@@ -27,15 +27,20 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:visibility="visible"
             android:nestedScrollingEnabled="false"
             tools:listitem="@layout/item_trip_guide"
             android:layout_marginTop="20dp" />
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
 
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:lottie_fileName="search_lottie.json"
+            android:visibility="gone"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="false"/>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
