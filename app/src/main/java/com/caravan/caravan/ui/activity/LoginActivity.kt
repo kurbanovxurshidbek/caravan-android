@@ -54,7 +54,7 @@ class LoginActivity : BaseActivity() {
                     }
                     is UiStateObject.SUCCESS -> {
                         dismissLoading()
-                        sentOTP(it.data)
+                        setData(it.data)
                     }
                     is UiStateObject.ERROR -> {
                         dismissLoading()
@@ -86,6 +86,23 @@ class LoginActivity : BaseActivity() {
 
     }
 
+    private fun setData(data: ActionMessage) {
+        if (data.status) {
+            val phoneNumber = binding.etPhone.text.toString()
+            val loginSend = LoginSend(phoneNumber, 1111, getDeviceInfo(this), "en")
+            viewModel.sendSMS(loginSend)
+        } else {
+            showDialogWarning(
+                data.title!!,
+                data.message!!,
+                object : OkInterface {
+                    override fun onClick() {
+                        return
+                    }
+                })
+        }
+    }
+
     private fun onCheck(data: LoginRespond) {
         if (data.title == null) {
             if (data.isExist) {
@@ -97,26 +114,9 @@ class LoginActivity : BaseActivity() {
                 data.message!!,
                 object : OkInterface {
                     override fun onClick() {
-
+                        return
                     }
                 })
-        }
-    }
-
-    private fun sentOTP(data: ActionMessage) {
-        if (data.status) {
-            binding.tvTitle.text = getString(R.string.str_verify_phone)
-            binding.etPhone.isCursorVisible = false
-            binding.btnGetCode.text = getString(R.string.str_confirm)
-            binding.llOtp.visibility = View.VISIBLE
-            setTimer()
-            hideKeyboard()
-        } else {
-            showDialogWarning(data.title!!, data.message!!, object : OkInterface {
-                override fun onClick() {
-
-                }
-            })
         }
     }
 
@@ -129,66 +129,22 @@ class LoginActivity : BaseActivity() {
 
     private fun initViews() {
         binding.etPhone.requestFocus()
-        binding.etOTP.setAnimationEnable(true)
         binding.btnGetCode.setOnClickListener {
-
-            if (binding.btnGetCode.text == getString(R.string.str_confirm)) {
-                if (binding.etOTP.text.toString().length == 4) checkOtp()
-                else toast(getString(R.string.str_enter_code))
-            }
-            val number = binding.etPhone.text.toString()
-            if (checkMatches(number) && binding.btnGetCode.text == getString(R.string.str_get_code)) {
-                getOtpCode()
+            val phoneNumber = binding.etPhone.text.toString()
+            if (checkMatches(phoneNumber)) {
+                val loginSend = LoginSend(phoneNumber, 0, null, "en")
+                viewModel.sendSMS(loginSend)
+            } else {
+                toast(getString(R.string.str_fill_all_fields))
             }
 
         }
-        binding.tvTime.setOnClickListener {
-            if ((it as TextView).text == getString(R.string.str_resend_code)) {
-                binding.etOTP.setText("")
-                getOtpCode()
-            }
-        }
+
         binding.etPhone.addTextChangedListener {
             binding.etPhone.isCursorVisible = true
-            binding.llOtp.visibility = View.INVISIBLE
             binding.tvTitle.text = getString(R.string.str_enter_phone)
-            binding.etOTP.setText("")
             if (checkMatches(it.toString())) hideKeyboard()
-            binding.btnGetCode.text = getString(R.string.str_get_code)
         }
-        binding.etOTP.addTextChangedListener {
-            if (it!!.toString().length == 4) hideKeyboard()
-        }
-    }
-
-    private fun checkOtp() {
-        val encrypt = encrypt(binding.etPhone.text.toString())
-        if (!encrypt.isNullOrEmpty()) {
-            val login = LoginSend(
-                encrypt,
-                binding.etOTP.text.toString().toInt(),
-                getDeviceInfo(this),
-                SharedPref(this).getString("appLanguage") ?: "en"
-            )
-
-            viewModel.checkSMS(login)
-        }
-
-    }
-
-    private fun getOtpCode() {
-        val encrypt = encrypt(binding.etPhone.text.toString())
-        if (!encrypt.isNullOrEmpty()) {
-            val login = LoginSend(
-                encrypt,
-                0,
-                null,
-                SharedPref(this).getString("appLanguage") ?: "en"
-            )
-
-            viewModel.sendSMS(login)
-        }
-
     }
 
     private fun callRegistrationActivity() {
@@ -221,37 +177,5 @@ class LoginActivity : BaseActivity() {
 
     private fun checkMatches(number: String): Boolean {
         return number.matches(Regex("[+]998[0-9]{9}")) || number.matches(Regex("[+]7[0-9]{10}"))
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun setTimer() {
-        job?.cancel()
-        job = MainScope().launch {
-            var sec = 60
-            while (isActive) {
-                sec--
-                val min = sec / 60
-                val s = sec - min * 60
-                if (s < 10)
-                    binding.tvTime.text = "$min:0$s"
-                else
-                    binding.tvTime.text = "$min:$s"
-                if (sec == 0) {
-                    binding.tvTime.text = getString(R.string.str_resend_code)
-                    cancel()
-                }
-                delay(1000)
-            }
-        }
-    }
-
-    override fun onBackPressed() {
-        if (binding.llOtp.visibility == View.VISIBLE) {
-            binding.llOtp.visibility = View.INVISIBLE
-            binding.etOTP.setText("")
-            binding.btnGetCode.text = getString(R.string.str_get_code)
-        } else {
-            super.onBackPressed()
-        }
     }
 }

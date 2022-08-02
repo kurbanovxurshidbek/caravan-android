@@ -90,7 +90,7 @@
     <string name="str_enter_your_email">Emailingizni kiriting</string>
     <string name="str_enter_your_birth_date_dd_mm_yyyy">Tug’ilgan sanangizni kiriting (dd.mm.yyyy)</string>
     <string name="str_next">Keyingi</string>
-    <string name="str_fill_your_guide">Gid sozlamalarini to’ldiring</string>
+    <string name="str_fill_your_guide">Gid haqidagi ma’lumotlarni kiriting</string>
     <string name="str_travel_locations">Sayohat maskanlari</string>
     <string name="str_location">Manzil</string>
     <string name="str_short_information">Qisqa ma’lumot</string>
@@ -114,7 +114,7 @@
     <string name="str_description">Tavsif</string>
     <string name="str_add_image">Rasm qo’shish</string>
     <string name="str_upload_photo">Rasm yuklash</string>
-    <string name="str_fill_the_location_of_that_picture">Rasmning manzilini to’ldiring</string>
+    <string name="str_fill_the_location_of_that_picture">Rasm haqida ma’lumot kiriting</string>
     <string name="str_upload">Yuklash</string>
     <string name="error">Xatolik</string>
     <string name="went_wrong">Nimadir noto’g’ri bajarildi. Iltimos, yana bir bor urinib ko’ring</string>
@@ -140,6 +140,8 @@
     <string name="describe_your_trip">Sayohatni tasvirlang</string>
     <string name="no_trips_available">Sayohatlar mavjud emas!</string>
     <string name="search_some_places">Manzil qidirish</string>
+    <string name="str_incorrect_code">Noto\'g\'ri kod</string>
+    <string name="str_try_code">Siz kiritgan kod noto\'g\'ri. Iltimos, yana bir bor urinib ko\'ring</string>
 
     <string-array name="location">
         <item>TASHKENT</item>
