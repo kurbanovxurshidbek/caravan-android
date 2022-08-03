@@ -90,7 +90,7 @@ class LoginActivity : BaseActivity() {
         if (data.status) {
             val phoneNumber = binding.etPhone.text.toString()
             val loginSend = LoginSend(phoneNumber, 1111, getDeviceInfo(this), "en")
-            viewModel.sendSMS(loginSend)
+            viewModel.checkSMS(loginSend)
         } else {
             showDialogWarning(
                 data.title!!,
