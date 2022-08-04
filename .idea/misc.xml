@@ -53,12 +53,16 @@
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/item_upgrade_guide_location.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/layout/overlay_view.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Jamshid/AndroidStudioProjects/caravan-android/app/src/main/res/menu/bottom_nav.xml" value="0.3619791666666667" />
+        <entry key="app/src/main/res/layout/activity_details.xml" value="0.36041666666666666" />
+        <entry key="app/src/main/res/layout/activity_edit.xml" value="0.36041666666666666" />
+        <entry key="app/src/main/res/layout/activity_guide_option.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/layout/activity_intro.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/layout/bottom_dialog_guide.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/bottom_dialog_trip.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/dialog_message.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/layout/fragment_account.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/layout/fragment_create_trip1.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/fragment_create_trip2.xml" value="0.16530797101449277" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.2574074074074074" />
@@ -91,6 +95,7 @@
         <entry key="app/src/main/res/layout/item_upgrade_guide_location.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/overlay_view.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/photo_adder_item.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/menu/bottom_nav.xml" value="0.36041666666666666" />
       </map>
     </option>
   </component>
