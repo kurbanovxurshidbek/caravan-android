@@ -41,7 +41,7 @@
     <string name="str_check_agreement">Пожалуйста, проверьте соглашение</string>
     <string name="str_fill_all_fields">Пожалуйста заполните все поля</string>
     <string name="str_url_agreement">https://matyaqubovdev.github.io/caravan-policy</string>
-    <string name="str_url_get_info">https://t.me/Bogibek_Matyaqubov</string>
+    <string name="str_url_get_info">https://t.me/OgabekDev</string>
     <string name="str_gender">Пол</string>
     <string name="str_male">Мужчина</string>
     <string name="str_female">Женщина</string>
@@ -141,6 +141,11 @@
     <string name="search_some_places">Поиск мест</string>
     <string name="str_incorrect_code">Неверный код</string>
     <string name="str_try_code">Введенный вами код неверен. Пожалуйста, попробуйте еще раз</string>
+    <string name="edit_profile">Редактировать профиль</string>
+    <string name="log_out">Выйти</string>
+    <string name="home">Главное окно</string>
+    <string name="search">Поиск</string>
+    <string name="account">Счет</string>
 
     <string-array name="location">
         <item>TASHKENT</item>

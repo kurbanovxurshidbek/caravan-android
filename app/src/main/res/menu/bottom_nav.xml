@@ -4,12 +4,12 @@
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/home"
-        android:title="Home"
+        android:title="@string/home"
         />
     <item
         android:id="@+id/searchFragment"
         android:icon="@drawable/loupe"
-        android:title="Search" />
+        android:title="@string/search" />
 <!--    <item-->
 <!--        android:id="@+id/messageFragment"-->
 <!--        android:icon="@drawable/chat_bubble"-->
@@ -17,6 +17,6 @@
     <item
         android:id="@+id/accountFragment"
         android:icon="@drawable/person"
-        android:title="Account" />
+        android:title="@string/account" />
 
 </menu>

@@ -14,10 +14,10 @@ object RetrofitHttp {
 
     const val TAG: String = "RetrofitHttp"
 
-    private const val IS_TESTER = true
+    private const val IS_TESTER = false
 
     private const val SERVER_DEVELOPMENT = "http://5.180.183.1:7777"
-    private const val SERVER_PRODUCTION = "http://137.184.80.70:8080"
+    private const val SERVER_PRODUCTION = "http://5.180.183.1:7777"
 
     private fun server(): String {
         return if (IS_TESTER) {

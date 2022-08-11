@@ -42,7 +42,7 @@
     <string name="str_check_agreement">Iltimos, rozilikni tekshiring</string>
     <string name="str_fill_all_fields">Iltimos, avval barcha bandlarni to’ldiring</string>
     <string name="str_url_agreement">https://matyaqubovdev.github.io/caravan-policy</string>
-    <string name="str_url_get_info">https://t.me/Bogibek_Matyaqubov</string>
+    <string name="str_url_get_info">https://t.me/OgabekDev</string>
     <string name="str_gender">Jins</string>
     <string name="str_male">Erkak</string>
     <string name="str_female">Ayol</string>
@@ -142,6 +142,11 @@
     <string name="search_some_places">Manzil qidirish</string>
     <string name="str_incorrect_code">Noto\'g\'ri kod</string>
     <string name="str_try_code">Siz kiritgan kod noto\'g\'ri. Iltimos, yana bir bor urinib ko\'ring</string>
+    <string name="edit_profile">Profilni tahrirlash</string>
+    <string name="log_out">Chiqish</string>
+    <string name="home">Bosh oyna</string>
+    <string name="search">Qidirish</string>
+    <string name="account">Profil</string>
 
     <string-array name="location">
         <item>TASHKENT</item>
